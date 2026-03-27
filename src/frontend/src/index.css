@@ -261,3 +261,21 @@ html.dark .dark-section-bg {
 .quick-cart-bounce {
   animation: cart-bounce 0.5s ease;
 }
+
+/* ── Auto-scroll carousel ── */
+@keyframes autoScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+.auto-scroll-track {
+  display: flex;
+  animation: autoScroll 25s linear infinite;
+  width: max-content;
+}
+.auto-scroll-track:hover {
+  animation-play-state: paused;
+}

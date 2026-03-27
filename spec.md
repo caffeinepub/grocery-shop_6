@@ -1,37 +1,37 @@
-# Annapurna Shop — Version 9
+# Annapurna Shop
 
 ## Current State
-Light grey theme with Archivo Black headings, neon lime accents, 4px hard-shadow product cards, marquee ticker, daily deals slider, sidebar cart with delivery progress bar, Buy Now button, 4-step checkout, 88+ products with real images, Instagram section, lucky draw, auto-coupons.
+Full-featured grocery e-commerce site with 88 products across 10 categories, dark/light mode, sidebar cart, checkout flow, carousels, offers section with coupon copy buttons, Lucky Draw spin wheel. Some rendered text showing unicode escape codes (e.g. \uD83C\uDF89) instead of actual characters.
 
 ## Requested Changes (Diff)
 
 ### Add
-- Dark mode toggle switch (Light ↔ Deep Charcoal/Black), persisted via localStorage
-- Continuous horizontal sliding carousels for 'Trending Now', 'Fresh Veggies', 'Midnight Snacks' categories with free-mode touch scrolling (CSS scroll-snap + overflow-x: scroll, smooth)
-- Circular floating 'Quick Cart' button fixed at bottom-right, shows cart count badge
-- Frosted glass navbar (backdrop-filter: blur, semi-transparent background)
-- Auto message in cart/header: 'You are only ₹[X] away from FREE DELIVERY!' dynamically computed
-- Hover video preview on product cards: 3-second looping MP4/WebM or animated overlay (CSS animation simulating GIF-style motion on hover)
-- Google Fonts: 'Space Grotesk' for all headers (replacing Archivo Black)
+- Milestone-based coupon section: show a section that tells users they unlock a coupon/discount after spending a certain amount (e.g. ₹200 = 10% off, ₹350 = 15% off, ₹500 = 20% off). No copy-code button — just show the benefit as a reward banner.
+- More product items in every existing category (target 6+ per category minimum)
+- 5 new categories: Grains & Pulses, Spices & Masala, Ice Creams & Frozen, Fruits, Packaged Foods
+- Auto-scroll for the Daily Deals slider (auto-advance every 3s)
+- Auto-scroll for the 3 carousel rows (Trending Now, Fresh Veggies, Midnight Snacks) using CSS infinite scroll animation
+- Prices must be clearly visible on all product cards
 
 ### Modify
-- Color palette: replace Neon Lime with Electric Cobalt Blue (#2E5BFF) as primary accent; use Vibrant Sunset Orange (#FF5F1F) as secondary accent for prices and sale badges
-- Background: Soft White (#F9F9F9) light mode, Deep Charcoal (#111111/#1a1a1a) dark mode
-- Text: Deep Black (#000000) on light, near-white on dark
-- Product cards in sliders: 2px solid black border, subtle box-shadow, shadow pops on hover
-- All buttons/prices/highlights use #2E5BFF (primary) or #FF5F1F (prices/sale)
+- Remove the Lucky Draw spin wheel section entirely (LuckyDraw component + WHEEL_PRIZES data)
+- Replace the "OFFERS & COUPONS" section (with SAVE10/SAVE15/SAVE20 copy buttons) with a "UNLOCK YOUR SAVINGS" milestone section showing progress-style benefit cards
+- Fix all broken unicode/escape code text rendering (\uD83C\uDF89 etc.) — use actual emoji characters in JSX
+- Category emoji unicode escapes in CATEGORIES array should use actual emoji literals
+- Daily Deals slider: add auto-play with setInterval cycling every 3000ms
+- Carousels (Trending Now, Fresh Veggies, Midnight Snacks): use CSS keyframe animation `scrollLeft` infinite loop so cards scroll automatically without user interaction
 
 ### Remove
-- Neon Lime (#CCFF00) accent color
-- Archivo Black font (replaced by Space Grotesk)
+- LuckyDraw function component
+- WHEEL_PRIZES constant
+- Coupon copy-code buttons and coupon code display (SAVE10, SAVE15, SAVE20 visible codes)
 
 ## Implementation Plan
-1. Add Space Grotesk via Google Fonts import
-2. Replace neon lime CSS variables with #2E5BFF (primary) and #FF5F1F (prices/sale)
-3. Implement dark mode toggle with CSS class on `<html>` and localStorage persistence; define dark mode CSS variables
-4. Build horizontal carousel rows for 'Trending Now', 'Fresh Veggies', 'Midnight Snacks' with touch-friendly free scrolling
-5. Style carousel product cards with 2px border + hover shadow
-6. Add frosted glass styles to navbar
-7. Add floating circular Quick Cart button fixed bottom-right with badge
-8. Add free delivery progress message dynamically computed from cart total vs ₹500 threshold
-9. Implement hover video/GIF-style preview on product cards using CSS animation or short looping video element shown on hover
+1. Remove LuckyDraw component and WHEEL_PRIZES
+2. Replace Offers & Coupons section with milestone savings banner (no codes shown)
+3. Add 30+ new products across existing and 5 new categories with Unsplash image URLs
+4. Add 5 new category entries to CATEGORIES array
+5. Fix all unicode escape sequences — replace with actual emoji/characters in JSX strings
+6. Add auto-play to Daily Deals slider
+7. Add CSS infinite scroll animation to the 3 carousel rows
+8. Ensure price (₹XX) is prominently shown on every product card

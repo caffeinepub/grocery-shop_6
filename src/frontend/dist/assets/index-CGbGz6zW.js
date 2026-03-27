@@ -14398,23 +14398,23 @@ const createLucideIcon = (iconName, iconNode) => {
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$9 = [["path", { d: "m15 18-6-6 6-6", key: "1wnfg3" }]];
-const ChevronLeft = createLucideIcon("chevron-left", __iconNode$9);
+const __iconNode$8 = [["path", { d: "m15 18-6-6 6-6", key: "1wnfg3" }]];
+const ChevronLeft = createLucideIcon("chevron-left", __iconNode$8);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$8 = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]];
-const ChevronRight = createLucideIcon("chevron-right", __iconNode$8);
+const __iconNode$7 = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]];
+const ChevronRight = createLucideIcon("chevron-right", __iconNode$7);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$7 = [
+const __iconNode$6 = [
   ["rect", { x: "3", y: "8", width: "18", height: "4", rx: "1", key: "bkv52" }],
   ["path", { d: "M12 8v13", key: "1c76mn" }],
   ["path", { d: "M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7", key: "6wjy6b" }],
@@ -14426,25 +14426,15 @@ const __iconNode$7 = [
     }
   ]
 ];
-const Gift = createLucideIcon("gift", __iconNode$7);
+const Gift = createLucideIcon("gift", __iconNode$6);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$6 = [["path", { d: "M5 12h14", key: "1ays0h" }]];
-const Minus = createLucideIcon("minus", __iconNode$6);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$5 = [
-  ["path", { d: "M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z", key: "a7tn18" }]
-];
-const Moon = createLucideIcon("moon", __iconNode$5);
+const __iconNode$5 = [["path", { d: "M5 12h14", key: "1ays0h" }]];
+const Minus = createLucideIcon("minus", __iconNode$5);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -14452,10 +14442,9 @@ const Moon = createLucideIcon("moon", __iconNode$5);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$4 = [
-  ["path", { d: "M5 12h14", key: "1ays0h" }],
-  ["path", { d: "M12 5v14", key: "s699le" }]
+  ["path", { d: "M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z", key: "a7tn18" }]
 ];
-const Plus = createLucideIcon("plus", __iconNode$4);
+const Moon = createLucideIcon("moon", __iconNode$4);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -14463,6 +14452,17 @@ const Plus = createLucideIcon("plus", __iconNode$4);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$3 = [
+  ["path", { d: "M5 12h14", key: "1ays0h" }],
+  ["path", { d: "M12 5v14", key: "s699le" }]
+];
+const Plus = createLucideIcon("plus", __iconNode$3);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$2 = [
   ["circle", { cx: "8", cy: "21", r: "1", key: "jimo8o" }],
   ["circle", { cx: "19", cy: "21", r: "1", key: "13723u" }],
   [
@@ -14473,14 +14473,14 @@ const __iconNode$3 = [
     }
   ]
 ];
-const ShoppingCart = createLucideIcon("shopping-cart", __iconNode$3);
+const ShoppingCart = createLucideIcon("shopping-cart", __iconNode$2);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$2 = [
+const __iconNode$1 = [
   ["circle", { cx: "12", cy: "12", r: "4", key: "4exip2" }],
   ["path", { d: "M12 2v2", key: "tus03m" }],
   ["path", { d: "M12 20v2", key: "1lh1kg" }],
@@ -14491,18 +14491,7 @@ const __iconNode$2 = [
   ["path", { d: "m6.34 17.66-1.41 1.41", key: "1m8zz5" }],
   ["path", { d: "m19.07 4.93-1.41 1.41", key: "1shlcs" }]
 ];
-const Sun = createLucideIcon("sun", __iconNode$2);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$1 = [
-  ["path", { d: "M18 6 6 18", key: "1bl5f8" }],
-  ["path", { d: "m6 6 12 12", key: "d8bk6v" }]
-];
-const X = createLucideIcon("x", __iconNode$1);
+const Sun = createLucideIcon("sun", __iconNode$1);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -14510,15 +14499,10 @@ const X = createLucideIcon("x", __iconNode$1);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode = [
-  [
-    "path",
-    {
-      d: "M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z",
-      key: "1xq2db"
-    }
-  ]
+  ["path", { d: "M18 6 6 18", key: "1bl5f8" }],
+  ["path", { d: "m6 6 12 12", key: "d8bk6v" }]
 ];
-const Zap = createLucideIcon("zap", __iconNode);
+const X = createLucideIcon("x", __iconNode);
 const FREE_DELIVERY_THRESHOLD = 500;
 const DELIVERY_FEE = 40;
 const MIN_ORDER = 200;
@@ -15412,6 +15396,382 @@ const PRODUCTS = [
     vibe: "Earth Friendly",
     category: "Instant Food",
     available: true
+  },
+  // Grains & Pulses
+  {
+    id: 89,
+    name: "Basmati Rice",
+    quantity: "1kg",
+    price: 120,
+    imageUrl: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=300&q=80",
+    vibe: "Daily Essential",
+    category: "Grains & Pulses",
+    available: true
+  },
+  {
+    id: 90,
+    name: "Toor Dal",
+    quantity: "500g",
+    price: 80,
+    imageUrl: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=300&q=80",
+    vibe: "Daily Essential",
+    category: "Grains & Pulses",
+    available: true
+  },
+  {
+    id: 91,
+    name: "Chana Dal",
+    quantity: "500g",
+    price: 70,
+    imageUrl: "https://images.unsplash.com/photo-1612257999756-8bae7b2c0c66?w=300&q=80",
+    vibe: "Earth Friendly",
+    category: "Grains & Pulses",
+    available: true
+  },
+  {
+    id: 92,
+    name: "Moong Dal",
+    quantity: "500g",
+    price: 75,
+    imageUrl: "https://images.unsplash.com/photo-1603048297172-c92544798d5a?w=300&q=80",
+    vibe: "Earth Friendly",
+    category: "Grains & Pulses",
+    available: true
+  },
+  {
+    id: 93,
+    name: "Wheat Flour (Atta)",
+    quantity: "1kg",
+    price: 55,
+    imageUrl: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=300&q=80",
+    vibe: "Daily Essential",
+    category: "Grains & Pulses",
+    available: true
+  },
+  {
+    id: 94,
+    name: "Poha (Flattened Rice)",
+    quantity: "500g",
+    price: 40,
+    imageUrl: "https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=300&q=80",
+    vibe: "Daily Essential",
+    category: "Grains & Pulses",
+    available: true
+  },
+  {
+    id: 95,
+    name: "Sooji (Semolina)",
+    quantity: "500g",
+    price: 35,
+    imageUrl: "https://images.unsplash.com/photo-1614961233913-a5113a4a34ed?w=300&q=80",
+    vibe: "Daily Essential",
+    category: "Grains & Pulses",
+    available: true
+  },
+  // Spices & Masala
+  {
+    id: 96,
+    name: "Red Chilli Powder",
+    quantity: "100g",
+    price: 45,
+    imageUrl: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=300&q=80",
+    vibe: "Chef's Choice",
+    category: "Spices & Masala",
+    available: true
+  },
+  {
+    id: 97,
+    name: "Turmeric Powder",
+    quantity: "100g",
+    price: 30,
+    imageUrl: "https://images.unsplash.com/photo-1615485500704-8e990f9900f7?w=300&q=80",
+    vibe: "Earth Friendly",
+    category: "Spices & Masala",
+    available: true
+  },
+  {
+    id: 98,
+    name: "Garam Masala",
+    quantity: "100g",
+    price: 55,
+    imageUrl: "https://images.unsplash.com/photo-1532336414038-cf19250c5757?w=300&q=80",
+    vibe: "Chef's Choice",
+    category: "Spices & Masala",
+    available: true
+  },
+  {
+    id: 99,
+    name: "Cumin Seeds",
+    quantity: "100g",
+    price: 35,
+    imageUrl: "https://images.unsplash.com/photo-1599909628518-44571a3b7e43?w=300&q=80",
+    vibe: "Chef's Choice",
+    category: "Spices & Masala",
+    available: true
+  },
+  {
+    id: 100,
+    name: "Coriander Powder",
+    quantity: "100g",
+    price: 30,
+    imageUrl: "https://images.unsplash.com/photo-1608198093002-ad4e005484ec?w=300&q=80",
+    vibe: "Daily Essential",
+    category: "Spices & Masala",
+    available: true
+  },
+  {
+    id: 101,
+    name: "Kitchen King Masala",
+    quantity: "100g",
+    price: 65,
+    imageUrl: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=300&q=80",
+    vibe: "Chef's Choice",
+    category: "Spices & Masala",
+    available: true
+  },
+  // Fruits
+  {
+    id: 102,
+    name: "Banana",
+    quantity: "12pcs",
+    price: 40,
+    imageUrl: "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=300&q=80",
+    vibe: "Freshly Picked",
+    category: "Fruits",
+    available: true
+  },
+  {
+    id: 103,
+    name: "Apple",
+    quantity: "4pcs",
+    price: 80,
+    imageUrl: "https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=300&q=80",
+    vibe: "Freshly Picked",
+    category: "Fruits",
+    available: true
+  },
+  {
+    id: 104,
+    name: "Mango",
+    quantity: "4pcs",
+    price: 120,
+    imageUrl: "https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=300&q=80",
+    vibe: "Freshly Picked",
+    category: "Fruits",
+    available: true
+  },
+  {
+    id: 105,
+    name: "Orange",
+    quantity: "4pcs",
+    price: 60,
+    imageUrl: "https://images.unsplash.com/photo-1611080626919-7cf5a9dbab12?w=300&q=80",
+    vibe: "Freshly Picked",
+    category: "Fruits",
+    available: true
+  },
+  {
+    id: 106,
+    name: "Grapes",
+    quantity: "500g",
+    price: 70,
+    imageUrl: "https://images.unsplash.com/photo-1537640538966-79f369143f8f?w=300&q=80",
+    vibe: "Freshly Picked",
+    category: "Fruits",
+    available: true
+  },
+  {
+    id: 107,
+    name: "Pomegranate",
+    quantity: "1pc",
+    price: 50,
+    imageUrl: "https://images.unsplash.com/photo-1541344999736-83eca272f6fc?w=300&q=80",
+    vibe: "Earth Friendly",
+    category: "Fruits",
+    available: true
+  },
+  {
+    id: 108,
+    name: "Papaya",
+    quantity: "1pc",
+    price: 40,
+    imageUrl: "https://images.unsplash.com/photo-1519996529931-28324d5a630e?w=300&q=80",
+    vibe: "Freshly Picked",
+    category: "Fruits",
+    available: true
+  },
+  // Ice Creams & Frozen
+  {
+    id: 109,
+    name: "Kwality Walls Cornetto",
+    quantity: "1pc",
+    price: 40,
+    imageUrl: "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=300&q=80",
+    vibe: "Student Fave",
+    category: "Ice Creams & Frozen",
+    available: true
+  },
+  {
+    id: 110,
+    name: "Amul Chocobar",
+    quantity: "1pc",
+    price: 30,
+    imageUrl: "https://images.unsplash.com/photo-1587314168485-3236d6710814?w=300&q=80",
+    vibe: "Student Fave",
+    category: "Ice Creams & Frozen",
+    available: true
+  },
+  {
+    id: 111,
+    name: "Amul Kulfi",
+    quantity: "1pc",
+    price: 25,
+    imageUrl: "https://images.unsplash.com/photo-1629385701021-fcd568a743a8?w=300&q=80",
+    vibe: "Daily Essential",
+    category: "Ice Creams & Frozen",
+    available: true
+  },
+  {
+    id: 112,
+    name: "Magnum Almond",
+    quantity: "1pc",
+    price: 100,
+    imageUrl: "https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?w=300&q=80",
+    vibe: "Chef's Choice",
+    category: "Ice Creams & Frozen",
+    available: true
+  },
+  {
+    id: 113,
+    name: "Frozen Peas",
+    quantity: "500g",
+    price: 55,
+    imageUrl: "https://images.unsplash.com/photo-1590165482129-1b8b27698780?w=300&q=80",
+    vibe: "Daily Essential",
+    category: "Ice Creams & Frozen",
+    available: true
+  },
+  {
+    id: 114,
+    name: "Frozen French Fries",
+    quantity: "400g",
+    price: 120,
+    imageUrl: "https://images.unsplash.com/photo-1576107232684-1279f390859f?w=300&q=80",
+    vibe: "Student Fave",
+    category: "Ice Creams & Frozen",
+    available: true
+  },
+  // Packaged Foods
+  {
+    id: 115,
+    name: "Amul Mithai Mate",
+    quantity: "400g",
+    price: 70,
+    imageUrl: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=300&q=80",
+    vibe: "Daily Essential",
+    category: "Packaged Foods",
+    available: true
+  },
+  {
+    id: 116,
+    name: "Tomato Ketchup",
+    quantity: "500g",
+    price: 75,
+    imageUrl: "https://images.unsplash.com/photo-1614563637806-1d0e645e0940?w=300&q=80",
+    vibe: "Daily Essential",
+    category: "Packaged Foods",
+    available: true
+  },
+  {
+    id: 117,
+    name: "Kissan Jam",
+    quantity: "200g",
+    price: 60,
+    imageUrl: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=300&q=80",
+    vibe: "Daily Essential",
+    category: "Packaged Foods",
+    available: true
+  },
+  {
+    id: 118,
+    name: "Peanut Butter",
+    quantity: "340g",
+    price: 150,
+    imageUrl: "https://images.unsplash.com/photo-1585559604959-b4e28d91e8cf?w=300&q=80",
+    vibe: "Student Fave",
+    category: "Packaged Foods",
+    available: true
+  },
+  {
+    id: 119,
+    name: "Honey",
+    quantity: "250g",
+    price: 120,
+    imageUrl: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=300&q=80",
+    vibe: "Earth Friendly",
+    category: "Packaged Foods",
+    available: true
+  },
+  {
+    id: 120,
+    name: "Nutella",
+    quantity: "200g",
+    price: 180,
+    imageUrl: "https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=300&q=80",
+    vibe: "Student Fave",
+    category: "Packaged Foods",
+    available: true
+  },
+  // Additional Beverages
+  {
+    id: 121,
+    name: "Minute Maid Pulpy Orange",
+    quantity: "400ml",
+    price: 30,
+    imageUrl: "https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=300&q=80",
+    vibe: "Student Fave",
+    category: "Beverages",
+    available: true
+  },
+  {
+    id: 122,
+    name: "Appy Fizz",
+    quantity: "300ml",
+    price: 30,
+    imageUrl: "https://images.unsplash.com/photo-1554866585-cd94860890b7?w=300&q=80",
+    vibe: "Student Fave",
+    category: "Beverages",
+    available: true
+  },
+  {
+    id: 123,
+    name: "Bisleri Water",
+    quantity: "1L",
+    price: 20,
+    imageUrl: "https://images.unsplash.com/photo-1560023907-5f339617ea30?w=300&q=80",
+    vibe: "Daily Essential",
+    category: "Beverages",
+    available: true
+  },
+  {
+    id: 124,
+    name: "Nescafe Instant Coffee",
+    quantity: "50g",
+    price: 100,
+    imageUrl: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=300&q=80",
+    vibe: "Student Fave",
+    category: "Beverages",
+    available: true
+  },
+  {
+    id: 125,
+    name: "Wagh Bakri Tea",
+    quantity: "250g",
+    price: 120,
+    imageUrl: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=300&q=80",
+    vibe: "Daily Essential",
+    category: "Beverages",
+    available: true
   }
 ];
 const CATEGORIES = [
@@ -15424,7 +15784,12 @@ const CATEGORIES = [
   { name: "Stationery", emoji: "📚" },
   { name: "Personal Care", emoji: "🧴" },
   { name: "Household", emoji: "🏠" },
-  { name: "Instant Food", emoji: "🍜" }
+  { name: "Instant Food", emoji: "🍜" },
+  { name: "Fruits", emoji: "🍎" },
+  { name: "Grains & Pulses", emoji: "🌾" },
+  { name: "Spices & Masala", emoji: "🌶️" },
+  { name: "Ice Creams & Frozen", emoji: "🍦" },
+  { name: "Packaged Foods", emoji: "🥫" }
 ];
 const DAILY_DEALS = [
   {
@@ -15464,16 +15829,6 @@ const DAILY_DEALS = [
     img: "https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?w=600&q=80"
   }
 ];
-const WHEEL_PRIZES = [
-  "10% OFF",
-  "Free Item!",
-  "₹20 Cashback",
-  "15% OFF",
-  "Try Again",
-  "₹50 OFF",
-  "5% OFF",
-  "Bumper Prize!"
-];
 const TRENDING_IDS = [13, 21, 33, 81, 41, 28, 55, 1, 40, 42];
 const VEGGIE_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const MIDNIGHT_IDS = [
@@ -15494,89 +15849,6 @@ const MIDNIGHT_IDS = [
   82,
   83
 ];
-function LuckyDraw() {
-  const [spinning, setSpinning] = reactExports.useState(false);
-  const [prize, setPrize] = reactExports.useState(null);
-  const [deg, setDeg] = reactExports.useState(0);
-  const lastSpun = reactExports.useRef(null);
-  const spin = reactExports.useCallback(() => {
-    if (spinning) return;
-    const today = (/* @__PURE__ */ new Date()).toDateString();
-    if (lastSpun.current === today) {
-      ue.info("You've already spun today! Come back tomorrow.");
-      return;
-    }
-    setSpinning(true);
-    setPrize(null);
-    const idx = Math.floor(Math.random() * WHEEL_PRIZES.length);
-    const extraSpins = 5;
-    const targetDeg = deg + extraSpins * 360 + 360 / WHEEL_PRIZES.length * idx;
-    setDeg(targetDeg);
-    setTimeout(() => {
-      setSpinning(false);
-      setPrize(WHEEL_PRIZES[idx]);
-      lastSpun.current = today;
-    }, 3500);
-  }, [spinning, deg]);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "py-16", style: { background: "#111" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4 text-center", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "font-heading text-3xl md:text-4xl text-white mb-2", children: "LUCKY DRAW" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-body mb-8", style: { color: "#2E5BFF" }, children: "Spin once a day for amazing prizes!" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center gap-6", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "w-64 h-64 rounded-full border-4 border-white/20 relative overflow-hidden",
-          style: {
-            background: "conic-gradient(#2E5BFF 0deg, #FF5F1F 45deg, #2E5BFF 90deg, #1a1a1a 135deg, #2E5BFF 180deg, #FF5F1F 225deg, #2E5BFF 270deg, #1a1a1a 315deg)",
-            transition: spinning ? "transform 3.5s cubic-bezier(0.17,0.67,0.12,0.99)" : "none",
-            transform: `rotate(${deg}deg)`
-          },
-          children: [
-            WHEEL_PRIZES.map((p, i) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "div",
-              {
-                className: "absolute w-full h-full flex items-start justify-center",
-                style: {
-                  transform: `rotate(${360 / WHEEL_PRIZES.length * i}deg)`
-                },
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] font-bold text-white mt-2 block max-w-[40px] text-center leading-tight", children: p })
-              },
-              p
-            )),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-2 rounded-full bg-black border-2 border-white/20 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { size: 24, style: { color: "#2E5BFF" } }) })
-          ]
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "button",
-        {
-          type: "button",
-          onClick: spin,
-          disabled: spinning,
-          className: "px-8 py-3 font-heading font-bold uppercase border-4 border-white/20 transition-all disabled:opacity-50",
-          style: {
-            background: "#2E5BFF",
-            color: "#fff",
-            boxShadow: "4px 4px 0px rgba(255,255,255,0.1)"
-          },
-          children: spinning ? "SPINNING..." : "SPIN NOW"
-        }
-      ),
-      prize && /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "div",
-        {
-          className: "border-4 border-white/20 px-8 py-4",
-          style: { background: "#2E5BFF" },
-          children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-heading text-2xl text-white", children: [
-            "\\uD83C\\uDF89 YOU WON: ",
-            prize,
-            "!"
-          ] })
-        }
-      )
-    ] })
-  ] }) });
-}
 function PaymentModal({ items, onClose }) {
   const [payMethod, setPayMethod] = reactExports.useState("upi");
   const [name, setName] = reactExports.useState("");
@@ -15624,10 +15896,10 @@ function PaymentModal({ items, onClose }) {
       }
     ),
     ordered ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-8 text-center", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-6xl mb-4", children: "\\uD83C\\uDF89" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-6xl mb-4", children: "🎉" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-heading text-3xl text-black mb-2", children: "ORDER PLACED!" }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-body text-gray-600 mb-4", children: [
-        "Your order of \\u20B9",
+        "Your order of ₹",
         total,
         " is confirmed. Expected delivery in 10 minutes!"
       ] }),
@@ -15644,7 +15916,7 @@ function PaymentModal({ items, onClose }) {
       )
     ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6 space-y-6", children: [
       belowMin && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-red-100 border-2 border-red-500 p-3 rounded", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-body text-red-700 text-sm font-bold", children: [
-        "Minimum order value is \\u20B9",
+        "Minimum order value is ₹",
         MIN_ORDER,
         ". Please add more items."
       ] }) }),
@@ -15754,11 +16026,11 @@ function PaymentModal({ items, onClose }) {
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
                 item.name,
-                " \\u00D7 ",
+                " × ",
                 item.cartQty
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-bold", children: [
-                "\\u20B9",
+                "₹",
                 item.price * item.cartQty
               ] })
             ]
@@ -15769,7 +16041,7 @@ function PaymentModal({ items, onClose }) {
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between font-body text-sm", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Subtotal" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-              "\\u20B9",
+              "₹",
               subtotal
             ] })
           ] }),
@@ -15786,7 +16058,7 @@ function PaymentModal({ items, onClose }) {
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between font-heading text-lg border-t-2 border-black pt-2", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "TOTAL" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { color: "#FF5F1F" }, children: [
-              "\\u20B9",
+              "₹",
               total
             ] })
           ] })
@@ -15801,7 +16073,7 @@ function PaymentModal({ items, onClose }) {
           className: "w-full py-3 text-white font-heading text-lg border-2 border-transparent rounded transition-all disabled:opacity-40 disabled:cursor-not-allowed",
           style: { background: "#2E5BFF" },
           "data-ocid": "checkout.submit_button",
-          children: "PLACE ORDER \\u2192"
+          children: "PLACE ORDER →"
         }
       )
     ] })
@@ -15812,6 +16084,19 @@ function DailyDealsSlider() {
   const isDragging = reactExports.useRef(false);
   const startX = reactExports.useRef(0);
   const scrollLeft = reactExports.useRef(0);
+  const [_currentDeal, setCurrentDeal] = reactExports.useState(0);
+  reactExports.useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentDeal((prev) => {
+        const next = (prev + 1) % DAILY_DEALS.length;
+        if (trackRef.current) {
+          trackRef.current.scrollTo({ left: next * 300, behavior: "smooth" });
+        }
+        return next;
+      });
+    }, 3e3);
+    return () => clearInterval(timer);
+  }, []);
   const onMouseDown = (e) => {
     var _a2, _b2;
     isDragging.current = true;
@@ -16019,17 +16304,17 @@ function CategoryCarousel({
         )
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-hidden relative", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
       "div",
       {
         ref: trackRef,
-        className: "flex gap-3 overflow-x-auto pb-3",
+        className: "auto-scroll-track gap-3 pb-3",
         style: {
           scrollbarWidth: "none",
           msOverflowStyle: "none",
           WebkitOverflowScrolling: "touch"
         },
-        children: products.map((product) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "carousel-card", children: [
+        children: [...products, ...products].map((product, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "carousel-card", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "carousel-img-wrap", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "img",
@@ -16067,7 +16352,7 @@ function CategoryCarousel({
                 className: "font-heading text-base font-bold",
                 style: { color: "#FF5F1F" },
                 children: [
-                  "\\u20B9",
+                  "₹",
                   product.price
                 ]
               }
@@ -16087,9 +16372,9 @@ function CategoryCarousel({
               }
             )
           ] })
-        ] }, product.id))
+        ] }, `${product.id}-${idx}`))
       }
-    )
+    ) })
   ] }) });
 }
 function ProductCard({
@@ -16146,7 +16431,7 @@ function ProductCard({
             className: "font-heading text-lg font-bold",
             style: { color: "#FF5F1F" },
             children: [
-              "\\u20B9",
+              "₹",
               product.price
             ]
           }
@@ -16283,7 +16568,7 @@ function SidebarCart({
                         "You are only",
                         " ",
                         /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-bold", style: { color: "#FF5F1F" }, children: [
-                          "\\u20B9",
+                          "₹",
                           needed
                         ] }),
                         " ",
@@ -16326,7 +16611,7 @@ function SidebarCart({
                   {
                     className: "font-body text-sm font-bold",
                     style: { color: "#2E5BFF" },
-                    children: "\\uD83C\\uDF89 You've unlocked FREE delivery!"
+                    children: "🎉 You've unlocked FREE delivery!"
                   }
                 )
               }
@@ -16373,7 +16658,7 @@ function SidebarCart({
                         className: "font-heading font-bold text-sm",
                         style: { color: "#FF5F1F" },
                         children: [
-                          "\\u20B9",
+                          "₹",
                           item.price * item.cartQty
                         ]
                       }
@@ -16425,9 +16710,9 @@ function SidebarCart({
                 style: { borderColor: "var(--site-card-border)" },
                 children: [
                   belowMin && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-body text-sm text-red-600 mb-3 font-bold", children: [
-                    "Add \\u20B9",
+                    "Add ₹",
                     MIN_ORDER - subtotal,
-                    " more (min order \\u20B9",
+                    " more (min order ₹",
                     MIN_ORDER,
                     ")"
                   ] }),
@@ -16440,7 +16725,7 @@ function SidebarCart({
                         children: [
                           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Subtotal" }),
                           /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-                            "\\u20B9",
+                            "₹",
                             subtotal
                           ] })
                         ]
@@ -16474,7 +16759,7 @@ function SidebarCart({
                         children: [
                           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "TOTAL" }),
                           /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { style: { color: "#FF5F1F" }, children: [
-                            "\\u20B9",
+                            "₹",
                             total
                           ] })
                         ]
@@ -16490,7 +16775,7 @@ function SidebarCart({
                       className: "w-full py-3 text-white font-heading text-base rounded transition-all hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed",
                       style: { background: "#2E5BFF" },
                       "data-ocid": "cart.submit_button",
-                      children: "CHECKOUT \\u2192"
+                      children: "CHECKOUT →"
                     }
                   )
                 ]
@@ -16595,7 +16880,7 @@ function App() {
               "span",
               {
                 className: "font-body font-bold text-sm text-white tracking-widest uppercase flex-shrink-0",
-                children: "FREE DELIVERY OVER \\u20B9500   \\u2014   FRESH VEGGIES   \\u2014   10-MINUTE SHIPPING   \\u2014  "
+                children: "FREE DELIVERY OVER ₹500   —   FRESH VEGGIES   —   10-MINUTE SHIPPING   —  "
               },
               n
             ))
@@ -16609,7 +16894,7 @@ function App() {
             children: [
               "You are only ",
               /* @__PURE__ */ jsxRuntimeExports.jsxs("strong", { children: [
-                "\\u20B9",
+                "₹",
                 needed
               ] }),
               " away from FREE DELIVERY!"
@@ -16631,7 +16916,7 @@ function App() {
               {
                 className: "font-body text-xs",
                 style: { color: "var(--site-muted-text)" },
-                children: "GBPIET, PAURI \\u2022 7895784954"
+                children: "GBPIET, PAURI • 7895784954"
               }
             )
           ] }),
@@ -16697,7 +16982,7 @@ function App() {
                   {
                     className: "inline-block px-4 py-1 mb-4 rounded-full text-white text-sm font-body font-bold",
                     style: { background: "#FF5F1F" },
-                    children: "10-MINUTE DELIVERY \\u2022 GBPIET, PAURI"
+                    children: "10-MINUTE DELIVERY • GBPIET, PAURI"
                   }
                 ),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs(
@@ -16726,7 +17011,7 @@ function App() {
                   {
                     className: "font-body text-lg mb-6 max-w-md",
                     style: { color: "var(--site-muted-text)" },
-                    children: "Shop 88+ grocery & daily essentials. Free delivery over \\u20B9500. Minimum order \\u20B9200."
+                    children: "Shop 88+ grocery & daily essentials. Free delivery over ₹500. Minimum order ₹200."
                   }
                 ),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-3 flex-wrap", children: [
@@ -16790,7 +17075,7 @@ function App() {
             CategoryCarousel,
             {
               title: "Trending Now",
-              emoji: "\\uD83D\\uDD25",
+              emoji: "🔥",
               products: trendingProducts,
               onAddToCart: addToCart,
               accent: "#FF5F1F"
@@ -16811,7 +17096,7 @@ function App() {
             CategoryCarousel,
             {
               title: "Fresh Veggies",
-              emoji: "\\uD83E\\uDD66",
+              emoji: "🥦",
               products: veggieProducts,
               onAddToCart: addToCart
             }
@@ -16831,7 +17116,7 @@ function App() {
             CategoryCarousel,
             {
               title: "Midnight Snacks",
-              emoji: "\\uD83C\\uDF19",
+              emoji: "🌙",
               products: midnightProducts,
               onAddToCart: addToCart,
               accent: "#2E5BFF"
@@ -16912,7 +17197,8 @@ function App() {
               children: [
                 'Showing results for "',
                 /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { style: { color: "var(--site-text)" }, children: search }),
-                '" \\u2014 ',
+                '" —',
+                " ",
                 filteredProducts.length,
                 " products"
               ]
@@ -16968,81 +17254,71 @@ function App() {
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "section",
           {
-            className: "py-12",
             style: {
               background: "#111",
               borderTop: "2px solid #2E5BFF",
               borderBottom: "2px solid #2E5BFF"
             },
+            className: "py-12",
             children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "h2",
                 {
-                  className: "font-heading text-3xl md:text-4xl mb-8",
+                  className: "font-heading text-3xl md:text-4xl mb-2",
                   style: { color: "#2E5BFF" },
-                  children: "OFFERS & COUPONS"
+                  children: "UNLOCK YOUR SAVINGS"
                 }
               ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-body text-gray-400 mb-8", children: "Spend more, save more — discounts applied automatically at checkout!" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-3 gap-4", children: [
                 {
-                  code: "SAVE10",
-                  desc: "10% off on orders above ₹200",
-                  min: 200
+                  spend: 200,
+                  save: "10% OFF",
+                  label: "Starter Saver",
+                  color: "#2E5BFF"
                 },
                 {
-                  code: "SAVE15",
-                  desc: "15% off on orders above ₹350",
-                  min: 350
+                  spend: 350,
+                  save: "15% OFF",
+                  label: "Smart Shopper",
+                  color: "#FF5F1F"
                 },
                 {
-                  code: "SAVE20",
-                  desc: "20% off on orders above ₹500",
-                  min: 500
+                  spend: 500,
+                  save: "20% OFF + FREE DELIVERY",
+                  label: "Big Basket Boss",
+                  color: "#22c55e"
                 }
-              ].map((offer) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              ].map((tier) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "div",
                 {
-                  className: "p-6 rounded-lg transition-all hover:scale-105",
+                  className: "p-6 rounded-lg",
                   style: {
-                    border: "2px solid #2E5BFF",
-                    boxShadow: "4px 4px 0px #2E5BFF"
+                    border: `2px solid ${tier.color}`,
+                    boxShadow: `4px 4px 0px ${tier.color}`
                   },
                   children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-3xl mb-2", children: "🎁" }),
                     /* @__PURE__ */ jsxRuntimeExports.jsx(
                       "p",
                       {
-                        className: "font-heading text-2xl mb-1",
-                        style: { color: "#2E5BFF" },
-                        children: offer.code
+                        className: "font-heading text-xl mb-1",
+                        style: { color: tier.color },
+                        children: tier.save
                       }
                     ),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-body text-gray-300 text-sm mb-3", children: offer.desc }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-body text-xs text-gray-500", children: [
-                      "Min order: \\u20B9",
-                      offer.min
-                    ] }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(
-                      "button",
-                      {
-                        type: "button",
-                        onClick: () => {
-                          navigator.clipboard.writeText(offer.code);
-                          ue.success(`Coupon ${offer.code} copied!`);
-                        },
-                        className: "mt-3 px-4 py-2 text-white font-heading text-sm rounded transition-all hover:opacity-80",
-                        style: { background: "#2E5BFF" },
-                        "data-ocid": "offers.button",
-                        children: "COPY CODE"
-                      }
-                    )
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-body text-gray-300 text-sm mb-1", children: tier.label }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-body text-gray-500 text-xs", children: [
+                      "On orders above ₹",
+                      tier.spend
+                    ] })
                   ]
                 },
-                offer.code
+                tier.spend
               )) })
             ] })
           }
         ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(LuckyDraw, {}),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "section",
           {
@@ -17114,15 +17390,15 @@ function App() {
                 ] }),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "font-heading text-lg text-white mb-3", children: "DELIVERY POLICY" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-body text-gray-400 text-sm", children: "\\u2022 Min order: \\u20B9200" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-body text-gray-400 text-sm", children: "\\u2022 Delivery fee: \\u20B940 (free above \\u20B9500)" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-body text-gray-400 text-sm", children: "\\u2022 Estimated time: 10 minutes" })
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-body text-gray-400 text-sm", children: "• Min order: ₹200" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-body text-gray-400 text-sm", children: "• Delivery fee: ₹40 (free above ₹500)" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-body text-gray-400 text-sm", children: "• Estimated time: 10 minutes" })
                 ] })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto mt-8 pt-6 border-t border-gray-800 text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-body text-gray-600 text-xs", children: [
-                "\\u00A9 ",
+                "© ",
                 (/* @__PURE__ */ new Date()).getFullYear(),
-                " Annapurna Shop. Built with \\u2764\\uFE0F using",
+                " Annapurna Shop. Built with ❤️ using",
                 " ",
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "a",
