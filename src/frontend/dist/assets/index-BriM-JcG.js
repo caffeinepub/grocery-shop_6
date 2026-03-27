@@ -19271,6 +19271,7 @@ const PRODUCTS = [
     quantity: "500g",
     price: 25,
     emoji: "🍅",
+    imageUrl: "/assets/generated/tomatoes.dim_300x300.jpg",
     vibe: "Freshly Picked",
     category: "Fresh Produce",
     available: true
@@ -19281,6 +19282,7 @@ const PRODUCTS = [
     quantity: "1kg",
     price: 30,
     emoji: "🧅",
+    imageUrl: "/assets/generated/onions.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Fresh Produce",
     available: true
@@ -19291,6 +19293,7 @@ const PRODUCTS = [
     quantity: "1kg",
     price: 25,
     emoji: "🥔",
+    imageUrl: "/assets/generated/potatoes.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Fresh Produce",
     available: true
@@ -19301,6 +19304,7 @@ const PRODUCTS = [
     quantity: "250g",
     price: 15,
     emoji: "🥬",
+    imageUrl: "/assets/generated/spinach.dim_300x300.jpg",
     vibe: "Earth Friendly",
     category: "Fresh Produce",
     available: true
@@ -19311,6 +19315,7 @@ const PRODUCTS = [
     quantity: "2 pcs",
     price: 20,
     emoji: "🥒",
+    imageUrl: "/assets/generated/cucumber.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Fresh Produce",
     available: true
@@ -19321,6 +19326,7 @@ const PRODUCTS = [
     quantity: "250g",
     price: 30,
     emoji: "🫑",
+    imageUrl: "/assets/generated/capsicum.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Fresh Produce",
     available: true
@@ -19331,6 +19337,7 @@ const PRODUCTS = [
     quantity: "1 pc",
     price: 20,
     emoji: "🥦",
+    imageUrl: "/assets/generated/cabbage.dim_300x300.jpg",
     vibe: "Freshly Picked",
     category: "Fresh Produce",
     available: true
@@ -19341,6 +19348,7 @@ const PRODUCTS = [
     quantity: "100g",
     price: 10,
     emoji: "🌿",
+    imageUrl: "/assets/generated/coriander.dim_300x300.jpg",
     vibe: "Earth Friendly",
     category: "Fresh Produce",
     available: true
@@ -19351,6 +19359,7 @@ const PRODUCTS = [
     quantity: "100g",
     price: 15,
     emoji: "🫚",
+    imageUrl: "/assets/generated/ginger.dim_300x300.jpg",
     vibe: "Freshly Picked",
     category: "Fresh Produce",
     available: true
@@ -19361,6 +19370,7 @@ const PRODUCTS = [
     quantity: "100g",
     price: 20,
     emoji: "🧄",
+    imageUrl: "/assets/generated/garlic.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Fresh Produce",
     available: true
@@ -19371,6 +19381,7 @@ const PRODUCTS = [
     quantity: "4 pcs",
     price: 15,
     emoji: "🍋",
+    imageUrl: "/assets/generated/lemon.dim_300x300.jpg",
     vibe: "Freshly Picked",
     category: "Fresh Produce",
     available: true
@@ -19381,6 +19392,7 @@ const PRODUCTS = [
     quantity: "100g",
     price: 10,
     emoji: "🌶️",
+    imageUrl: "/assets/generated/green-chilli.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Fresh Produce",
     available: true
@@ -19392,6 +19404,7 @@ const PRODUCTS = [
     quantity: "750ml",
     price: 40,
     emoji: "🥤",
+    imageUrl: "/assets/generated/coca-cola.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Beverages",
     available: true
@@ -19402,6 +19415,7 @@ const PRODUCTS = [
     quantity: "750ml",
     price: 40,
     emoji: "🥤",
+    imageUrl: "/assets/generated/pepsi.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Beverages",
     available: true
@@ -19412,6 +19426,7 @@ const PRODUCTS = [
     quantity: "750ml",
     price: 40,
     emoji: "🥤",
+    imageUrl: "/assets/generated/sprite.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Beverages",
     available: true
@@ -19422,6 +19437,7 @@ const PRODUCTS = [
     quantity: "600ml",
     price: 40,
     emoji: "🥭",
+    imageUrl: "/assets/generated/maaza.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Beverages",
     available: true
@@ -19432,6 +19448,7 @@ const PRODUCTS = [
     quantity: "1L",
     price: 80,
     emoji: "🍊",
+    imageUrl: "/assets/generated/real-orange-juice.dim_300x300.jpg",
     vibe: "Earth Friendly",
     category: "Beverages",
     available: true
@@ -19442,6 +19459,7 @@ const PRODUCTS = [
     quantity: "750ml",
     price: 40,
     emoji: "💚",
+    imageUrl: "/assets/generated/mountain-dew.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Beverages",
     available: true
@@ -19452,6 +19470,7 @@ const PRODUCTS = [
     quantity: "750ml",
     price: 40,
     emoji: "🍋",
+    imageUrl: "/assets/generated/limca.dim_300x300.jpg",
     vibe: "Freshly Picked",
     category: "Beverages",
     available: true
@@ -19462,6 +19481,7 @@ const PRODUCTS = [
     quantity: "250ml",
     price: 115,
     emoji: "⚡",
+    imageUrl: "/assets/generated/red-bull.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Beverages",
     available: true
@@ -19472,6 +19492,7 @@ const PRODUCTS = [
     quantity: "200ml",
     price: 20,
     emoji: "🥛",
+    imageUrl: "/assets/generated/lassi-pouch.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Beverages",
     available: true
@@ -19482,6 +19503,7 @@ const PRODUCTS = [
     quantity: "750ml",
     price: 180,
     emoji: "🌹",
+    imageUrl: "/assets/generated/rooh-afza.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Beverages",
     available: true
@@ -19493,6 +19515,7 @@ const PRODUCTS = [
     quantity: "50g",
     price: 20,
     emoji: "🥔",
+    imageUrl: "/assets/generated/lays.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Snacks",
     available: true
@@ -19503,6 +19526,7 @@ const PRODUCTS = [
     quantity: "60g",
     price: 20,
     emoji: "🌶️",
+    imageUrl: "/assets/generated/kurkure.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Snacks",
     available: true
@@ -19513,6 +19537,7 @@ const PRODUCTS = [
     quantity: "60g",
     price: 20,
     emoji: "🍟",
+    imageUrl: "/assets/generated/bingo.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Snacks",
     available: true
@@ -19523,6 +19548,7 @@ const PRODUCTS = [
     quantity: "200g",
     price: 70,
     emoji: "🌟",
+    imageUrl: "/assets/generated/haldiram-bhujia.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Snacks",
     available: true
@@ -19533,6 +19559,7 @@ const PRODUCTS = [
     quantity: "30g",
     price: 15,
     emoji: "🍿",
+    imageUrl: "/assets/generated/act2-popcorn.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Snacks",
     available: true
@@ -19543,6 +19570,7 @@ const PRODUCTS = [
     quantity: "200g",
     price: 15,
     emoji: "🍪",
+    imageUrl: "/assets/generated/parle-g.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Snacks",
     available: true
@@ -19553,6 +19581,7 @@ const PRODUCTS = [
     quantity: "200g",
     price: 25,
     emoji: "🟡",
+    imageUrl: "/assets/generated/monaco.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Snacks",
     available: true
@@ -19563,6 +19592,7 @@ const PRODUCTS = [
     quantity: "70g",
     price: 14,
     emoji: "🍜",
+    imageUrl: "/assets/generated/maggi-masala.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Snacks",
     available: true
@@ -19573,6 +19603,7 @@ const PRODUCTS = [
     quantity: "100g",
     price: 25,
     emoji: "🍪",
+    imageUrl: "/assets/generated/good-day.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Snacks",
     available: true
@@ -19583,6 +19614,7 @@ const PRODUCTS = [
     quantity: "200g",
     price: 40,
     emoji: "🥜",
+    imageUrl: "/assets/generated/namkeen-mix.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Snacks",
     available: true
@@ -19594,6 +19626,7 @@ const PRODUCTS = [
     quantity: "40g",
     price: 20,
     emoji: "🍫",
+    imageUrl: "/assets/generated/dairy-milk.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Chocolates",
     available: true
@@ -19604,6 +19637,7 @@ const PRODUCTS = [
     quantity: "4-finger",
     price: 20,
     emoji: "🍫",
+    imageUrl: "/assets/generated/kitkat.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Chocolates",
     available: true
@@ -19614,6 +19648,7 @@ const PRODUCTS = [
     quantity: "13g",
     price: 10,
     emoji: "🍫",
+    imageUrl: "/assets/generated/munch.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Chocolates",
     available: true
@@ -19624,6 +19659,7 @@ const PRODUCTS = [
     quantity: "22g",
     price: 10,
     emoji: "⭐",
+    imageUrl: "/assets/generated/5star.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Chocolates",
     available: true
@@ -19634,6 +19670,7 @@ const PRODUCTS = [
     quantity: "13g",
     price: 10,
     emoji: "🍫",
+    imageUrl: "/assets/generated/perk.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Chocolates",
     available: true
@@ -19644,6 +19681,7 @@ const PRODUCTS = [
     quantity: "57g",
     price: 50,
     emoji: "🥥",
+    imageUrl: "/assets/generated/bounty.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Chocolates",
     available: true
@@ -19654,6 +19692,7 @@ const PRODUCTS = [
     quantity: "3pc",
     price: 99,
     emoji: "✨",
+    imageUrl: "/assets/generated/ferrero.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Chocolates",
     available: true
@@ -19664,6 +19703,7 @@ const PRODUCTS = [
     quantity: "50g",
     price: 40,
     emoji: "🥜",
+    imageUrl: "/assets/generated/snickers.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Chocolates",
     available: true
@@ -19675,6 +19715,7 @@ const PRODUCTS = [
     quantity: "500ml",
     price: 28,
     emoji: "🥛",
+    imageUrl: "/assets/generated/amul-milk.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Dairy",
     available: true
@@ -19685,6 +19726,7 @@ const PRODUCTS = [
     quantity: "100g",
     price: 55,
     emoji: "🧈",
+    imageUrl: "/assets/generated/amul-butter.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Dairy",
     available: true
@@ -19695,6 +19737,7 @@ const PRODUCTS = [
     quantity: "200g",
     price: 90,
     emoji: "🧀",
+    imageUrl: "/assets/generated/amul-cheese.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Dairy",
     available: true
@@ -19705,6 +19748,7 @@ const PRODUCTS = [
     quantity: "400g",
     price: 30,
     emoji: "🥛",
+    imageUrl: "/assets/generated/curd.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Dairy",
     available: true
@@ -19715,6 +19759,7 @@ const PRODUCTS = [
     quantity: "200g",
     price: 80,
     emoji: "🤍",
+    imageUrl: "/assets/generated/paneer.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Dairy",
     available: true
@@ -19725,6 +19770,7 @@ const PRODUCTS = [
     quantity: "500ml",
     price: 120,
     emoji: "🍦",
+    imageUrl: "/assets/generated/amul-icecream.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Dairy",
     available: true
@@ -19735,6 +19781,7 @@ const PRODUCTS = [
     quantity: "200ml",
     price: 25,
     emoji: "🥛",
+    imageUrl: "/assets/generated/amul-lassi.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Dairy",
     available: true
@@ -19745,6 +19792,7 @@ const PRODUCTS = [
     quantity: "400g",
     price: 70,
     emoji: "🍮",
+    imageUrl: "/assets/generated/condensed-milk.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Dairy",
     available: true
@@ -19756,6 +19804,7 @@ const PRODUCTS = [
     quantity: "400g",
     price: 40,
     emoji: "🍞",
+    imageUrl: "/assets/generated/britannia-bread.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Bakery",
     available: true
@@ -19766,6 +19815,7 @@ const PRODUCTS = [
     quantity: "65g",
     price: 20,
     emoji: "🎂",
+    imageUrl: "/assets/generated/britannia-cake.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Bakery",
     available: true
@@ -19776,6 +19826,7 @@ const PRODUCTS = [
     quantity: "150g",
     price: 25,
     emoji: "🍪",
+    imageUrl: "/assets/generated/jim-jam.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Bakery",
     available: true
@@ -19786,6 +19837,7 @@ const PRODUCTS = [
     quantity: "250g",
     price: 30,
     emoji: "🍪",
+    imageUrl: "/assets/generated/marie-gold.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Bakery",
     available: true
@@ -19796,6 +19848,7 @@ const PRODUCTS = [
     quantity: "250g",
     price: 35,
     emoji: "🍞",
+    imageUrl: "/assets/generated/toast-rusk.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Bakery",
     available: true
@@ -19806,6 +19859,7 @@ const PRODUCTS = [
     quantity: "6pc",
     price: 30,
     emoji: "🥖",
+    imageUrl: "/assets/generated/pav-buns.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Bakery",
     available: true
@@ -19817,6 +19871,7 @@ const PRODUCTS = [
     quantity: "200pg",
     price: 60,
     emoji: "📓",
+    imageUrl: "/assets/generated/classmate-notebook.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Stationery",
     available: true
@@ -19827,6 +19882,7 @@ const PRODUCTS = [
     quantity: "1pc",
     price: 20,
     emoji: "📊",
+    imageUrl: "/assets/generated/graph-copy.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Stationery",
     available: true
@@ -19837,6 +19893,7 @@ const PRODUCTS = [
     quantity: "1pc",
     price: 25,
     emoji: "📁",
+    imageUrl: "/assets/generated/project-file.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Stationery",
     available: true
@@ -19847,6 +19904,7 @@ const PRODUCTS = [
     quantity: "1pc",
     price: 15,
     emoji: "📂",
+    imageUrl: "/assets/generated/l-folder.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Stationery",
     available: true
@@ -19857,6 +19915,7 @@ const PRODUCTS = [
     quantity: "1pc",
     price: 10,
     emoji: "🖊️",
+    imageUrl: "/assets/generated/reynolds-pen.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Stationery",
     available: true
@@ -19867,6 +19926,7 @@ const PRODUCTS = [
     quantity: "10pc",
     price: 30,
     emoji: "✏️",
+    imageUrl: "/assets/generated/hb-pencil.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Stationery",
     available: true
@@ -19877,6 +19937,7 @@ const PRODUCTS = [
     quantity: "1pc",
     price: 45,
     emoji: "📎",
+    imageUrl: "/assets/generated/stapler.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Stationery",
     available: true
@@ -19887,6 +19948,7 @@ const PRODUCTS = [
     quantity: "4pc",
     price: 60,
     emoji: "🖍️",
+    imageUrl: "/assets/generated/highlighter.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Stationery",
     available: true
@@ -19897,6 +19959,7 @@ const PRODUCTS = [
     quantity: "100pc",
     price: 35,
     emoji: "🗒️",
+    imageUrl: "/assets/generated/sticky-notes.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Stationery",
     available: true
@@ -19907,6 +19970,7 @@ const PRODUCTS = [
     quantity: "1pc",
     price: 250,
     emoji: "🔢",
+    imageUrl: "/assets/generated/calculator.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Stationery",
     available: true
@@ -19918,6 +19982,7 @@ const PRODUCTS = [
     quantity: "150g",
     price: 65,
     emoji: "🦷",
+    imageUrl: "/assets/generated/colgate.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Personal Care",
     available: true
@@ -19928,6 +19993,7 @@ const PRODUCTS = [
     quantity: "1pc",
     price: 35,
     emoji: "🪥",
+    imageUrl: "/assets/generated/toothbrush.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Personal Care",
     available: true
@@ -19938,6 +20004,7 @@ const PRODUCTS = [
     quantity: "75g",
     price: 45,
     emoji: "🧼",
+    imageUrl: "/assets/generated/dove-soap.dim_300x300.jpg",
     vibe: "Earth Friendly",
     category: "Personal Care",
     available: true
@@ -19948,6 +20015,7 @@ const PRODUCTS = [
     quantity: "180ml",
     price: 160,
     emoji: "💆",
+    imageUrl: "/assets/generated/head-shoulders.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Personal Care",
     available: true
@@ -19958,6 +20026,7 @@ const PRODUCTS = [
     quantity: "200ml",
     price: 80,
     emoji: "🤲",
+    imageUrl: "/assets/generated/dettol-handwash.dim_300x300.jpg",
     vibe: "Earth Friendly",
     category: "Personal Care",
     available: true
@@ -19968,6 +20037,7 @@ const PRODUCTS = [
     quantity: "200ml",
     price: 110,
     emoji: "💧",
+    imageUrl: "/assets/generated/vaseline.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Personal Care",
     available: true
@@ -19978,6 +20048,7 @@ const PRODUCTS = [
     quantity: "2pc",
     price: 60,
     emoji: "🪒",
+    imageUrl: "/assets/generated/gillette-razor.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Personal Care",
     available: true
@@ -19988,6 +20059,7 @@ const PRODUCTS = [
     quantity: "7pc",
     price: 55,
     emoji: "🌸",
+    imageUrl: "/assets/generated/whisper.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Personal Care",
     available: true
@@ -19999,6 +20071,7 @@ const PRODUCTS = [
     quantity: "500g",
     price: 110,
     emoji: "🫧",
+    imageUrl: "/assets/generated/ariel.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Household",
     available: true
@@ -20009,6 +20082,7 @@ const PRODUCTS = [
     quantity: "200g",
     price: 30,
     emoji: "🧽",
+    imageUrl: "/assets/generated/vim.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Household",
     available: true
@@ -20019,6 +20093,7 @@ const PRODUCTS = [
     quantity: "500ml",
     price: 85,
     emoji: "🪟",
+    imageUrl: "/assets/generated/colin.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Household",
     available: true
@@ -20029,6 +20104,7 @@ const PRODUCTS = [
     quantity: "500ml",
     price: 90,
     emoji: "🚽",
+    imageUrl: "/assets/generated/harpic.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Household",
     available: true
@@ -20039,6 +20115,7 @@ const PRODUCTS = [
     quantity: "10pc",
     price: 30,
     emoji: "🌙",
+    imageUrl: "/assets/generated/odomos.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Household",
     available: true
@@ -20049,6 +20126,7 @@ const PRODUCTS = [
     quantity: "2pc",
     price: 40,
     emoji: "🧹",
+    imageUrl: "/assets/generated/scotch-brite.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Household",
     available: true
@@ -20059,6 +20137,7 @@ const PRODUCTS = [
     quantity: "500ml",
     price: 60,
     emoji: "🏠",
+    imageUrl: "/assets/generated/phenyl.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Household",
     available: true
@@ -20069,6 +20148,7 @@ const PRODUCTS = [
     quantity: "12pc",
     price: 30,
     emoji: "🕯️",
+    imageUrl: "/assets/generated/candle.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Household",
     available: true
@@ -20080,6 +20160,7 @@ const PRODUCTS = [
     quantity: "4pk",
     price: 56,
     emoji: "🍜",
+    imageUrl: "/assets/generated/maggi-noodles.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Instant Food",
     available: true
@@ -20090,6 +20171,7 @@ const PRODUCTS = [
     quantity: "70g",
     price: 14,
     emoji: "🍜",
+    imageUrl: "/assets/generated/yippee.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Instant Food",
     available: true
@@ -20100,6 +20182,7 @@ const PRODUCTS = [
     quantity: "70g",
     price: 14,
     emoji: "🍜",
+    imageUrl: "/assets/generated/top-ramen.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Instant Food",
     available: true
@@ -20110,6 +20193,7 @@ const PRODUCTS = [
     quantity: "55g",
     price: 35,
     emoji: "🥣",
+    imageUrl: "/assets/generated/knorr-soup.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Instant Food",
     available: true
@@ -20120,6 +20204,7 @@ const PRODUCTS = [
     quantity: "300g",
     price: 85,
     emoji: "🍛",
+    imageUrl: "/assets/generated/mtr-dal.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Instant Food",
     available: true
@@ -20130,6 +20215,7 @@ const PRODUCTS = [
     quantity: "300g",
     price: 90,
     emoji: "🍱",
+    imageUrl: "/assets/generated/haldiram-meal.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Instant Food",
     available: true
@@ -20140,6 +20226,7 @@ const PRODUCTS = [
     quantity: "500g",
     price: 40,
     emoji: "🍽️",
+    imageUrl: "/assets/generated/poha.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Instant Food",
     available: true
@@ -20150,6 +20237,7 @@ const PRODUCTS = [
     quantity: "500g",
     price: 120,
     emoji: "🌾",
+    imageUrl: "/assets/generated/quaker-oats.dim_300x300.jpg",
     vibe: "Earth Friendly",
     category: "Instant Food",
     available: true
