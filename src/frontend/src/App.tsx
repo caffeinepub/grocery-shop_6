@@ -4,15 +4,17 @@ import {
   ChevronRight,
   Gift,
   Minus,
+  Moon,
   Plus,
   ShoppingCart,
+  Sun,
   X,
   Zap,
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
-// ─── Types ──────────────────────────────────────────────────────────────────
+// ─── Types ────────────────────────────────────────────────────────────────────────────
 type VibeTag =
   | "Freshly Picked"
   | "Chef's Choice"
@@ -39,7 +41,7 @@ const FREE_DELIVERY_THRESHOLD = 500;
 const DELIVERY_FEE = 40;
 const MIN_ORDER = 200;
 
-// ─── Products ───────────────────────────────────────────────────────────────
+// ─── Products ────────────────────────────────────────────────────────────────────────────
 const PRODUCTS: Product[] = [
   // Fresh Produce
   {
@@ -177,7 +179,7 @@ const PRODUCTS: Product[] = [
     id: 14,
     name: "Pepsi",
     quantity: "750ml",
-    price: 40,
+    price: 38,
     imageUrl: "/assets/generated/pepsi.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Beverages",
@@ -187,7 +189,7 @@ const PRODUCTS: Product[] = [
     id: 15,
     name: "Sprite",
     quantity: "750ml",
-    price: 40,
+    price: 38,
     imageUrl: "/assets/generated/sprite.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Beverages",
@@ -195,41 +197,41 @@ const PRODUCTS: Product[] = [
   },
   {
     id: 16,
-    name: "Maaza Mango",
-    quantity: "600ml",
-    price: 40,
-    imageUrl: "/assets/generated/maaza.dim_300x300.jpg",
-    vibe: "Chef's Choice",
+    name: "Frooti",
+    quantity: "200ml",
+    price: 20,
+    imageUrl: "/assets/generated/frooti.dim_300x300.jpg",
+    vibe: "Student Fave",
     category: "Beverages",
     available: true,
   },
   {
     id: 17,
-    name: "Real Orange Juice",
-    quantity: "1L",
-    price: 80,
-    imageUrl: "/assets/generated/real-orange-juice.dim_300x300.jpg",
+    name: "Real Juice",
+    quantity: "200ml",
+    price: 25,
+    imageUrl: "/assets/generated/real-juice.dim_300x300.jpg",
     vibe: "Earth Friendly",
     category: "Beverages",
     available: true,
   },
   {
     id: 18,
-    name: "Mountain Dew",
-    quantity: "750ml",
+    name: "Limca",
+    quantity: "600ml",
     price: 40,
-    imageUrl: "/assets/generated/mountain-dew.dim_300x300.jpg",
+    imageUrl: "/assets/generated/limca.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Beverages",
     available: true,
   },
   {
     id: 19,
-    name: "Limca",
+    name: "Thums Up",
     quantity: "750ml",
     price: 40,
-    imageUrl: "/assets/generated/limca.dim_300x300.jpg",
-    vibe: "Freshly Picked",
+    imageUrl: "/assets/generated/thumsup.dim_300x300.jpg",
+    vibe: "Student Fave",
     category: "Beverages",
     available: true,
   },
@@ -237,59 +239,59 @@ const PRODUCTS: Product[] = [
     id: 20,
     name: "Red Bull",
     quantity: "250ml",
-    price: 115,
-    imageUrl: "/assets/generated/red-bull.dim_300x300.jpg",
+    price: 120,
+    imageUrl: "/assets/generated/redbull.dim_300x300.jpg",
     vibe: "Student Fave",
-    category: "Beverages",
-    available: true,
-  },
-  {
-    id: 21,
-    name: "Lassi Pouch",
-    quantity: "200ml",
-    price: 20,
-    imageUrl: "/assets/generated/lassi-pouch.dim_300x300.jpg",
-    vibe: "Daily Essential",
-    category: "Beverages",
-    available: true,
-  },
-  {
-    id: 22,
-    name: "Rooh Afza",
-    quantity: "750ml",
-    price: 180,
-    imageUrl: "/assets/generated/rooh-afza.dim_300x300.jpg",
-    vibe: "Chef's Choice",
     category: "Beverages",
     available: true,
   },
   // Snacks
   {
-    id: 23,
-    name: "Lays Classic",
-    quantity: "50g",
+    id: 21,
+    name: "Lay's Classic",
+    quantity: "26g",
     price: 20,
-    imageUrl: "/assets/generated/lays.dim_300x300.jpg",
+    imageUrl: "/assets/generated/lays-classic.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Snacks",
     available: true,
   },
   {
-    id: 24,
-    name: "Kurkure Masala",
-    quantity: "60g",
+    id: 22,
+    name: "Lay's Masala",
+    quantity: "26g",
     price: 20,
+    imageUrl: "/assets/generated/lays-masala.dim_300x300.jpg",
+    vibe: "Student Fave",
+    category: "Snacks",
+    available: true,
+  },
+  {
+    id: 23,
+    name: "Kurkure",
+    quantity: "90g",
+    price: 30,
     imageUrl: "/assets/generated/kurkure.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Snacks",
     available: true,
   },
   {
+    id: 24,
+    name: "Pringles",
+    quantity: "107g",
+    price: 120,
+    imageUrl: "/assets/generated/pringles.dim_300x300.jpg",
+    vibe: "Chef's Choice",
+    category: "Snacks",
+    available: true,
+  },
+  {
     id: 25,
-    name: "Bingo Chips",
+    name: "Uncle Chips",
     quantity: "60g",
     price: 20,
-    imageUrl: "/assets/generated/bingo.dim_300x300.jpg",
+    imageUrl: "/assets/generated/uncle-chips.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Snacks",
     available: true,
@@ -678,23 +680,23 @@ const PRODUCTS: Product[] = [
     category: "Stationery",
     available: true,
   },
-  {
-    id: 64,
-    name: "Scientific Calculator",
-    quantity: "1pc",
-    price: 250,
-    imageUrl: "/assets/generated/calculator.dim_300x300.jpg",
-    vibe: "Student Fave",
-    category: "Stationery",
-    available: true,
-  },
   // Personal Care
   {
-    id: 65,
+    id: 64,
     name: "Colgate Toothpaste",
-    quantity: "150g",
-    price: 65,
+    quantity: "200g",
+    price: 70,
     imageUrl: "/assets/generated/colgate.dim_300x300.jpg",
+    vibe: "Daily Essential",
+    category: "Personal Care",
+    available: true,
+  },
+  {
+    id: 65,
+    name: "Dettol Soap",
+    quantity: "75g",
+    price: 40,
+    imageUrl: "/assets/generated/dettol-soap.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Personal Care",
     available: true,
@@ -934,16 +936,16 @@ const PRODUCTS: Product[] = [
 ];
 
 const CATEGORIES = [
-  { name: "Fresh Produce", emoji: "🥬" },
-  { name: "Beverages", emoji: "🥤" },
-  { name: "Snacks", emoji: "🍿" },
-  { name: "Chocolates", emoji: "🍫" },
-  { name: "Dairy", emoji: "🥛" },
-  { name: "Bakery", emoji: "🍞" },
-  { name: "Stationery", emoji: "📚" },
-  { name: "Personal Care", emoji: "🧴" },
-  { name: "Household", emoji: "🏠" },
-  { name: "Instant Food", emoji: "🍜" },
+  { name: "Fresh Produce", emoji: "\uD83E\uDD6C" },
+  { name: "Beverages", emoji: "\uD83E\uDD64" },
+  { name: "Snacks", emoji: "\uD83C\uDF7F" },
+  { name: "Chocolates", emoji: "\uD83C\uDF6B" },
+  { name: "Dairy", emoji: "\uD83E\uDD5B" },
+  { name: "Bakery", emoji: "\uD83C\uDF5E" },
+  { name: "Stationery", emoji: "\uD83D\uDCDA" },
+  { name: "Personal Care", emoji: "\uD83E\uDDF4" },
+  { name: "Household", emoji: "\uD83C\uDFE0" },
+  { name: "Instant Food", emoji: "\uD83C\uDF5C" },
 ];
 
 const DAILY_DEALS = [
@@ -962,7 +964,7 @@ const DAILY_DEALS = [
   {
     id: 3,
     title: "Snacks Bundle",
-    discount: "₹50 OFF",
+    discount: "\u20B950 OFF",
     img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&q=80",
   },
   {
@@ -974,7 +976,7 @@ const DAILY_DEALS = [
   {
     id: 5,
     title: "Chocolate Lovers",
-    discount: "3 FOR ₹50",
+    discount: "3 FOR \u20B950",
     img: "https://images.unsplash.com/photo-1548907040-4baa42d10919?w=600&q=80",
   },
   {
@@ -988,15 +990,22 @@ const DAILY_DEALS = [
 const WHEEL_PRIZES = [
   "10% OFF",
   "Free Item!",
-  "₹20 Cashback",
+  "\u20B920 Cashback",
   "15% OFF",
   "Try Again",
-  "₹50 OFF",
+  "\u20B950 OFF",
   "5% OFF",
   "Bumper Prize!",
 ];
 
-// ─── Lucky Draw ──────────────────────────────────────────────────────────────
+// ─── Carousel section data ───────────────────────────────────────────────────────────────
+const TRENDING_IDS = [13, 21, 33, 81, 41, 28, 55, 1, 40, 42];
+const VEGGIE_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+const MIDNIGHT_IDS = [
+  21, 22, 23, 24, 25, 26, 27, 30, 33, 34, 35, 36, 37, 81, 82, 83,
+];
+
+// ─── Lucky Draw ────────────────────────────────────────────────────────────────────────────
 function LuckyDraw() {
   const [spinning, setSpinning] = useState(false);
   const [prize, setPrize] = useState<string | null>(null);
@@ -1025,18 +1034,20 @@ function LuckyDraw() {
   }, [spinning, deg]);
 
   return (
-    <section className="py-16 bg-black">
+    <section className="py-16" style={{ background: "#111" }}>
       <div className="max-w-7xl mx-auto px-4 text-center">
-        <h2 className="font-archivo text-3xl md:text-4xl text-white mb-2">
+        <h2 className="font-heading text-3xl md:text-4xl text-white mb-2">
           LUCKY DRAW
         </h2>
-        <p className="text-[#AAFF00] font-inter mb-8">
-          Spin once a day to win exclusive offers!
+        <p className="font-body mb-8" style={{ color: "#2E5BFF" }}>
+          Spin once a day for amazing prizes!
         </p>
         <div className="flex flex-col items-center gap-6">
           <div
-            className="relative w-48 h-48 rounded-full border-4 border-[#AAFF00]"
+            className="w-64 h-64 rounded-full border-4 border-white/20 relative overflow-hidden"
             style={{
+              background:
+                "conic-gradient(#2E5BFF 0deg, #FF5F1F 45deg, #2E5BFF 90deg, #1a1a1a 135deg, #2E5BFF 180deg, #FF5F1F 225deg, #2E5BFF 270deg, #1a1a1a 315deg)",
               transition: spinning
                 ? "transform 3.5s cubic-bezier(0.17,0.67,0.12,0.99)"
                 : "none",
@@ -1057,21 +1068,29 @@ function LuckyDraw() {
               </div>
             ))}
             <div className="absolute inset-2 rounded-full bg-black border-2 border-white/20 flex items-center justify-center">
-              <Zap size={24} className="text-[#AAFF00]" />
+              <Zap size={24} style={{ color: "#2E5BFF" }} />
             </div>
           </div>
           <button
             type="button"
             onClick={spin}
             disabled={spinning}
-            className="px-8 py-3 bg-[#AAFF00] text-black font-archivo font-bold uppercase border-4 border-black shadow-[4px_4px_0px_#fff] hover:shadow-[6px_6px_0px_#fff] transition-all disabled:opacity-50"
+            className="px-8 py-3 font-heading font-bold uppercase border-4 border-white/20 transition-all disabled:opacity-50"
+            style={{
+              background: "#2E5BFF",
+              color: "#fff",
+              boxShadow: "4px 4px 0px rgba(255,255,255,0.1)",
+            }}
           >
             {spinning ? "SPINNING..." : "SPIN NOW"}
           </button>
           {prize && (
-            <div className="bg-[#AAFF00] border-4 border-black shadow-[6px_6px_0px_#000] px-8 py-4">
-              <p className="font-archivo text-2xl text-black">
-                🎉 YOU WON: {prize}!
+            <div
+              className="border-4 border-white/20 px-8 py-4"
+              style={{ background: "#2E5BFF" }}
+            >
+              <p className="font-heading text-2xl text-white">
+                \uD83C\uDF89 YOU WON: {prize}!
               </p>
             </div>
           )}
@@ -1081,7 +1100,7 @@ function LuckyDraw() {
   );
 }
 
-// ─── Payment Modal ────────────────────────────────────────────────────────────
+// ─── Payment Modal ──────────────────────────────────────────────────────────────────────────
 interface PaymentModalProps {
   items: CartItem[];
   onClose: () => void;
@@ -1106,7 +1125,7 @@ function PaymentModal({ items, onClose }: PaymentModalProps) {
 
   const handleOrder = () => {
     if (belowMin) {
-      toast.error(`Minimum order is ₹${MIN_ORDER}`);
+      toast.error(`Minimum order is \u20B9${MIN_ORDER}`);
       return;
     }
     if (!name || !phone || !address || !pincode) {
@@ -1118,34 +1137,38 @@ function PaymentModal({ items, onClose }: PaymentModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <div className="bg-white border-4 border-black shadow-[8px_8px_0px_#000] w-full max-w-2xl max-h-[90vh] overflow-y-auto mx-4">
-        <div className="flex items-center justify-between p-4 border-b-4 border-black bg-black">
-          <h2 className="font-archivo text-xl text-[#AAFF00]">CHECKOUT</h2>
+      <div className="bg-white border-2 border-black shadow-[8px_8px_0px_#000] w-full max-w-2xl max-h-[90vh] overflow-y-auto mx-4 rounded-md">
+        <div
+          className="flex items-center justify-between p-4 border-b-2 border-black"
+          style={{ background: "#2E5BFF" }}
+        >
+          <h2 className="font-heading text-xl text-white">CHECKOUT</h2>
           <button
             type="button"
             onClick={onClose}
-            className="text-white hover:text-[#AAFF00]"
+            className="text-white hover:opacity-70 transition-opacity"
           >
             <X size={24} />
           </button>
         </div>
         {ordered ? (
           <div className="p-8 text-center">
-            <div className="text-6xl mb-4">🎉</div>
-            <h3 className="font-archivo text-3xl text-black mb-2">
+            <div className="text-6xl mb-4">\uD83C\uDF89</div>
+            <h3 className="font-heading text-3xl text-black mb-2">
               ORDER PLACED!
             </h3>
-            <p className="font-inter text-gray-600 mb-4">
-              Your order of ₹{total} is confirmed. Expected delivery in 10
+            <p className="font-body text-gray-600 mb-4">
+              Your order of \u20B9{total} is confirmed. Expected delivery in 10
               minutes!
             </p>
-            <p className="font-inter text-sm text-gray-500 mb-6">
+            <p className="font-body text-sm text-gray-500 mb-6">
               Contact: 7895784954 | GBPIET, PAURI
             </p>
             <button
               type="button"
               onClick={onClose}
-              className="px-8 py-3 bg-[#AAFF00] text-black font-archivo border-4 border-black shadow-[4px_4px_0px_#000] hover:shadow-[6px_6px_0px_#000] transition-all"
+              className="px-8 py-3 text-white font-heading border-2 border-transparent rounded transition-all"
+              style={{ background: "#2E5BFF" }}
             >
               CONTINUE SHOPPING
             </button>
@@ -1153,47 +1176,49 @@ function PaymentModal({ items, onClose }: PaymentModalProps) {
         ) : (
           <div className="p-6 space-y-6">
             {belowMin && (
-              <div className="bg-red-100 border-2 border-red-500 p-3">
-                <p className="font-inter text-red-700 text-sm font-bold">
-                  Minimum order value is ₹{MIN_ORDER}. Please add more items.
+              <div className="bg-red-100 border-2 border-red-500 p-3 rounded">
+                <p className="font-body text-red-700 text-sm font-bold">
+                  Minimum order value is \u20B9{MIN_ORDER}. Please add more
+                  items.
                 </p>
               </div>
             )}
-            {/* Delivery Address */}
             <div>
-              <h3 className="font-archivo text-lg text-black mb-3 border-b-2 border-black pb-2">
+              <h3 className="font-heading text-lg text-black mb-3 border-b-2 border-black pb-2">
                 DELIVERY ADDRESS
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <input
-                  className="border-2 border-black p-2 font-inter text-sm focus:outline-none focus:border-[#AAFF00]"
+                  className="border-2 border-black p-2 font-body text-sm focus:outline-none rounded"
+                  style={
+                    { "--tw-ring-color": "#2E5BFF" } as React.CSSProperties
+                  }
                   placeholder="Full Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
                 <input
-                  className="border-2 border-black p-2 font-inter text-sm focus:outline-none focus:border-[#AAFF00]"
+                  className="border-2 border-black p-2 font-body text-sm focus:outline-none rounded"
                   placeholder="Phone Number"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                 />
                 <input
-                  className="border-2 border-black p-2 font-inter text-sm col-span-1 sm:col-span-2 focus:outline-none focus:border-[#AAFF00]"
+                  className="border-2 border-black p-2 font-body text-sm col-span-1 sm:col-span-2 focus:outline-none rounded"
                   placeholder="Full Address"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                 />
                 <input
-                  className="border-2 border-black p-2 font-inter text-sm focus:outline-none focus:border-[#AAFF00]"
+                  className="border-2 border-black p-2 font-body text-sm focus:outline-none rounded"
                   placeholder="Pincode"
                   value={pincode}
                   onChange={(e) => setPincode(e.target.value)}
                 />
               </div>
             </div>
-            {/* Payment Method */}
             <div>
-              <h3 className="font-archivo text-lg text-black mb-3 border-b-2 border-black pb-2">
+              <h3 className="font-heading text-lg text-black mb-3 border-b-2 border-black pb-2">
                 PAYMENT METHOD
               </h3>
               <div className="flex gap-3 mb-4">
@@ -1202,11 +1227,12 @@ function PaymentModal({ items, onClose }: PaymentModalProps) {
                     key={m}
                     type="button"
                     onClick={() => setPayMethod(m)}
-                    className={`flex-1 py-2 font-archivo text-sm border-2 border-black transition-all ${
+                    className="flex-1 py-2 font-heading text-sm border-2 border-black transition-all rounded"
+                    style={
                       payMethod === m
-                        ? "bg-black text-[#AAFF00]"
-                        : "bg-white text-black hover:bg-gray-100"
-                    }`}
+                        ? { background: "#2E5BFF", color: "#fff" }
+                        : {}
+                    }
                   >
                     {m === "upi"
                       ? "UPI"
@@ -1218,7 +1244,7 @@ function PaymentModal({ items, onClose }: PaymentModalProps) {
               </div>
               {payMethod === "upi" && (
                 <input
-                  className="w-full border-2 border-black p-2 font-inter text-sm focus:outline-none focus:border-[#AAFF00]"
+                  className="w-full border-2 border-black p-2 font-body text-sm focus:outline-none rounded"
                   placeholder="Enter UPI ID (e.g. name@upi)"
                   value={upiId}
                   onChange={(e) => setUpiId(e.target.value)}
@@ -1227,20 +1253,20 @@ function PaymentModal({ items, onClose }: PaymentModalProps) {
               {payMethod === "card" && (
                 <div className="space-y-3">
                   <input
-                    className="w-full border-2 border-black p-2 font-inter text-sm focus:outline-none focus:border-[#AAFF00]"
+                    className="w-full border-2 border-black p-2 font-body text-sm focus:outline-none rounded"
                     placeholder="Card Number"
                     value={cardNum}
                     onChange={(e) => setCardNum(e.target.value)}
                   />
                   <div className="grid grid-cols-2 gap-3">
                     <input
-                      className="border-2 border-black p-2 font-inter text-sm focus:outline-none focus:border-[#AAFF00]"
+                      className="border-2 border-black p-2 font-body text-sm focus:outline-none rounded"
                       placeholder="MM/YY"
                       value={expiry}
                       onChange={(e) => setExpiry(e.target.value)}
                     />
                     <input
-                      className="border-2 border-black p-2 font-inter text-sm focus:outline-none focus:border-[#AAFF00]"
+                      className="border-2 border-black p-2 font-body text-sm focus:outline-none rounded"
                       placeholder="CVV"
                       value={cvv}
                       onChange={(e) => setCvv(e.target.value)}
@@ -1249,49 +1275,50 @@ function PaymentModal({ items, onClose }: PaymentModalProps) {
                 </div>
               )}
               {payMethod === "cod" && (
-                <p className="font-inter text-sm text-gray-600 bg-gray-100 border-2 border-gray-300 p-3">
+                <p className="font-body text-sm text-gray-600 bg-gray-100 border-2 border-gray-300 p-3 rounded">
                   Pay cash when your order arrives. No additional charges.
                 </p>
               )}
             </div>
-            {/* Order Summary */}
             <div>
-              <h3 className="font-archivo text-lg text-black mb-3 border-b-2 border-black pb-2">
+              <h3 className="font-heading text-lg text-black mb-3 border-b-2 border-black pb-2">
                 ORDER SUMMARY
               </h3>
               <div className="space-y-2 mb-3">
                 {items.map((item) => (
                   <div
                     key={item.id}
-                    className="flex justify-between font-inter text-sm"
+                    className="flex justify-between font-body text-sm"
                   >
                     <span>
-                      {item.name} × {item.cartQty}
+                      {item.name} \u00D7 {item.cartQty}
                     </span>
                     <span className="font-bold">
-                      ₹{item.price * item.cartQty}
+                      \u20B9{item.price * item.cartQty}
                     </span>
                   </div>
                 ))}
               </div>
               <div className="border-t-2 border-black pt-2 space-y-1">
-                <div className="flex justify-between font-inter text-sm">
+                <div className="flex justify-between font-body text-sm">
                   <span>Subtotal</span>
-                  <span>₹{subtotal}</span>
+                  <span>\u20B9{subtotal}</span>
                 </div>
-                <div className="flex justify-between font-inter text-sm">
+                <div className="flex justify-between font-body text-sm">
                   <span>Delivery Fee</span>
                   <span
-                    className={
-                      deliveryFee === 0 ? "text-green-600 font-bold" : ""
+                    style={
+                      deliveryFee === 0
+                        ? { color: "#2E5BFF", fontWeight: 700 }
+                        : {}
                     }
                   >
-                    {deliveryFee === 0 ? "FREE" : `₹${deliveryFee}`}
+                    {deliveryFee === 0 ? "FREE" : `\u20B9${deliveryFee}`}
                   </span>
                 </div>
-                <div className="flex justify-between font-archivo text-lg border-t-2 border-black pt-2 mt-2">
+                <div className="flex justify-between font-heading text-lg border-t-2 border-black pt-2">
                   <span>TOTAL</span>
-                  <span>₹{total}</span>
+                  <span style={{ color: "#FF5F1F" }}>\u20B9{total}</span>
                 </div>
               </div>
             </div>
@@ -1299,9 +1326,11 @@ function PaymentModal({ items, onClose }: PaymentModalProps) {
               type="button"
               onClick={handleOrder}
               disabled={belowMin}
-              className="w-full py-4 bg-[#AAFF00] text-black font-archivo text-lg border-4 border-black shadow-[4px_4px_0px_#000] hover:shadow-[6px_6px_0px_#000] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+              className="w-full py-3 text-white font-heading text-lg border-2 border-transparent rounded transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              style={{ background: "#2E5BFF" }}
+              data-ocid="checkout.submit_button"
             >
-              PLACE ORDER — ₹{total}
+              PLACE ORDER \u2192
             </button>
           </div>
         )}
@@ -1310,193 +1339,7 @@ function PaymentModal({ items, onClose }: PaymentModalProps) {
   );
 }
 
-// ─── Sidebar Cart ─────────────────────────────────────────────────────────────
-interface SidebarCartProps {
-  open: boolean;
-  cart: CartItem[];
-  onClose: () => void;
-  onQtyChange: (id: number, delta: number) => void;
-  onCheckout: () => void;
-}
-
-function SidebarCart({
-  open,
-  cart,
-  onClose,
-  onQtyChange,
-  onCheckout,
-}: SidebarCartProps) {
-  const subtotal = cart.reduce((s, i) => s + i.price * i.cartQty, 0);
-  const deliveryFee = subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
-  const total = subtotal + deliveryFee;
-  const belowMin = subtotal > 0 && subtotal < MIN_ORDER;
-  const progressPct = Math.min((subtotal / FREE_DELIVERY_THRESHOLD) * 100, 100);
-  const needed = FREE_DELIVERY_THRESHOLD - subtotal;
-
-  return (
-    <>
-      {/* Backdrop */}
-      <div
-        className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 ${
-          open
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        }`}
-        onClick={onClose}
-        onKeyDown={(e) => e.key === "Escape" && onClose()}
-        role="button"
-        tabIndex={-1}
-      />
-      {/* Cart Panel */}
-      <div
-        className={`fixed top-0 right-0 z-50 h-full w-[380px] max-w-full bg-white border-l-4 border-black flex flex-col transition-transform duration-300 ease-in-out ${
-          open ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b-4 border-black bg-black">
-          <h2 className="font-archivo text-xl text-[#AAFF00]">YOUR CART</h2>
-          <button
-            type="button"
-            onClick={onClose}
-            className="text-white hover:text-[#AAFF00] transition-colors"
-          >
-            <X size={24} />
-          </button>
-        </div>
-
-        {cart.length === 0 ? (
-          <div className="flex-1 flex flex-col items-center justify-center gap-4 p-8">
-            <ShoppingCart size={64} className="text-gray-300" />
-            <p className="font-inter text-gray-500 text-center">
-              Your cart is empty.
-              <br />
-              Add some items to get started!
-            </p>
-          </div>
-        ) : (
-          <>
-            {/* Free delivery progress */}
-            <div className="p-4 border-b-2 border-gray-200 bg-gray-50">
-              {subtotal < FREE_DELIVERY_THRESHOLD ? (
-                <>
-                  <p className="font-inter text-sm text-gray-700 mb-2">
-                    Add <span className="font-bold text-black">₹{needed}</span>{" "}
-                    more for{" "}
-                    <span className="font-bold text-[#AAFF00] bg-black px-1">
-                      FREE DELIVERY!
-                    </span>
-                  </p>
-                  <div className="w-full h-3 bg-gray-200 border-2 border-black">
-                    <div
-                      className="h-full bg-[#AAFF00] transition-all duration-500"
-                      style={{ width: `${progressPct}%` }}
-                    />
-                  </div>
-                  <p className="font-inter text-xs text-gray-500 mt-1">
-                    {Math.round(progressPct)}% to free delivery
-                  </p>
-                </>
-              ) : (
-                <p className="font-inter text-sm font-bold text-green-700">
-                  🎉 You've unlocked FREE delivery!
-                </p>
-              )}
-            </div>
-
-            {/* Cart Items */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3">
-              {cart.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex gap-3 border-2 border-black p-2 shadow-[3px_3px_0px_#000]"
-                >
-                  <img
-                    src={
-                      item.imageUrl ||
-                      "/assets/generated/cat-snacks.dim_300x300.jpg"
-                    }
-                    alt={item.name}
-                    className="w-14 h-14 object-cover border-2 border-black flex-shrink-0"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="font-inter font-bold text-sm text-black truncate">
-                      {item.name}
-                    </p>
-                    <p className="font-inter text-xs text-gray-500">
-                      {item.quantity}
-                    </p>
-                    <p className="font-inter font-bold text-sm text-black">
-                      ₹{item.price * item.cartQty}
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-center gap-1">
-                    <button
-                      type="button"
-                      onClick={() => onQtyChange(item.id, 1)}
-                      className="w-7 h-7 bg-black text-[#AAFF00] font-bold flex items-center justify-center hover:bg-gray-800 transition-colors"
-                    >
-                      <Plus size={14} />
-                    </button>
-                    <span className="font-inter font-bold text-sm w-7 text-center">
-                      {item.cartQty}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => onQtyChange(item.id, -1)}
-                      className="w-7 h-7 bg-black text-white font-bold flex items-center justify-center hover:bg-gray-800 transition-colors"
-                    >
-                      <Minus size={14} />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Footer */}
-            <div className="p-4 border-t-4 border-black">
-              <div className="space-y-1 mb-3">
-                <div className="flex justify-between font-inter text-sm">
-                  <span>Subtotal</span>
-                  <span>₹{subtotal}</span>
-                </div>
-                <div className="flex justify-between font-inter text-sm">
-                  <span>Delivery Fee</span>
-                  <span
-                    className={
-                      deliveryFee === 0 ? "text-green-600 font-bold" : ""
-                    }
-                  >
-                    {deliveryFee === 0 ? "FREE 🎉" : `₹${deliveryFee}`}
-                  </span>
-                </div>
-                <div className="flex justify-between font-archivo text-lg border-t-2 border-black pt-2">
-                  <span>TOTAL</span>
-                  <span>₹{total}</span>
-                </div>
-              </div>
-              {belowMin && (
-                <p className="font-inter text-xs text-red-600 font-bold mb-2">
-                  ⚠ Minimum order is ₹{MIN_ORDER}. Add more items.
-                </p>
-              )}
-              <button
-                type="button"
-                onClick={onCheckout}
-                disabled={cart.length === 0 || belowMin}
-                className="w-full py-3 bg-black text-white font-archivo border-4 border-black shadow-[4px_4px_0px_#AAFF00] hover:shadow-[6px_6px_0px_#AAFF00] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-              >
-                PROCEED TO CHECKOUT
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-    </>
-  );
-}
-
-// ─── Daily Deals Slider ───────────────────────────────────────────────────────
+// ─── Daily Deals Slider ─────────────────────────────────────────────────────────────────────
 function DailyDealsSlider() {
   const trackRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
@@ -1531,24 +1374,32 @@ function DailyDealsSlider() {
   };
 
   return (
-    <section className="py-12 bg-white border-y-4 border-black">
+    <section
+      className="py-12 border-y border-black/10"
+      style={{ background: "var(--site-card-bg)" }}
+    >
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="font-archivo text-3xl md:text-4xl text-black">
+          <h2
+            className="font-heading text-3xl md:text-4xl"
+            style={{ color: "var(--site-text)" }}
+          >
             DAILY DEALS
           </h2>
           <div className="flex gap-2">
             <button
               type="button"
               onClick={() => scroll("left")}
-              className="w-10 h-10 bg-black text-[#AAFF00] border-2 border-black flex items-center justify-center hover:bg-[#AAFF00] hover:text-black transition-colors"
+              className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black/20 hover:opacity-80 transition-opacity"
+              style={{ background: "#2E5BFF", color: "#fff" }}
             >
               <ChevronLeft size={20} />
             </button>
             <button
               type="button"
               onClick={() => scroll("right")}
-              className="w-10 h-10 bg-black text-[#AAFF00] border-2 border-black flex items-center justify-center hover:bg-[#AAFF00] hover:text-black transition-colors"
+              className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black/20 hover:opacity-80 transition-opacity"
+              style={{ background: "#2E5BFF", color: "#fff" }}
             >
               <ChevronRight size={20} />
             </button>
@@ -1570,7 +1421,7 @@ function DailyDealsSlider() {
           {DAILY_DEALS.map((deal) => (
             <div
               key={deal.id}
-              className="flex-shrink-0 w-72 border-4 border-black shadow-[6px_6px_0px_#000] hover:shadow-[6px_6px_0px_#AAFF00] transition-all overflow-hidden group"
+              className="deal-card flex-shrink-0 w-72 overflow-hidden group rounded-md"
             >
               <div className="relative h-44 overflow-hidden">
                 <img
@@ -1579,15 +1430,27 @@ function DailyDealsSlider() {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   draggable={false}
                 />
-                <span className="absolute top-3 right-3 bg-[#AAFF00] text-black font-archivo text-sm px-3 py-1 border-2 border-black shadow-[2px_2px_0px_#000]">
+                <span
+                  className="absolute top-3 right-3 text-white font-heading text-sm px-3 py-1 rounded-full"
+                  style={{ background: "#FF5F1F" }}
+                >
                   {deal.discount}
                 </span>
               </div>
-              <div className="p-4 bg-white">
-                <p className="font-archivo text-black text-lg">
+              <div
+                className="p-4"
+                style={{ background: "var(--site-card-bg)" }}
+              >
+                <p
+                  className="font-heading"
+                  style={{ color: "var(--site-text)" }}
+                >
                   {deal.title.toUpperCase()}
                 </p>
-                <p className="font-inter text-sm text-gray-500 mt-1">
+                <p
+                  className="font-body text-sm mt-1"
+                  style={{ color: "var(--site-muted-text)" }}
+                >
                   Limited time offer
                 </p>
               </div>
@@ -1599,7 +1462,149 @@ function DailyDealsSlider() {
   );
 }
 
-// ─── Product Card ─────────────────────────────────────────────────────────────
+// ─── Category Carousel ─────────────────────────────────────────────────────────────────────
+function CategoryCarousel({
+  title,
+  emoji,
+  products,
+  onAddToCart,
+  accent,
+}: {
+  title: string;
+  emoji: string;
+  products: Product[];
+  onAddToCart: (p: Product) => void;
+  accent?: string;
+}) {
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (dir: "left" | "right") => {
+    if (trackRef.current)
+      trackRef.current.scrollBy({
+        left: dir === "right" ? 600 : -600,
+        behavior: "smooth",
+      });
+  };
+
+  return (
+    <section className="py-8 px-0">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <span className="text-2xl">{emoji}</span>
+            <h2
+              className="font-heading text-2xl md:text-3xl"
+              style={{ color: "var(--site-text)" }}
+            >
+              {title}
+            </h2>
+            {accent && (
+              <span
+                className="text-xs font-heading px-2 py-0.5 rounded-full text-white ml-2"
+                style={{ background: accent }}
+              >
+                HOT
+              </span>
+            )}
+          </div>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => scroll("left")}
+              className="w-8 h-8 flex items-center justify-center rounded-full border transition-opacity hover:opacity-70"
+              style={{
+                background: "#2E5BFF",
+                color: "#fff",
+                borderColor: "transparent",
+              }}
+              aria-label="scroll left"
+            >
+              <ChevronLeft size={16} />
+            </button>
+            <button
+              type="button"
+              onClick={() => scroll("right")}
+              className="w-8 h-8 flex items-center justify-center rounded-full border transition-opacity hover:opacity-70"
+              style={{
+                background: "#2E5BFF",
+                color: "#fff",
+                borderColor: "transparent",
+              }}
+              aria-label="scroll right"
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
+        </div>
+        <div
+          ref={trackRef}
+          className="flex gap-3 overflow-x-auto pb-3"
+          style={
+            {
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+              WebkitOverflowScrolling: "touch",
+            } as React.CSSProperties
+          }
+        >
+          {products.map((product) => (
+            <div key={product.id} className="carousel-card">
+              <div className="carousel-img-wrap">
+                <img
+                  src={
+                    product.imageUrl ||
+                    "/assets/generated/cat-snacks.dim_300x300.jpg"
+                  }
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src =
+                      "/assets/generated/cat-snacks.dim_300x300.jpg";
+                  }}
+                />
+                <span className="preview-badge">&#9654; Preview</span>
+              </div>
+              <div className="p-2.5 flex flex-col gap-1.5">
+                <p
+                  className="font-body font-semibold text-xs leading-tight"
+                  style={{ color: "var(--site-text)" }}
+                >
+                  {product.name}
+                </p>
+                <p
+                  className="font-body text-[10px]"
+                  style={{ color: "var(--site-muted-text)" }}
+                >
+                  {product.quantity}
+                </p>
+                <p
+                  className="font-heading text-base font-bold"
+                  style={{ color: "#FF5F1F" }}
+                >
+                  \u20B9{product.price}
+                </p>
+                <button
+                  type="button"
+                  disabled={!product.available}
+                  onClick={() => {
+                    onAddToCart(product);
+                    toast.success(`${product.name} added!`);
+                  }}
+                  className="w-full py-1.5 text-white font-heading text-xs rounded transition-all disabled:opacity-40 hover:opacity-90"
+                  style={{ background: "#2E5BFF" }}
+                >
+                  {product.available ? "ADD" : "SOLD OUT"}
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Product Card (main grid) ────────────────────────────────────────────────────────────────────
 function ProductCard({
   product,
   onAddToCart,
@@ -1610,46 +1615,55 @@ function ProductCard({
   onBuyNow: (p: Product) => void;
 }) {
   return (
-    <div
-      className="product-card bg-white flex flex-col border-4 border-black transition-all duration-200"
-      style={{ boxShadow: "6px 6px 0px #000" }}
-      onMouseEnter={(e) => {
-        (e.currentTarget as HTMLDivElement).style.boxShadow =
-          "6px 6px 0px #AAFF00";
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLDivElement).style.boxShadow =
-          "6px 6px 0px #000";
-      }}
-    >
-      <div className="overflow-hidden h-32 border-b-4 border-black">
+    <div className="product-card flex flex-col">
+      <div className="overflow-hidden h-32 relative group">
         <img
           src={
             product.imageUrl || "/assets/generated/cat-snacks.dim_300x300.jpg"
           }
           alt={product.name}
-          className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+          className="product-image w-full h-full object-cover"
           onError={(e) => {
             (e.target as HTMLImageElement).src =
               "/assets/generated/cat-snacks.dim_300x300.jpg";
           }}
         />
+        {/* Shimmer overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          style={{
+            background:
+              "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%)",
+            animation: "none",
+          }}
+        />
+        <span className="absolute bottom-2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-[10px] text-white bg-black/70 px-2 py-0.5 rounded-full whitespace-nowrap">
+          &#9654; Preview
+        </span>
       </div>
       <div className="p-3 flex flex-col flex-1 gap-2">
-        <p className="font-inter font-bold text-black text-sm leading-tight">
+        <p
+          className="font-body font-bold text-sm leading-tight"
+          style={{ color: "var(--site-text)" }}
+        >
           {product.name}
         </p>
-        <p className="font-inter text-xs text-gray-500">{product.quantity}</p>
+        <p
+          className="font-body text-xs"
+          style={{ color: "var(--site-muted-text)" }}
+        >
+          {product.quantity}
+        </p>
         <div className="flex items-center justify-between mt-auto">
-          <span className="font-archivo text-lg text-black">
-            ₹{product.price}
+          <span
+            className="font-heading text-lg font-bold"
+            style={{ color: "#FF5F1F" }}
+          >
+            \u20B9{product.price}
           </span>
           <span
-            className={`text-[10px] font-inter font-bold px-2 py-0.5 border-2 border-black ${
-              product.available
-                ? "bg-[#AAFF00] text-black"
-                : "bg-gray-200 text-gray-500"
-            }`}
+            className="text-[10px] font-body font-bold px-2 py-0.5 rounded-full text-white"
+            style={{ background: product.available ? "#2E5BFF" : "#999" }}
           >
             {product.available ? "IN STOCK" : "SOLD OUT"}
           </span>
@@ -1662,7 +1676,8 @@ function ProductCard({
               toast.success(`${product.name} added to cart!`);
             }}
             disabled={!product.available}
-            className="w-full py-2 bg-black text-white font-archivo text-xs border-2 border-black shadow-[2px_2px_0px_#000] hover:shadow-[3px_3px_0px_#AAFF00] hover:bg-gray-900 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+            className="w-full py-2 text-white font-heading text-xs rounded transition-all hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
+            style={{ background: "#2E5BFF" }}
           >
             ADD TO CART
           </button>
@@ -1670,7 +1685,8 @@ function ProductCard({
             type="button"
             onClick={() => onBuyNow(product)}
             disabled={!product.available}
-            className="w-full py-2 bg-[#AAFF00] text-black font-archivo text-xs border-2 border-black shadow-[2px_2px_0px_#000] hover:shadow-[3px_3px_0px_#000] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+            className="w-full py-2 text-white font-heading text-xs rounded transition-all hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
+            style={{ background: "#FF5F1F" }}
           >
             BUY NOW
           </button>
@@ -1680,13 +1696,309 @@ function ProductCard({
   );
 }
 
-// ─── Main App ─────────────────────────────────────────────────────────────────
+// ─── Sidebar Cart ────────────────────────────────────────────────────────────────────────────
+interface SidebarCartProps {
+  open: boolean;
+  cart: CartItem[];
+  onClose: () => void;
+  onQtyChange: (id: number, delta: number) => void;
+  onCheckout: () => void;
+}
+
+function SidebarCart({
+  open,
+  cart,
+  onClose,
+  onQtyChange,
+  onCheckout,
+}: SidebarCartProps) {
+  const subtotal = cart.reduce((s, i) => s + i.price * i.cartQty, 0);
+  const deliveryFee = subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
+  const total = subtotal + deliveryFee;
+  const belowMin = subtotal > 0 && subtotal < MIN_ORDER;
+  const progressPct = Math.min((subtotal / FREE_DELIVERY_THRESHOLD) * 100, 100);
+  const needed = FREE_DELIVERY_THRESHOLD - subtotal;
+
+  return (
+    <>
+      <div
+        className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 ${
+          open
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        }`}
+        onClick={onClose}
+        onKeyDown={(e) => e.key === "Escape" && onClose()}
+        role="button"
+        tabIndex={-1}
+      />
+      <div
+        className={`fixed top-0 right-0 z-50 h-full w-[380px] max-w-full flex flex-col transition-transform duration-300 ease-in-out ${
+          open ? "translate-x-0" : "translate-x-full"
+        }`}
+        style={{
+          background: "var(--site-card-bg)",
+          borderLeft: "2px solid var(--site-card-border)",
+        }}
+        data-ocid="cart.panel"
+      >
+        {/* Header */}
+        <div
+          className="flex items-center justify-between p-4 border-b-2"
+          style={{
+            borderColor: "var(--site-card-border)",
+            background: "#2E5BFF",
+          }}
+        >
+          <h2 className="font-heading text-xl text-white">YOUR CART</h2>
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-white hover:opacity-70 transition-opacity"
+            data-ocid="cart.close_button"
+          >
+            <X size={24} />
+          </button>
+        </div>
+
+        {cart.length === 0 ? (
+          <div
+            className="flex-1 flex flex-col items-center justify-center gap-4 p-8"
+            data-ocid="cart.empty_state"
+          >
+            <ShoppingCart size={64} className="text-gray-300" />
+            <p
+              className="font-body text-center"
+              style={{ color: "var(--site-muted-text)" }}
+            >
+              Your cart is empty.\nAdd some items to get started!
+            </p>
+          </div>
+        ) : (
+          <>
+            {/* Free delivery progress */}
+            <div
+              className="p-4 border-b"
+              style={{
+                borderColor: "var(--site-card-border)",
+                background: "var(--site-section-bg)",
+              }}
+            >
+              {subtotal < FREE_DELIVERY_THRESHOLD ? (
+                <>
+                  <p
+                    className="font-body text-sm mb-2"
+                    style={{ color: "var(--site-text)" }}
+                  >
+                    You are only{" "}
+                    <span className="font-bold" style={{ color: "#FF5F1F" }}>
+                      \u20B9{needed}
+                    </span>{" "}
+                    away from{" "}
+                    <span className="font-bold" style={{ color: "#2E5BFF" }}>
+                      FREE DELIVERY!
+                    </span>
+                  </p>
+                  <div
+                    className="w-full h-2 rounded-full"
+                    style={{ background: "#e0e0e0" }}
+                  >
+                    <div
+                      className="h-full rounded-full transition-all duration-500"
+                      style={{
+                        width: `${progressPct}%`,
+                        background: "#2E5BFF",
+                      }}
+                    />
+                  </div>
+                  <p
+                    className="font-body text-xs mt-1"
+                    style={{ color: "var(--site-muted-text)" }}
+                  >
+                    {Math.round(progressPct)}% to free delivery
+                  </p>
+                </>
+              ) : (
+                <p
+                  className="font-body text-sm font-bold"
+                  style={{ color: "#2E5BFF" }}
+                >
+                  \uD83C\uDF89 You've unlocked FREE delivery!
+                </p>
+              )}
+            </div>
+
+            {/* Cart Items */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-3">
+              {cart.map((item, idx) => (
+                <div
+                  key={item.id}
+                  className="flex gap-3 p-2 rounded"
+                  style={{
+                    border: "1px solid var(--site-card-border)",
+                    background: "var(--site-card-bg)",
+                  }}
+                  data-ocid={`cart.item.${idx + 1}`}
+                >
+                  <img
+                    src={
+                      item.imageUrl ||
+                      "/assets/generated/cat-snacks.dim_300x300.jpg"
+                    }
+                    alt={item.name}
+                    className="w-14 h-14 object-cover rounded flex-shrink-0"
+                    style={{ border: "1px solid var(--site-card-border)" }}
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p
+                      className="font-body font-bold text-sm leading-tight"
+                      style={{ color: "var(--site-text)" }}
+                    >
+                      {item.name}
+                    </p>
+                    <p
+                      className="font-body text-xs"
+                      style={{ color: "var(--site-muted-text)" }}
+                    >
+                      {item.quantity}
+                    </p>
+                    <p
+                      className="font-heading font-bold text-sm"
+                      style={{ color: "#FF5F1F" }}
+                    >
+                      \u20B9{item.price * item.cartQty}
+                    </p>
+                  </div>
+                  <div className="flex flex-col items-center justify-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => onQtyChange(item.id, 1)}
+                      className="w-7 h-7 rounded-full text-white flex items-center justify-center"
+                      style={{ background: "#2E5BFF" }}
+                      data-ocid={`cart.item.${idx + 1}`}
+                    >
+                      <Plus size={14} />
+                    </button>
+                    <span
+                      className="font-heading font-bold text-sm"
+                      style={{ color: "var(--site-text)" }}
+                    >
+                      {item.cartQty}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => onQtyChange(item.id, -1)}
+                      className="w-7 h-7 rounded-full border flex items-center justify-center hover:bg-red-50 transition-colors"
+                      style={{
+                        borderColor: "var(--site-card-border)",
+                        color: "var(--site-text)",
+                      }}
+                      data-ocid={`cart.item.${idx + 1}`}
+                    >
+                      <Minus size={14} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Footer */}
+            <div
+              className="p-4 border-t-2"
+              style={{ borderColor: "var(--site-card-border)" }}
+            >
+              {belowMin && (
+                <p className="font-body text-sm text-red-600 mb-3 font-bold">
+                  Add \u20B9{MIN_ORDER - subtotal} more (min order \u20B9
+                  {MIN_ORDER})
+                </p>
+              )}
+              <div className="space-y-1 mb-4">
+                <div
+                  className="flex justify-between font-body text-sm"
+                  style={{ color: "var(--site-text)" }}
+                >
+                  <span>Subtotal</span>
+                  <span>\u20B9{subtotal}</span>
+                </div>
+                <div
+                  className="flex justify-between font-body text-sm"
+                  style={{ color: "var(--site-text)" }}
+                >
+                  <span>Delivery</span>
+                  <span
+                    style={
+                      deliveryFee === 0
+                        ? { color: "#2E5BFF", fontWeight: 700 }
+                        : {}
+                    }
+                  >
+                    {deliveryFee === 0 ? "FREE" : `\u20B9${deliveryFee}`}
+                  </span>
+                </div>
+                <div
+                  className="flex justify-between font-heading text-lg border-t pt-2"
+                  style={{
+                    borderColor: "var(--site-card-border)",
+                    color: "var(--site-text)",
+                  }}
+                >
+                  <span>TOTAL</span>
+                  <span style={{ color: "#FF5F1F" }}>\u20B9{total}</span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={onCheckout}
+                disabled={belowMin}
+                className="w-full py-3 text-white font-heading text-base rounded transition-all hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
+                style={{ background: "#2E5BFF" }}
+                data-ocid="cart.submit_button"
+              >
+                CHECKOUT \u2192
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </>
+  );
+}
+
+// ─── Main App ────────────────────────────────────────────────────────────────────────────
 export default function App() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [paymentItems, setPaymentItems] = useState<CartItem[] | null>(null);
+  const [isDark, setIsDark] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("theme") === "dark";
+    }
+    return false;
+  });
+  const [cartBounce, setCartBounce] = useState(false);
+
+  // Apply dark mode class
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [isDark]);
+
+  // Init theme from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem("theme");
+    if (saved === "dark") {
+      setIsDark(true);
+      document.documentElement.classList.add("dark");
+    }
+  }, []);
 
   const cartTotal = cart.reduce((s, i) => s + i.cartQty, 0);
 
@@ -1700,15 +2012,16 @@ export default function App() {
       return [...prev, { ...product, cartQty: 1 }];
     });
     setCartOpen(true);
+    setCartBounce(true);
+    setTimeout(() => setCartBounce(false), 500);
   }, []);
 
   const changeQty = useCallback((id: number, delta: number) => {
-    setCart((prev) => {
-      const updated = prev
+    setCart((prev) =>
+      prev
         .map((i) => (i.id === id ? { ...i, cartQty: i.cartQty + delta } : i))
-        .filter((i) => i.cartQty > 0);
-      return updated;
-    });
+        .filter((i) => i.cartQty > 0),
+    );
   }, []);
 
   const buyNow = useCallback((product: Product) => {
@@ -1725,6 +2038,16 @@ export default function App() {
     ? CATEGORIES.filter((c) => c.name === activeCategory)
     : CATEGORIES;
 
+  const trendingProducts = TRENDING_IDS.map((id) =>
+    PRODUCTS.find((p) => p.id === id),
+  ).filter(Boolean) as Product[];
+  const veggieProducts = VEGGIE_IDS.map((id) =>
+    PRODUCTS.find((p) => p.id === id),
+  ).filter(Boolean) as Product[];
+  const midnightProducts = MIDNIGHT_IDS.map((id) =>
+    PRODUCTS.find((p) => p.id === id),
+  ).filter(Boolean) as Product[];
+
   useEffect(() => {
     document.body.style.overflow = cartOpen || !!paymentItems ? "hidden" : "";
     return () => {
@@ -1732,39 +2055,62 @@ export default function App() {
     };
   }, [cartOpen, paymentItems]);
 
+  const cartSubtotal = cart.reduce((s, i) => s + i.price * i.cartQty, 0);
+  const needed = FREE_DELIVERY_THRESHOLD - cartSubtotal;
+
   return (
     <div
       className="min-h-screen"
-      style={{ background: "#F2F2F2", fontFamily: "'Inter', sans-serif" }}
+      style={{
+        background: "var(--site-bg)",
+        color: "var(--site-text)",
+        fontFamily: "'Inter', sans-serif",
+      }}
     >
       {/* Marquee Ticker */}
-      <div className="marquee-bar bg-black overflow-hidden py-2 border-b-4 border-[#AAFF00]">
+      <div className="overflow-hidden py-2" style={{ background: "#2E5BFF" }}>
         <div
-          className="marquee-track flex gap-16 whitespace-nowrap"
+          className="flex gap-16 whitespace-nowrap"
           style={{ animation: "marquee 20s linear infinite" }}
         >
           {[1, 2, 3].map((n) => (
             <span
               key={n}
-              className="font-inter font-bold text-sm text-[#AAFF00] tracking-widest uppercase flex-shrink-0"
+              className="font-body font-bold text-sm text-white tracking-widest uppercase flex-shrink-0"
             >
-              FREE DELIVERY OVER ₹500 &nbsp;&nbsp;—&nbsp;&nbsp; FRESH VEGGIES
-              &nbsp;&nbsp;—&nbsp;&nbsp; 10-MINUTE SHIPPING
-              &nbsp;&nbsp;—&nbsp;&nbsp;
+              FREE DELIVERY OVER \u20B9500 &nbsp;&nbsp;\u2014&nbsp;&nbsp; FRESH
+              VEGGIES &nbsp;&nbsp;\u2014&nbsp;&nbsp; 10-MINUTE SHIPPING
+              &nbsp;&nbsp;\u2014&nbsp;&nbsp;
             </span>
           ))}
         </div>
       </div>
 
-      {/* Navbar */}
-      <nav className="bg-white border-b-4 border-black sticky top-0 z-30">
+      {/* Free delivery nudge bar */}
+      {cart.length > 0 && cartSubtotal < FREE_DELIVERY_THRESHOLD && (
+        <div
+          className="text-white text-center py-1.5 px-4 text-sm font-body"
+          style={{ background: "#FF5F1F" }}
+        >
+          You are only <strong>\u20B9{needed}</strong> away from FREE DELIVERY!
+        </div>
+      )}
+
+      {/* Frosted Glass Navbar */}
+      <nav className="frosted-nav" data-ocid="nav.section">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
           <div className="flex-shrink-0">
-            <h1 className="font-archivo text-2xl md:text-3xl text-black leading-none">
+            <h1
+              className="font-heading text-2xl md:text-3xl leading-none"
+              style={{ color: "var(--site-text)" }}
+            >
               ANNAPURNA SHOP
             </h1>
-            <p className="font-inter text-xs text-gray-500">
-              GBPIET, PAURI • 7895784954
+            <p
+              className="font-body text-xs"
+              style={{ color: "var(--site-muted-text)" }}
+            >
+              GBPIET, PAURI \u2022 7895784954
             </p>
           </div>
           <div className="flex-1 max-w-md mx-auto">
@@ -1773,17 +2119,41 @@ export default function App() {
               placeholder="Search products..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full border-2 border-black px-4 py-2 font-inter text-sm focus:outline-none focus:border-[#AAFF00] bg-[#F2F2F2]"
+              className="w-full border px-4 py-2 font-body text-sm focus:outline-none rounded-full"
+              style={{
+                borderColor: "var(--site-card-border)",
+                background: "var(--site-section-bg)",
+                color: "var(--site-text)",
+              }}
+              data-ocid="nav.search_input"
             />
           </div>
+          {/* Dark mode toggle */}
+          <button
+            type="button"
+            onClick={() => setIsDark((d) => !d)}
+            className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center border transition-all hover:opacity-80"
+            style={{
+              background: "var(--site-section-bg)",
+              borderColor: "var(--site-card-border)",
+              color: "var(--site-text)",
+            }}
+            title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            data-ocid="nav.toggle"
+          >
+            {isDark ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+          {/* Cart button */}
           <button
             type="button"
             onClick={() => setCartOpen(true)}
-            className="relative flex-shrink-0 w-12 h-12 bg-black text-[#AAFF00] border-2 border-black shadow-[3px_3px_0px_#AAFF00] hover:shadow-[4px_4px_0px_#AAFF00] flex items-center justify-center transition-all"
+            className={`relative flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center text-white transition-all hover:opacity-90 ${cartBounce ? "quick-cart-bounce" : ""}`}
+            style={{ background: "#2E5BFF" }}
+            data-ocid="nav.button"
           >
             <ShoppingCart size={20} />
             {cartTotal > 0 && (
-              <span className="absolute -top-2 -right-2 w-5 h-5 bg-[#AAFF00] text-black text-xs font-bold font-inter flex items-center justify-center border-2 border-black rounded-full">
+              <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 text-white text-xs font-bold flex items-center justify-center rounded-full">
                 {cartTotal}
               </span>
             )}
@@ -1792,24 +2162,42 @@ export default function App() {
       </nav>
 
       {/* Hero */}
-      <section className="py-16 px-4 border-b-4 border-black bg-white">
+      <section
+        className="py-16 px-4"
+        style={{
+          background: "var(--site-card-bg)",
+          borderBottom: "1px solid rgba(0,0,0,0.08)",
+        }}
+      >
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-8">
           <div className="flex-1">
-            <div className="inline-block bg-[#AAFF00] border-2 border-black px-4 py-1 mb-4">
-              <span className="font-inter text-sm font-bold text-black">
-                10-MINUTE DELIVERY • GBPIET, PAURI
-              </span>
+            <div
+              className="inline-block px-4 py-1 mb-4 rounded-full text-white text-sm font-body font-bold"
+              style={{ background: "#FF5F1F" }}
+            >
+              10-MINUTE DELIVERY \u2022 GBPIET, PAURI
             </div>
-            <h1 className="font-archivo text-5xl md:text-7xl text-black leading-none mb-4">
+            <h1
+              className="font-heading text-5xl md:text-7xl leading-none mb-4 font-bold"
+              style={{ color: "var(--site-text)" }}
+            >
               FRESH.
               <br />
               FAST.
               <br />
-              <span className="bg-black text-[#AAFF00] px-2">LOCAL.</span>
+              <span
+                className="px-2 rounded"
+                style={{ background: "#2E5BFF", color: "#fff" }}
+              >
+                LOCAL.
+              </span>
             </h1>
-            <p className="font-inter text-gray-600 text-lg mb-6 max-w-md">
-              Shop 88+ grocery & daily essentials. Free delivery over ₹500.
-              Minimum order ₹200.
+            <p
+              className="font-body text-lg mb-6 max-w-md"
+              style={{ color: "var(--site-muted-text)" }}
+            >
+              Shop 88+ grocery &amp; daily essentials. Free delivery over
+              \u20B9500. Minimum order \u20B9200.
             </p>
             <div className="flex gap-3 flex-wrap">
               <button
@@ -1819,7 +2207,9 @@ export default function App() {
                     .getElementById("products")
                     ?.scrollIntoView({ behavior: "smooth" })
                 }
-                className="px-6 py-3 bg-black text-[#AAFF00] font-archivo border-4 border-black shadow-[4px_4px_0px_#AAFF00] hover:shadow-[6px_6px_0px_#AAFF00] transition-all"
+                className="px-6 py-3 text-white font-heading rounded-lg transition-all hover:opacity-90"
+                style={{ background: "#2E5BFF" }}
+                data-ocid="hero.primary_button"
               >
                 SHOP NOW
               </button>
@@ -1827,7 +2217,13 @@ export default function App() {
                 href="https://www.instagram.com/anna.purnastore?igsh=MWNvMmM0dXJyZG1kNg=="
                 target="_blank"
                 rel="noreferrer"
-                className="px-6 py-3 bg-white text-black font-archivo border-4 border-black shadow-[4px_4px_0px_#000] hover:shadow-[6px_6px_0px_#AAFF00] transition-all"
+                className="px-6 py-3 font-heading rounded-lg border-2 transition-all hover:opacity-80"
+                style={{
+                  borderColor: "#FF5F1F",
+                  color: "#FF5F1F",
+                  background: "transparent",
+                }}
+                data-ocid="hero.link"
               >
                 INSTAGRAM
               </a>
@@ -1837,7 +2233,11 @@ export default function App() {
             {["tomatoes", "coca-cola", "parle-g", "amul-milk"].map((item) => (
               <div
                 key={item}
-                className="border-4 border-black shadow-[4px_4px_0px_#000] overflow-hidden aspect-square"
+                className="rounded-xl overflow-hidden aspect-square"
+                style={{
+                  border: "2px solid var(--site-card-border)",
+                  boxShadow: "4px 4px 12px rgba(0,0,0,0.1)",
+                }}
               >
                 <img
                   src={`/assets/generated/${item}.dim_300x300.jpg`}
@@ -1853,8 +2253,55 @@ export default function App() {
       {/* Daily Deals Slider */}
       <DailyDealsSlider />
 
+      {/* Horizontal Carousel Rows */}
+      <div style={{ background: "var(--site-bg)" }}>
+        <CategoryCarousel
+          title="Trending Now"
+          emoji="\uD83D\uDD25"
+          products={trendingProducts}
+          onAddToCart={addToCart}
+          accent="#FF5F1F"
+        />
+        <div
+          style={{
+            height: 1,
+            background: "var(--site-card-border)",
+            opacity: 0.1,
+            margin: "0 2rem",
+          }}
+        />
+        <CategoryCarousel
+          title="Fresh Veggies"
+          emoji="\uD83E\uDD66"
+          products={veggieProducts}
+          onAddToCart={addToCart}
+        />
+        <div
+          style={{
+            height: 1,
+            background: "var(--site-card-border)",
+            opacity: 0.1,
+            margin: "0 2rem",
+          }}
+        />
+        <CategoryCarousel
+          title="Midnight Snacks"
+          emoji="\uD83C\uDF19"
+          products={midnightProducts}
+          onAddToCart={addToCart}
+          accent="#2E5BFF"
+        />
+      </div>
+
       {/* Category Filter */}
-      <section className="py-6 bg-[#F2F2F2] border-b-4 border-black">
+      <section
+        className="py-6"
+        style={{
+          background: "var(--site-section-bg)",
+          borderTop: "1px solid rgba(0,0,0,0.08)",
+          borderBottom: "1px solid rgba(0,0,0,0.08)",
+        }}
+      >
         <div className="max-w-7xl mx-auto px-4">
           <div
             className="flex gap-2 overflow-x-auto pb-2"
@@ -1863,11 +2310,21 @@ export default function App() {
             <button
               type="button"
               onClick={() => setActiveCategory(null)}
-              className={`flex-shrink-0 px-4 py-2 font-archivo text-sm border-2 border-black transition-all ${
+              className="flex-shrink-0 px-4 py-2 font-heading text-sm rounded-full border-2 transition-all"
+              style={
                 !activeCategory
-                  ? "bg-black text-[#AAFF00] shadow-[3px_3px_0px_#AAFF00]"
-                  : "bg-white text-black hover:bg-[#AAFF00] hover:text-black"
-              }`}
+                  ? {
+                      background: "#2E5BFF",
+                      color: "#fff",
+                      borderColor: "#2E5BFF",
+                    }
+                  : {
+                      background: "var(--site-card-bg)",
+                      color: "var(--site-text)",
+                      borderColor: "var(--site-card-border)",
+                    }
+              }
+              data-ocid="category.tab"
             >
               ALL ITEMS
             </button>
@@ -1880,11 +2337,21 @@ export default function App() {
                     cat.name === activeCategory ? null : cat.name,
                   )
                 }
-                className={`flex-shrink-0 px-4 py-2 font-archivo text-sm border-2 border-black transition-all ${
+                className="flex-shrink-0 px-4 py-2 font-heading text-sm rounded-full border-2 transition-all"
+                style={
                   activeCategory === cat.name
-                    ? "bg-black text-[#AAFF00] shadow-[3px_3px_0px_#AAFF00]"
-                    : "bg-white text-black hover:bg-[#AAFF00] hover:text-black"
-                }`}
+                    ? {
+                        background: "#2E5BFF",
+                        color: "#fff",
+                        borderColor: "#2E5BFF",
+                      }
+                    : {
+                        background: "var(--site-card-bg)",
+                        color: "var(--site-text)",
+                        borderColor: "var(--site-card-border)",
+                      }
+                }
+                data-ocid="category.tab"
               >
                 {cat.emoji} {cat.name.toUpperCase()}
               </button>
@@ -1896,9 +2363,13 @@ export default function App() {
       {/* Products */}
       <main id="products" className="max-w-7xl mx-auto px-4 py-12">
         {search && (
-          <p className="font-inter text-gray-600 mb-6">
-            Showing results for "<strong>{search}</strong>" —{" "}
-            {filteredProducts.length} products
+          <p
+            className="font-body mb-6"
+            style={{ color: "var(--site-muted-text)" }}
+          >
+            Showing results for "
+            <strong style={{ color: "var(--site-text)" }}>{search}</strong>"
+            \u2014 {filteredProducts.length} products
           </p>
         )}
         {displayCategories.map((cat) => {
@@ -1913,10 +2384,16 @@ export default function App() {
               id={cat.name.toLowerCase().replace(/ /g, "-")}
             >
               <div className="flex items-center gap-3 mb-6">
-                <h2 className="font-archivo text-2xl md:text-3xl text-black">
+                <h2
+                  className="font-heading text-2xl md:text-3xl"
+                  style={{ color: "var(--site-text)" }}
+                >
                   {cat.emoji} {cat.name.toUpperCase()}
                 </h2>
-                <div className="flex-1 h-1 bg-black" />
+                <div
+                  className="flex-1 h-0.5"
+                  style={{ background: "#2E5BFF", opacity: 0.3 }}
+                />
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                 {catProducts.map((p) => (
@@ -1934,41 +2411,58 @@ export default function App() {
       </main>
 
       {/* Offers Section */}
-      <section className="py-12 bg-black border-y-4 border-[#AAFF00]">
+      <section
+        className="py-12"
+        style={{
+          background: "#111",
+          borderTop: "2px solid #2E5BFF",
+          borderBottom: "2px solid #2E5BFF",
+        }}
+      >
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="font-archivo text-3xl md:text-4xl text-[#AAFF00] mb-8">
-            OFFERS & COUPONS
+          <h2
+            className="font-heading text-3xl md:text-4xl mb-8"
+            style={{ color: "#2E5BFF" }}
+          >
+            OFFERS &amp; COUPONS
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
               {
                 code: "SAVE10",
-                desc: "10% off on orders above ₹200",
+                desc: "10% off on orders above \u20B9200",
                 min: 200,
               },
               {
                 code: "SAVE15",
-                desc: "15% off on orders above ₹350",
+                desc: "15% off on orders above \u20B9350",
                 min: 350,
               },
               {
                 code: "SAVE20",
-                desc: "20% off on orders above ₹500",
+                desc: "20% off on orders above \u20B9500",
                 min: 500,
               },
             ].map((offer) => (
               <div
                 key={offer.code}
-                className="border-4 border-[#AAFF00] p-6 shadow-[6px_6px_0px_#AAFF00] hover:shadow-[8px_8px_0px_#AAFF00] transition-all"
+                className="p-6 rounded-lg transition-all hover:scale-105"
+                style={{
+                  border: "2px solid #2E5BFF",
+                  boxShadow: "4px 4px 0px #2E5BFF",
+                }}
               >
-                <p className="font-archivo text-2xl text-[#AAFF00] mb-1">
+                <p
+                  className="font-heading text-2xl mb-1"
+                  style={{ color: "#2E5BFF" }}
+                >
                   {offer.code}
                 </p>
-                <p className="font-inter text-gray-300 text-sm mb-3">
+                <p className="font-body text-gray-300 text-sm mb-3">
                   {offer.desc}
                 </p>
-                <p className="font-inter text-xs text-gray-500">
-                  Min order: ₹{offer.min}
+                <p className="font-body text-xs text-gray-500">
+                  Min order: \u20B9{offer.min}
                 </p>
                 <button
                   type="button"
@@ -1976,7 +2470,9 @@ export default function App() {
                     navigator.clipboard.writeText(offer.code);
                     toast.success(`Coupon ${offer.code} copied!`);
                   }}
-                  className="mt-3 px-4 py-2 bg-[#AAFF00] text-black font-archivo text-sm border-2 border-[#AAFF00] hover:bg-white transition-colors"
+                  className="mt-3 px-4 py-2 text-white font-heading text-sm rounded transition-all hover:opacity-80"
+                  style={{ background: "#2E5BFF" }}
+                  data-ocid="offers.button"
                 >
                   COPY CODE
                 </button>
@@ -1990,17 +2486,36 @@ export default function App() {
       <LuckyDraw />
 
       {/* Instagram Section */}
-      <section className="py-12 bg-white border-y-4 border-black">
+      <section
+        className="py-12"
+        style={{
+          background: "var(--site-card-bg)",
+          borderTop: "1px solid rgba(0,0,0,0.08)",
+          borderBottom: "1px solid rgba(0,0,0,0.08)",
+        }}
+      >
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="font-archivo text-3xl md:text-4xl text-black mb-2">
+          <h2
+            className="font-heading text-3xl md:text-4xl mb-2"
+            style={{ color: "var(--site-text)" }}
+          >
             FOLLOW US ON INSTAGRAM
           </h2>
-          <p className="font-inter text-gray-600 mb-6">@anna.purnastore</p>
+          <p
+            className="font-body mb-6"
+            style={{ color: "var(--site-muted-text)" }}
+          >
+            @anna.purnastore
+          </p>
           <a
             href="https://www.instagram.com/anna.purnastore?igsh=MWNvMmM0dXJyZG1kNg=="
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-black text-[#AAFF00] font-archivo border-4 border-black shadow-[4px_4px_0px_#AAFF00] hover:shadow-[6px_6px_0px_#AAFF00] transition-all"
+            className="inline-flex items-center gap-2 px-8 py-3 text-white font-heading rounded-lg transition-all hover:opacity-90"
+            style={{
+              background: "linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)",
+            }}
+            data-ocid="instagram.link"
           >
             <Gift size={20} /> FOLLOW NOW
           </a>
@@ -2008,42 +2523,88 @@ export default function App() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-black border-t-4 border-[#AAFF00] py-10 px-4">
+      <footer
+        style={{ background: "#111", borderTop: "2px solid #2E5BFF" }}
+        className="py-10 px-4"
+      >
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="font-archivo text-2xl text-[#AAFF00] mb-3">
+            <h3
+              className="font-heading text-2xl mb-3"
+              style={{ color: "#2E5BFF" }}
+            >
               ANNAPURNA SHOP
             </h3>
-            <p className="font-inter text-gray-400 text-sm">
+            <p className="font-body text-gray-400 text-sm">
               Your neighbourhood grocery store at GBPIET, PAURI.
             </p>
           </div>
           <div>
-            <h4 className="font-archivo text-lg text-white mb-3">CONTACT</h4>
-            <p className="font-inter text-gray-400 text-sm">📞 7895784954</p>
-            <p className="font-inter text-gray-400 text-sm">📍 GBPIET, PAURI</p>
+            <h4 className="font-heading text-lg text-white mb-3">CONTACT</h4>
+            <p className="font-body text-gray-400 text-sm">
+              \uD83D\uDCDE 7895784954
+            </p>
+            <p className="font-body text-gray-400 text-sm">
+              \uD83D\uDCCD GBPIET, PAURI
+            </p>
           </div>
           <div>
-            <h4 className="font-archivo text-lg text-white mb-3">
+            <h4 className="font-heading text-lg text-white mb-3">
               DELIVERY POLICY
             </h4>
-            <p className="font-inter text-gray-400 text-sm">
-              • Min order: ₹200
+            <p className="font-body text-gray-400 text-sm">
+              \u2022 Min order: \u20B9200
             </p>
-            <p className="font-inter text-gray-400 text-sm">
-              • Delivery fee: ₹40 (free above ₹500)
+            <p className="font-body text-gray-400 text-sm">
+              \u2022 Delivery fee: \u20B940 (free above \u20B9500)
             </p>
-            <p className="font-inter text-gray-400 text-sm">
-              • Estimated time: 10 minutes
+            <p className="font-body text-gray-400 text-sm">
+              \u2022 Estimated time: 10 minutes
             </p>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto mt-8 pt-6 border-t-2 border-gray-800 text-center">
-          <p className="font-inter text-gray-600 text-xs">
-            © 2026 Annapurna Shop. All rights reserved.
+        <div className="max-w-7xl mx-auto mt-8 pt-6 border-t border-gray-800 text-center">
+          <p className="font-body text-gray-600 text-xs">
+            \u00A9 {new Date().getFullYear()} Annapurna Shop. Built with
+            \u2764\uFE0F using{" "}
+            <a
+              href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(typeof window !== "undefined" ? window.location.hostname : "")}`}
+              target="_blank"
+              rel="noreferrer"
+              className="underline hover:opacity-80"
+            >
+              caffeine.ai
+            </a>
           </p>
         </div>
       </footer>
+
+      {/* Floating Quick Cart Button */}
+      <button
+        type="button"
+        onClick={() => setCartOpen(true)}
+        className={`fixed flex items-center justify-center text-white shadow-lg transition-all hover:scale-110 z-[200] ${
+          cartBounce ? "quick-cart-bounce" : ""
+        }`}
+        style={{
+          bottom: 24,
+          right: 24,
+          width: 56,
+          height: 56,
+          borderRadius: "50%",
+          background: "#2E5BFF",
+          boxShadow: "0 4px 20px rgba(46,91,255,0.4)",
+        }}
+        data-ocid="cart.open_modal_button"
+        aria-label="Open cart"
+      >
+        <ShoppingCart size={22} />
+        {cartTotal > 0 && (
+          <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full">
+            {cartTotal}
+          </span>
+        )}
+      </button>
 
       {/* Sidebar Cart */}
       <SidebarCart

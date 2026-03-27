@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -6,26 +6,58 @@
 
 @layer base {
   :root {
-    --background: 95 0 0;
+    --background: 97.8 0 0;
     --foreground: 0 0 0;
     --card: 100 0 0;
     --card-foreground: 0 0 0;
     --popover: 100 0 0;
     --popover-foreground: 0 0 0;
-    --primary: 0 0 0;
+    --primary: 47.8 0.258 264.05;
     --primary-foreground: 100 0 0;
     --secondary: 92 0 0;
     --secondary-foreground: 0 0 0;
     --muted: 90 0 0;
-    --muted-foreground: 30 0 0;
-    --accent: 92 0.34 130;
-    --accent-foreground: 0 0 0;
-    --destructive: 50 0.22 25;
+    --muted-foreground: 40 0 0;
+    --accent: 47.8 0.258 264.05;
+    --accent-foreground: 100 0 0;
+    --destructive: 55 0.22 27;
     --destructive-foreground: 100 0 0;
     --border: 0 0 0;
     --input: 85 0 0;
-    --ring: 92 0.34 130;
-    --radius: 0rem;
+    --ring: 47.8 0.258 264.05;
+    --radius: 0.375rem;
+
+    /* Brand tokens */
+    --cobalt: #2e5bff;
+    --sunset: #ff5f1f;
+    --site-bg: #f9f9f9;
+    --site-text: #000000;
+    --site-card-bg: #ffffff;
+    --site-card-border: #000000;
+    --site-nav-bg: rgba(249, 249, 249, 0.75);
+    --site-muted-text: #555555;
+    --site-section-bg: #f2f2f2;
+  }
+
+  html.dark {
+    --background: 15 0 0;
+    --foreground: 97 0 0;
+    --card: 18 0 0;
+    --card-foreground: 97 0 0;
+    --primary: 47.8 0.258 264.05;
+    --primary-foreground: 100 0 0;
+    --muted: 20 0 0;
+    --muted-foreground: 70 0 0;
+    --border: 30 0 0;
+    --input: 22 0 0;
+
+    --site-bg: #111111;
+    --site-text: #f9f9f9;
+    --site-card-bg: #1a1a1a;
+    --site-card-border: #444444;
+    --site-nav-bg: rgba(17, 17, 17, 0.8);
+    --site-muted-text: #aaaaaa;
+    --site-section-bg: #161616;
   }
 }
 
@@ -39,8 +71,9 @@
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
     overflow-x: hidden;
-    background-color: #f2f2f2;
-    color: #000;
+    background-color: var(--site-bg);
+    color: var(--site-text);
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   h1,
   h2,
@@ -48,9 +81,9 @@
   h4,
   h5,
   h6 {
-    font-family: "Archivo Black", sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.01em;
   }
 }
 
@@ -67,156 +100,164 @@
   animation: marquee 20s linear infinite;
 }
 
-/* ── Product Card ── */
+/* ── Frosted Glass Navbar ── */
+.frosted-nav {
+  background: var(--site-nav-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: background 0.3s ease;
+}
+html.dark .frosted-nav {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ── Product Card (main grid) ── */
 .product-card {
-  background: #fff;
-  border: 4px solid #000;
-  box-shadow: 6px 6px 0px #000;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  background: var(--site-card-bg);
+  border: 2px solid var(--site-card-border);
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease, transform 0.2s ease, background 0.3s ease;
+  border-radius: 6px;
+  overflow: hidden;
 }
 .product-card:hover {
-  box-shadow: 6px 6px 0px #aaff00;
+  box-shadow: 4px 8px 20px rgba(46, 91, 255, 0.25);
   transform: translateY(-2px);
 }
 .product-card:hover .product-image {
   transform: scale(1.08);
 }
 .product-image {
-  transition: transform 0.3s ease;
+  transition: transform 0.4s ease;
+}
+
+/* ── Carousel Card ── */
+.carousel-card {
+  background: var(--site-card-bg);
+  border: 2px solid #000000;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 0.25s ease, transform 0.25s ease, background 0.3s ease;
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+  width: 175px;
+  position: relative;
+}
+html.dark .carousel-card {
+  border-color: #555;
+}
+.carousel-card:hover {
+  box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.25);
+  transform: translateY(-2px);
+}
+.carousel-card .carousel-img-wrap {
+  position: relative;
+  overflow: hidden;
+  height: 130px;
+}
+.carousel-card .carousel-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease, brightness 0.3s ease;
+}
+.carousel-card:hover .carousel-img-wrap img {
+  transform: scale(1.08);
+}
+/* Shimmer sweep overlay */
+.carousel-card .carousel-img-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 60%
+  );
+  background-size: 200% 100%;
+  background-position: -100% 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.carousel-card:hover .carousel-img-wrap::after {
+  opacity: 1;
+  animation: shimmer-sweep 0.9s ease-in-out;
+}
+@keyframes shimmer-sweep {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+/* Preview pill badge */
+.preview-badge {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+.carousel-card:hover .preview-badge {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 /* ── Deal Card ── */
 .deal-card {
-  background: #fff;
-  border: 4px solid #000;
-  box-shadow: 6px 6px 0px #000;
+  background: var(--site-card-bg);
+  border: 2px solid #000;
+  box-shadow: 4px 4px 0px #000;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
   user-select: none;
   flex-shrink: 0;
 }
 .deal-card:hover {
-  box-shadow: 6px 6px 0px #aaff00;
-}
-
-/* ── Category pill ── */
-.cat-pill {
-  border: 3px solid #000;
-  box-shadow: 4px 4px 0px #000;
-  background: #fff;
-  transition: box-shadow 0.2s ease, transform 0.15s ease, background 0.15s ease;
-  cursor: pointer;
-}
-.cat-pill:hover {
-  box-shadow: 4px 4px 0px #aaff00;
-  background: #aaff00;
+  box-shadow: 4px 4px 0px #2e5bff;
   transform: translateY(-2px);
 }
-
-/* ── Btn primary (black) ── */
-.btn-black {
-  background: #000;
-  color: #fff;
-  border: 3px solid #000;
-  font-family: "Archivo Black", sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
-  cursor: pointer;
-}
-.btn-black:hover {
-  background: #111;
-  box-shadow: 4px 4px 0px #aaff00;
-  transform: translateY(-1px);
-}
-.btn-black:active {
-  transform: translateY(1px);
-  box-shadow: 2px 2px 0px #aaff00;
+html.dark .deal-card {
+  border-color: #555;
 }
 
-/* ── Btn lime ── */
-.btn-lime {
-  background: #aaff00;
-  color: #000;
-  border: 3px solid #000;
-  font-family: "Archivo Black", sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  box-shadow: 4px 4px 0px #000;
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
-  cursor: pointer;
+/* ── Dark mode text helpers ── */
+html.dark .dark-card-title {
+  color: #f9f9f9;
 }
-.btn-lime:hover {
-  box-shadow: 6px 6px 0px #000;
-  transform: translateY(-1px);
-}
-.btn-lime:active {
-  transform: translateY(1px);
-  box-shadow: 2px 2px 0px #000;
-}
-.btn-lime:disabled {
-  background: #ccc;
-  color: #666;
-  border-color: #999;
-  box-shadow: none;
-  cursor: not-allowed;
-  transform: none;
+html.dark .dark-section-bg {
+  background: var(--site-section-bg);
 }
 
-/* ── Scrollbar ── */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #eee;
-}
-::-webkit-scrollbar-thumb {
-  background: #000;
-  border-radius: 0;
-}
-
-/* ── Sidebar cart transition ── */
-.cart-sidebar {
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* ── Spin slow ── */
-@keyframes spin-slow {
-  from {
-    transform: rotate(0deg);
+/* ── Quick Cart bounce ── */
+@keyframes cart-bounce {
+  0%,
+  100% {
+    transform: scale(1);
   }
-  to {
-    transform: rotate(360deg);
+  30% {
+    transform: scale(1.25);
+  }
+  60% {
+    transform: scale(0.92);
+  }
+  80% {
+    transform: scale(1.06);
   }
 }
-.animate-spin-slow {
-  animation: spin-slow 20s linear infinite;
-}
-
-/* ── Progress bar fill ── */
-.delivery-progress {
-  background: linear-gradient(90deg, #aaff00 0%, #88dd00 100%);
-  border-right: 2px solid #000;
-  transition: width 0.4s ease;
-}
-
-/* ── Section title underline ── */
-.section-title::after {
-  content: "";
-  display: block;
-  height: 4px;
-  width: 60px;
-  background: #aaff00;
-  margin-top: 6px;
-}
-
-/* ── Offer card ── */
-.offer-card {
-  border: 3px solid #000;
-  box-shadow: 5px 5px 0px #000;
-  transition: box-shadow 0.2s, transform 0.2s;
-}
-.offer-card:hover {
-  box-shadow: 5px 5px 0px #aaff00;
-  transform: translateY(-2px);
+.quick-cart-bounce {
+  animation: cart-bounce 0.5s ease;
 }

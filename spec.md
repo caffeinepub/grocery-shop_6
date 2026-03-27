@@ -1,43 +1,37 @@
-# Annapurna Shop — Version 8
+# Annapurna Shop — Version 9
 
 ## Current State
-Full-featured grocery e-commerce site with 88+ products, Dark Mode Luxe aesthetic, glassmorphism, bento layouts, lucky draw, 4-step checkout, Instagram section, individual product images, and sidebar cart basics.
+Light grey theme with Archivo Black headings, neon lime accents, 4px hard-shadow product cards, marquee ticker, daily deals slider, sidebar cart with delivery progress bar, Buy Now button, 4-step checkout, 88+ products with real images, Instagram section, lucky draw, auto-coupons.
 
 ## Requested Changes (Diff)
 
 ### Add
-- Scrolling marquee ticker at the very top: 'FREE DELIVERY OVER ₹500 — FRESH VEGGIES — 10-MINUTE SHIPPING' (infinite loop, CSS animation)
-- Draggable image slider for 'Daily Deals' section using high-quality grocery images (mouse drag + touch support)
-- Sidebar cart that slides in from the right on 'Add to Cart' click
-- Progress bar inside cart: 'Add ₹X more for Free Delivery!' (tracks ₹500 threshold)
-- Delivery fee logic: ₹40 if subtotal < ₹500, FREE if ≥ ₹500
-- Minimum order value enforcement: ₹200 (show warning if below, block checkout)
-- 'Buy Now' button on each product → direct to one-page payment screen (skip cart)
-- Google Fonts: 'Archivo Black' (headings, all caps) and 'Inter' (body)
+- Dark mode toggle switch (Light ↔ Deep Charcoal/Black), persisted via localStorage
+- Continuous horizontal sliding carousels for 'Trending Now', 'Fresh Veggies', 'Midnight Snacks' categories with free-mode touch scrolling (CSS scroll-snap + overflow-x: scroll, smooth)
+- Circular floating 'Quick Cart' button fixed at bottom-right, shows cart count badge
+- Frosted glass navbar (backdrop-filter: blur, semi-transparent background)
+- Auto message in cart/header: 'You are only ₹[X] away from FREE DELIVERY!' dynamically computed
+- Hover video preview on product cards: 3-second looping MP4/WebM or animated overlay (CSS animation simulating GIF-style motion on hover)
+- Google Fonts: 'Space Grotesk' for all headers (replacing Archivo Black)
 
 ### Modify
-- Full redesign: light grey background (#F2F2F2) replacing dark theme
-- Color palette: Black (#000), White (#FFF), Neon Lime (#C8FF00 or #AAFF00)
-- All product cards: 4px solid black border + thick black hard box-shadow (e.g. 6px 6px 0px #000), hover turns shadow to Neon Lime
-- Product images: zoom on hover (scale 1.08, transition)
-- All headings: Archivo Black font, text-transform uppercase
-- Body text: Inter font
-- Navbar, hero, footer, category sections — restyled to black/white/lime palette
-- Cart redesign: slide-out panel from right with delivery fee display and progress bar
+- Color palette: replace Neon Lime with Electric Cobalt Blue (#2E5BFF) as primary accent; use Vibrant Sunset Orange (#FF5F1F) as secondary accent for prices and sale badges
+- Background: Soft White (#F9F9F9) light mode, Deep Charcoal (#111111/#1a1a1a) dark mode
+- Text: Deep Black (#000000) on light, near-white on dark
+- Product cards in sliders: 2px solid black border, subtle box-shadow, shadow pops on hover
+- All buttons/prices/highlights use #2E5BFF (primary) or #FF5F1F (prices/sale)
 
 ### Remove
-- Dark Mode Luxe charcoal/emerald/neon-purple aesthetic
-- Glassmorphism effects
-- Soft drop shadows on product cards
+- Neon Lime (#CCFF00) accent color
+- Archivo Black font (replaced by Space Grotesk)
 
 ## Implementation Plan
-1. Update index.css / tailwind config with new palette, fonts (import from Google Fonts), and global styles
-2. Add marquee ticker component at top of page (CSS keyframe scroll)
-3. Redesign all product cards with 4px black border, hard shadow, hover lime shadow, image zoom
-4. Build draggable Daily Deals slider (mousedown/mousemove drag logic + smooth scroll)
-5. Build slide-out sidebar cart (fixed right panel, translate-x animation)
-6. Add delivery fee calculation + progress bar in cart
-7. Enforce ₹200 minimum order (block checkout button with message)
-8. Add 'Buy Now' button → one-page payment screen component
-9. Apply Archivo Black (headings, uppercase) + Inter (body) globally
-10. Restyle all sections (hero, navbar, categories, footer) to black/white/lime
+1. Add Space Grotesk via Google Fonts import
+2. Replace neon lime CSS variables with #2E5BFF (primary) and #FF5F1F (prices/sale)
+3. Implement dark mode toggle with CSS class on `<html>` and localStorage persistence; define dark mode CSS variables
+4. Build horizontal carousel rows for 'Trending Now', 'Fresh Veggies', 'Midnight Snacks' with touch-friendly free scrolling
+5. Style carousel product cards with 2px border + hover shadow
+6. Add frosted glass styles to navbar
+7. Add floating circular Quick Cart button fixed bottom-right with badge
+8. Add free delivery progress message dynamically computed from cart total vs ₹500 threshold
+9. Implement hover video/GIF-style preview on product cards using CSS animation or short looping video element shown on hover

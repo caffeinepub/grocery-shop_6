@@ -38,24 +38,28 @@ export default {
         border: 'oklch(var(--border) / <alpha-value>)',
         input: 'oklch(var(--input) / <alpha-value>)',
         ring: 'oklch(var(--ring) / <alpha-value>)',
-        lime: { neon: '#AAFF00' },
+        cobalt: { DEFAULT: '#2E5BFF', dark: '#1a47f0' },
+        sunset: { DEFAULT: '#FF5F1F', dark: '#e8531a' },
       },
       fontFamily: {
-        heading: ['Archivo Black', 'sans-serif'],
+        heading: ['Space Grotesk', 'sans-serif'],
         body: ['Inter', 'system-ui', 'sans-serif'],
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        // keep archivo alias for any remnant code
+        archivo: ['Space Grotesk', 'sans-serif'],
       },
       borderRadius: {
-        lg: '0px',
-        md: '0px',
-        sm: '0px',
-        DEFAULT: '0px',
+        lg: '8px',
+        md: '6px',
+        sm: '4px',
+        DEFAULT: '6px',
       },
       boxShadow: {
-        hard: '6px 6px 0px #000000',
-        'hard-lime': '6px 6px 0px #AAFF00',
-        'hard-sm': '4px 4px 0px #000000',
-        'hard-sm-lime': '4px 4px 0px #AAFF00',
+        hard: '4px 4px 0px #000000',
+        'hard-cobalt': '4px 4px 0px #2E5BFF',
+        'hard-sm': '2px 2px 0px #000000',
+        soft: '2px 4px 8px rgba(0,0,0,0.1)',
+        'soft-hover': '4px 8px 20px rgba(0,0,0,0.25)',
       },
       keyframes: {
         'accordion-down': {
