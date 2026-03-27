@@ -1,5 +1,4 @@
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,2057 +6,1901 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Toaster } from "@/components/ui/sonner";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
-  CheckCircle2,
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { Toaster } from "@/components/ui/sonner";
+import {
   ChevronRight,
-  Copy,
-  CreditCard,
+  Clock,
   Gift,
+  Loader2,
   MapPin,
   Minus,
   Phone,
   Plus,
+  Search,
   ShoppingCart,
-  Smartphone,
-  Sparkles,
   Star,
-  Tag,
-  Trash2,
   X,
   Zap,
 } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { useActor } from "./hooks/useActor";
-import {
-  useAddOrUpdateProduct,
-  useSetShopInfo,
-  useShopInfo,
-} from "./hooks/useQueries";
-
-const queryClient = new QueryClient();
 
 // ─── Types ─────────────────────────────────────────────────────────────────
-interface LocalProduct {
+type VibeTag =
+  | "Freshly Picked"
+  | "Chef's Choice"
+  | "Earth Friendly"
+  | "Student Fave"
+  | "Daily Essential";
+
+interface Product {
   id: number;
   name: string;
-  category: string;
-  image: string;
-  price: number;
-  mrp: number;
   quantity: string;
-  rating: number;
-  reviews: number;
-  description: string;
-  inStock: boolean;
+  price: number;
+  emoji: string;
+  vibe: VibeTag;
+  category: string;
+  available: boolean;
 }
 
-interface CartItem {
-  product: LocalProduct;
-  qty: number;
+interface CartItem extends Product {
+  cartQty: number;
 }
 
-interface CheckoutAddress {
+type CheckoutStep = 1 | 2 | 3 | 4;
+
+interface Address {
   name: string;
-  mobile: string;
-  house: string;
-  street: string;
-  city: string;
-  state: string;
+  hostel: string;
+  phone: string;
   pincode: string;
-  landmark: string;
 }
 
-// ─── Product Catalog ───────────────────────────────────────────────────────
-const LOCAL_PRODUCTS: LocalProduct[] = [
-  // Beverages
+// ─── Data ──────────────────────────────────────────────────────────────────
+const PRODUCTS: Product[] = [
+  // Fresh Produce
   {
     id: 1,
-    name: "Cold Drink Can",
-    category: "Beverages",
-    image: "/assets/generated/cold-drink-transparent.dim_300x300.png",
-    price: 40,
-    mrp: 45,
-    quantity: "1 Can",
-    rating: 4.2,
-    reviews: 128,
-    description:
-      "Refreshing carbonated cold drink, chilled to perfection. Perfect for hot days!",
-    inStock: true,
+    name: "Tomatoes",
+    quantity: "500g",
+    price: 25,
+    emoji: "🍅",
+    vibe: "Freshly Picked",
+    category: "Fresh Produce",
+    available: true,
   },
   {
     id: 2,
-    name: "Juice Bottle 1L",
-    category: "Beverages",
-    image: "/assets/generated/juice-transparent.dim_300x300.png",
-    price: 85,
-    mrp: 95,
-    quantity: "1 Litre",
-    rating: 4.5,
-    reviews: 89,
-    description:
-      "100% natural fruit juice in a convenient 1-litre bottle. No added preservatives.",
-    inStock: true,
+    name: "Onions",
+    quantity: "1kg",
+    price: 30,
+    emoji: "🧅",
+    vibe: "Daily Essential",
+    category: "Fresh Produce",
+    available: true,
   },
   {
     id: 3,
-    name: "Water Bottle 1L",
-    category: "Beverages",
-    image: "/assets/generated/water-bottle-transparent.dim_300x300.png",
-    price: 20,
-    mrp: 25,
-    quantity: "1 Litre",
-    rating: 4.0,
-    reviews: 234,
-    description:
-      "Pure mineral water sourced from natural springs. Sealed for freshness.",
-    inStock: true,
+    name: "Potatoes",
+    quantity: "1kg",
+    price: 25,
+    emoji: "🥔",
+    vibe: "Daily Essential",
+    category: "Fresh Produce",
+    available: true,
   },
   {
     id: 4,
-    name: "Tea 250g",
-    category: "Beverages",
-    image: "/assets/generated/tea-transparent.dim_300x300.png",
-    price: 120,
-    mrp: 140,
-    quantity: "250g Pack",
-    rating: 4.7,
-    reviews: 312,
-    description:
-      "Premium quality Assam tea leaves with rich aroma and strong flavour.",
-    inStock: true,
+    name: "Spinach",
+    quantity: "250g",
+    price: 15,
+    emoji: "🥬",
+    vibe: "Earth Friendly",
+    category: "Fresh Produce",
+    available: true,
   },
-  // Snacks
   {
     id: 5,
-    name: "Chips 100g",
-    category: "Snacks",
-    image: "/assets/generated/chips-transparent.dim_300x300.png",
+    name: "Cucumber",
+    quantity: "2 pcs",
     price: 20,
-    mrp: 25,
-    quantity: "100g Pack",
-    rating: 4.3,
-    reviews: 456,
-    description:
-      "Extra crispy potato chips with perfect seasoning. Great for snacking!",
-    inStock: true,
+    emoji: "🥒",
+    vibe: "Chef's Choice",
+    category: "Fresh Produce",
+    available: true,
   },
   {
     id: 6,
-    name: "Chocolate Bar",
-    category: "Snacks",
-    image: "/assets/generated/chocolate-transparent.dim_300x300.png",
-    price: 40,
-    mrp: 50,
-    quantity: "1 Bar (50g)",
-    rating: 4.6,
-    reviews: 389,
-    description:
-      "Rich and creamy milk chocolate bar. A delightful treat any time of day.",
-    inStock: true,
+    name: "Capsicum",
+    quantity: "250g",
+    price: 30,
+    emoji: "🫑",
+    vibe: "Chef's Choice",
+    category: "Fresh Produce",
+    available: true,
   },
   {
     id: 7,
-    name: "Biscuits 200g",
-    category: "Snacks",
-    image: "/assets/generated/biscuits-transparent.dim_300x300.png",
-    price: 30,
-    mrp: 35,
-    quantity: "200g Pack",
-    rating: 4.1,
-    reviews: 178,
-    description:
-      "Classic crispy biscuits, perfect with your morning tea or coffee.",
-    inStock: true,
+    name: "Cabbage",
+    quantity: "1 pc",
+    price: 20,
+    emoji: "🥦",
+    vibe: "Freshly Picked",
+    category: "Fresh Produce",
+    available: true,
   },
   {
     id: 8,
-    name: "Namkeen 200g",
-    category: "Snacks",
-    image: "/assets/generated/namkeen-transparent.dim_300x300.png",
-    price: 30,
-    mrp: 35,
-    quantity: "200g Pack",
-    rating: 4.4,
-    reviews: 145,
-    description: "Spicy and savory mixed namkeen, a beloved Indian snack.",
-    inStock: true,
+    name: "Coriander",
+    quantity: "100g",
+    price: 10,
+    emoji: "🌿",
+    vibe: "Earth Friendly",
+    category: "Fresh Produce",
+    available: true,
   },
   {
     id: 9,
-    name: "Noodles 70g",
-    category: "Snacks",
-    image: "/assets/generated/noodles-transparent.dim_300x300.png",
+    name: "Ginger",
+    quantity: "100g",
     price: 15,
-    mrp: 18,
-    quantity: "70g Pack",
-    rating: 4.2,
-    reviews: 567,
-    description:
-      "Instant masala noodles ready in just 2 minutes. A quick and tasty meal.",
-    inStock: true,
+    emoji: "🫚",
+    vibe: "Freshly Picked",
+    category: "Fresh Produce",
+    available: true,
   },
-  // Daily Routine
   {
     id: 10,
-    name: "Soap Bar",
-    category: "Daily Routine",
-    image: "/assets/generated/soap-transparent.dim_300x300.png",
-    price: 45,
-    mrp: 55,
-    quantity: "1 Bar (100g)",
-    rating: 4.0,
-    reviews: 203,
-    description:
-      "Gentle moisturizing soap bar for smooth and clean skin. Suitable for all skin types.",
-    inStock: true,
+    name: "Garlic",
+    quantity: "100g",
+    price: 20,
+    emoji: "🧄",
+    vibe: "Chef's Choice",
+    category: "Fresh Produce",
+    available: true,
   },
   {
     id: 11,
-    name: "Toothpaste 150g",
-    category: "Daily Routine",
-    image: "/assets/generated/toothpaste-transparent.dim_300x300.png",
-    price: 65,
-    mrp: 80,
-    quantity: "150g Tube",
-    rating: 4.5,
-    reviews: 412,
-    description:
-      "Fluoride-enriched toothpaste for complete cavity protection and fresh breath.",
-    inStock: true,
+    name: "Lemon",
+    quantity: "4 pcs",
+    price: 15,
+    emoji: "🍋",
+    vibe: "Freshly Picked",
+    category: "Fresh Produce",
+    available: true,
   },
   {
     id: 12,
-    name: "Shampoo 200ml",
-    category: "Daily Routine",
-    image: "/assets/generated/shampoo-transparent.dim_300x300.png",
-    price: 130,
-    mrp: 160,
-    quantity: "200ml Bottle",
-    rating: 4.3,
-    reviews: 267,
-    description:
-      "Nourishing shampoo with herbal extracts for smooth, shiny and healthy hair.",
-    inStock: true,
+    name: "Green Chilli",
+    quantity: "100g",
+    price: 10,
+    emoji: "🌶️",
+    vibe: "Daily Essential",
+    category: "Fresh Produce",
+    available: true,
   },
+  // Beverages
   {
     id: 13,
-    name: "Sanitizer 100ml",
-    category: "Daily Routine",
-    image: "/assets/generated/sanitizer-transparent.dim_300x300.png",
-    price: 80,
-    mrp: 100,
-    quantity: "100ml Bottle",
-    rating: 4.4,
-    reviews: 189,
-    description:
-      "Instant hand sanitizer with 70% alcohol. Kills 99.9% of germs.",
-    inStock: true,
+    name: "Coca-Cola",
+    quantity: "750ml",
+    price: 40,
+    emoji: "🥤",
+    vibe: "Student Fave",
+    category: "Beverages",
+    available: true,
   },
-  // Stationery
   {
     id: 14,
-    name: "Notebook 200 Pages",
-    category: "Stationery",
-    image: "/assets/generated/notebook-transparent.dim_300x300.png",
-    price: 60,
-    mrp: 75,
-    quantity: "200 Pages",
-    rating: 4.6,
-    reviews: 234,
-    description:
-      "Premium ruled notebook with thick pages for smooth writing. Ideal for students.",
-    inStock: true,
+    name: "Pepsi",
+    quantity: "750ml",
+    price: 40,
+    emoji: "🥤",
+    vibe: "Student Fave",
+    category: "Beverages",
+    available: true,
   },
   {
     id: 15,
-    name: "Graph Copy 100 Pages",
-    category: "Stationery",
-    image: "/assets/generated/graph-copy-transparent.dim_300x300.png",
-    price: 45,
-    mrp: 55,
-    quantity: "100 Pages",
-    rating: 4.4,
-    reviews: 156,
-    description:
-      "Fine grid graph paper copy for engineering and mathematical drawings.",
-    inStock: true,
+    name: "Sprite",
+    quantity: "750ml",
+    price: 40,
+    emoji: "🥤",
+    vibe: "Student Fave",
+    category: "Beverages",
+    available: true,
   },
   {
     id: 16,
-    name: "Pens Pack of 10",
-    category: "Stationery",
-    image: "/assets/generated/pens-transparent.dim_300x300.png",
-    price: 50,
-    mrp: 65,
-    quantity: "Pack of 10",
-    rating: 4.5,
-    reviews: 312,
-    description:
-      "Smooth writing ballpoint pens in blue ink. Comfortable grip for long writing sessions.",
-    inStock: true,
+    name: "Maaza Mango",
+    quantity: "600ml",
+    price: 40,
+    emoji: "🥭",
+    vibe: "Chef's Choice",
+    category: "Beverages",
+    available: true,
   },
   {
     id: 17,
-    name: "Pencils Pack of 12",
-    category: "Stationery",
-    image: "/assets/generated/pencils-transparent.dim_300x300.png",
-    price: 40,
-    mrp: 50,
-    quantity: "Pack of 12",
-    rating: 4.3,
-    reviews: 198,
-    description:
-      "HB grade pencils, pre-sharpened and ready for use. Smooth and consistent lines.",
-    inStock: true,
+    name: "Real Orange Juice",
+    quantity: "1L",
+    price: 80,
+    emoji: "🍊",
+    vibe: "Earth Friendly",
+    category: "Beverages",
+    available: true,
   },
   {
     id: 18,
-    name: "Eraser Pack of 5",
-    category: "Stationery",
-    image: "/assets/generated/eraser-transparent.dim_300x300.png",
-    price: 25,
-    mrp: 30,
-    quantity: "Pack of 5",
-    rating: 4.1,
-    reviews: 87,
-    description:
-      "Soft vinyl erasers that clean completely without tearing the paper.",
-    inStock: true,
+    name: "Mountain Dew",
+    quantity: "750ml",
+    price: 40,
+    emoji: "💚",
+    vibe: "Student Fave",
+    category: "Beverages",
+    available: true,
   },
   {
     id: 19,
-    name: "Project File A4",
-    category: "Stationery",
-    image: "/assets/generated/project-file-transparent.dim_300x300.png",
-    price: 35,
-    mrp: 45,
-    quantity: "1 File",
-    rating: 4.2,
-    reviews: 134,
-    description:
-      "A4 size project file with transparent cover and inside pockets for documents.",
-    inStock: true,
+    name: "Limca",
+    quantity: "750ml",
+    price: 40,
+    emoji: "🍋",
+    vibe: "Freshly Picked",
+    category: "Beverages",
+    available: true,
   },
-];
-
-const FEATURED_PRODUCTS = [
-  LOCAL_PRODUCTS[0],
-  LOCAL_PRODUCTS[5],
-  LOCAL_PRODUCTS[14],
+  {
+    id: 20,
+    name: "Red Bull",
+    quantity: "250ml",
+    price: 115,
+    emoji: "⚡",
+    vibe: "Student Fave",
+    category: "Beverages",
+    available: true,
+  },
+  {
+    id: 21,
+    name: "Lassi Pouch",
+    quantity: "200ml",
+    price: 20,
+    emoji: "🥛",
+    vibe: "Daily Essential",
+    category: "Beverages",
+    available: true,
+  },
+  {
+    id: 22,
+    name: "Rooh Afza",
+    quantity: "750ml",
+    price: 180,
+    emoji: "🌹",
+    vibe: "Chef's Choice",
+    category: "Beverages",
+    available: true,
+  },
+  // Snacks
+  {
+    id: 23,
+    name: "Lays Classic",
+    quantity: "50g",
+    price: 20,
+    emoji: "🥔",
+    vibe: "Student Fave",
+    category: "Snacks",
+    available: true,
+  },
+  {
+    id: 24,
+    name: "Kurkure Masala",
+    quantity: "60g",
+    price: 20,
+    emoji: "🌶️",
+    vibe: "Student Fave",
+    category: "Snacks",
+    available: true,
+  },
+  {
+    id: 25,
+    name: "Bingo Chips",
+    quantity: "60g",
+    price: 20,
+    emoji: "🍟",
+    vibe: "Student Fave",
+    category: "Snacks",
+    available: true,
+  },
+  {
+    id: 26,
+    name: "Haldiram Bhujia",
+    quantity: "200g",
+    price: 70,
+    emoji: "🌟",
+    vibe: "Chef's Choice",
+    category: "Snacks",
+    available: true,
+  },
+  {
+    id: 27,
+    name: "Act II Popcorn",
+    quantity: "30g",
+    price: 15,
+    emoji: "🍿",
+    vibe: "Student Fave",
+    category: "Snacks",
+    available: true,
+  },
+  {
+    id: 28,
+    name: "Parle G Biscuit",
+    quantity: "200g",
+    price: 15,
+    emoji: "🍪",
+    vibe: "Daily Essential",
+    category: "Snacks",
+    available: true,
+  },
+  {
+    id: 29,
+    name: "Monaco Crackers",
+    quantity: "200g",
+    price: 25,
+    emoji: "🟡",
+    vibe: "Student Fave",
+    category: "Snacks",
+    available: true,
+  },
+  {
+    id: 30,
+    name: "Maggi Masala",
+    quantity: "70g",
+    price: 14,
+    emoji: "🍜",
+    vibe: "Student Fave",
+    category: "Snacks",
+    available: true,
+  },
+  {
+    id: 31,
+    name: "Good Day Cookies",
+    quantity: "100g",
+    price: 25,
+    emoji: "🍪",
+    vibe: "Chef's Choice",
+    category: "Snacks",
+    available: true,
+  },
+  {
+    id: 32,
+    name: "Namkeen Mix",
+    quantity: "200g",
+    price: 40,
+    emoji: "🥜",
+    vibe: "Daily Essential",
+    category: "Snacks",
+    available: true,
+  },
+  // Chocolates
+  {
+    id: 33,
+    name: "Dairy Milk",
+    quantity: "40g",
+    price: 20,
+    emoji: "🍫",
+    vibe: "Chef's Choice",
+    category: "Chocolates",
+    available: true,
+  },
+  {
+    id: 34,
+    name: "Kit Kat",
+    quantity: "4-finger",
+    price: 20,
+    emoji: "🍫",
+    vibe: "Student Fave",
+    category: "Chocolates",
+    available: true,
+  },
+  {
+    id: 35,
+    name: "Munch",
+    quantity: "13g",
+    price: 10,
+    emoji: "🍫",
+    vibe: "Student Fave",
+    category: "Chocolates",
+    available: true,
+  },
+  {
+    id: 36,
+    name: "5 Star",
+    quantity: "22g",
+    price: 10,
+    emoji: "⭐",
+    vibe: "Student Fave",
+    category: "Chocolates",
+    available: true,
+  },
+  {
+    id: 37,
+    name: "Perk",
+    quantity: "13g",
+    price: 10,
+    emoji: "🍫",
+    vibe: "Student Fave",
+    category: "Chocolates",
+    available: true,
+  },
+  {
+    id: 38,
+    name: "Bounty",
+    quantity: "57g",
+    price: 50,
+    emoji: "🥥",
+    vibe: "Chef's Choice",
+    category: "Chocolates",
+    available: true,
+  },
+  {
+    id: 39,
+    name: "Ferrero Rocher",
+    quantity: "3pc",
+    price: 99,
+    emoji: "✨",
+    vibe: "Chef's Choice",
+    category: "Chocolates",
+    available: true,
+  },
+  {
+    id: 40,
+    name: "Snickers",
+    quantity: "50g",
+    price: 40,
+    emoji: "🥜",
+    vibe: "Student Fave",
+    category: "Chocolates",
+    available: true,
+  },
+  // Dairy
+  {
+    id: 41,
+    name: "Amul Milk",
+    quantity: "500ml",
+    price: 28,
+    emoji: "🥛",
+    vibe: "Daily Essential",
+    category: "Dairy",
+    available: true,
+  },
+  {
+    id: 42,
+    name: "Amul Butter",
+    quantity: "100g",
+    price: 55,
+    emoji: "🧈",
+    vibe: "Chef's Choice",
+    category: "Dairy",
+    available: true,
+  },
+  {
+    id: 43,
+    name: "Amul Cheese Slice",
+    quantity: "200g",
+    price: 90,
+    emoji: "🧀",
+    vibe: "Chef's Choice",
+    category: "Dairy",
+    available: true,
+  },
+  {
+    id: 44,
+    name: "Curd",
+    quantity: "400g",
+    price: 30,
+    emoji: "🥛",
+    vibe: "Daily Essential",
+    category: "Dairy",
+    available: true,
+  },
+  {
+    id: 45,
+    name: "Paneer",
+    quantity: "200g",
+    price: 80,
+    emoji: "🤍",
+    vibe: "Chef's Choice",
+    category: "Dairy",
+    available: true,
+  },
+  {
+    id: 46,
+    name: "Amul Ice Cream",
+    quantity: "500ml",
+    price: 120,
+    emoji: "🍦",
+    vibe: "Student Fave",
+    category: "Dairy",
+    available: true,
+  },
+  {
+    id: 47,
+    name: "Amul Lassi",
+    quantity: "200ml",
+    price: 25,
+    emoji: "🥛",
+    vibe: "Daily Essential",
+    category: "Dairy",
+    available: true,
+  },
+  {
+    id: 48,
+    name: "Condensed Milk",
+    quantity: "400g",
+    price: 70,
+    emoji: "🍮",
+    vibe: "Chef's Choice",
+    category: "Dairy",
+    available: true,
+  },
+  // Bakery
+  {
+    id: 49,
+    name: "Britannia Bread",
+    quantity: "400g",
+    price: 40,
+    emoji: "🍞",
+    vibe: "Daily Essential",
+    category: "Bakery",
+    available: true,
+  },
+  {
+    id: 50,
+    name: "Britannia Cake",
+    quantity: "65g",
+    price: 20,
+    emoji: "🎂",
+    vibe: "Student Fave",
+    category: "Bakery",
+    available: true,
+  },
+  {
+    id: 51,
+    name: "Jim Jam Biscuits",
+    quantity: "150g",
+    price: 25,
+    emoji: "🍪",
+    vibe: "Student Fave",
+    category: "Bakery",
+    available: true,
+  },
+  {
+    id: 52,
+    name: "Marie Gold",
+    quantity: "250g",
+    price: 30,
+    emoji: "🍪",
+    vibe: "Daily Essential",
+    category: "Bakery",
+    available: true,
+  },
+  {
+    id: 53,
+    name: "Toast Rusk",
+    quantity: "250g",
+    price: 35,
+    emoji: "🍞",
+    vibe: "Daily Essential",
+    category: "Bakery",
+    available: true,
+  },
+  {
+    id: 54,
+    name: "Pav Buns",
+    quantity: "6pc",
+    price: 30,
+    emoji: "🥖",
+    vibe: "Chef's Choice",
+    category: "Bakery",
+    available: true,
+  },
+  // Stationery
+  {
+    id: 55,
+    name: "Classmate Notebook",
+    quantity: "200pg",
+    price: 60,
+    emoji: "📓",
+    vibe: "Student Fave",
+    category: "Stationery",
+    available: true,
+  },
+  {
+    id: 56,
+    name: "Graph Copy A4",
+    quantity: "1pc",
+    price: 20,
+    emoji: "📊",
+    vibe: "Student Fave",
+    category: "Stationery",
+    available: true,
+  },
+  {
+    id: 57,
+    name: "Project File A4",
+    quantity: "1pc",
+    price: 25,
+    emoji: "📁",
+    vibe: "Student Fave",
+    category: "Stationery",
+    available: true,
+  },
+  {
+    id: 58,
+    name: "L-Folder",
+    quantity: "1pc",
+    price: 15,
+    emoji: "📂",
+    vibe: "Student Fave",
+    category: "Stationery",
+    available: true,
+  },
+  {
+    id: 59,
+    name: "Reynolds Pen Blue",
+    quantity: "1pc",
+    price: 10,
+    emoji: "🖊️",
+    vibe: "Daily Essential",
+    category: "Stationery",
+    available: true,
+  },
+  {
+    id: 60,
+    name: "HB Pencil Set",
+    quantity: "10pc",
+    price: 30,
+    emoji: "✏️",
+    vibe: "Student Fave",
+    category: "Stationery",
+    available: true,
+  },
+  {
+    id: 61,
+    name: "Stapler Mini",
+    quantity: "1pc",
+    price: 45,
+    emoji: "📎",
+    vibe: "Daily Essential",
+    category: "Stationery",
+    available: true,
+  },
+  {
+    id: 62,
+    name: "Highlighter Set",
+    quantity: "4pc",
+    price: 60,
+    emoji: "🖍️",
+    vibe: "Student Fave",
+    category: "Stationery",
+    available: true,
+  },
+  {
+    id: 63,
+    name: "Sticky Notes",
+    quantity: "100pc",
+    price: 35,
+    emoji: "🗒️",
+    vibe: "Student Fave",
+    category: "Stationery",
+    available: true,
+  },
+  {
+    id: 64,
+    name: "Scientific Calculator",
+    quantity: "1pc",
+    price: 250,
+    emoji: "🔢",
+    vibe: "Student Fave",
+    category: "Stationery",
+    available: true,
+  },
+  // Personal Care
+  {
+    id: 65,
+    name: "Colgate Toothpaste",
+    quantity: "150g",
+    price: 65,
+    emoji: "🦷",
+    vibe: "Daily Essential",
+    category: "Personal Care",
+    available: true,
+  },
+  {
+    id: 66,
+    name: "Pepsodent Toothbrush",
+    quantity: "1pc",
+    price: 35,
+    emoji: "🪥",
+    vibe: "Daily Essential",
+    category: "Personal Care",
+    available: true,
+  },
+  {
+    id: 67,
+    name: "Dove Soap",
+    quantity: "75g",
+    price: 45,
+    emoji: "🧼",
+    vibe: "Earth Friendly",
+    category: "Personal Care",
+    available: true,
+  },
+  {
+    id: 68,
+    name: "Head & Shoulders",
+    quantity: "180ml",
+    price: 160,
+    emoji: "💆",
+    vibe: "Daily Essential",
+    category: "Personal Care",
+    available: true,
+  },
+  {
+    id: 69,
+    name: "Dettol Hand Wash",
+    quantity: "200ml",
+    price: 80,
+    emoji: "🤲",
+    vibe: "Earth Friendly",
+    category: "Personal Care",
+    available: true,
+  },
+  {
+    id: 70,
+    name: "Vaseline Lotion",
+    quantity: "200ml",
+    price: 110,
+    emoji: "💧",
+    vibe: "Daily Essential",
+    category: "Personal Care",
+    available: true,
+  },
+  {
+    id: 71,
+    name: "Gillette Razor",
+    quantity: "2pc",
+    price: 60,
+    emoji: "🪒",
+    vibe: "Daily Essential",
+    category: "Personal Care",
+    available: true,
+  },
+  {
+    id: 72,
+    name: "Whisper Ultra",
+    quantity: "7pc",
+    price: 55,
+    emoji: "🌸",
+    vibe: "Daily Essential",
+    category: "Personal Care",
+    available: true,
+  },
+  // Household
+  {
+    id: 73,
+    name: "Ariel Detergent",
+    quantity: "500g",
+    price: 110,
+    emoji: "🫧",
+    vibe: "Daily Essential",
+    category: "Household",
+    available: true,
+  },
+  {
+    id: 74,
+    name: "Vim Dishwash Bar",
+    quantity: "200g",
+    price: 30,
+    emoji: "🧽",
+    vibe: "Daily Essential",
+    category: "Household",
+    available: true,
+  },
+  {
+    id: 75,
+    name: "Colin Glass Cleaner",
+    quantity: "500ml",
+    price: 85,
+    emoji: "🪟",
+    vibe: "Daily Essential",
+    category: "Household",
+    available: true,
+  },
+  {
+    id: 76,
+    name: "Harpic Toilet Cleaner",
+    quantity: "500ml",
+    price: 90,
+    emoji: "🚽",
+    vibe: "Daily Essential",
+    category: "Household",
+    available: true,
+  },
+  {
+    id: 77,
+    name: "Odomos Mosquito Coil",
+    quantity: "10pc",
+    price: 30,
+    emoji: "🌙",
+    vibe: "Daily Essential",
+    category: "Household",
+    available: true,
+  },
+  {
+    id: 78,
+    name: "Scotch-Brite Scrubber",
+    quantity: "2pc",
+    price: 40,
+    emoji: "🧹",
+    vibe: "Daily Essential",
+    category: "Household",
+    available: true,
+  },
+  {
+    id: 79,
+    name: "Phenyl Floor Cleaner",
+    quantity: "500ml",
+    price: 60,
+    emoji: "🏠",
+    vibe: "Daily Essential",
+    category: "Household",
+    available: true,
+  },
+  {
+    id: 80,
+    name: "Candle Pack",
+    quantity: "12pc",
+    price: 30,
+    emoji: "🕯️",
+    vibe: "Daily Essential",
+    category: "Household",
+    available: true,
+  },
+  // Instant Food
+  {
+    id: 81,
+    name: "Maggi 2min Noodles",
+    quantity: "4pk",
+    price: 56,
+    emoji: "🍜",
+    vibe: "Student Fave",
+    category: "Instant Food",
+    available: true,
+  },
+  {
+    id: 82,
+    name: "Yippee Noodles",
+    quantity: "70g",
+    price: 14,
+    emoji: "🍜",
+    vibe: "Student Fave",
+    category: "Instant Food",
+    available: true,
+  },
+  {
+    id: 83,
+    name: "Top Ramen",
+    quantity: "70g",
+    price: 14,
+    emoji: "🍜",
+    vibe: "Student Fave",
+    category: "Instant Food",
+    available: true,
+  },
+  {
+    id: 84,
+    name: "Knorr Soup Tomato",
+    quantity: "55g",
+    price: 35,
+    emoji: "🥣",
+    vibe: "Chef's Choice",
+    category: "Instant Food",
+    available: true,
+  },
+  {
+    id: 85,
+    name: "MTR Dal Makhani",
+    quantity: "300g",
+    price: 85,
+    emoji: "🍛",
+    vibe: "Chef's Choice",
+    category: "Instant Food",
+    available: true,
+  },
+  {
+    id: 86,
+    name: "Haldiram Ready Meal",
+    quantity: "300g",
+    price: 90,
+    emoji: "🍱",
+    vibe: "Chef's Choice",
+    category: "Instant Food",
+    available: true,
+  },
+  {
+    id: 87,
+    name: "Poha",
+    quantity: "500g",
+    price: 40,
+    emoji: "🍽️",
+    vibe: "Daily Essential",
+    category: "Instant Food",
+    available: true,
+  },
+  {
+    id: 88,
+    name: "Quaker Oats",
+    quantity: "500g",
+    price: 120,
+    emoji: "🌾",
+    vibe: "Earth Friendly",
+    category: "Instant Food",
+    available: true,
+  },
 ];
 
 const CATEGORIES = [
-  "All",
-  "Beverages",
-  "Snacks",
-  "Daily Routine",
-  "Stationery",
+  {
+    name: "Fresh Produce",
+    emoji: "🥬",
+    color: "from-emerald-900/60 to-emerald-700/30",
+    span: "col-span-2",
+  },
+  {
+    name: "Beverages",
+    emoji: "🥤",
+    color: "from-blue-900/60 to-blue-700/30",
+    span: "",
+  },
+  {
+    name: "Snacks",
+    emoji: "🍿",
+    color: "from-yellow-900/60 to-yellow-700/30",
+    span: "",
+  },
+  {
+    name: "Chocolates",
+    emoji: "🍫",
+    color: "from-amber-900/60 to-amber-700/30",
+    span: "",
+  },
+  {
+    name: "Dairy",
+    emoji: "🥛",
+    color: "from-slate-800/60 to-slate-600/30",
+    span: "col-span-2",
+  },
+  {
+    name: "Bakery",
+    emoji: "🍞",
+    color: "from-orange-900/60 to-orange-700/30",
+    span: "",
+  },
+  {
+    name: "Stationery",
+    emoji: "📚",
+    color: "from-indigo-900/60 to-indigo-700/30",
+    span: "",
+  },
+  {
+    name: "Personal Care",
+    emoji: "🧴",
+    color: "from-pink-900/60 to-pink-700/30",
+    span: "",
+  },
+  {
+    name: "Household",
+    emoji: "🏠",
+    color: "from-teal-900/60 to-teal-700/30",
+    span: "",
+  },
+  {
+    name: "Instant Food",
+    emoji: "🍜",
+    color: "from-red-900/60 to-red-700/30",
+    span: "col-span-2",
+  },
 ];
-const CATEGORY_ICONS: Record<string, string> = {
-  All: "🛒",
-  Beverages: "🥤",
-  Snacks: "🍟",
-  "Daily Routine": "🧴",
-  Stationery: "✏️",
+
+const VIBE_STYLES: Record<VibeTag, string> = {
+  "Freshly Picked": "bg-gradient-to-r from-emerald-600 to-green-400 text-white",
+  "Chef's Choice": "bg-gradient-to-r from-amber-600 to-yellow-400 text-black",
+  "Earth Friendly": "bg-gradient-to-r from-teal-600 to-cyan-400 text-white",
+  "Student Fave": "bg-gradient-to-r from-purple-600 to-violet-400 text-white",
+  "Daily Essential": "bg-gradient-to-r from-blue-600 to-sky-400 text-white",
 };
 
-// ─── Coupons ───────────────────────────────────────────────────────────────
-interface Coupon {
-  code: string;
-  discount: number;
-  minOrder: number;
-}
-
-const COUPONS: Coupon[] = [
-  { code: "SAVE10", discount: 0.1, minOrder: 300 },
-  { code: "SAVE15", discount: 0.15, minOrder: 500 },
-  { code: "SAVE20", discount: 0.2, minOrder: 1000 },
+const WHEEL_PRIZES = [
+  "10% OFF",
+  "Free Item!",
+  "₹20 Cashback",
+  "15% OFF",
+  "Try Again",
+  "₹50 OFF",
+  "5% OFF",
+  "Bumper Prize!",
 ];
 
-function getBestCoupon(subtotal: number): Coupon | null {
-  const applicable = COUPONS.filter((c) => subtotal >= c.minOrder);
-  if (applicable.length === 0) return null;
-  return applicable[applicable.length - 1];
-}
-
-function getNextCoupon(subtotal: number): Coupon | null {
-  return COUPONS.find((c) => subtotal < c.minOrder) ?? null;
-}
-
-function discountPct(price: number, mrp: number): number {
-  return Math.round(((mrp - price) / mrp) * 100);
-}
-
-// ─── Star Rating ───────────────────────────────────────────────────────────
-function StarRating({
-  rating,
-  size = "sm",
-}: { rating: number; size?: "sm" | "md" }) {
+// ─── Vibe Badge ────────────────────────────────────────────────────────────
+function VibeBadge({ vibe }: { vibe: VibeTag }) {
   return (
-    <div className="flex items-center gap-0.5">
-      {[1, 2, 3, 4, 5].map((s) => (
-        <Star
-          key={s}
-          className={size === "sm" ? "w-3 h-3" : "w-4 h-4"}
-          fill={rating >= s ? "#ff9f00" : "none"}
-          stroke={rating >= s - 0.5 ? "#ff9f00" : "#d1d5db"}
-        />
-      ))}
-    </div>
-  );
-}
-
-// ─── Spinning Wheel ────────────────────────────────────────────────────────
-const WHEEL_SEGMENTS = [
-  { label: "5% Off", color: "#f97316" },
-  { label: "10% Off", color: "#16a34a" },
-  { label: "Free Item", color: "#7c3aed" },
-  { label: "₹20 Cashback", color: "#2563eb" },
-  { label: "15% Off", color: "#dc2626" },
-  { label: "Better Luck!", color: "#6b7280" },
-];
-
-function SpinningWheel({
-  spinning,
-  rotation,
-}: { spinning: boolean; rotation: number }) {
-  const size = 280;
-  const cx = size / 2;
-  const cy = size / 2;
-  const r = size / 2 - 8;
-  const n = WHEEL_SEGMENTS.length;
-  const anglePerSegment = (2 * Math.PI) / n;
-
-  const segments = WHEEL_SEGMENTS.map((seg, i) => {
-    const startAngle = i * anglePerSegment - Math.PI / 2;
-    const endAngle = startAngle + anglePerSegment;
-    const x1 = cx + r * Math.cos(startAngle);
-    const y1 = cy + r * Math.sin(startAngle);
-    const x2 = cx + r * Math.cos(endAngle);
-    const y2 = cy + r * Math.sin(endAngle);
-    const midAngle = startAngle + anglePerSegment / 2;
-    const tx = cx + r * 0.65 * Math.cos(midAngle);
-    const ty = cy + r * 0.65 * Math.sin(midAngle);
-    return { ...seg, x1, y1, x2, y2, tx, ty, midAngle };
-  });
-
-  return (
-    <div className="relative inline-flex items-center justify-center">
-      <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1 z-10"
-        style={{
-          width: 0,
-          height: 0,
-          borderLeft: "12px solid transparent",
-          borderRight: "12px solid transparent",
-          borderTop: "24px solid #dc2626",
-        }}
-      />
-      <svg
-        role="img"
-        aria-label="Lucky Draw Wheel"
-        width={size}
-        height={size}
-        style={{
-          transform: `rotate(${rotation}deg)`,
-          transition: spinning
-            ? "transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)"
-            : "none",
-          borderRadius: "50%",
-          boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
-        }}
-      >
-        {segments.map((seg) => (
-          <g key={seg.label}>
-            <path
-              d={`M ${cx} ${cy} L ${seg.x1} ${seg.y1} A ${r} ${r} 0 0 1 ${seg.x2} ${seg.y2} Z`}
-              fill={seg.color}
-              stroke="white"
-              strokeWidth="2"
-            />
-            <text
-              x={seg.tx}
-              y={seg.ty}
-              textAnchor="middle"
-              dominantBaseline="middle"
-              fill="white"
-              fontSize="11"
-              fontWeight="bold"
-              transform={`rotate(${(seg.midAngle * 180) / Math.PI + 90}, ${seg.tx}, ${seg.ty})`}
-            >
-              {seg.label}
-            </text>
-          </g>
-        ))}
-        <circle
-          cx={cx}
-          cy={cy}
-          r={18}
-          fill="white"
-          stroke="#e5e7eb"
-          strokeWidth="3"
-        />
-        <text
-          x={cx}
-          y={cy}
-          textAnchor="middle"
-          dominantBaseline="middle"
-          fontSize="10"
-          fontWeight="bold"
-          fill="#374151"
-        >
-          SPIN
-        </text>
-      </svg>
-    </div>
-  );
-}
-
-// ─── Owner Popup ───────────────────────────────────────────────────────────
-function OwnerPopup() {
-  const [visible, setVisible] = useState(
-    () => sessionStorage.getItem("ownerPopupDismissed") !== "true",
-  );
-  const dismiss = () => {
-    sessionStorage.setItem("ownerPopupDismissed", "true");
-    setVisible(false);
-  };
-  if (!visible) return null;
-  return (
-    <AnimatePresence>
-      <motion.div
-        key="owner-popup"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center p-4"
-        style={{ background: "rgba(0,0,0,0.75)" }}
-        onClick={dismiss}
-      >
-        <motion.div
-          initial={{ scale: 0.85, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.85, opacity: 0 }}
-          transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          className="relative bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden"
-          onClick={(e) => e.stopPropagation()}
-          data-ocid="owner.modal"
-        >
-          <div
-            className="h-3"
-            style={{
-              background: "linear-gradient(90deg, #f97316, #16a34a, #f97316)",
-            }}
-          />
-          <button
-            type="button"
-            onClick={dismiss}
-            data-ocid="owner.close_button"
-            className="absolute top-5 right-5 z-10 w-9 h-9 rounded-full bg-white/90 shadow flex items-center justify-center hover:bg-gray-100 transition-colors"
-          >
-            <X className="w-5 h-5 text-gray-600" />
-          </button>
-          <div className="p-8 text-center">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <Sparkles className="w-5 h-5" style={{ color: "#f97316" }} />
-              <span
-                className="text-sm font-semibold uppercase tracking-widest"
-                style={{ color: "#f97316" }}
-              >
-                Welcome to
-              </span>
-              <Sparkles className="w-5 h-5" style={{ color: "#f97316" }} />
-            </div>
-            <h2
-              className="font-display font-black text-3xl mb-4"
-              style={{ color: "#1a1a1a" }}
-            >
-              Annapurna Shop
-            </h2>
-            <div
-              className="relative mx-auto w-56 h-56 rounded-2xl overflow-hidden shadow-xl border-4"
-              style={{ borderColor: "#f97316" }}
-            >
-              <img
-                src="/assets/uploads/screenshot_20260327-092046_2-019d2d6c-fd52-72a2-a138-7440113cce5f-1.png"
-                alt="Shop Owners"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <p className="mt-4 text-gray-600 text-sm leading-relaxed">
-              Meet your trusted shopkeepers at <strong>Annapurna Shop</strong>.
-              <br />
-              Quality products, honest prices, and a warm welcome every time! 🙏
-            </p>
-            <button
-              type="button"
-              onClick={dismiss}
-              data-ocid="owner.cancel_button"
-              className="mt-5 px-8 py-3 rounded-full font-bold text-white text-sm transition-all hover:scale-105 active:scale-95"
-              style={{
-                background: "linear-gradient(135deg, #f97316, #ea580c)",
-              }}
-            >
-              Enter Shop →
-            </button>
-          </div>
-          <div
-            className="h-1"
-            style={{
-              background: "linear-gradient(90deg, #16a34a, #f97316, #16a34a)",
-            }}
-          />
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
-  );
-}
-
-// ─── Offer Marquee + Floating Cards ───────────────────────────────────────
-const OFFER_TEXTS = [
-  "🔥 50% OFF on Chips!",
-  "🎁 Buy 2 Get 1 FREE on Biscuits",
-  "⚡ Flash Sale: Cold Drinks at ₹35!",
-  "🎯 Free Delivery on orders above ₹300!",
-  "🌟 New Arrival: Premium Tea at ₹120",
-  "💥 Combo Deal: Shampoo + Soap for ₹160",
-  "🎉 Student Discount: 15% off Stationery!",
-  "🛒 Buy 3 Notebooks, Get ₹20 Off!",
-];
-
-function OfferBanner() {
-  const repeated = [...OFFER_TEXTS, ...OFFER_TEXTS];
-  return (
-    <div
-      className="overflow-hidden py-3"
-      style={{
-        background: "linear-gradient(135deg, #1a1a2e 0%, #f97316 100%)",
-      }}
+    <span
+      className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${VIBE_STYLES[vibe]}`}
     >
-      <div className="flex whitespace-nowrap animate-marquee">
-        {repeated.map((text, i) => (
-          <span
-            key={String(i) + text.slice(0, 6)}
-            className="inline-flex items-center gap-2 text-white font-bold text-sm px-8"
-          >
-            {text}
-            <span className="text-yellow-300 mx-2">•</span>
-          </span>
-        ))}
-      </div>
-    </div>
+      {vibe}
+    </span>
   );
 }
 
-function FloatingFeaturedCards() {
-  return (
-    <section
-      className="py-8 px-4"
-      style={{
-        background:
-          "linear-gradient(135deg, #fff7ed 0%, #fef3c7 50%, #f0fdf4 100%)",
-      }}
-    >
-      <div className="container max-w-6xl mx-auto">
-        <div className="text-center mb-6">
-          <h2
-            className="font-display font-black text-2xl md:text-3xl"
-            style={{ color: "#1a1a1a" }}
-          >
-            ✨ Featured Items
-          </h2>
-          <p className="text-gray-500 text-sm mt-1">
-            Best sellers, handpicked for you
-          </p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {FEATURED_PRODUCTS.map((p, i) => (
-            <div
-              key={p.id}
-              className="bg-white rounded-2xl shadow-lg p-5 text-center border border-orange-100 animate-float"
-              style={{ animationDelay: `${i * 0.8}s` }}
-            >
-              <div className="w-28 h-28 mx-auto mb-3 bg-gray-50 rounded-xl flex items-center justify-center overflow-hidden">
-                <img
-                  src={p.image}
-                  alt={p.name}
-                  className="w-full h-full object-contain"
-                />
-              </div>
-              <h3 className="font-bold text-gray-800 text-sm mb-1">{p.name}</h3>
-              <div className="flex items-center justify-center gap-1 mb-2">
-                <StarRating rating={p.rating} size="sm" />
-                <span className="text-xs text-gray-500">({p.reviews})</span>
-              </div>
-              <div className="flex items-center justify-center gap-2">
-                <span
-                  className="font-black text-lg"
-                  style={{ color: "#f97316" }}
-                >
-                  ₹{p.price}
-                </span>
-                <span className="text-gray-400 text-xs line-through">
-                  ₹{p.mrp}
-                </span>
-                <span className="text-xs font-bold text-green-600">
-                  {discountPct(p.price, p.mrp)}% off
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── Product Detail Dialog (Flipkart style) ────────────────────────────────
-function ProductDetailDialog({
-  product,
-  open,
-  onClose,
-  onAddToCart,
-}: {
-  product: LocalProduct | null;
-  open: boolean;
-  onClose: () => void;
-  onAddToCart: (p: LocalProduct) => void;
-}) {
-  if (!product) return null;
-  const pct = discountPct(product.price, product.mrp);
-  return (
-    <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
-      <DialogContent
-        className="max-w-2xl p-0 overflow-hidden"
-        data-ocid="product.dialog"
-      >
-        <div className="flex flex-col sm:flex-row">
-          {/* Left: image */}
-          <div className="sm:w-64 shrink-0 bg-gray-50 flex items-center justify-center p-8 border-b sm:border-b-0 sm:border-r border-gray-100">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-48 h-48 object-contain"
-            />
-          </div>
-          {/* Right: details */}
-          <div className="flex-1 p-6 flex flex-col gap-3">
-            <DialogHeader className="pb-0">
-              <DialogTitle className="text-xl font-black text-gray-900 leading-snug text-left">
-                {product.name}
-              </DialogTitle>
-            </DialogHeader>
-            {/* Rating */}
-            <div className="flex items-center gap-2">
-              <span
-                className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-white text-xs font-bold"
-                style={{ background: "#388e3c" }}
-              >
-                {product.rating}{" "}
-                <Star className="w-3 h-3" fill="white" stroke="white" />
-              </span>
-              <span className="text-xs text-gray-400">
-                {product.reviews.toLocaleString()} ratings
-              </span>
-            </div>
-            {/* Price */}
-            <div className="flex items-baseline gap-3">
-              <span className="text-3xl font-black text-gray-900">
-                ₹{product.price}
-              </span>
-              <span className="text-gray-400 text-sm line-through">
-                ₹{product.mrp}
-              </span>
-              <span className="text-green-600 font-bold text-sm">
-                {pct}% off
-              </span>
-            </div>
-            {/* Quantity */}
-            <p className="text-xs text-gray-500">
-              📦 Pack:{" "}
-              <span className="font-semibold text-gray-700">
-                {product.quantity}
-              </span>
-            </p>
-            {/* Description */}
-            <p className="text-sm text-gray-600 leading-relaxed">
-              {product.description}
-            </p>
-            {/* Stock */}
-            {product.inStock ? (
-              <span className="inline-flex items-center gap-1 text-green-700 text-xs font-semibold">
-                <CheckCircle2 className="w-4 h-4" /> In Stock
-              </span>
-            ) : (
-              <span className="inline-flex items-center gap-1 text-red-600 text-xs font-semibold">
-                <X className="w-4 h-4" /> Out of Stock
-              </span>
-            )}
-            {/* Actions */}
-            <div className="flex gap-3 mt-2">
-              <Button
-                data-ocid="product.primary_button"
-                className="flex-1 font-bold text-white"
-                style={{ background: "#ff9f00" }}
-                disabled={!product.inStock}
-                onClick={() => {
-                  onAddToCart(product);
-                  onClose();
-                }}
-              >
-                <ShoppingCart className="w-4 h-4 mr-2" /> ADD TO CART
-              </Button>
-              <Button
-                data-ocid="product.secondary_button"
-                className="flex-1 font-bold text-white"
-                style={{ background: "#fb641b" }}
-                disabled={!product.inStock}
-                onClick={() => {
-                  onAddToCart(product);
-                  onClose();
-                }}
-              >
-                BUY NOW
-              </Button>
-            </div>
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
-}
-
-// ─── Product Card (Flipkart style) ─────────────────────────────────────────
+// ─── Product Card ──────────────────────────────────────────────────────────
 function ProductCard({
   product,
-  index,
   onAddToCart,
-  onViewDetail,
-}: {
-  product: LocalProduct;
-  index: number;
-  onAddToCart: (p: LocalProduct) => void;
-  onViewDetail: (p: LocalProduct) => void;
-}) {
-  const pct = discountPct(product.price, product.mrp);
+}: { product: Product; onAddToCart: (p: Product) => void }) {
   return (
-    <motion.div
-      data-ocid={`product.item.${index}`}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, delay: Math.min(index * 0.04, 0.4) }}
-      className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col"
-      onClick={() => onViewDetail(product)}
+    <div
+      className="product-card relative rounded-2xl p-4 glass flex flex-col gap-2 cursor-pointer"
+      style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.4)" }}
+      data-ocid={`product.item.${product.id}`}
     >
-      {/* Image */}
-      <div className="bg-gray-50 flex items-center justify-center h-40 relative px-4 pt-4">
-        {pct > 0 && (
-          <span className="absolute top-2 left-2 bg-green-500 text-white text-[10px] font-black px-2 py-0.5 rounded">
-            {pct}% off
-          </span>
-        )}
-        {!product.inStock && (
-          <span className="absolute top-2 right-2 bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded">
-            Out of Stock
-          </span>
-        )}
-        <img
-          src={product.image}
-          alt={product.name}
-          className="h-32 w-full object-contain"
-        />
-      </div>
-      {/* Info */}
-      <div className="p-3 flex flex-col gap-1.5 flex-1">
-        <h3 className="font-semibold text-gray-800 text-sm leading-snug line-clamp-2">
-          {product.name}
-        </h3>
-        <div className="flex items-center gap-1.5">
-          <span
-            className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-white text-[10px] font-bold"
-            style={{ background: "#388e3c" }}
-          >
-            {product.rating}{" "}
-            <Star className="w-2.5 h-2.5" fill="white" stroke="white" />
-          </span>
-          <StarRating rating={product.rating} size="sm" />
-          <span className="text-[10px] text-gray-400">({product.reviews})</span>
-        </div>
-        <div className="flex items-baseline gap-2">
-          <span className="font-black text-base text-gray-900">
-            ₹{product.price}
-          </span>
-          <span className="text-gray-400 text-xs line-through">
-            ₹{product.mrp}
-          </span>
-          <span className="text-green-600 text-[10px] font-bold">
-            {pct}% off
-          </span>
-        </div>
-        <p className="text-[10px] text-gray-500">{product.quantity}</p>
-        <Button
-          data-ocid={`product.add_button.${index}`}
-          size="sm"
-          className="mt-auto w-full font-bold text-xs"
-          style={{
-            background: product.inStock
-              ? "linear-gradient(135deg, #f97316, #ea580c)"
-              : undefined,
-          }}
-          disabled={!product.inStock}
+      {/* Image Container */}
+      <div className="relative overflow-hidden rounded-xl bg-white/5 flex items-center justify-center h-28">
+        <span className="product-image text-6xl select-none">
+          {product.emoji}
+        </span>
+        {/* Quick Add */}
+        <button
+          type="button"
+          className="quick-add-btn absolute bottom-2 right-2 w-9 h-9 rounded-full bg-[#b5ff2e] text-black flex items-center justify-center font-bold text-lg glow-lime-sm"
           onClick={(e) => {
             e.stopPropagation();
             onAddToCart(product);
+            toast.success(`${product.name} added to cart!`);
           }}
+          data-ocid={`product.add_button.${product.id}`}
         >
-          <ShoppingCart className="w-3 h-3 mr-1" /> Add to Cart
-        </Button>
+          <Plus size={16} />
+        </button>
       </div>
-    </motion.div>
+      {/* Info */}
+      <div className="flex flex-col gap-1">
+        <VibeBadge vibe={product.vibe} />
+        <p className="font-semibold text-sm text-foreground leading-tight mt-1">
+          {product.name}
+        </p>
+        <p className="text-muted-foreground text-xs">{product.quantity}</p>
+        <div className="flex items-center justify-between mt-1">
+          <span className="text-[#b5ff2e] font-bold text-base">
+            ₹{product.price}
+          </span>
+          <span
+            className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
+              product.available
+                ? "bg-emerald-500/20 text-emerald-400"
+                : "bg-red-500/20 text-red-400"
+            }`}
+          >
+            {product.available ? "In Stock" : "Sold Out"}
+          </span>
+        </div>
+      </div>
+      <button
+        type="button"
+        className="btn-bounce mt-1 w-full py-2 rounded-xl bg-white/8 hover:bg-[#b5ff2e]/20 border border-white/10 hover:border-[#b5ff2e]/50 text-sm font-semibold text-foreground transition-all"
+        onClick={() => {
+          onAddToCart(product);
+          toast.success(`${product.name} added to cart!`);
+        }}
+        data-ocid={`product.primary_button.${product.id}`}
+      >
+        Add to Cart
+      </button>
+    </div>
   );
 }
 
-// ─── Checkout Wizard ────────────────────────────────────────────────────────
-function CheckoutWizard({
+// ─── Section Header ────────────────────────────────────────────────────────
+function SectionHeader({
+  title,
+  emoji,
+  onViewAll,
+}: { title: string; emoji: string; onViewAll?: () => void }) {
+  return (
+    <div className="flex items-center justify-between mb-6">
+      <h2 className="font-display font-800 text-2xl md:text-3xl text-foreground flex items-center gap-3">
+        <span>{emoji}</span> {title}
+      </h2>
+      {onViewAll && (
+        <button
+          type="button"
+          className="text-[#b5ff2e] text-sm font-semibold flex items-center gap-1 hover:gap-2 transition-all"
+          onClick={onViewAll}
+          data-ocid="nav.link"
+        >
+          View All <ChevronRight size={14} />
+        </button>
+      )}
+    </div>
+  );
+}
+
+// ─── Product Grid ──────────────────────────────────────────────────────────
+function ProductGrid({
+  category,
+  products,
+  onAddToCart,
+}: {
+  category: string;
+  products: Product[];
+  onAddToCart: (p: Product) => void;
+}) {
+  const catProducts = products.filter((p) => p.category === category);
+  const catInfo = CATEGORIES.find((c) => c.name === category);
+  if (!catProducts.length) return null;
+  return (
+    <section className="mb-16" id={category.toLowerCase().replace(/ /g, "-")}>
+      <SectionHeader title={category} emoji={catInfo?.emoji ?? "🛒"} />
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+        {catProducts.map((p) => (
+          <ProductCard key={p.id} product={p} onAddToCart={onAddToCart} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// ─── Lucky Draw Wheel ──────────────────────────────────────────────────────
+function LuckyDraw() {
+  const [spinning, setSpinning] = useState(false);
+  const [prize, setPrize] = useState<string | null>(null);
+  const [deg, setDeg] = useState(0);
+  const [showResult, setShowResult] = useState(false);
+  const lastSpun = useRef<string | null>(null);
+
+  const spin = useCallback(() => {
+    if (spinning) return;
+    const today = new Date().toDateString();
+    if (lastSpun.current === today) {
+      toast.error("You've already spun today! Come back tomorrow.");
+      return;
+    }
+    setSpinning(true);
+    setPrize(null);
+    const extra = 1440 + Math.floor(Math.random() * 360);
+    const newDeg = deg + extra;
+    setDeg(newDeg);
+    setTimeout(() => {
+      const idx =
+        Math.floor(((360 - (newDeg % 360)) / 360) * WHEEL_PRIZES.length) %
+        WHEEL_PRIZES.length;
+      const won = WHEEL_PRIZES[idx];
+      setPrize(won);
+      setSpinning(false);
+      setShowResult(true);
+      lastSpun.current = today;
+    }, 3200);
+  }, [spinning, deg]);
+
+  const sliceAngle = 360 / WHEEL_PRIZES.length;
+  const colors = [
+    "#b5ff2e",
+    "#ff6b2b",
+    "#7c3aed",
+    "#0ea5e9",
+    "#ec4899",
+    "#10b981",
+    "#f59e0b",
+    "#ef4444",
+  ];
+
+  return (
+    <section className="py-20 flex flex-col items-center" id="lucky-draw">
+      <SectionHeader title="Lucky Draw" emoji="🎡" />
+      <p className="text-muted-foreground mb-8 text-center max-w-md">
+        Spin once daily for a chance to win discounts, cashback, or free items!
+      </p>
+      <div className="relative w-72 h-72">
+        {/* Wheel SVG */}
+        <svg
+          role="img"
+          aria-label="Lucky draw wheel"
+          viewBox="0 0 200 200"
+          className="w-full h-full"
+          style={{
+            transform: `rotate(${deg}deg)`,
+            transition: spinning
+              ? "transform 3.2s cubic-bezier(0.17,0.67,0.12,1)"
+              : "none",
+          }}
+        >
+          {WHEEL_PRIZES.map((prize, i) => {
+            const startAngle = (i * sliceAngle * Math.PI) / 180;
+            const endAngle = ((i + 1) * sliceAngle * Math.PI) / 180;
+            const x1 = 100 + 95 * Math.cos(startAngle);
+            const y1 = 100 + 95 * Math.sin(startAngle);
+            const x2 = 100 + 95 * Math.cos(endAngle);
+            const y2 = 100 + 95 * Math.sin(endAngle);
+            const midAngle = ((i + 0.5) * sliceAngle * Math.PI) / 180;
+            const tx = 100 + 65 * Math.cos(midAngle);
+            const ty = 100 + 65 * Math.sin(midAngle);
+            return (
+              <g key={prize}>
+                <path
+                  d={`M 100 100 L ${x1} ${y1} A 95 95 0 0 1 ${x2} ${y2} Z`}
+                  fill={colors[i % colors.length]}
+                  opacity={0.85}
+                />
+                <text
+                  x={tx}
+                  y={ty}
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  fontSize="7"
+                  fontWeight="bold"
+                  fill="#111113"
+                  transform={`rotate(${(i + 0.5) * sliceAngle}, ${tx}, ${ty})`}
+                >
+                  {prize}
+                </text>
+              </g>
+            );
+          })}
+          <circle
+            cx="100"
+            cy="100"
+            r="12"
+            fill="#111113"
+            stroke="#b5ff2e"
+            strokeWidth="3"
+          />
+        </svg>
+        {/* Pointer */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1 w-0 h-0 border-l-[10px] border-r-[10px] border-b-[24px] border-l-transparent border-r-transparent border-b-[#b5ff2e]" />
+      </div>
+      <button
+        type="button"
+        className="btn-bounce mt-8 px-10 py-4 rounded-full bg-[#b5ff2e] text-black font-bold text-lg glow-lime"
+        onClick={spin}
+        disabled={spinning}
+        data-ocid="lucky_draw.primary_button"
+      >
+        {spinning ? (
+          <>
+            <Loader2 className="inline animate-spin mr-2" size={18} />
+            Spinning...
+          </>
+        ) : (
+          "🎰 Spin the Wheel"
+        )}
+      </button>
+      {showResult && prize && (
+        <Dialog open={showResult} onOpenChange={setShowResult}>
+          <DialogContent
+            className="glass border-[#b5ff2e]/30 text-center"
+            data-ocid="lucky_draw.dialog"
+          >
+            <DialogHeader>
+              <DialogTitle className="font-display text-3xl text-[#b5ff2e]">
+                🎉 You Won!
+              </DialogTitle>
+            </DialogHeader>
+            <p className="text-5xl font-display font-black mt-4">{prize}</p>
+            <p className="text-muted-foreground mt-2">
+              Congratulations! Show this to the shopkeeper at Annapurna Shop.
+            </p>
+            <button
+              type="button"
+              className="btn-bounce mt-4 px-8 py-3 rounded-full bg-[#b5ff2e] text-black font-bold"
+              onClick={() => setShowResult(false)}
+              data-ocid="lucky_draw.close_button"
+            >
+              Awesome! 🎊
+            </button>
+          </DialogContent>
+        </Dialog>
+      )}
+    </section>
+  );
+}
+
+// ─── Cart Drawer ───────────────────────────────────────────────────────────
+function CartDrawer({
   open,
   onClose,
-  items,
-  onClearCart,
+  cart,
+  onUpdateQty,
+  onRemove,
+  onCheckout,
 }: {
   open: boolean;
   onClose: () => void;
-  items: CartItem[];
-  onClearCart: () => void;
+  cart: CartItem[];
+  onUpdateQty: (id: number, delta: number) => void;
+  onRemove: (id: number) => void;
+  onCheckout: () => void;
 }) {
-  const [step, setStep] = useState(1);
-  const [address, setAddress] = useState<CheckoutAddress>({
-    name: "",
-    mobile: "",
-    house: "",
-    street: "",
-    city: "",
-    state: "",
-    pincode: "",
-    landmark: "",
-  });
-  const [payMethod, setPayMethod] = useState<"upi" | "card" | "cod">("cod");
-  const [upiId, setUpiId] = useState("");
-  const [cardNum, setCardNum] = useState("");
-  const [cardExpiry, setCardExpiry] = useState("");
-  const [cardCvv, setCardCvv] = useState("");
-  const [orderId] = useState(() =>
-    Math.random().toString(36).substring(2, 10).toUpperCase(),
+  const subtotal = cart.reduce((s, i) => s + i.price * i.cartQty, 0);
+  const coupon =
+    subtotal >= 1000
+      ? "SAVE20"
+      : subtotal >= 500
+        ? "SAVE15"
+        : subtotal >= 200
+          ? "SAVE10"
+          : null;
+  const discount =
+    subtotal >= 1000 ? 0.2 : subtotal >= 500 ? 0.15 : subtotal >= 200 ? 0.1 : 0;
+  const savings = Math.floor(subtotal * discount);
+  const total = subtotal - savings;
+
+  return (
+    <Sheet open={open} onOpenChange={onClose}>
+      <SheetContent
+        side="right"
+        className="w-full sm:w-[420px] p-0 border-l border-white/10"
+        style={{
+          background: "rgba(13,13,15,0.97)",
+          backdropFilter: "blur(30px)",
+        }}
+        data-ocid="cart.sheet"
+      >
+        <SheetHeader className="px-6 py-5 border-b border-white/10">
+          <SheetTitle className="font-display text-xl flex items-center gap-2">
+            <ShoppingCart size={20} className="text-[#b5ff2e]" />
+            Your Cart ({cart.reduce((s, i) => s + i.cartQty, 0)} items)
+          </SheetTitle>
+        </SheetHeader>
+        <div className="flex flex-col h-[calc(100vh-80px)]">
+          <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+            {cart.length === 0 ? (
+              <div
+                className="flex flex-col items-center justify-center h-full text-muted-foreground"
+                data-ocid="cart.empty_state"
+              >
+                <ShoppingCart size={48} className="mb-4 opacity-30" />
+                <p className="text-lg">Your cart is empty</p>
+                <p className="text-sm mt-1">Add items to get started!</p>
+              </div>
+            ) : (
+              cart.map((item) => (
+                <div
+                  key={item.id}
+                  className="glass rounded-xl p-3 flex items-center gap-3"
+                  data-ocid={`cart.item.${item.id}`}
+                >
+                  <span className="text-3xl">{item.emoji}</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-sm truncate">
+                      {item.name}
+                    </p>
+                    <p className="text-muted-foreground text-xs">
+                      {item.quantity}
+                    </p>
+                    <p className="text-[#b5ff2e] font-bold text-sm">
+                      ₹{item.price * item.cartQty}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                      onClick={() => onUpdateQty(item.id, -1)}
+                      data-ocid={`cart.secondary_button.${item.id}`}
+                    >
+                      <Minus size={12} />
+                    </button>
+                    <span className="w-6 text-center text-sm font-bold">
+                      {item.cartQty}
+                    </span>
+                    <button
+                      type="button"
+                      className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                      onClick={() => onUpdateQty(item.id, 1)}
+                      data-ocid={`cart.primary_button.${item.id}`}
+                    >
+                      <Plus size={12} />
+                    </button>
+                    <button
+                      type="button"
+                      className="w-7 h-7 rounded-full bg-red-500/20 hover:bg-red-500/40 flex items-center justify-center transition-colors"
+                      onClick={() => onRemove(item.id)}
+                      data-ocid={`cart.delete_button.${item.id}`}
+                    >
+                      <X size={12} className="text-red-400" />
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+          {cart.length > 0 && (
+            <div className="px-6 py-5 border-t border-white/10 space-y-3">
+              {coupon && (
+                <div className="glass rounded-xl p-3 flex items-center justify-between">
+                  <div>
+                    <p className="text-xs text-muted-foreground">
+                      Coupon Applied
+                    </p>
+                    <p className="font-bold text-[#b5ff2e] text-sm">{coupon}</p>
+                  </div>
+                  <p className="text-emerald-400 font-bold">-₹{savings}</p>
+                </div>
+              )}
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Subtotal</span>
+                <span>₹{subtotal}</span>
+              </div>
+              {savings > 0 && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Savings</span>
+                  <span className="text-emerald-400">-₹{savings}</span>
+                </div>
+              )}
+              <div className="flex justify-between font-bold text-lg border-t border-white/10 pt-3">
+                <span>Total</span>
+                <span className="text-[#b5ff2e]">₹{total}</span>
+              </div>
+              <button
+                type="button"
+                className="btn-bounce w-full py-4 rounded-xl bg-[#b5ff2e] text-black font-bold text-lg glow-lime"
+                onClick={onCheckout}
+                data-ocid="cart.submit_button"
+              >
+                Proceed to Checkout →
+              </button>
+            </div>
+          )}
+        </div>
+      </SheetContent>
+    </Sheet>
   );
+}
 
-  const subtotal = items.reduce((s, i) => s + i.product.price * i.qty, 0);
-  const coupon = getBestCoupon(subtotal);
-  const discount = coupon ? Math.round(subtotal * coupon.discount) : 0;
-  const total = subtotal - discount;
+// ─── Checkout Modal ────────────────────────────────────────────────────────
+function CheckoutModal({
+  open,
+  onClose,
+  cart,
+  total,
+}: {
+  open: boolean;
+  onClose: () => void;
+  cart: CartItem[];
+  total: number;
+}) {
+  const [step, setStep] = useState<CheckoutStep>(1);
+  const [address, setAddress] = useState<Address>({
+    name: "",
+    hostel: "",
+    phone: "",
+    pincode: "",
+  });
+  const [payMethod, setPayMethod] = useState<"upi" | "card" | "cod">("upi");
+  const [upiId, setUpiId] = useState("");
+  const [processing, setProcessing] = useState(false);
 
-  const stepLabels = ["Cart", "Address", "Payment", "Confirmed"];
+  const handlePayment = () => {
+    setProcessing(true);
+    setTimeout(() => {
+      setProcessing(false);
+      setStep(4);
+    }, 2000);
+  };
 
-  const handleClose = () => {
-    if (step === 4) onClearCart();
+  const reset = () => {
     setStep(1);
+    setAddress({ name: "", hostel: "", phone: "", pincode: "" });
     onClose();
   };
 
-  const goToStep2 = () => setStep(2);
-  const goToStep3 = () => {
-    if (
-      !address.name ||
-      !address.mobile ||
-      !address.house ||
-      !address.city ||
-      !address.pincode
-    ) {
-      toast.error("Please fill all required fields");
-      return;
-    }
-    setStep(3);
-  };
-  const placeOrder = () => {
-    if (payMethod === "upi" && !upiId) {
-      toast.error("Please enter UPI ID");
-      return;
-    }
-    if (payMethod === "card" && (!cardNum || !cardExpiry || !cardCvv)) {
-      toast.error("Please fill card details");
-      return;
-    }
-    setStep(4);
-  };
-
   return (
-    <Dialog open={open} onOpenChange={(v) => !v && handleClose()}>
+    <Dialog open={open} onOpenChange={reset}>
       <DialogContent
-        className="max-w-2xl p-0 overflow-hidden max-h-[90vh]"
+        className="max-w-lg w-full border border-white/10 p-0 overflow-hidden"
+        style={{
+          background: "rgba(13,13,15,0.98)",
+          backdropFilter: "blur(30px)",
+        }}
         data-ocid="checkout.dialog"
       >
-        {/* Step Progress */}
-        <div
-          className="px-6 pt-5 pb-3"
-          style={{ background: "linear-gradient(135deg, #f97316, #ea580c)" }}
-        >
-          <div className="flex items-center justify-between mb-1">
-            {stepLabels.map((label, i) => (
-              <div key={label} className="flex items-center gap-1">
-                <div
-                  className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black transition-colors ${
-                    step > i + 1
-                      ? "bg-green-400 text-white"
-                      : step === i + 1
-                        ? "bg-white text-orange-600"
-                        : "bg-white/30 text-white"
-                  }`}
-                >
-                  {step > i + 1 ? "✓" : i + 1}
-                </div>
-                <span
-                  className={`text-xs font-semibold hidden sm:inline ${step === i + 1 ? "text-white" : "text-white/60"}`}
-                >
-                  {label}
-                </span>
-                {i < 3 && (
-                  <ChevronRight className="w-3 h-3 text-white/40 mx-1" />
-                )}
+        {/* Progress */}
+        {step < 4 && (
+          <div className="flex border-b border-white/10">
+            {([1, 2, 3] as CheckoutStep[]).map((s) => (
+              <div
+                key={s}
+                className={`flex-1 py-3 text-center text-xs font-bold transition-colors ${
+                  step === s
+                    ? "text-[#b5ff2e] border-b-2 border-[#b5ff2e]"
+                    : step > s
+                      ? "text-muted-foreground"
+                      : "text-muted-foreground/50"
+                }`}
+              >
+                {s === 1 ? "Cart" : s === 2 ? "Address" : "Payment"}
               </div>
             ))}
           </div>
-        </div>
-
-        <ScrollArea className="max-h-[calc(90vh-100px)]">
-          <div className="p-6">
-            {/* Step 1: Cart Review */}
-            {step === 1 && (
-              <div>
-                <h3 className="font-black text-xl mb-4">🛒 Review Your Cart</h3>
-                <div className="space-y-3 mb-4">
-                  {items.map((item, i) => (
-                    <div
-                      key={item.product.id}
-                      data-ocid={`cart.item.${i + 1}`}
-                      className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl"
-                    >
-                      <img
-                        src={item.product.image}
-                        alt={item.product.name}
-                        className="w-14 h-14 object-contain bg-white rounded-lg p-1"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-sm truncate">
-                          {item.product.name}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          {item.product.quantity}
-                        </p>
-                      </div>
-                      <div className="text-right shrink-0">
-                        <p className="font-bold text-sm">
-                          ₹{item.product.price * item.qty}
-                        </p>
-                        <p className="text-xs text-gray-400">Qty: {item.qty}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                {coupon && (
-                  <div className="flex items-center gap-2 p-3 bg-green-50 rounded-xl border border-green-200 mb-4">
-                    <Tag className="w-4 h-4 text-green-600" />
-                    <span className="text-sm font-bold text-green-700">
-                      {coupon.code} applied — You save ₹{discount}!
+        )}
+        <div className="p-6">
+          {step === 1 && (
+            <div>
+              <h3 className="font-display font-bold text-xl mb-4">
+                Order Summary
+              </h3>
+              <div className="space-y-2 max-h-52 overflow-y-auto pr-1">
+                {cart.map((i) => (
+                  <div key={i.id} className="flex justify-between text-sm">
+                    <span className="flex items-center gap-2">
+                      {i.emoji} {i.name} ×{i.cartQty}
+                    </span>
+                    <span className="text-[#b5ff2e] font-bold">
+                      ₹{i.price * i.cartQty}
                     </span>
                   </div>
+                ))}
+              </div>
+              <div className="flex justify-between font-bold text-lg mt-4 pt-4 border-t border-white/10">
+                <span>Total</span>
+                <span className="text-[#b5ff2e]">₹{total}</span>
+              </div>
+              <button
+                type="button"
+                className="btn-bounce w-full mt-4 py-3 rounded-xl bg-[#b5ff2e] text-black font-bold"
+                onClick={() => setStep(2)}
+                data-ocid="checkout.primary_button"
+              >
+                Continue to Address →
+              </button>
+            </div>
+          )}
+          {step === 2 && (
+            <div>
+              <h3 className="font-display font-bold text-xl mb-4">
+                Delivery Address
+              </h3>
+              <div className="space-y-3">
+                {(
+                  [
+                    {
+                      key: "name",
+                      label: "Full Name",
+                      placeholder: "Your name",
+                    },
+                    {
+                      key: "hostel",
+                      label: "Hostel / Block",
+                      placeholder: "e.g. A Block, Room 204",
+                    },
+                    {
+                      key: "phone",
+                      label: "Phone Number",
+                      placeholder: "10-digit number",
+                    },
+                    { key: "pincode", label: "Pincode", placeholder: "246001" },
+                  ] as {
+                    key: keyof Address;
+                    label: string;
+                    placeholder: string;
+                  }[]
+                ).map(({ key, label, placeholder }) => (
+                  <div key={key}>
+                    <label
+                      htmlFor={key}
+                      className="text-xs text-muted-foreground mb-1 block"
+                    >
+                      {label}
+                    </label>
+                    <Input
+                      id={key}
+                      className="bg-white/5 border-white/10 focus:border-[#b5ff2e]/50 rounded-xl"
+                      placeholder={placeholder}
+                      value={address[key]}
+                      onChange={(e) =>
+                        setAddress((prev) => ({
+                          ...prev,
+                          [key]: e.target.value,
+                        }))
+                      }
+                      data-ocid={`checkout.${key}_input`}
+                    />
+                  </div>
+                ))}
+              </div>
+              <button
+                type="button"
+                className="btn-bounce w-full mt-4 py-3 rounded-xl bg-[#b5ff2e] text-black font-bold"
+                onClick={() => setStep(3)}
+                disabled={!address.name || !address.hostel || !address.phone}
+                data-ocid="checkout.submit_button"
+              >
+                Continue to Payment →
+              </button>
+            </div>
+          )}
+          {step === 3 && (
+            <div>
+              <h3 className="font-display font-bold text-xl mb-4">
+                Payment Method
+              </h3>
+              <div className="space-y-3">
+                {(["upi", "card", "cod"] as const).map((m) => (
+                  <button
+                    type="button"
+                    key={m}
+                    className={`w-full p-4 rounded-xl border text-left transition-all ${
+                      payMethod === m
+                        ? "border-[#b5ff2e]/60 bg-[#b5ff2e]/10"
+                        : "border-white/10 bg-white/5"
+                    }`}
+                    onClick={() => setPayMethod(m)}
+                    data-ocid={`checkout.${m}_radio`}
+                  >
+                    <span className="font-bold">
+                      {m === "upi"
+                        ? "📱 UPI Payment"
+                        : m === "card"
+                          ? "💳 Credit / Debit Card"
+                          : "💵 Cash on Delivery"}
+                    </span>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {m === "upi"
+                        ? "Pay using any UPI app"
+                        : m === "card"
+                          ? "Visa, Mastercard, RuPay"
+                          : "Pay when you receive"}
+                    </p>
+                  </button>
+                ))}
+                {payMethod === "upi" && (
+                  <Input
+                    className="bg-white/5 border-white/10 focus:border-[#b5ff2e]/50 rounded-xl"
+                    placeholder="Enter UPI ID (e.g. name@upi)"
+                    value={upiId}
+                    onChange={(e) => setUpiId(e.target.value)}
+                    data-ocid="checkout.upi_input"
+                  />
                 )}
-                <div className="border-t pt-3 space-y-1.5">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-500">Subtotal</span>
-                    <span>₹{subtotal}</span>
-                  </div>
-                  {discount > 0 && (
-                    <div className="flex justify-between text-sm">
-                      <span className="text-green-600">Coupon Discount</span>
-                      <span className="text-green-600">-₹{discount}</span>
-                    </div>
-                  )}
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-500">Delivery</span>
-                    <span className="text-green-600">
-                      {subtotal >= 300 ? "FREE" : "₹30"}
-                    </span>
-                  </div>
-                  <div className="flex justify-between font-black text-lg border-t pt-2">
-                    <span>Total</span>
-                    <span>₹{subtotal >= 300 ? total : total + 30}</span>
-                  </div>
-                </div>
-                <Button
-                  data-ocid="checkout.primary_button"
-                  className="w-full mt-5 font-bold py-6"
-                  style={{
-                    background: "linear-gradient(135deg, #f97316, #ea580c)",
-                  }}
-                  onClick={goToStep2}
-                >
-                  Proceed to Address →
-                </Button>
               </div>
-            )}
-
-            {/* Step 2: Address */}
-            {step === 2 && (
-              <div>
-                <h3 className="font-black text-xl mb-4">📍 Delivery Address</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="flex flex-col gap-1">
-                    <Label className="text-xs font-bold">Full Name *</Label>
-                    <Input
-                      data-ocid="checkout.input"
-                      placeholder="Enter your name"
-                      value={address.name}
-                      onChange={(e) =>
-                        setAddress((a) => ({ ...a, name: e.target.value }))
-                      }
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <Label className="text-xs font-bold">Mobile Number *</Label>
-                    <Input
-                      data-ocid="checkout.input"
-                      placeholder="10-digit mobile"
-                      value={address.mobile}
-                      onChange={(e) =>
-                        setAddress((a) => ({ ...a, mobile: e.target.value }))
-                      }
-                      maxLength={10}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1 sm:col-span-2">
-                    <Label className="text-xs font-bold">
-                      House / Flat No. *
-                    </Label>
-                    <Input
-                      data-ocid="checkout.input"
-                      placeholder="House/Flat/Block No."
-                      value={address.house}
-                      onChange={(e) =>
-                        setAddress((a) => ({ ...a, house: e.target.value }))
-                      }
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1 sm:col-span-2">
-                    <Label className="text-xs font-bold">
-                      Street / Area / Colony
-                    </Label>
-                    <Input
-                      data-ocid="checkout.input"
-                      placeholder="Street name or area"
-                      value={address.street}
-                      onChange={(e) =>
-                        setAddress((a) => ({ ...a, street: e.target.value }))
-                      }
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <Label className="text-xs font-bold">City *</Label>
-                    <Input
-                      data-ocid="checkout.input"
-                      placeholder="City"
-                      value={address.city}
-                      onChange={(e) =>
-                        setAddress((a) => ({ ...a, city: e.target.value }))
-                      }
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <Label className="text-xs font-bold">State</Label>
-                    <Input
-                      data-ocid="checkout.input"
-                      placeholder="State"
-                      value={address.state}
-                      onChange={(e) =>
-                        setAddress((a) => ({ ...a, state: e.target.value }))
-                      }
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <Label className="text-xs font-bold">Pincode *</Label>
-                    <Input
-                      data-ocid="checkout.input"
-                      placeholder="6-digit pincode"
-                      value={address.pincode}
-                      onChange={(e) =>
-                        setAddress((a) => ({ ...a, pincode: e.target.value }))
-                      }
-                      maxLength={6}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <Label className="text-xs font-bold">Landmark</Label>
-                    <Input
-                      data-ocid="checkout.input"
-                      placeholder="Near landmark"
-                      value={address.landmark}
-                      onChange={(e) =>
-                        setAddress((a) => ({ ...a, landmark: e.target.value }))
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="flex gap-3 mt-6">
-                  <Button
-                    variant="outline"
-                    onClick={() => setStep(1)}
-                    data-ocid="checkout.cancel_button"
-                    className="flex-1"
-                  >
-                    ← Back
-                  </Button>
-                  <Button
-                    className="flex-1 font-bold"
-                    style={{
-                      background: "linear-gradient(135deg, #f97316, #ea580c)",
-                    }}
-                    onClick={goToStep3}
-                    data-ocid="checkout.primary_button"
-                  >
-                    Save & Continue →
-                  </Button>
-                </div>
-              </div>
-            )}
-
-            {/* Step 3: Payment */}
-            {step === 3 && (
-              <div>
-                <h3 className="font-black text-xl mb-4">
-                  💳 Choose Payment Method
-                </h3>
-                <RadioGroup
-                  value={payMethod}
-                  onValueChange={(v) =>
-                    setPayMethod(v as "upi" | "card" | "cod")
-                  }
-                  className="space-y-3"
-                >
-                  {/* UPI */}
-                  <label
-                    data-ocid="checkout.radio"
-                    htmlFor="upi"
-                    className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${payMethod === "upi" ? "border-orange-500 bg-orange-50" : "border-gray-200 hover:border-gray-300"}`}
-                  >
-                    <RadioGroupItem value="upi" id="upi" className="mt-0.5" />
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 font-bold text-sm">
-                        <Smartphone className="w-4 h-4 text-orange-500" /> UPI
-                        Payment
-                        <span className="flex gap-1 ml-auto">
-                          {["G Pay", "PhonePe", "Paytm"].map((app) => (
-                            <span
-                              key={app}
-                              className="text-[9px] font-black px-1.5 py-0.5 rounded bg-orange-100 text-orange-700"
-                            >
-                              {app}
-                            </span>
-                          ))}
-                        </span>
-                      </div>
-                      {payMethod === "upi" && (
-                        <Input
-                          data-ocid="checkout.input"
-                          className="mt-2 text-sm"
-                          placeholder="Enter UPI ID (e.g. name@upi)"
-                          value={upiId}
-                          onChange={(e) => setUpiId(e.target.value)}
-                        />
-                      )}
-                    </div>
-                  </label>
-                  {/* Card */}
-                  <label
-                    data-ocid="checkout.radio"
-                    htmlFor="card"
-                    className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${payMethod === "card" ? "border-orange-500 bg-orange-50" : "border-gray-200 hover:border-gray-300"}`}
-                  >
-                    <RadioGroupItem value="card" id="card" className="mt-0.5" />
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 font-bold text-sm">
-                        <CreditCard className="w-4 h-4 text-blue-500" /> Credit
-                        / Debit Card
-                      </div>
-                      {payMethod === "card" && (
-                        <div className="mt-2 grid grid-cols-2 gap-2">
-                          <Input
-                            data-ocid="checkout.input"
-                            className="col-span-2 text-sm"
-                            placeholder="Card Number (16 digits)"
-                            value={cardNum}
-                            onChange={(e) => setCardNum(e.target.value)}
-                            maxLength={16}
-                          />
-                          <Input
-                            data-ocid="checkout.input"
-                            className="text-sm"
-                            placeholder="MM/YY"
-                            value={cardExpiry}
-                            onChange={(e) => setCardExpiry(e.target.value)}
-                            maxLength={5}
-                          />
-                          <Input
-                            data-ocid="checkout.input"
-                            className="text-sm"
-                            placeholder="CVV"
-                            value={cardCvv}
-                            onChange={(e) => setCardCvv(e.target.value)}
-                            maxLength={3}
-                            type="password"
-                          />
-                        </div>
-                      )}
-                    </div>
-                  </label>
-                  {/* COD */}
-                  <label
-                    data-ocid="checkout.radio"
-                    htmlFor="cod"
-                    className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${payMethod === "cod" ? "border-orange-500 bg-orange-50" : "border-gray-200 hover:border-gray-300"}`}
-                  >
-                    <RadioGroupItem value="cod" id="cod" />
-                    <div className="flex items-center gap-2 font-bold text-sm">
-                      <span className="text-lg">💵</span> Cash on Delivery
-                      <Badge className="ml-auto bg-green-100 text-green-700 border-green-200 text-[10px]">
-                        Recommended
-                      </Badge>
-                    </div>
-                  </label>
-                </RadioGroup>
-
-                {/* Order Summary */}
-                <div className="mt-4 p-4 bg-gray-50 rounded-xl">
-                  <p className="font-bold text-sm mb-2">Order Summary</p>
-                  <div className="space-y-1">
-                    {items.map((item) => (
-                      <div
-                        key={item.product.id}
-                        className="flex justify-between text-xs text-gray-600"
-                      >
-                        <span>
-                          {item.product.name} × {item.qty}
-                        </span>
-                        <span>₹{item.product.price * item.qty}</span>
-                      </div>
-                    ))}
-                    <div className="border-t pt-1 flex justify-between font-black text-sm">
-                      <span>Total Payable</span>
-                      <span>₹{subtotal >= 300 ? total : total + 30}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex gap-3 mt-5">
-                  <Button
-                    variant="outline"
-                    onClick={() => setStep(2)}
-                    data-ocid="checkout.cancel_button"
-                    className="flex-1"
-                  >
-                    ← Back
-                  </Button>
-                  <Button
-                    className="flex-1 font-bold"
-                    style={{
-                      background: "linear-gradient(135deg, #f97316, #ea580c)",
-                    }}
-                    onClick={placeOrder}
-                    data-ocid="checkout.submit_button"
-                  >
-                    Place Order 🛍️
-                  </Button>
-                </div>
-              </div>
-            )}
-
-            {/* Step 4: Order Confirmed */}
-            {step === 4 && (
-              <div className="text-center py-6">
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-5"
-                  style={{
-                    background: "linear-gradient(135deg, #22c55e, #16a34a)",
-                  }}
-                >
-                  <CheckCircle2 className="w-12 h-12 text-white" />
-                </motion.div>
-                <h3 className="font-black text-2xl text-gray-900 mb-1">
-                  Order Placed Successfully! 🎉
-                </h3>
-                <p className="text-gray-500 text-sm mb-4">
-                  Thank you for shopping at Annapurna Shop!
-                </p>
-                <div className="inline-block px-4 py-2 rounded-xl bg-gray-100 mb-4">
-                  <p className="text-xs text-gray-500">Order ID</p>
-                  <p className="font-black text-lg text-gray-800 tracking-widest">
-                    #ANP{orderId}
-                  </p>
-                </div>
-                <div className="p-4 bg-green-50 rounded-xl border border-green-200 mb-4">
-                  <p className="font-bold text-green-700 text-sm">
-                    🚚 Expected Delivery: 2–3 Business Days
-                  </p>
-                  <p className="text-green-600 text-xs mt-1">
-                    Delivering to: {address.house}, {address.city}{" "}
-                    {address.pincode}
-                  </p>
-                </div>
-                <div className="text-left p-4 bg-gray-50 rounded-xl mb-5 space-y-1.5">
-                  {items.map((item) => (
-                    <div
-                      key={item.product.id}
-                      className="flex items-center gap-3"
-                    >
-                      <img
-                        src={item.product.image}
-                        alt={item.product.name}
-                        className="w-10 h-10 object-contain bg-white rounded-lg p-1"
-                      />
-                      <span className="text-sm flex-1">
-                        {item.product.name}
-                      </span>
-                      <span className="text-sm font-bold">×{item.qty}</span>
-                    </div>
-                  ))}
-                </div>
-                <Button
-                  data-ocid="checkout.close_button"
-                  className="w-full font-bold py-5"
-                  style={{
-                    background: "linear-gradient(135deg, #f97316, #ea580c)",
-                  }}
-                  onClick={handleClose}
-                >
-                  Continue Shopping 🛒
-                </Button>
-              </div>
-            )}
-          </div>
-        </ScrollArea>
+              <button
+                type="button"
+                className="btn-bounce w-full mt-4 py-3 rounded-xl bg-[#b5ff2e] text-black font-bold flex items-center justify-center gap-2"
+                onClick={handlePayment}
+                disabled={processing}
+                data-ocid="checkout.confirm_button"
+              >
+                {processing ? (
+                  <>
+                    <Loader2 className="animate-spin" size={18} /> Processing...
+                  </>
+                ) : (
+                  `Pay ₹${total}`
+                )}
+              </button>
+            </div>
+          )}
+          {step === 4 && (
+            <div className="text-center py-8">
+              <div className="text-7xl mb-4 animate-bounce">🎉</div>
+              <h3 className="font-display font-black text-2xl text-[#b5ff2e] mb-2">
+                Order Confirmed!
+              </h3>
+              <p className="text-muted-foreground mb-1">
+                Your order will be delivered to your hostel.
+              </p>
+              <p className="text-muted-foreground text-sm mb-6">
+                For queries, call:{" "}
+                <span className="text-[#b5ff2e] font-bold">7895784954</span>
+              </p>
+              <button
+                type="button"
+                className="btn-bounce px-8 py-3 rounded-full bg-[#b5ff2e] text-black font-bold"
+                onClick={reset}
+                data-ocid="checkout.close_button"
+              >
+                Back to Shopping
+              </button>
+            </div>
+          )}
+        </div>
       </DialogContent>
     </Dialog>
   );
 }
 
-// ─── Cart Panel ────────────────────────────────────────────────────────────
-function CartPanel({
-  items,
-  onClose,
-  onUpdateQty,
-  onRemove,
-  onClearCart,
-}: {
-  items: CartItem[];
-  onClose: () => void;
-  onUpdateQty: (id: number, delta: number) => void;
-  onRemove: (id: number) => void;
-  onClearCart: () => void;
-}) {
-  const [checkoutOpen, setCheckoutOpen] = useState(false);
-  const subtotal = items.reduce((s, i) => s + i.product.price * i.qty, 0);
-  const coupon = getBestCoupon(subtotal);
-  const nextCoupon = getNextCoupon(subtotal);
-  const discount = coupon ? Math.round(subtotal * coupon.discount) : 0;
-  const total = subtotal - discount;
-
+// ─── Welcome Popup ─────────────────────────────────────────────────────────
+function WelcomePopup({ onClose }: { onClose: () => void }) {
   return (
-    <>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black/40 z-40"
-        onClick={onClose}
-      />
-      <motion.aside
-        data-ocid="cart.panel"
-        initial={{ x: "100%" }}
-        animate={{ x: 0 }}
-        exit={{ x: "100%" }}
-        transition={{ type: "spring", stiffness: 320, damping: 30 }}
-        className="fixed top-0 right-0 h-full w-full max-w-sm bg-white z-50 shadow-2xl flex flex-col"
-      >
-        <div
-          className="flex items-center justify-between px-5 py-4 border-b"
-          style={{ background: "linear-gradient(135deg, #f97316, #ea580c)" }}
-        >
-          <div className="flex items-center gap-2">
-            <ShoppingCart className="w-5 h-5 text-white" />
-            <h2 className="font-bold text-white text-lg">Your Cart</h2>
-            <Badge className="bg-white/20 text-white border-white/30 text-xs">
-              {items.length} items
-            </Badge>
-          </div>
-          <button
-            type="button"
-            data-ocid="cart.close_button"
-            onClick={onClose}
-            className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors"
-          >
-            <X className="w-4 h-4 text-white" />
-          </button>
-        </div>
-
-        {items.length === 0 ? (
-          <div
-            data-ocid="cart.empty_state"
-            className="flex-1 flex flex-col items-center justify-center text-gray-400 gap-3"
-          >
-            <ShoppingCart className="w-16 h-16 opacity-20" />
-            <p className="font-semibold">Your cart is empty</p>
-            <p className="text-sm">Add items to get started!</p>
-          </div>
-        ) : (
-          <ScrollArea className="flex-1 px-4 py-3">
-            <div className="space-y-3">
-              {items.map((item, i) => (
-                <div
-                  key={item.product.id}
-                  data-ocid={`cart.item.${i + 1}`}
-                  className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl"
-                >
-                  <img
-                    src={item.product.image}
-                    alt={item.product.name}
-                    className="w-14 h-14 object-contain bg-white rounded-lg p-1 shrink-0"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-xs truncate">
-                      {item.product.name}
-                    </p>
-                    <p className="text-[10px] text-gray-400">
-                      {item.product.quantity}
-                    </p>
-                    <p className="font-bold text-sm text-orange-600 mt-0.5">
-                      ₹{item.product.price * item.qty}
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-center gap-1 shrink-0">
-                    <div className="flex items-center gap-1">
-                      <button
-                        type="button"
-                        data-ocid={`cart.toggle.${i + 1}`}
-                        onClick={() => onUpdateQty(item.product.id, -1)}
-                        className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition-colors"
-                      >
-                        <Minus className="w-3 h-3" />
-                      </button>
-                      <span className="w-6 text-center text-xs font-bold">
-                        {item.qty}
-                      </span>
-                      <button
-                        type="button"
-                        data-ocid={`cart.toggle.${i + 1}`}
-                        onClick={() => onUpdateQty(item.product.id, 1)}
-                        className="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center hover:bg-orange-200 transition-colors"
-                      >
-                        <Plus className="w-3 h-3" />
-                      </button>
-                    </div>
-                    <button
-                      type="button"
-                      data-ocid={`cart.delete_button.${i + 1}`}
-                      onClick={() => onRemove(item.product.id)}
-                      className="w-6 h-6 rounded-full bg-red-50 flex items-center justify-center hover:bg-red-100 transition-colors"
-                    >
-                      <Trash2 className="w-3 h-3 text-red-400" />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </ScrollArea>
-        )}
-
-        {items.length > 0 && (
-          <div className="border-t p-4 space-y-3">
-            {coupon && (
-              <div className="flex items-center gap-2 p-2.5 bg-green-50 rounded-xl border border-green-200 text-xs">
-                <Tag className="w-4 h-4 text-green-600 shrink-0" />
-                <span className="font-bold text-green-700">
-                  {coupon.code} — You save ₹{discount}!
-                </span>
-              </div>
-            )}
-            {nextCoupon && (
-              <p className="text-[10px] text-center text-gray-500">
-                Add ₹{nextCoupon.minOrder - subtotal} more for{" "}
-                <strong>{nextCoupon.code}</strong> (
-                {Math.round(nextCoupon.discount * 100)}% off)
-              </p>
-            )}
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Subtotal</span>
-              <span>₹{subtotal}</span>
-            </div>
-            {discount > 0 && (
-              <div className="flex justify-between text-sm text-green-600">
-                <span>Discount</span>
-                <span>-₹{discount}</span>
-              </div>
-            )}
-            <div className="flex justify-between font-black text-lg">
-              <span>Total</span>
-              <span>₹{total}</span>
-            </div>
-            <Button
-              data-ocid="checkout.open_modal_button"
-              className="w-full font-bold py-5"
-              style={{
-                background: "linear-gradient(135deg, #f97316, #ea580c)",
-              }}
-              onClick={() => setCheckoutOpen(true)}
-            >
-              Proceed to Checkout →
-            </Button>
-          </div>
-        )}
-      </motion.aside>
-
-      <CheckoutWizard
-        open={checkoutOpen}
-        onClose={() => setCheckoutOpen(false)}
-        items={items}
-        onClearCart={() => {
-          onClearCart();
-          onClose();
-        }}
-      />
-    </>
-  );
-}
-
-// ─── Offers Section ────────────────────────────────────────────────────────
-const DEALS = [
-  {
-    icon: "🍟",
-    title: "Buy 2 Chips, Get 1 Free!",
-    desc: "On all chips and namkeen packs",
-    badge: "HOT",
-    color: "#f97316",
-  },
-  {
-    icon: "📓",
-    title: "10% Off on All Notebooks",
-    desc: "Classmate, spiral & ruled notebooks",
-    badge: "NEW",
-    color: "#2563eb",
-  },
-  {
-    icon: "🍪",
-    title: "Any 3 Biscuits for ₹80!",
-    desc: "Mix & match biscuit packs",
-    badge: "DEAL",
-    color: "#7c3aed",
-  },
-  {
-    icon: "🧃",
-    title: "Free Water Bottle with orders above ₹200",
-    desc: "Auto-added to qualifying orders",
-    badge: "FREE",
-    color: "#16a34a",
-  },
-  {
-    icon: "🎒",
-    title: "Student Special: 15% off Stationery",
-    desc: "Notebooks, files, pens & copies",
-    badge: "STUDENT",
-    color: "#dc2626",
-  },
-];
-
-function OffersSection() {
-  return (
-    <section
-      id="offers"
-      className="py-10 px-4"
-      style={{
-        background:
-          "linear-gradient(135deg, oklch(0.97 0.03 70) 0%, oklch(0.96 0.02 140) 100%)",
-      }}
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: "rgba(0,0,0,0.8)", backdropFilter: "blur(10px)" }}
     >
-      <div className="container max-w-6xl mx-auto">
-        <div className="text-center mb-6">
-          <div className="flex items-center justify-center gap-2 mb-1">
-            <Tag className="w-6 h-6" style={{ color: "#f97316" }} />
-            <h2 className="font-display font-black text-2xl md:text-3xl text-gray-800">
-              Offers & Deals
-            </h2>
-            <Tag className="w-6 h-6" style={{ color: "#f97316" }} />
-          </div>
-          <p className="text-gray-500 text-sm">
-            Exclusive savings just for you!
-          </p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {DEALS.map((deal, i) => (
-            <motion.div
-              key={deal.title}
-              data-ocid={`offer.item.${i + 1}`}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08 }}
-              className="bg-white rounded-2xl p-5 shadow-md border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
-            >
-              <div
-                className="absolute top-0 left-0 right-0 h-1"
-                style={{ background: deal.color }}
-              />
-              <div className="flex items-start gap-3">
-                <span className="text-3xl">{deal.icon}</span>
-                <div className="flex-1">
-                  <div className="flex items-start justify-between gap-2 mb-1">
-                    <h3 className="font-bold text-gray-800 text-sm leading-snug">
-                      {deal.title}
-                    </h3>
-                    <span
-                      className="shrink-0 text-[10px] font-black px-2 py-0.5 rounded-full text-white"
-                      style={{ background: deal.color }}
-                    >
-                      {deal.badge}
-                    </span>
-                  </div>
-                  <p className="text-gray-500 text-xs">{deal.desc}</p>
-                  <p
-                    className="text-[10px] font-bold mt-2 flex items-center gap-1"
-                    style={{ color: deal.color }}
-                  >
-                    <Zap className="w-3 h-3" /> Limited Time Only!
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── Lucky Draw ────────────────────────────────────────────────────────────
-function LuckyDrawSection() {
-  const [spinning, setSpinning] = useState(false);
-  const [rotation, setRotation] = useState(0);
-  const [result, setResult] = useState<(typeof WHEEL_SEGMENTS)[0] | null>(null);
-  const [resultOpen, setResultOpen] = useState(false);
-  const spinRef = useRef(false);
-  const today = new Date().toDateString();
-  const alreadySpun = localStorage.getItem("luckyDrawLastSpin") === today;
-
-  const spin = () => {
-    if (spinning || spinRef.current || alreadySpun) return;
-    spinRef.current = true;
-    setSpinning(true);
-    const segmentIndex = Math.floor(Math.random() * WHEEL_SEGMENTS.length);
-    const degreesPerSegment = 360 / WHEEL_SEGMENTS.length;
-    const targetAngle =
-      360 * 5 +
-      (360 - segmentIndex * degreesPerSegment - degreesPerSegment / 2);
-    setRotation((prev) => prev + targetAngle);
-    setTimeout(() => {
-      setSpinning(false);
-      spinRef.current = false;
-      setResult(WHEEL_SEGMENTS[segmentIndex]);
-      setResultOpen(true);
-      localStorage.setItem("luckyDrawLastSpin", today);
-    }, 4200);
-  };
-
-  const copyCode = (code: string) => {
-    navigator.clipboard
-      .writeText(code)
-      .then(() => toast.success(`Code "${code}" copied!`));
-  };
-
-  return (
-    <section id="lucky-draw" className="py-12 px-4 bg-white">
-      <div className="container max-w-4xl mx-auto">
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-2 mb-1">
-            <Gift className="w-6 h-6 text-yellow-500" />
-            <h2 className="font-display font-black text-2xl md:text-3xl text-gray-800">
-              Lucky Draw
-            </h2>
-            <Gift className="w-6 h-6 text-yellow-500" />
-          </div>
-          <p className="text-gray-500 text-sm">
-            Spin once a day to win exciting prizes!
-          </p>
-        </div>
-        <div className="flex flex-col items-center gap-6">
-          {alreadySpun ? (
-            <div
-              data-ocid="lucky.card"
-              className="text-center p-8 rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50"
-            >
-              <span className="text-5xl block mb-3">⏰</span>
-              <h3 className="font-bold text-xl text-gray-700 mb-2">
-                Come back tomorrow!
-              </h3>
-              <p className="text-gray-500 text-sm">
-                You've already used your daily spin. Next spin available
-                tomorrow.
-              </p>
-            </div>
-          ) : (
-            <>
-              <SpinningWheel spinning={spinning} rotation={rotation} />
-              <button
-                type="button"
-                data-ocid="lucky.button"
-                onClick={spin}
-                disabled={spinning}
-                className="px-10 py-4 rounded-2xl font-black text-white text-lg shadow-lg transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{
-                  background: "linear-gradient(135deg, #f97316, #ea580c)",
-                }}
-              >
-                {spinning ? "Spinning..." : "🎯 SPIN TO WIN!"}
-              </button>
-            </>
-          )}
-        </div>
-      </div>
-
-      <Dialog open={resultOpen} onOpenChange={setResultOpen}>
-        <DialogContent
-          className="max-w-sm text-center"
-          data-ocid="lucky.dialog"
+      <div
+        className="glass-strong rounded-3xl p-8 max-w-sm w-full text-center relative shadow-deep"
+        data-ocid="welcome.dialog"
+      >
+        <button
+          type="button"
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+          onClick={onClose}
+          data-ocid="welcome.close_button"
         >
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-black">
-              🎉 You Won!
-            </DialogTitle>
-          </DialogHeader>
-          <div className="py-4 flex flex-col items-center gap-4">
-            {result && (
-              <>
-                <div
-                  className="w-24 h-24 rounded-full flex items-center justify-center text-3xl font-black text-white"
-                  style={{ background: result.color }}
-                >
-                  {result.label}
-                </div>
-                <p className="text-gray-600 text-sm">
-                  Your prize: <strong>{result.label}</strong>
-                </p>
-                {result.label !== "Better Luck!" && (
-                  <div
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl border-2"
-                    style={{ borderColor: result.color }}
-                  >
-                    <span
-                      className="font-bold text-sm"
-                      style={{ color: result.color }}
-                    >
-                      Copy your code
-                    </span>
-                    <button
-                      type="button"
-                      data-ocid="lucky.secondary_button"
-                      onClick={() =>
-                        copyCode(
-                          result.label
-                            .replace(/ /g, "")
-                            .replace("%", "PCT")
-                            .replace("₹", ""),
-                        )
-                      }
-                      className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
-                    >
-                      <Copy
-                        className="w-4 h-4"
-                        style={{ color: result.color }}
-                      />
-                    </button>
-                  </div>
-                )}
-              </>
-            )}
-            <Button
-              data-ocid="lucky.close_button"
-              onClick={() => setResultOpen(false)}
-              className="w-full font-bold"
-              style={{ background: result?.color }}
-            >
-              Awesome! 🛍️
-            </Button>
+          <X size={16} />
+        </button>
+        <div className="w-24 h-24 rounded-full mx-auto mb-4 overflow-hidden border-2 border-[#b5ff2e]/50">
+          <img
+            src="/assets/uploads/screenshot_20260327-092046_2-019d2d6c-fd52-72a2-a138-7440113cce5f-1.png"
+            alt="Shop Owner"
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              (e.target as HTMLImageElement).style.display = "none";
+            }}
+          />
+          <div className="w-full h-full bg-gradient-to-br from-[#b5ff2e]/30 to-[#ff6b2b]/30 flex items-center justify-center text-3xl">
+            👨‍🍳
           </div>
-        </DialogContent>
-      </Dialog>
-    </section>
+        </div>
+        <h2 className="font-display font-black text-2xl mb-1">Welcome to</h2>
+        <h1 className="font-display font-black text-3xl text-[#b5ff2e] mb-2">
+          Annapurna Shop
+        </h1>
+        <p className="text-muted-foreground text-sm mb-4">
+          Your one-stop shop at GBPIET, PAURI
+        </p>
+        <div className="space-y-2 text-sm mb-6">
+          <div className="flex items-center justify-center gap-2 text-muted-foreground">
+            <Phone size={14} className="text-[#b5ff2e]" />
+            <span>7895784954</span>
+          </div>
+          <div className="flex items-center justify-center gap-2 text-muted-foreground">
+            <MapPin size={14} className="text-[#b5ff2e]" />
+            <span>GBPIET, PAURI</span>
+          </div>
+          <div className="flex items-center justify-center gap-2 text-muted-foreground">
+            <Clock size={14} className="text-[#b5ff2e]" />
+            <span>Open 8AM – 10PM</span>
+          </div>
+        </div>
+        <button
+          type="button"
+          className="btn-bounce w-full py-3 rounded-full bg-[#b5ff2e] text-black font-bold text-lg glow-lime"
+          onClick={onClose}
+          data-ocid="welcome.primary_button"
+        >
+          Start Shopping 🛒
+        </button>
+      </div>
+    </div>
   );
 }
 
 // ─── Main App ──────────────────────────────────────────────────────────────
-function GroceryApp() {
-  const { actor, isFetching: actorFetching } = useActor();
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [seeded, setSeeded] = useState(false);
+export default function App() {
+  const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [selectedProduct, setSelectedProduct] = useState<LocalProduct | null>(
-    null,
-  );
-  const [detailOpen, setDetailOpen] = useState(false);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const [showWelcome, setShowWelcome] = useState(true);
+  const [activeFilter, setActiveFilter] = useState<string>("All");
+  const searchRef = useRef<HTMLInputElement>(null);
 
-  const { data: shopInfo } = useShopInfo();
-  const { mutateAsync: setShopInfo } = useSetShopInfo();
-  const { mutateAsync: addProduct } = useAddOrUpdateProduct();
-
-  useEffect(() => {
-    if (!actor || actorFetching || seeded) return;
-    const init = async () => {
-      setSeeded(true);
-      try {
-        await setShopInfo({
-          name: "Annapurna Shop",
-          location: "GBPIET, PAURI",
-          contact: "7895784954",
-        });
-        const existing = await actor.getAllProducts();
-        if (existing.length === 0) {
-          await Promise.all(
-            LOCAL_PRODUCTS.map((p) =>
-              addProduct({
-                name: p.name,
-                category: p.category,
-                price: BigInt(p.price),
-                quantity: BigInt(50),
-                isAvailable: p.inStock,
-              }),
-            ),
-          );
-        }
-      } catch (e) {
-        console.error("Init error", e);
-      }
-    };
-    init();
-  }, [actor, actorFetching, seeded, setShopInfo, addProduct]);
-
-  const shopName = shopInfo?.name ?? "Annapurna Shop";
-  const shopLocation = shopInfo?.location ?? "GBPIET, PAURI";
-  const shopContact = shopInfo?.contact ?? "7895784954";
-
-  const filteredProducts =
-    activeCategory === "All"
-      ? LOCAL_PRODUCTS
-      : LOCAL_PRODUCTS.filter((p) => p.category === activeCategory);
-
-  const totalCartCount = cartItems.reduce((s, i) => s + i.qty, 0);
-
-  const addToCart = (product: LocalProduct) => {
-    setCartItems((prev) => {
-      const existing = prev.find((i) => i.product.id === product.id);
+  const addToCart = useCallback((product: Product) => {
+    setCart((prev) => {
+      const existing = prev.find((i) => i.id === product.id);
       if (existing)
         return prev.map((i) =>
-          i.product.id === product.id ? { ...i, qty: i.qty + 1 } : i,
+          i.id === product.id ? { ...i, cartQty: i.cartQty + 1 } : i,
         );
-      return [...prev, { product, qty: 1 }];
+      return [...prev, { ...product, cartQty: 1 }];
     });
-    toast.success(`${product.name} added to cart!`);
-  };
+  }, []);
 
-  const updateQty = (id: number, delta: number) => {
-    setCartItems((prev) => {
-      const item = prev.find((i) => i.product.id === id);
-      if (!item) return prev;
-      const newQty = item.qty + delta;
-      if (newQty <= 0) return prev.filter((i) => i.product.id !== id);
-      return prev.map((i) => (i.product.id === id ? { ...i, qty: newQty } : i));
-    });
-  };
+  const updateQty = useCallback((id: number, delta: number) => {
+    setCart((prev) =>
+      prev.flatMap((i) => {
+        if (i.id !== id) return [i];
+        const newQty = i.cartQty + delta;
+        return newQty <= 0 ? [] : [{ ...i, cartQty: newQty }];
+      }),
+    );
+  }, []);
 
-  const removeFromCart = (id: number) =>
-    setCartItems((prev) => prev.filter((i) => i.product.id !== id));
-  const clearCart = () => setCartItems([]);
+  const removeFromCart = useCallback((id: number) => {
+    setCart((prev) => prev.filter((i) => i.id !== id));
+  }, []);
 
-  const openDetail = (p: LocalProduct) => {
-    setSelectedProduct(p);
-    setDetailOpen(true);
+  const cartCount = cart.reduce((s, i) => s + i.cartQty, 0);
+  const subtotal = cart.reduce((s, i) => s + i.price * i.cartQty, 0);
+  const discount =
+    subtotal >= 1000 ? 0.2 : subtotal >= 500 ? 0.15 : subtotal >= 200 ? 0.1 : 0;
+  const total = Math.floor(subtotal * (1 - discount));
+
+  const filteredProducts = search
+    ? PRODUCTS.filter(
+        (p) =>
+          p.name.toLowerCase().includes(search.toLowerCase()) ||
+          p.category.toLowerCase().includes(search.toLowerCase()),
+      )
+    : activeFilter === "All"
+      ? PRODUCTS
+      : PRODUCTS.filter((p) => p.category === activeFilter);
+
+  const categoryNames = ["All", ...CATEGORIES.map((c) => c.name)];
+
+  const scrollToCategory = (name: string) => {
+    const el = document.getElementById(name.toLowerCase().replace(/ /g, "-"));
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <OwnerPopup />
+    <div
+      className="grain-overlay min-h-screen"
+      style={{ background: "#0d0d0f" }}
+    >
+      <Toaster position="top-right" theme="dark" />
 
-      {/* Navigation */}
-      <nav className="sticky top-0 z-30 bg-white/95 backdrop-blur-sm border-b shadow-sm">
-        <div className="container max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <span className="text-xl">🛕</span>
-            <span
-              className="font-display font-black text-lg"
-              style={{ color: "#f97316" }}
-            >
-              Annapurna
+      {/* Welcome Popup */}
+      {showWelcome && <WelcomePopup onClose={() => setShowWelcome(false)} />}
+
+      {/* ── NAV ── */}
+      <nav className="fixed top-0 left-0 right-0 z-40 glass border-b border-white/8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">🌿</span>
+            <span className="font-display font-black text-xl tracking-tight">
+              Annapurna <span className="text-[#b5ff2e]">Shop</span>
             </span>
           </div>
-          <div className="hidden md:flex items-center gap-6 text-sm font-semibold text-gray-600">
-            <a
-              href="#products"
-              className="hover:text-orange-500 transition-colors"
-              data-ocid="nav.link"
-            >
-              Products
-            </a>
-            <a
-              href="#offers"
-              className="hover:text-orange-500 transition-colors"
-              data-ocid="nav.link"
-            >
-              Offers
-            </a>
-            <a
-              href="#lucky-draw"
-              className="hover:text-orange-500 transition-colors"
-              data-ocid="nav.link"
-            >
-              Lucky Draw
-            </a>
+          <div className="hidden md:flex items-center gap-1">
+            {categoryNames.slice(0, 6).map((name) => (
+              <button
+                type="button"
+                key={name}
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                  activeFilter === name
+                    ? "bg-[#b5ff2e] text-black"
+                    : "text-muted-foreground hover:text-foreground hover:bg-white/8"
+                }`}
+                onClick={() => {
+                  setActiveFilter(name);
+                  if (name !== "All") scrollToCategory(name);
+                }}
+                data-ocid={"nav.tab"}
+              >
+                {name}
+              </button>
+            ))}
           </div>
           <div className="flex items-center gap-3">
-            <a
-              href={`tel:${shopContact}`}
-              className="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-gray-600 hover:text-orange-500 transition-colors"
-            >
-              <Phone className="w-3.5 h-3.5" /> {shopContact}
-            </a>
             <button
               type="button"
-              data-ocid="cart.open_modal_button"
+              className="relative flex items-center gap-2 px-4 py-2 rounded-full bg-[#b5ff2e] text-black font-bold text-sm btn-bounce glow-lime-sm"
               onClick={() => setCartOpen(true)}
-              className="relative flex items-center gap-2 px-3 py-2 rounded-xl font-bold text-white text-sm transition-all hover:scale-105 active:scale-95"
-              style={{
-                background: "linear-gradient(135deg, #f97316, #ea580c)",
-              }}
+              data-ocid="nav.cart_button"
             >
-              <ShoppingCart className="w-4 h-4" />
+              <ShoppingCart size={16} />
               <span className="hidden sm:inline">Cart</span>
-              {totalCartCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] font-black flex items-center justify-center">
-                  {totalCartCount}
+              {cartCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#ff6b2b] text-white text-[10px] font-black flex items-center justify-center">
+                  {cartCount}
                 </span>
               )}
             </button>
@@ -2065,249 +1908,441 @@ function GroceryApp() {
         </div>
       </nav>
 
-      {/* Hero */}
-      <header data-ocid="header.section" className="relative overflow-hidden">
-        <img
-          src="/assets/generated/annapurna-hero.dim_1200x400.jpg"
-          alt="Annapurna Shop"
-          className="w-full h-56 md:h-72 object-cover"
-        />
-        <div
-          className="absolute inset-0 flex flex-col items-center justify-center"
-          style={{
-            background:
-              "linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6))",
-          }}
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center px-4"
-          >
-            <div className="flex items-center justify-center gap-3 mb-2">
-              <span className="text-3xl">🛕</span>
-              <h1
-                className="font-display font-black text-4xl md:text-6xl text-white"
-                style={{ textShadow: "0 2px 20px rgba(0,0,0,0.5)" }}
-              >
-                {shopName}
-              </h1>
-              <span className="text-3xl">🛕</span>
-            </div>
-            <p className="text-yellow-200 font-body text-sm md:text-base italic mb-4">
-              Your trusted neighbourhood store — GBPIET, PAURI
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <a
-                href={`tel:${shopContact}`}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm hover:scale-105 transition-all"
-                style={{ background: "#f97316", color: "white" }}
-              >
-                <Phone className="w-4 h-4" /> {shopContact}
-              </a>
-              <div
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm"
-                style={{
-                  background: "rgba(255,255,255,0.15)",
-                  color: "white",
-                  border: "1px solid rgba(255,255,255,0.3)",
-                }}
-              >
-                <MapPin className="w-4 h-4" /> {shopLocation}
-              </div>
-            </div>
-          </motion.div>
+      {/* ── HERO ── */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center pt-16 overflow-hidden">
+        {/* BG Orb */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="orb w-[800px] h-[800px] rounded-full opacity-60" />
         </div>
-      </header>
+        {/* Decorative rings */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-[#b5ff2e]/10 animate-spin-slow pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full border border-[#b5ff2e]/20 pointer-events-none" />
 
-      {/* Offer Marquee */}
-      <OfferBanner />
-
-      {/* Floating Featured Cards */}
-      <FloatingFeaturedCards />
-
-      {/* Offers Section */}
-      <OffersSection />
-
-      {/* Products */}
-      <main
-        id="products"
-        data-ocid="products.section"
-        className="flex-1 container max-w-6xl mx-auto px-4 py-8"
-      >
-        <div className="flex items-center gap-3 mb-6">
-          <ShoppingCart className="w-6 h-6" style={{ color: "#f97316" }} />
-          <h2 className="font-display font-black text-2xl text-gray-800">
-            All Products
-          </h2>
-          <Badge className="bg-orange-100 text-orange-600 border-orange-200">
-            {LOCAL_PRODUCTS.length} items
-          </Badge>
-        </div>
-
-        <Tabs
-          value={activeCategory}
-          onValueChange={setActiveCategory}
-          className="w-full"
-        >
-          <div className="overflow-x-auto pb-2 mb-6">
-            <TabsList
-              className="inline-flex gap-1 p-1 rounded-2xl h-auto flex-nowrap"
-              style={{ background: "oklch(0.93 0.02 80)" }}
-            >
-              {CATEGORIES.map((cat) => (
-                <TabsTrigger
-                  key={cat}
-                  value={cat}
-                  data-ocid="category.tab"
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm"
-                >
-                  <span>{CATEGORY_ICONS[cat]}</span>
-                  <span>{cat}</span>
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </div>
-
-          {filteredProducts.length === 0 ? (
-            <div
-              data-ocid="products.empty_state"
-              className="text-center py-20 text-gray-400"
-            >
-              <span className="text-5xl block mb-4">🛒</span>
-              <p className="font-body text-lg">
-                No products in this category yet.
-              </p>
-            </div>
-          ) : (
-            <AnimatePresence mode="wait">
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                {filteredProducts.map((product, i) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    index={i + 1}
-                    onAddToCart={addToCart}
-                    onViewDetail={openDetail}
-                  />
-                ))}
-              </div>
-            </AnimatePresence>
-          )}
-        </Tabs>
-      </main>
-
-      {/* Lucky Draw */}
-      <LuckyDrawSection />
-
-      {/* Footer */}
-      <footer
-        data-ocid="footer.section"
-        className="mt-4 py-8 px-4"
-        style={{
-          background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)",
-        }}
-      >
-        <div className="container max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="text-center md:text-left">
-              <div className="flex items-center gap-2 justify-center md:justify-start mb-1">
-                <span className="text-2xl">🛕</span>
-                <h2
-                  className="font-display font-black text-2xl"
-                  style={{ color: "#f97316" }}
-                >
-                  {shopName}
-                </h2>
-              </div>
-              <p className="text-sm" style={{ color: "#9ca3af" }}>
-                Quality products at honest prices
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <a
-                href={`tel:${shopContact}`}
-                className="flex items-center gap-2 font-semibold text-sm hover:scale-105 transition-transform"
-                style={{ color: "#f97316" }}
-              >
-                <Phone className="w-4 h-4" /> {shopContact}
-              </a>
-              <div
-                className="flex items-center gap-2 text-sm"
-                style={{ color: "#4ade80" }}
-              >
-                <MapPin className="w-4 h-4" /> {shopLocation}
-              </div>
-            </div>
-          </div>
+        <div className="relative z-10 flex flex-col items-center text-center px-4 max-w-4xl">
+          {/* Main emoji */}
           <div
-            className="mt-6 pt-4 text-center text-xs"
+            className="text-[9rem] md:text-[13rem] animate-float select-none"
             style={{
-              borderTop: "1px solid rgba(255,255,255,0.1)",
-              color: "#6b7280",
+              filter:
+                "drop-shadow(0 0 60px rgba(181,255,46,0.5)) drop-shadow(0 0 120px rgba(181,255,46,0.2))",
             }}
           >
-            © {new Date().getFullYear()}. Built with ❤️ using{" "}
+            🍋
+          </div>
+          {/* Headline */}
+          <h1
+            className="font-display font-black hero-text-gradient leading-none mt-4"
+            style={{
+              fontSize: "clamp(3.5rem, 10vw, 7rem)",
+              letterSpacing: "-0.03em",
+            }}
+          >
+            The Future of Fresh
+          </h1>
+          <p className="text-lg md:text-xl text-muted-foreground mt-4 max-w-xl">
+            Premium groceries & daily essentials delivered to your doorstep at
+            GBPIET, PAURI
+          </p>
+          {/* Search */}
+          <div className="relative mt-8 w-full max-w-xl">
+            <Search
+              className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground"
+              size={18}
+            />
+            <input
+              ref={searchRef}
+              type="text"
+              placeholder="Search fresh items, snacks, stationery..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="search-glow w-full pl-12 pr-5 py-4 rounded-full bg-white/8 border border-white/15 text-foreground placeholder:text-muted-foreground outline-none font-body text-base transition-all"
+              data-ocid="hero.search_input"
+            />
+            {search && (
+              <button
+                type="button"
+                className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                onClick={() => setSearch("")}
+                data-ocid="hero.cancel_button"
+              >
+                <X size={16} />
+              </button>
+            )}
+          </div>
+          {/* CTAs */}
+          <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
+            <button
+              type="button"
+              className="btn-bounce px-8 py-4 rounded-full bg-[#b5ff2e] text-black font-bold text-lg glow-lime"
+              onClick={() => {
+                document
+                  .getElementById("products")
+                  ?.scrollIntoView({ behavior: "smooth" });
+              }}
+              data-ocid="hero.primary_button"
+            >
+              Shop Now 🛒
+            </button>
+            <button
+              type="button"
+              className="btn-bounce px-8 py-4 rounded-full border border-white/20 text-foreground font-bold text-lg hover:border-[#b5ff2e]/40 hover:bg-[#b5ff2e]/8 transition-all"
+              onClick={() =>
+                document
+                  .getElementById("offers")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+              data-ocid="hero.secondary_button"
+            >
+              Explore Deals ✨
+            </button>
+          </div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground/50 animate-bounce">
+          <span className="text-xs">Scroll to explore</span>
+          <div className="w-5 h-8 rounded-full border border-white/20 flex items-start justify-center pt-1">
+            <div className="w-1 h-2 bg-[#b5ff2e] rounded-full" />
+          </div>
+        </div>
+      </section>
+
+      {/* ── STATS BAR ── */}
+      <div className="glass border-y border-white/8">
+        <div className="max-w-7xl mx-auto px-4 py-5">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            {[
+              {
+                icon: "📦",
+                label: "90+ Products",
+                sub: "Across 10 categories",
+              },
+              {
+                icon: "⚡",
+                label: "Daily Fresh Delivery",
+                sub: "Every morning at 8AM",
+              },
+              {
+                icon: "🎓",
+                label: "Student Discounts",
+                sub: "With valid GBPIET ID",
+              },
+              {
+                icon: "⭐",
+                label: "4.8 Rating",
+                sub: "By 500+ happy students",
+              },
+            ].map((stat) => (
+              <div
+                key={stat.label}
+                className="flex flex-col items-center gap-1"
+              >
+                <span className="text-2xl">{stat.icon}</span>
+                <p className="font-bold text-foreground">{stat.label}</p>
+                <p className="text-xs text-muted-foreground">{stat.sub}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── MARQUEE ── */}
+      <div
+        className="overflow-hidden py-3 border-b border-white/8"
+        style={{ background: "rgba(181,255,46,0.05)" }}
+      >
+        <div className="animate-marquee flex items-center gap-12 whitespace-nowrap w-max">
+          {Array(2)
+            .fill([
+              "🔥 Buy 2 Get 1 Free on Snacks",
+              "⚡ Red Bull Now in Stock!",
+              "🎓 10% Student Discount with ID",
+              "🌿 Fresh Produce Daily at 8AM",
+              "🍫 Ferrero Rocher Available!",
+              "📚 Stationery Stock Refreshed",
+              "💚 Mountain Dew Back in Stock",
+              "🎁 Spin Daily for Lucky Draw Prizes",
+            ])
+            .flat()
+            .map((item) => (
+              <span
+                key={item}
+                className="text-sm font-semibold text-[#b5ff2e]/80"
+              >
+                {item}
+              </span>
+            ))}
+        </div>
+      </div>
+
+      {/* ── CATEGORIES BENTO ── */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20">
+        <SectionHeader title="Shop by Category" emoji="🏪" />
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          {CATEGORIES.map((cat, i) => {
+            const count = PRODUCTS.filter(
+              (p) => p.category === cat.name,
+            ).length;
+            const isWide = cat.span === "col-span-2";
+            return (
+              <button
+                type="button"
+                key={cat.name}
+                className={`category-card glass rounded-2xl p-5 flex flex-col items-start gap-2 text-left cursor-pointer bg-gradient-to-br ${cat.color} ${
+                  isWide ? "md:col-span-2" : ""
+                }`}
+                onClick={() => scrollToCategory(cat.name)}
+                data-ocid={`category.item.${i + 1}`}
+              >
+                <span className="text-4xl">{cat.emoji}</span>
+                <div>
+                  <p className="font-bold text-sm text-foreground">
+                    {cat.name}
+                  </p>
+                  <p className="text-xs text-muted-foreground">{count} items</p>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ── PRODUCT SECTIONS ── */}
+      <main id="products" className="max-w-7xl mx-auto px-4 sm:px-6">
+        {search ? (
+          <section className="mb-16">
+            <SectionHeader title={`Search: "${search}"`} emoji="🔍" />
+            {filteredProducts.length === 0 ? (
+              <div
+                className="text-center py-20 text-muted-foreground"
+                data-ocid="products.empty_state"
+              >
+                <p className="text-4xl mb-4">🤷</p>
+                <p className="text-lg">No products found for "{search}"</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                {filteredProducts.map((p) => (
+                  <ProductCard key={p.id} product={p} onAddToCart={addToCart} />
+                ))}
+              </div>
+            )}
+          </section>
+        ) : (
+          CATEGORIES.map((cat) => (
+            <ProductGrid
+              key={cat.name}
+              category={cat.name}
+              products={activeFilter === "All" ? PRODUCTS : filteredProducts}
+              onAddToCart={addToCart}
+            />
+          ))
+        )}
+      </main>
+
+      {/* ── OFFERS ── */}
+      <section id="offers" className="max-w-7xl mx-auto px-4 sm:px-6 py-20">
+        <SectionHeader title="Hot Deals & Offers" emoji="🔥" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            {
+              emoji: "🎁",
+              title: "Buy 2 Get 1 Free",
+              desc: "On all snack packs — limited time!",
+              accent: "#b5ff2e",
+            },
+            {
+              emoji: "🎓",
+              title: "Student Discount 10%",
+              desc: "Show your GBPIET ID card at billing",
+              accent: "#7c3aed",
+            },
+            {
+              emoji: "🌅",
+              title: "Morning Fresh Produce",
+              desc: "Fresh veggies arrive daily at 8AM",
+              accent: "#10b981",
+            },
+            {
+              emoji: "📦",
+              title: "Combo Pack Savings",
+              desc: "Bundle deals save up to ₹50 per order",
+              accent: "#ff6b2b",
+            },
+          ].map((offer, i) => (
+            <div
+              key={offer.title}
+              className="glass rounded-2xl p-6 relative overflow-hidden group hover:scale-[1.02] transition-transform cursor-pointer"
+              data-ocid={`offers.item.${i + 1}`}
+            >
+              <div
+                className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity"
+                style={{
+                  background: `radial-gradient(circle at top right, ${offer.accent}, transparent 70%)`,
+                }}
+              />
+              <span className="text-4xl mb-3 block">{offer.emoji}</span>
+              <h3
+                className="font-display font-bold text-lg mb-1"
+                style={{ color: offer.accent }}
+              >
+                {offer.title}
+              </h3>
+              <p className="text-muted-foreground text-sm">{offer.desc}</p>
+              <div className="mt-4">
+                <Badge
+                  className="rounded-full text-xs font-bold"
+                  style={{
+                    background: `${offer.accent}22`,
+                    color: offer.accent,
+                    border: `1px solid ${offer.accent}44`,
+                  }}
+                >
+                  <Zap size={10} className="mr-1" /> Limited Offer
+                </Badge>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── LUCKY DRAW ── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <LuckyDraw />
+      </div>
+
+      {/* ── FOOTER ── */}
+      <footer className="mt-20 border-t border-white/8 glass">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-2xl">🌿</span>
+                <span className="font-display font-black text-xl">
+                  Annapurna <span className="text-[#b5ff2e]">Shop</span>
+                </span>
+              </div>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                Your favourite campus store with fresh produce, daily
+                essentials, snacks, beverages, and stationery.
+              </p>
+              <div className="flex flex-col gap-2 mt-4">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Phone size={14} className="text-[#b5ff2e]" />
+                  <span>7895784954</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <MapPin size={14} className="text-[#b5ff2e]" />
+                  <span>GBPIET, PAURI, Uttarakhand</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Clock size={14} className="text-[#b5ff2e]" />
+                  <span>8:00 AM – 10:00 PM (All Days)</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h4 className="font-display font-bold text-lg mb-4">
+                Categories
+              </h4>
+              <div className="grid grid-cols-2 gap-1">
+                {CATEGORIES.map((cat) => (
+                  <button
+                    type="button"
+                    key={cat.name}
+                    className="text-muted-foreground hover:text-[#b5ff2e] text-sm text-left transition-colors py-0.5"
+                    onClick={() => scrollToCategory(cat.name)}
+                    data-ocid="footer.link"
+                  >
+                    {cat.emoji} {cat.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h4 className="font-display font-bold text-lg mb-4">
+                Quick Links
+              </h4>
+              <div className="flex flex-col gap-2">
+                {[
+                  { label: "🔥 Hot Deals", id: "offers" },
+                  { label: "🎡 Lucky Draw", id: "lucky-draw" },
+                  { label: "🛒 Shop Now", id: "products" },
+                ].map((link) => (
+                  <button
+                    type="button"
+                    key={link.id}
+                    className="text-muted-foreground hover:text-[#b5ff2e] text-sm text-left transition-colors"
+                    onClick={() =>
+                      document
+                        .getElementById(link.id)
+                        ?.scrollIntoView({ behavior: "smooth" })
+                    }
+                    data-ocid="footer.link"
+                  >
+                    {link.label}
+                  </button>
+                ))}
+              </div>
+              <div className="mt-6 glass rounded-xl p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Star size={14} className="text-[#b5ff2e] fill-[#b5ff2e]" />
+                  <span className="font-bold text-sm">4.8 / 5.0</span>
+                </div>
+                <div className="flex gap-0.5">
+                  {[0, 1, 2, 3, 4].map((starIdx) => (
+                    <Star
+                      key={starIdx}
+                      size={16}
+                      className={
+                        starIdx < 4
+                          ? "text-[#b5ff2e] fill-[#b5ff2e]"
+                          : "text-[#b5ff2e]"
+                      }
+                    />
+                  ))}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Rated by 500+ GBPIET students
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="border-t border-white/8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
+            <p>
+              Made with ❤️ for GBPIET Students — Annapurna Shop ©{" "}
+              {new Date().getFullYear()}
+            </p>
             <a
-              href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
+              href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(typeof window !== "undefined" ? window.location.hostname : "")}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="underline hover:opacity-80"
+              className="hover:text-[#b5ff2e] transition-colors"
             >
-              caffeine.ai
+              Built with ❤️ using caffeine.ai
             </a>
           </div>
         </div>
       </footer>
 
-      {/* Floating cart button */}
-      <motion.button
-        data-ocid="cart.open_modal_button"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        onClick={() => setCartOpen(true)}
-        className="fixed bottom-6 right-6 z-30 w-14 h-14 rounded-full text-white shadow-xl flex items-center justify-center"
-        style={{ background: "linear-gradient(135deg, #f97316, #ea580c)" }}
-      >
-        <ShoppingCart className="w-6 h-6" />
-        {totalCartCount > 0 && (
-          <span className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-red-500 text-white text-xs font-black flex items-center justify-center">
-            {totalCartCount}
-          </span>
-        )}
-      </motion.button>
-
-      {/* Product Detail Popup */}
-      <ProductDetailDialog
-        product={selectedProduct}
-        open={detailOpen}
-        onClose={() => setDetailOpen(false)}
-        onAddToCart={addToCart}
+      {/* Cart + Checkout */}
+      <CartDrawer
+        open={cartOpen}
+        onClose={() => setCartOpen(false)}
+        cart={cart}
+        onUpdateQty={updateQty}
+        onRemove={removeFromCart}
+        onCheckout={() => {
+          setCartOpen(false);
+          setCheckoutOpen(true);
+        }}
       />
-
-      {/* Cart panel */}
-      <AnimatePresence>
-        {cartOpen && (
-          <CartPanel
-            items={cartItems}
-            onClose={() => setCartOpen(false)}
-            onUpdateQty={updateQty}
-            onRemove={removeFromCart}
-            onClearCart={clearCart}
-          />
-        )}
-      </AnimatePresence>
-
-      <Toaster />
+      <CheckoutModal
+        open={checkoutOpen}
+        onClose={() => setCheckoutOpen(false)}
+        cart={cart}
+        total={total}
+      />
     </div>
-  );
-}
-
-export default function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <GroceryApp />
-    </QueryClientProvider>
   );
 }
