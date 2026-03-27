@@ -45,6 +45,7 @@ interface Product {
   quantity: string;
   price: number;
   emoji: string;
+  imageUrl?: string;
   vibe: VibeTag;
   category: string;
   available: boolean;
@@ -957,6 +958,19 @@ const PRODUCTS: Product[] = [
   },
 ];
 
+const CATEGORY_IMAGES: Record<string, string> = {
+  "Fresh Produce": "/assets/generated/cat-fresh-produce.dim_300x300.jpg",
+  Beverages: "/assets/generated/cat-beverages.dim_300x300.jpg",
+  Snacks: "/assets/generated/cat-snacks.dim_300x300.jpg",
+  Chocolates: "/assets/generated/cat-chocolates.dim_300x300.jpg",
+  Dairy: "/assets/generated/cat-dairy.dim_300x300.jpg",
+  Bakery: "/assets/generated/cat-bakery.dim_300x300.jpg",
+  Stationery: "/assets/generated/cat-stationery.dim_300x300.jpg",
+  "Personal Care": "/assets/generated/cat-personal-care.dim_300x300.jpg",
+  Household: "/assets/generated/cat-household.dim_300x300.jpg",
+  "Instant Food": "/assets/generated/cat-instant-food.dim_300x300.jpg",
+};
+
 const CATEGORIES = [
   {
     name: "Fresh Produce",
@@ -1063,9 +1077,18 @@ function ProductCard({
     >
       {/* Image Container */}
       <div className="relative overflow-hidden rounded-xl bg-white/5 flex items-center justify-center h-28">
-        <span className="product-image text-6xl select-none">
-          {product.emoji}
-        </span>
+        <img
+          src={
+            product.imageUrl ||
+            CATEGORY_IMAGES[product.category] ||
+            "/assets/generated/cat-snacks.dim_300x300.jpg"
+          }
+          alt={product.name}
+          className="product-image w-full h-full object-cover rounded-xl"
+          onError={(e) => {
+            (e.target as HTMLImageElement).style.display = "none";
+          }}
+        />
         {/* Quick Add */}
         <button
           type="button"
@@ -1386,7 +1409,15 @@ function CartDrawer({
                   className="glass rounded-xl p-3 flex items-center gap-3"
                   data-ocid={`cart.item.${item.id}`}
                 >
-                  <span className="text-3xl">{item.emoji}</span>
+                  <img
+                    src={
+                      item.imageUrl ||
+                      CATEGORY_IMAGES[item.category] ||
+                      "/assets/generated/cat-snacks.dim_300x300.jpg"
+                    }
+                    alt={item.name}
+                    className="w-12 h-12 object-cover rounded-lg flex-shrink-0"
+                  />
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-sm truncate">
                       {item.name}
@@ -2210,6 +2241,194 @@ export default function App() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <LuckyDraw />
       </div>
+
+      {/* ── INSTAGRAM SECTION ── */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20" id="instagram">
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#f09433] via-[#e6683c] via-[#dc2743] via-[#cc2366] to-[#bc1888] flex items-center justify-center">
+              <svg
+                viewBox="0 0 24 24"
+                fill="white"
+                width="22"
+                height="22"
+                role="img"
+                aria-label="Instagram"
+              >
+                <title>Instagram</title>
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+              </svg>
+            </div>
+            <h2 className="font-display font-black text-3xl text-foreground">
+              Follow Us on Instagram
+            </h2>
+          </div>
+          <p className="text-muted-foreground text-lg">
+            <span className="text-[#b5ff2e] font-semibold">
+              @anna.purnastore
+            </span>{" "}
+            — See our latest offers, new arrivals & store moments
+          </p>
+        </div>
+
+        {/* Profile Card */}
+        <div className="glass rounded-3xl p-6 md:p-8 mb-8 flex flex-col sm:flex-row items-center gap-6">
+          <div className="relative flex-shrink-0">
+            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#f09433] via-[#dc2743] to-[#bc1888] p-0.5">
+              <img
+                src="/assets/uploads/screenshot_20260327-092046_2-019d2d6c-fd52-72a2-a138-7440113cce5f-1.png"
+                alt="Annapurna Store"
+                className="w-full h-full object-cover rounded-full"
+              />
+            </div>
+            <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-gradient-to-br from-[#f09433] to-[#bc1888] flex items-center justify-center">
+              <svg
+                viewBox="0 0 24 24"
+                fill="white"
+                width="14"
+                height="14"
+                role="img"
+                aria-label="Instagram"
+              >
+                <title>Instagram</title>
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+              </svg>
+            </div>
+          </div>
+          <div className="flex-1 text-center sm:text-left">
+            <p className="font-display font-black text-xl text-foreground">
+              anna.purnastore
+            </p>
+            <p className="text-muted-foreground text-sm mt-1">
+              🏪 GBPIET, PAURI | Campus Grocery & Stationery
+            </p>
+            <p className="text-muted-foreground text-sm">
+              📦 Fresh stock daily | 🎁 Daily offers | 📞 7895784954
+            </p>
+            <div className="flex justify-center sm:justify-start gap-6 mt-3">
+              <div className="text-center">
+                <p className="font-black text-lg text-foreground">500+</p>
+                <p className="text-xs text-muted-foreground">Followers</p>
+              </div>
+              <div className="text-center">
+                <p className="font-black text-lg text-foreground">120+</p>
+                <p className="text-xs text-muted-foreground">Posts</p>
+              </div>
+              <div className="text-center">
+                <p className="font-black text-lg text-foreground">4.8★</p>
+                <p className="text-xs text-muted-foreground">Rating</p>
+              </div>
+            </div>
+          </div>
+          <a
+            href="https://www.instagram.com/anna.purnastore"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-shrink-0 px-6 py-3 rounded-full font-bold text-white text-sm transition-all hover:scale-105 active:scale-95"
+            style={{
+              background:
+                "linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)",
+            }}
+          >
+            Follow on Instagram
+          </a>
+        </div>
+
+        {/* Instagram Post Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {[
+            {
+              src: "/assets/generated/insta-post1.dim_400x400.jpg",
+              caption: "Fresh arrivals today! 🥬🍅",
+              likes: "124",
+            },
+            {
+              src: "/assets/generated/insta-post2.dim_400x400.jpg",
+              caption: "Snacks & cold drinks stocked 🍟🥤",
+              likes: "98",
+            },
+            {
+              src: "/assets/generated/insta-post3.dim_400x400.jpg",
+              caption: "Stationery for all your needs 📓✏️",
+              likes: "76",
+            },
+            {
+              src: "/assets/generated/insta-post4.dim_400x400.jpg",
+              caption: "Special deals this week! 🎁",
+              likes: "210",
+            },
+            {
+              src: "/assets/generated/insta-post5.dim_400x400.jpg",
+              caption: "Chilled drinks just in ❄️🥤",
+              likes: "155",
+            },
+            {
+              src: "/assets/generated/insta-post6.dim_400x400.jpg",
+              caption: "Come visit us at GBPIET 🏪",
+              likes: "189",
+            },
+          ].map((post) => (
+            <a
+              key={post.caption}
+              href="https://www.instagram.com/anna.purnastore"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative aspect-square overflow-hidden rounded-2xl"
+            >
+              <img
+                src={post.src}
+                alt={post.caption}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-2 p-4">
+                <div className="flex items-center gap-1 text-white font-bold text-lg">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="white"
+                    width="20"
+                    height="20"
+                    role="img"
+                    aria-label="Like"
+                  >
+                    <title>Like</title>
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                  </svg>
+                  {post.likes}
+                </div>
+                <p className="text-white text-xs text-center font-medium leading-tight">
+                  {post.caption}
+                </p>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <div className="text-center mt-8">
+          <a
+            href="https://www.instagram.com/anna.purnastore"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-8 py-3 rounded-full font-bold text-white text-sm transition-all hover:scale-105 active:scale-95"
+            style={{
+              background:
+                "linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)",
+            }}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="white"
+              width="18"
+              height="18"
+              role="img"
+              aria-label="Instagram"
+            >
+              <title>Instagram</title>
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+            </svg>
+            View All Posts @anna.purnastore
+          </a>
+        </div>
+      </section>
 
       {/* ── FOOTER ── */}
       <footer className="mt-20 border-t border-white/8 glass">
