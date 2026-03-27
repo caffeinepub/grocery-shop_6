@@ -8,22 +8,24 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Toaster } from "@/components/ui/sonner";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
+  CheckCircle2,
+  ChevronRight,
   Copy,
+  CreditCard,
   Gift,
   MapPin,
   Minus,
-  Package,
   Phone,
   Plus,
   ShoppingCart,
+  Smartphone,
   Sparkles,
   Star,
   Tag,
@@ -34,281 +36,341 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import type { Product } from "./backend.d";
 import { useActor } from "./hooks/useActor";
 import {
   useAddOrUpdateProduct,
-  useAllProducts,
   useSetShopInfo,
   useShopInfo,
 } from "./hooks/useQueries";
 
 const queryClient = new QueryClient();
 
-// ─── Category images ───────────────────────────────────────────────────────
-const CATEGORY_IMAGES: Record<string, string> = {
-  "Cold Drinks": "/assets/generated/cat-cold-drinks.dim_200x200.jpg",
-  Chips: "/assets/generated/cat-chips.dim_200x200.jpg",
-  Biscuits: "/assets/generated/cat-biscuits.dim_200x200.jpg",
-  "Juice Bottles": "/assets/generated/cat-juice.dim_200x200.jpg",
-  Notebooks: "/assets/generated/cat-notebooks.dim_200x200.jpg",
-  "Graph Copies": "/assets/generated/cat-graph-copies.dim_200x200.jpg",
-  "Project Files": "/assets/generated/cat-project-files.dim_200x200.jpg",
-  Folders: "/assets/generated/cat-folders.dim_200x200.jpg",
-};
+// ─── Types ─────────────────────────────────────────────────────────────────
+interface LocalProduct {
+  id: number;
+  name: string;
+  category: string;
+  image: string;
+  price: number;
+  mrp: number;
+  quantity: string;
+  rating: number;
+  reviews: number;
+  description: string;
+  inStock: boolean;
+}
 
-const CATEGORY_ICONS: Record<string, string> = {
-  "Cold Drinks": "🥤",
-  Chips: "🍟",
-  Biscuits: "🍪",
-  "Juice Bottles": "🧃",
-  Notebooks: "📓",
-  "Graph Copies": "📊",
-  "Project Files": "📁",
-  Folders: "🗂️",
-  All: "🛒",
-};
+interface CartItem {
+  product: LocalProduct;
+  qty: number;
+}
+
+interface CheckoutAddress {
+  name: string;
+  mobile: string;
+  house: string;
+  street: string;
+  city: string;
+  state: string;
+  pincode: string;
+  landmark: string;
+}
+
+// ─── Product Catalog ───────────────────────────────────────────────────────
+const LOCAL_PRODUCTS: LocalProduct[] = [
+  // Beverages
+  {
+    id: 1,
+    name: "Cold Drink Can",
+    category: "Beverages",
+    image: "/assets/generated/cold-drink-transparent.dim_300x300.png",
+    price: 40,
+    mrp: 45,
+    quantity: "1 Can",
+    rating: 4.2,
+    reviews: 128,
+    description:
+      "Refreshing carbonated cold drink, chilled to perfection. Perfect for hot days!",
+    inStock: true,
+  },
+  {
+    id: 2,
+    name: "Juice Bottle 1L",
+    category: "Beverages",
+    image: "/assets/generated/juice-transparent.dim_300x300.png",
+    price: 85,
+    mrp: 95,
+    quantity: "1 Litre",
+    rating: 4.5,
+    reviews: 89,
+    description:
+      "100% natural fruit juice in a convenient 1-litre bottle. No added preservatives.",
+    inStock: true,
+  },
+  {
+    id: 3,
+    name: "Water Bottle 1L",
+    category: "Beverages",
+    image: "/assets/generated/water-bottle-transparent.dim_300x300.png",
+    price: 20,
+    mrp: 25,
+    quantity: "1 Litre",
+    rating: 4.0,
+    reviews: 234,
+    description:
+      "Pure mineral water sourced from natural springs. Sealed for freshness.",
+    inStock: true,
+  },
+  {
+    id: 4,
+    name: "Tea 250g",
+    category: "Beverages",
+    image: "/assets/generated/tea-transparent.dim_300x300.png",
+    price: 120,
+    mrp: 140,
+    quantity: "250g Pack",
+    rating: 4.7,
+    reviews: 312,
+    description:
+      "Premium quality Assam tea leaves with rich aroma and strong flavour.",
+    inStock: true,
+  },
+  // Snacks
+  {
+    id: 5,
+    name: "Chips 100g",
+    category: "Snacks",
+    image: "/assets/generated/chips-transparent.dim_300x300.png",
+    price: 20,
+    mrp: 25,
+    quantity: "100g Pack",
+    rating: 4.3,
+    reviews: 456,
+    description:
+      "Extra crispy potato chips with perfect seasoning. Great for snacking!",
+    inStock: true,
+  },
+  {
+    id: 6,
+    name: "Chocolate Bar",
+    category: "Snacks",
+    image: "/assets/generated/chocolate-transparent.dim_300x300.png",
+    price: 40,
+    mrp: 50,
+    quantity: "1 Bar (50g)",
+    rating: 4.6,
+    reviews: 389,
+    description:
+      "Rich and creamy milk chocolate bar. A delightful treat any time of day.",
+    inStock: true,
+  },
+  {
+    id: 7,
+    name: "Biscuits 200g",
+    category: "Snacks",
+    image: "/assets/generated/biscuits-transparent.dim_300x300.png",
+    price: 30,
+    mrp: 35,
+    quantity: "200g Pack",
+    rating: 4.1,
+    reviews: 178,
+    description:
+      "Classic crispy biscuits, perfect with your morning tea or coffee.",
+    inStock: true,
+  },
+  {
+    id: 8,
+    name: "Namkeen 200g",
+    category: "Snacks",
+    image: "/assets/generated/namkeen-transparent.dim_300x300.png",
+    price: 30,
+    mrp: 35,
+    quantity: "200g Pack",
+    rating: 4.4,
+    reviews: 145,
+    description: "Spicy and savory mixed namkeen, a beloved Indian snack.",
+    inStock: true,
+  },
+  {
+    id: 9,
+    name: "Noodles 70g",
+    category: "Snacks",
+    image: "/assets/generated/noodles-transparent.dim_300x300.png",
+    price: 15,
+    mrp: 18,
+    quantity: "70g Pack",
+    rating: 4.2,
+    reviews: 567,
+    description:
+      "Instant masala noodles ready in just 2 minutes. A quick and tasty meal.",
+    inStock: true,
+  },
+  // Daily Routine
+  {
+    id: 10,
+    name: "Soap Bar",
+    category: "Daily Routine",
+    image: "/assets/generated/soap-transparent.dim_300x300.png",
+    price: 45,
+    mrp: 55,
+    quantity: "1 Bar (100g)",
+    rating: 4.0,
+    reviews: 203,
+    description:
+      "Gentle moisturizing soap bar for smooth and clean skin. Suitable for all skin types.",
+    inStock: true,
+  },
+  {
+    id: 11,
+    name: "Toothpaste 150g",
+    category: "Daily Routine",
+    image: "/assets/generated/toothpaste-transparent.dim_300x300.png",
+    price: 65,
+    mrp: 80,
+    quantity: "150g Tube",
+    rating: 4.5,
+    reviews: 412,
+    description:
+      "Fluoride-enriched toothpaste for complete cavity protection and fresh breath.",
+    inStock: true,
+  },
+  {
+    id: 12,
+    name: "Shampoo 200ml",
+    category: "Daily Routine",
+    image: "/assets/generated/shampoo-transparent.dim_300x300.png",
+    price: 130,
+    mrp: 160,
+    quantity: "200ml Bottle",
+    rating: 4.3,
+    reviews: 267,
+    description:
+      "Nourishing shampoo with herbal extracts for smooth, shiny and healthy hair.",
+    inStock: true,
+  },
+  {
+    id: 13,
+    name: "Sanitizer 100ml",
+    category: "Daily Routine",
+    image: "/assets/generated/sanitizer-transparent.dim_300x300.png",
+    price: 80,
+    mrp: 100,
+    quantity: "100ml Bottle",
+    rating: 4.4,
+    reviews: 189,
+    description:
+      "Instant hand sanitizer with 70% alcohol. Kills 99.9% of germs.",
+    inStock: true,
+  },
+  // Stationery
+  {
+    id: 14,
+    name: "Notebook 200 Pages",
+    category: "Stationery",
+    image: "/assets/generated/notebook-transparent.dim_300x300.png",
+    price: 60,
+    mrp: 75,
+    quantity: "200 Pages",
+    rating: 4.6,
+    reviews: 234,
+    description:
+      "Premium ruled notebook with thick pages for smooth writing. Ideal for students.",
+    inStock: true,
+  },
+  {
+    id: 15,
+    name: "Graph Copy 100 Pages",
+    category: "Stationery",
+    image: "/assets/generated/graph-copy-transparent.dim_300x300.png",
+    price: 45,
+    mrp: 55,
+    quantity: "100 Pages",
+    rating: 4.4,
+    reviews: 156,
+    description:
+      "Fine grid graph paper copy for engineering and mathematical drawings.",
+    inStock: true,
+  },
+  {
+    id: 16,
+    name: "Pens Pack of 10",
+    category: "Stationery",
+    image: "/assets/generated/pens-transparent.dim_300x300.png",
+    price: 50,
+    mrp: 65,
+    quantity: "Pack of 10",
+    rating: 4.5,
+    reviews: 312,
+    description:
+      "Smooth writing ballpoint pens in blue ink. Comfortable grip for long writing sessions.",
+    inStock: true,
+  },
+  {
+    id: 17,
+    name: "Pencils Pack of 12",
+    category: "Stationery",
+    image: "/assets/generated/pencils-transparent.dim_300x300.png",
+    price: 40,
+    mrp: 50,
+    quantity: "Pack of 12",
+    rating: 4.3,
+    reviews: 198,
+    description:
+      "HB grade pencils, pre-sharpened and ready for use. Smooth and consistent lines.",
+    inStock: true,
+  },
+  {
+    id: 18,
+    name: "Eraser Pack of 5",
+    category: "Stationery",
+    image: "/assets/generated/eraser-transparent.dim_300x300.png",
+    price: 25,
+    mrp: 30,
+    quantity: "Pack of 5",
+    rating: 4.1,
+    reviews: 87,
+    description:
+      "Soft vinyl erasers that clean completely without tearing the paper.",
+    inStock: true,
+  },
+  {
+    id: 19,
+    name: "Project File A4",
+    category: "Stationery",
+    image: "/assets/generated/project-file-transparent.dim_300x300.png",
+    price: 35,
+    mrp: 45,
+    quantity: "1 File",
+    rating: 4.2,
+    reviews: 134,
+    description:
+      "A4 size project file with transparent cover and inside pockets for documents.",
+    inStock: true,
+  },
+];
+
+const FEATURED_PRODUCTS = [
+  LOCAL_PRODUCTS[0],
+  LOCAL_PRODUCTS[5],
+  LOCAL_PRODUCTS[14],
+];
 
 const CATEGORIES = [
   "All",
-  "Cold Drinks",
-  "Chips",
-  "Biscuits",
-  "Juice Bottles",
-  "Notebooks",
-  "Graph Copies",
-  "Project Files",
-  "Folders",
+  "Beverages",
+  "Snacks",
+  "Daily Routine",
+  "Stationery",
 ];
+const CATEGORY_ICONS: Record<string, string> = {
+  All: "🛒",
+  Beverages: "🥤",
+  Snacks: "🍟",
+  "Daily Routine": "🧴",
+  Stationery: "✏️",
+};
 
-const SAMPLE_PRODUCTS = [
-  {
-    name: "Coca-Cola 500ml",
-    category: "Cold Drinks",
-    price: 40n,
-    quantity: 50n,
-    isAvailable: true,
-  },
-  {
-    name: "Pepsi 600ml",
-    category: "Cold Drinks",
-    price: 45n,
-    quantity: 30n,
-    isAvailable: true,
-  },
-  {
-    name: "Sprite 500ml",
-    category: "Cold Drinks",
-    price: 40n,
-    quantity: 20n,
-    isAvailable: true,
-  },
-  {
-    name: "Mountain Dew 600ml",
-    category: "Cold Drinks",
-    price: 45n,
-    quantity: 15n,
-    isAvailable: true,
-  },
-  {
-    name: "Thums Up 500ml",
-    category: "Cold Drinks",
-    price: 40n,
-    quantity: 0n,
-    isAvailable: false,
-  },
-  {
-    name: "Lays Classic",
-    category: "Chips",
-    price: 20n,
-    quantity: 100n,
-    isAvailable: true,
-  },
-  {
-    name: "Kurkure Masala",
-    category: "Chips",
-    price: 20n,
-    quantity: 80n,
-    isAvailable: true,
-  },
-  {
-    name: "Bingo Mad Angles",
-    category: "Chips",
-    price: 20n,
-    quantity: 60n,
-    isAvailable: true,
-  },
-  {
-    name: "Pringles Original",
-    category: "Chips",
-    price: 99n,
-    quantity: 10n,
-    isAvailable: true,
-  },
-  {
-    name: "Parle-G 250g",
-    category: "Biscuits",
-    price: 15n,
-    quantity: 200n,
-    isAvailable: true,
-  },
-  {
-    name: "Oreo Chocolate",
-    category: "Biscuits",
-    price: 30n,
-    quantity: 70n,
-    isAvailable: true,
-  },
-  {
-    name: "Marie Light",
-    category: "Biscuits",
-    price: 25n,
-    quantity: 50n,
-    isAvailable: true,
-  },
-  {
-    name: "Bourbon",
-    category: "Biscuits",
-    price: 20n,
-    quantity: 40n,
-    isAvailable: true,
-  },
-  {
-    name: "Hide & Seek",
-    category: "Biscuits",
-    price: 30n,
-    quantity: 0n,
-    isAvailable: false,
-  },
-  {
-    name: "Real Orange 1L",
-    category: "Juice Bottles",
-    price: 80n,
-    quantity: 30n,
-    isAvailable: true,
-  },
-  {
-    name: "Tropicana Mango 1L",
-    category: "Juice Bottles",
-    price: 90n,
-    quantity: 25n,
-    isAvailable: true,
-  },
-  {
-    name: "Maaza 600ml",
-    category: "Juice Bottles",
-    price: 40n,
-    quantity: 40n,
-    isAvailable: true,
-  },
-  {
-    name: "Frooti 200ml",
-    category: "Juice Bottles",
-    price: 15n,
-    quantity: 60n,
-    isAvailable: true,
-  },
-  {
-    name: "Classmate Notebook 200pg",
-    category: "Notebooks",
-    price: 60n,
-    quantity: 50n,
-    isAvailable: true,
-  },
-  {
-    name: "Long Notebook 100pg",
-    category: "Notebooks",
-    price: 35n,
-    quantity: 40n,
-    isAvailable: true,
-  },
-  {
-    name: "Spiral Notebook",
-    category: "Notebooks",
-    price: 50n,
-    quantity: 30n,
-    isAvailable: true,
-  },
-  {
-    name: "Ruled Notebook 80pg",
-    category: "Notebooks",
-    price: 25n,
-    quantity: 20n,
-    isAvailable: true,
-  },
-  {
-    name: "Graph Copy 100pg",
-    category: "Graph Copies",
-    price: 40n,
-    quantity: 30n,
-    isAvailable: true,
-  },
-  {
-    name: "Graph Copy 60pg",
-    category: "Graph Copies",
-    price: 25n,
-    quantity: 20n,
-    isAvailable: true,
-  },
-  {
-    name: "Plain Graph Sheet",
-    category: "Graph Copies",
-    price: 5n,
-    quantity: 100n,
-    isAvailable: true,
-  },
-  {
-    name: "A4 Project File",
-    category: "Project Files",
-    price: 15n,
-    quantity: 60n,
-    isAvailable: true,
-  },
-  {
-    name: "Hard Cover File",
-    category: "Project Files",
-    price: 35n,
-    quantity: 25n,
-    isAvailable: true,
-  },
-  {
-    name: "Transparent File Cover",
-    category: "Project Files",
-    price: 10n,
-    quantity: 80n,
-    isAvailable: true,
-  },
-  {
-    name: "Plastic Folder A4",
-    category: "Folders",
-    price: 20n,
-    quantity: 40n,
-    isAvailable: true,
-  },
-  {
-    name: "Cardboard Folder",
-    category: "Folders",
-    price: 15n,
-    quantity: 35n,
-    isAvailable: true,
-  },
-  {
-    name: "Expandable Folder",
-    category: "Folders",
-    price: 45n,
-    quantity: 20n,
-    isAvailable: true,
-  },
-  {
-    name: "Zip Folder",
-    category: "Folders",
-    price: 60n,
-    quantity: 10n,
-    isAvailable: true,
-  },
-];
-
-// ─── Coupon logic ──────────────────────────────────────────────────────────
+// ─── Coupons ───────────────────────────────────────────────────────────────
 interface Coupon {
   code: string;
   discount: number;
@@ -328,24 +390,40 @@ function getBestCoupon(subtotal: number): Coupon | null {
 }
 
 function getNextCoupon(subtotal: number): Coupon | null {
-  const next = COUPONS.find((c) => subtotal < c.minOrder);
-  return next ?? null;
+  return COUPONS.find((c) => subtotal < c.minOrder) ?? null;
 }
 
-// ─── Cart types ────────────────────────────────────────────────────────────
-interface CartItem {
-  product: Product;
-  qty: number;
+function discountPct(price: number, mrp: number): number {
+  return Math.round(((mrp - price) / mrp) * 100);
 }
 
-// ─── Lucky Draw ────────────────────────────────────────────────────────────
+// ─── Star Rating ───────────────────────────────────────────────────────────
+function StarRating({
+  rating,
+  size = "sm",
+}: { rating: number; size?: "sm" | "md" }) {
+  return (
+    <div className="flex items-center gap-0.5">
+      {[1, 2, 3, 4, 5].map((s) => (
+        <Star
+          key={s}
+          className={size === "sm" ? "w-3 h-3" : "w-4 h-4"}
+          fill={rating >= s ? "#ff9f00" : "none"}
+          stroke={rating >= s - 0.5 ? "#ff9f00" : "#d1d5db"}
+        />
+      ))}
+    </div>
+  );
+}
+
+// ─── Spinning Wheel ────────────────────────────────────────────────────────
 const WHEEL_SEGMENTS = [
-  { label: "5% Off", color: "#f97316", bg: "#fff7ed" },
-  { label: "10% Off", color: "#16a34a", bg: "#f0fdf4" },
-  { label: "Free Item", color: "#7c3aed", bg: "#f5f3ff" },
-  { label: "₹20 Cashback", color: "#2563eb", bg: "#eff6ff" },
-  { label: "15% Off", color: "#dc2626", bg: "#fef2f2" },
-  { label: "Better Luck!", color: "#6b7280", bg: "#f9fafb" },
+  { label: "5% Off", color: "#f97316" },
+  { label: "10% Off", color: "#16a34a" },
+  { label: "Free Item", color: "#7c3aed" },
+  { label: "₹20 Cashback", color: "#2563eb" },
+  { label: "15% Off", color: "#dc2626" },
+  { label: "Better Luck!", color: "#6b7280" },
 ];
 
 function SpinningWheel({
@@ -369,12 +447,11 @@ function SpinningWheel({
     const midAngle = startAngle + anglePerSegment / 2;
     const tx = cx + r * 0.65 * Math.cos(midAngle);
     const ty = cy + r * 0.65 * Math.sin(midAngle);
-    return { ...seg, x1, y1, x2, y2, tx, ty, midAngle, startAngle, endAngle };
+    return { ...seg, x1, y1, x2, y2, tx, ty, midAngle };
   });
 
   return (
     <div className="relative inline-flex items-center justify-center">
-      {/* Pointer */}
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1 z-10"
         style={{
@@ -447,17 +524,14 @@ function SpinningWheel({
 
 // ─── Owner Popup ───────────────────────────────────────────────────────────
 function OwnerPopup() {
-  const [visible, setVisible] = useState(() => {
-    return sessionStorage.getItem("ownerPopupDismissed") !== "true";
-  });
-
+  const [visible, setVisible] = useState(
+    () => sessionStorage.getItem("ownerPopupDismissed") !== "true",
+  );
   const dismiss = () => {
     sessionStorage.setItem("ownerPopupDismissed", "true");
     setVisible(false);
   };
-
   if (!visible) return null;
-
   return (
     <AnimatePresence>
       <motion.div
@@ -478,14 +552,12 @@ function OwnerPopup() {
           onClick={(e) => e.stopPropagation()}
           data-ocid="owner.modal"
         >
-          {/* Decorative top band */}
           <div
             className="h-3"
             style={{
               background: "linear-gradient(90deg, #f97316, #16a34a, #f97316)",
             }}
           />
-
           <button
             type="button"
             onClick={dismiss}
@@ -494,9 +566,8 @@ function OwnerPopup() {
           >
             <X className="w-5 h-5 text-gray-600" />
           </button>
-
-          <div className="px-6 pt-6 pb-8 text-center">
-            <div className="flex items-center justify-center gap-2 mb-1">
+          <div className="p-8 text-center">
+            <div className="flex items-center justify-center gap-2 mb-2">
               <Sparkles className="w-5 h-5" style={{ color: "#f97316" }} />
               <span
                 className="text-sm font-semibold uppercase tracking-widest"
@@ -512,7 +583,6 @@ function OwnerPopup() {
             >
               Annapurna Shop
             </h2>
-
             <div
               className="relative mx-auto w-56 h-56 rounded-2xl overflow-hidden shadow-xl border-4"
               style={{ borderColor: "#f97316" }}
@@ -523,13 +593,11 @@ function OwnerPopup() {
                 className="w-full h-full object-cover"
               />
             </div>
-
             <p className="mt-4 text-gray-600 text-sm leading-relaxed">
               Meet your trusted shopkeepers at <strong>Annapurna Shop</strong>.
               <br />
               Quality products, honest prices, and a warm welcome every time! 🙏
             </p>
-
             <button
               type="button"
               onClick={dismiss}
@@ -542,8 +610,6 @@ function OwnerPopup() {
               Enter Shop →
             </button>
           </div>
-
-          {/* Bottom band */}
           <div
             className="h-1"
             style={{
@@ -556,84 +622,839 @@ function OwnerPopup() {
   );
 }
 
-// ─── Product Card ──────────────────────────────────────────────────────────
+// ─── Offer Marquee + Floating Cards ───────────────────────────────────────
+const OFFER_TEXTS = [
+  "🔥 50% OFF on Chips!",
+  "🎁 Buy 2 Get 1 FREE on Biscuits",
+  "⚡ Flash Sale: Cold Drinks at ₹35!",
+  "🎯 Free Delivery on orders above ₹300!",
+  "🌟 New Arrival: Premium Tea at ₹120",
+  "💥 Combo Deal: Shampoo + Soap for ₹160",
+  "🎉 Student Discount: 15% off Stationery!",
+  "🛒 Buy 3 Notebooks, Get ₹20 Off!",
+];
+
+function OfferBanner() {
+  const repeated = [...OFFER_TEXTS, ...OFFER_TEXTS];
+  return (
+    <div
+      className="overflow-hidden py-3"
+      style={{
+        background: "linear-gradient(135deg, #1a1a2e 0%, #f97316 100%)",
+      }}
+    >
+      <div className="flex whitespace-nowrap animate-marquee">
+        {repeated.map((text, i) => (
+          <span
+            key={String(i) + text.slice(0, 6)}
+            className="inline-flex items-center gap-2 text-white font-bold text-sm px-8"
+          >
+            {text}
+            <span className="text-yellow-300 mx-2">•</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function FloatingFeaturedCards() {
+  return (
+    <section
+      className="py-8 px-4"
+      style={{
+        background:
+          "linear-gradient(135deg, #fff7ed 0%, #fef3c7 50%, #f0fdf4 100%)",
+      }}
+    >
+      <div className="container max-w-6xl mx-auto">
+        <div className="text-center mb-6">
+          <h2
+            className="font-display font-black text-2xl md:text-3xl"
+            style={{ color: "#1a1a1a" }}
+          >
+            ✨ Featured Items
+          </h2>
+          <p className="text-gray-500 text-sm mt-1">
+            Best sellers, handpicked for you
+          </p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {FEATURED_PRODUCTS.map((p, i) => (
+            <div
+              key={p.id}
+              className="bg-white rounded-2xl shadow-lg p-5 text-center border border-orange-100 animate-float"
+              style={{ animationDelay: `${i * 0.8}s` }}
+            >
+              <div className="w-28 h-28 mx-auto mb-3 bg-gray-50 rounded-xl flex items-center justify-center overflow-hidden">
+                <img
+                  src={p.image}
+                  alt={p.name}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <h3 className="font-bold text-gray-800 text-sm mb-1">{p.name}</h3>
+              <div className="flex items-center justify-center gap-1 mb-2">
+                <StarRating rating={p.rating} size="sm" />
+                <span className="text-xs text-gray-500">({p.reviews})</span>
+              </div>
+              <div className="flex items-center justify-center gap-2">
+                <span
+                  className="font-black text-lg"
+                  style={{ color: "#f97316" }}
+                >
+                  ₹{p.price}
+                </span>
+                <span className="text-gray-400 text-xs line-through">
+                  ₹{p.mrp}
+                </span>
+                <span className="text-xs font-bold text-green-600">
+                  {discountPct(p.price, p.mrp)}% off
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Product Detail Dialog (Flipkart style) ────────────────────────────────
+function ProductDetailDialog({
+  product,
+  open,
+  onClose,
+  onAddToCart,
+}: {
+  product: LocalProduct | null;
+  open: boolean;
+  onClose: () => void;
+  onAddToCart: (p: LocalProduct) => void;
+}) {
+  if (!product) return null;
+  const pct = discountPct(product.price, product.mrp);
+  return (
+    <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
+      <DialogContent
+        className="max-w-2xl p-0 overflow-hidden"
+        data-ocid="product.dialog"
+      >
+        <div className="flex flex-col sm:flex-row">
+          {/* Left: image */}
+          <div className="sm:w-64 shrink-0 bg-gray-50 flex items-center justify-center p-8 border-b sm:border-b-0 sm:border-r border-gray-100">
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-48 h-48 object-contain"
+            />
+          </div>
+          {/* Right: details */}
+          <div className="flex-1 p-6 flex flex-col gap-3">
+            <DialogHeader className="pb-0">
+              <DialogTitle className="text-xl font-black text-gray-900 leading-snug text-left">
+                {product.name}
+              </DialogTitle>
+            </DialogHeader>
+            {/* Rating */}
+            <div className="flex items-center gap-2">
+              <span
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-white text-xs font-bold"
+                style={{ background: "#388e3c" }}
+              >
+                {product.rating}{" "}
+                <Star className="w-3 h-3" fill="white" stroke="white" />
+              </span>
+              <span className="text-xs text-gray-400">
+                {product.reviews.toLocaleString()} ratings
+              </span>
+            </div>
+            {/* Price */}
+            <div className="flex items-baseline gap-3">
+              <span className="text-3xl font-black text-gray-900">
+                ₹{product.price}
+              </span>
+              <span className="text-gray-400 text-sm line-through">
+                ₹{product.mrp}
+              </span>
+              <span className="text-green-600 font-bold text-sm">
+                {pct}% off
+              </span>
+            </div>
+            {/* Quantity */}
+            <p className="text-xs text-gray-500">
+              📦 Pack:{" "}
+              <span className="font-semibold text-gray-700">
+                {product.quantity}
+              </span>
+            </p>
+            {/* Description */}
+            <p className="text-sm text-gray-600 leading-relaxed">
+              {product.description}
+            </p>
+            {/* Stock */}
+            {product.inStock ? (
+              <span className="inline-flex items-center gap-1 text-green-700 text-xs font-semibold">
+                <CheckCircle2 className="w-4 h-4" /> In Stock
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1 text-red-600 text-xs font-semibold">
+                <X className="w-4 h-4" /> Out of Stock
+              </span>
+            )}
+            {/* Actions */}
+            <div className="flex gap-3 mt-2">
+              <Button
+                data-ocid="product.primary_button"
+                className="flex-1 font-bold text-white"
+                style={{ background: "#ff9f00" }}
+                disabled={!product.inStock}
+                onClick={() => {
+                  onAddToCart(product);
+                  onClose();
+                }}
+              >
+                <ShoppingCart className="w-4 h-4 mr-2" /> ADD TO CART
+              </Button>
+              <Button
+                data-ocid="product.secondary_button"
+                className="flex-1 font-bold text-white"
+                style={{ background: "#fb641b" }}
+                disabled={!product.inStock}
+                onClick={() => {
+                  onAddToCart(product);
+                  onClose();
+                }}
+              >
+                BUY NOW
+              </Button>
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+// ─── Product Card (Flipkart style) ─────────────────────────────────────────
 function ProductCard({
   product,
   index,
   onAddToCart,
+  onViewDetail,
 }: {
-  product: Product;
+  product: LocalProduct;
   index: number;
-  onAddToCart: (product: Product) => void;
+  onAddToCart: (p: LocalProduct) => void;
+  onViewDetail: (p: LocalProduct) => void;
 }) {
-  const img = CATEGORY_IMAGES[product.category];
-
+  const pct = discountPct(product.price, product.mrp);
   return (
     <motion.div
       data-ocid={`product.item.${index}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: Math.min(index * 0.04, 0.4) }}
-      className={`bg-card rounded-xl shadow-card border border-border overflow-hidden hover:shadow-hero hover:-translate-y-0.5 transition-all duration-300 ${
-        !product.isAvailable ? "opacity-70" : ""
-      }`}
+      className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col"
+      onClick={() => onViewDetail(product)}
     >
-      <div className="flex items-stretch gap-0">
-        {/* Category image */}
-        <div className="w-20 h-20 shrink-0 overflow-hidden bg-muted">
-          <img
-            src={img}
-            alt={product.category}
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              (e.currentTarget as HTMLImageElement).style.display = "none";
-            }}
-          />
+      {/* Image */}
+      <div className="bg-gray-50 flex items-center justify-center h-40 relative px-4 pt-4">
+        {pct > 0 && (
+          <span className="absolute top-2 left-2 bg-green-500 text-white text-[10px] font-black px-2 py-0.5 rounded">
+            {pct}% off
+          </span>
+        )}
+        {!product.inStock && (
+          <span className="absolute top-2 right-2 bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded">
+            Out of Stock
+          </span>
+        )}
+        <img
+          src={product.image}
+          alt={product.name}
+          className="h-32 w-full object-contain"
+        />
+      </div>
+      {/* Info */}
+      <div className="p-3 flex flex-col gap-1.5 flex-1">
+        <h3 className="font-semibold text-gray-800 text-sm leading-snug line-clamp-2">
+          {product.name}
+        </h3>
+        <div className="flex items-center gap-1.5">
+          <span
+            className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-white text-[10px] font-bold"
+            style={{ background: "#388e3c" }}
+          >
+            {product.rating}{" "}
+            <Star className="w-2.5 h-2.5" fill="white" stroke="white" />
+          </span>
+          <StarRating rating={product.rating} size="sm" />
+          <span className="text-[10px] text-gray-400">({product.reviews})</span>
         </div>
-
-        {/* Content */}
-        <div className="flex-1 p-3 flex flex-col justify-between min-w-0">
-          <div className="flex items-start justify-between gap-1">
-            <h3
-              className="font-body font-semibold text-foreground text-xs leading-snug flex-1 truncate"
-              title={product.name}
-            >
-              {product.name}
-            </h3>
-            {product.isAvailable ? (
-              <Badge className="text-available bg-available border border-available shrink-0 text-[9px] font-semibold px-1.5 py-0 ml-1">
-                In Stock
-              </Badge>
-            ) : (
-              <Badge className="text-unavailable bg-unavailable border border-unavailable shrink-0 text-[9px] font-semibold px-1.5 py-0 ml-1">
-                Out
-              </Badge>
-            )}
-          </div>
-
-          <div className="flex items-center justify-between mt-1">
-            <span className="font-display font-bold text-primary text-base">
-              ₹{product.price.toString()}
-            </span>
-            <button
-              type="button"
-              data-ocid={`product.add_button.${index}`}
-              onClick={() => onAddToCart(product)}
-              disabled={!product.isAvailable}
-              className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold text-white transition-all hover:scale-105 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
-              style={{
-                background: product.isAvailable
-                  ? "linear-gradient(135deg, #f97316, #ea580c)"
-                  : undefined,
-              }}
-            >
-              <Plus className="w-3 h-3" />
-              Add
-            </button>
-          </div>
+        <div className="flex items-baseline gap-2">
+          <span className="font-black text-base text-gray-900">
+            ₹{product.price}
+          </span>
+          <span className="text-gray-400 text-xs line-through">
+            ₹{product.mrp}
+          </span>
+          <span className="text-green-600 text-[10px] font-bold">
+            {pct}% off
+          </span>
         </div>
+        <p className="text-[10px] text-gray-500">{product.quantity}</p>
+        <Button
+          data-ocid={`product.add_button.${index}`}
+          size="sm"
+          className="mt-auto w-full font-bold text-xs"
+          style={{
+            background: product.inStock
+              ? "linear-gradient(135deg, #f97316, #ea580c)"
+              : undefined,
+          }}
+          disabled={!product.inStock}
+          onClick={(e) => {
+            e.stopPropagation();
+            onAddToCart(product);
+          }}
+        >
+          <ShoppingCart className="w-3 h-3 mr-1" /> Add to Cart
+        </Button>
       </div>
     </motion.div>
+  );
+}
+
+// ─── Checkout Wizard ────────────────────────────────────────────────────────
+function CheckoutWizard({
+  open,
+  onClose,
+  items,
+  onClearCart,
+}: {
+  open: boolean;
+  onClose: () => void;
+  items: CartItem[];
+  onClearCart: () => void;
+}) {
+  const [step, setStep] = useState(1);
+  const [address, setAddress] = useState<CheckoutAddress>({
+    name: "",
+    mobile: "",
+    house: "",
+    street: "",
+    city: "",
+    state: "",
+    pincode: "",
+    landmark: "",
+  });
+  const [payMethod, setPayMethod] = useState<"upi" | "card" | "cod">("cod");
+  const [upiId, setUpiId] = useState("");
+  const [cardNum, setCardNum] = useState("");
+  const [cardExpiry, setCardExpiry] = useState("");
+  const [cardCvv, setCardCvv] = useState("");
+  const [orderId] = useState(() =>
+    Math.random().toString(36).substring(2, 10).toUpperCase(),
+  );
+
+  const subtotal = items.reduce((s, i) => s + i.product.price * i.qty, 0);
+  const coupon = getBestCoupon(subtotal);
+  const discount = coupon ? Math.round(subtotal * coupon.discount) : 0;
+  const total = subtotal - discount;
+
+  const stepLabels = ["Cart", "Address", "Payment", "Confirmed"];
+
+  const handleClose = () => {
+    if (step === 4) onClearCart();
+    setStep(1);
+    onClose();
+  };
+
+  const goToStep2 = () => setStep(2);
+  const goToStep3 = () => {
+    if (
+      !address.name ||
+      !address.mobile ||
+      !address.house ||
+      !address.city ||
+      !address.pincode
+    ) {
+      toast.error("Please fill all required fields");
+      return;
+    }
+    setStep(3);
+  };
+  const placeOrder = () => {
+    if (payMethod === "upi" && !upiId) {
+      toast.error("Please enter UPI ID");
+      return;
+    }
+    if (payMethod === "card" && (!cardNum || !cardExpiry || !cardCvv)) {
+      toast.error("Please fill card details");
+      return;
+    }
+    setStep(4);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={(v) => !v && handleClose()}>
+      <DialogContent
+        className="max-w-2xl p-0 overflow-hidden max-h-[90vh]"
+        data-ocid="checkout.dialog"
+      >
+        {/* Step Progress */}
+        <div
+          className="px-6 pt-5 pb-3"
+          style={{ background: "linear-gradient(135deg, #f97316, #ea580c)" }}
+        >
+          <div className="flex items-center justify-between mb-1">
+            {stepLabels.map((label, i) => (
+              <div key={label} className="flex items-center gap-1">
+                <div
+                  className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black transition-colors ${
+                    step > i + 1
+                      ? "bg-green-400 text-white"
+                      : step === i + 1
+                        ? "bg-white text-orange-600"
+                        : "bg-white/30 text-white"
+                  }`}
+                >
+                  {step > i + 1 ? "✓" : i + 1}
+                </div>
+                <span
+                  className={`text-xs font-semibold hidden sm:inline ${step === i + 1 ? "text-white" : "text-white/60"}`}
+                >
+                  {label}
+                </span>
+                {i < 3 && (
+                  <ChevronRight className="w-3 h-3 text-white/40 mx-1" />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <ScrollArea className="max-h-[calc(90vh-100px)]">
+          <div className="p-6">
+            {/* Step 1: Cart Review */}
+            {step === 1 && (
+              <div>
+                <h3 className="font-black text-xl mb-4">🛒 Review Your Cart</h3>
+                <div className="space-y-3 mb-4">
+                  {items.map((item, i) => (
+                    <div
+                      key={item.product.id}
+                      data-ocid={`cart.item.${i + 1}`}
+                      className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl"
+                    >
+                      <img
+                        src={item.product.image}
+                        alt={item.product.name}
+                        className="w-14 h-14 object-contain bg-white rounded-lg p-1"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-sm truncate">
+                          {item.product.name}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {item.product.quantity}
+                        </p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <p className="font-bold text-sm">
+                          ₹{item.product.price * item.qty}
+                        </p>
+                        <p className="text-xs text-gray-400">Qty: {item.qty}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                {coupon && (
+                  <div className="flex items-center gap-2 p-3 bg-green-50 rounded-xl border border-green-200 mb-4">
+                    <Tag className="w-4 h-4 text-green-600" />
+                    <span className="text-sm font-bold text-green-700">
+                      {coupon.code} applied — You save ₹{discount}!
+                    </span>
+                  </div>
+                )}
+                <div className="border-t pt-3 space-y-1.5">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">Subtotal</span>
+                    <span>₹{subtotal}</span>
+                  </div>
+                  {discount > 0 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-green-600">Coupon Discount</span>
+                      <span className="text-green-600">-₹{discount}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">Delivery</span>
+                    <span className="text-green-600">
+                      {subtotal >= 300 ? "FREE" : "₹30"}
+                    </span>
+                  </div>
+                  <div className="flex justify-between font-black text-lg border-t pt-2">
+                    <span>Total</span>
+                    <span>₹{subtotal >= 300 ? total : total + 30}</span>
+                  </div>
+                </div>
+                <Button
+                  data-ocid="checkout.primary_button"
+                  className="w-full mt-5 font-bold py-6"
+                  style={{
+                    background: "linear-gradient(135deg, #f97316, #ea580c)",
+                  }}
+                  onClick={goToStep2}
+                >
+                  Proceed to Address →
+                </Button>
+              </div>
+            )}
+
+            {/* Step 2: Address */}
+            {step === 2 && (
+              <div>
+                <h3 className="font-black text-xl mb-4">📍 Delivery Address</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-1">
+                    <Label className="text-xs font-bold">Full Name *</Label>
+                    <Input
+                      data-ocid="checkout.input"
+                      placeholder="Enter your name"
+                      value={address.name}
+                      onChange={(e) =>
+                        setAddress((a) => ({ ...a, name: e.target.value }))
+                      }
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <Label className="text-xs font-bold">Mobile Number *</Label>
+                    <Input
+                      data-ocid="checkout.input"
+                      placeholder="10-digit mobile"
+                      value={address.mobile}
+                      onChange={(e) =>
+                        setAddress((a) => ({ ...a, mobile: e.target.value }))
+                      }
+                      maxLength={10}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1 sm:col-span-2">
+                    <Label className="text-xs font-bold">
+                      House / Flat No. *
+                    </Label>
+                    <Input
+                      data-ocid="checkout.input"
+                      placeholder="House/Flat/Block No."
+                      value={address.house}
+                      onChange={(e) =>
+                        setAddress((a) => ({ ...a, house: e.target.value }))
+                      }
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1 sm:col-span-2">
+                    <Label className="text-xs font-bold">
+                      Street / Area / Colony
+                    </Label>
+                    <Input
+                      data-ocid="checkout.input"
+                      placeholder="Street name or area"
+                      value={address.street}
+                      onChange={(e) =>
+                        setAddress((a) => ({ ...a, street: e.target.value }))
+                      }
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <Label className="text-xs font-bold">City *</Label>
+                    <Input
+                      data-ocid="checkout.input"
+                      placeholder="City"
+                      value={address.city}
+                      onChange={(e) =>
+                        setAddress((a) => ({ ...a, city: e.target.value }))
+                      }
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <Label className="text-xs font-bold">State</Label>
+                    <Input
+                      data-ocid="checkout.input"
+                      placeholder="State"
+                      value={address.state}
+                      onChange={(e) =>
+                        setAddress((a) => ({ ...a, state: e.target.value }))
+                      }
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <Label className="text-xs font-bold">Pincode *</Label>
+                    <Input
+                      data-ocid="checkout.input"
+                      placeholder="6-digit pincode"
+                      value={address.pincode}
+                      onChange={(e) =>
+                        setAddress((a) => ({ ...a, pincode: e.target.value }))
+                      }
+                      maxLength={6}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <Label className="text-xs font-bold">Landmark</Label>
+                    <Input
+                      data-ocid="checkout.input"
+                      placeholder="Near landmark"
+                      value={address.landmark}
+                      onChange={(e) =>
+                        setAddress((a) => ({ ...a, landmark: e.target.value }))
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="flex gap-3 mt-6">
+                  <Button
+                    variant="outline"
+                    onClick={() => setStep(1)}
+                    data-ocid="checkout.cancel_button"
+                    className="flex-1"
+                  >
+                    ← Back
+                  </Button>
+                  <Button
+                    className="flex-1 font-bold"
+                    style={{
+                      background: "linear-gradient(135deg, #f97316, #ea580c)",
+                    }}
+                    onClick={goToStep3}
+                    data-ocid="checkout.primary_button"
+                  >
+                    Save & Continue →
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Step 3: Payment */}
+            {step === 3 && (
+              <div>
+                <h3 className="font-black text-xl mb-4">
+                  💳 Choose Payment Method
+                </h3>
+                <RadioGroup
+                  value={payMethod}
+                  onValueChange={(v) =>
+                    setPayMethod(v as "upi" | "card" | "cod")
+                  }
+                  className="space-y-3"
+                >
+                  {/* UPI */}
+                  <label
+                    data-ocid="checkout.radio"
+                    htmlFor="upi"
+                    className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${payMethod === "upi" ? "border-orange-500 bg-orange-50" : "border-gray-200 hover:border-gray-300"}`}
+                  >
+                    <RadioGroupItem value="upi" id="upi" className="mt-0.5" />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 font-bold text-sm">
+                        <Smartphone className="w-4 h-4 text-orange-500" /> UPI
+                        Payment
+                        <span className="flex gap-1 ml-auto">
+                          {["G Pay", "PhonePe", "Paytm"].map((app) => (
+                            <span
+                              key={app}
+                              className="text-[9px] font-black px-1.5 py-0.5 rounded bg-orange-100 text-orange-700"
+                            >
+                              {app}
+                            </span>
+                          ))}
+                        </span>
+                      </div>
+                      {payMethod === "upi" && (
+                        <Input
+                          data-ocid="checkout.input"
+                          className="mt-2 text-sm"
+                          placeholder="Enter UPI ID (e.g. name@upi)"
+                          value={upiId}
+                          onChange={(e) => setUpiId(e.target.value)}
+                        />
+                      )}
+                    </div>
+                  </label>
+                  {/* Card */}
+                  <label
+                    data-ocid="checkout.radio"
+                    htmlFor="card"
+                    className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${payMethod === "card" ? "border-orange-500 bg-orange-50" : "border-gray-200 hover:border-gray-300"}`}
+                  >
+                    <RadioGroupItem value="card" id="card" className="mt-0.5" />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 font-bold text-sm">
+                        <CreditCard className="w-4 h-4 text-blue-500" /> Credit
+                        / Debit Card
+                      </div>
+                      {payMethod === "card" && (
+                        <div className="mt-2 grid grid-cols-2 gap-2">
+                          <Input
+                            data-ocid="checkout.input"
+                            className="col-span-2 text-sm"
+                            placeholder="Card Number (16 digits)"
+                            value={cardNum}
+                            onChange={(e) => setCardNum(e.target.value)}
+                            maxLength={16}
+                          />
+                          <Input
+                            data-ocid="checkout.input"
+                            className="text-sm"
+                            placeholder="MM/YY"
+                            value={cardExpiry}
+                            onChange={(e) => setCardExpiry(e.target.value)}
+                            maxLength={5}
+                          />
+                          <Input
+                            data-ocid="checkout.input"
+                            className="text-sm"
+                            placeholder="CVV"
+                            value={cardCvv}
+                            onChange={(e) => setCardCvv(e.target.value)}
+                            maxLength={3}
+                            type="password"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </label>
+                  {/* COD */}
+                  <label
+                    data-ocid="checkout.radio"
+                    htmlFor="cod"
+                    className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${payMethod === "cod" ? "border-orange-500 bg-orange-50" : "border-gray-200 hover:border-gray-300"}`}
+                  >
+                    <RadioGroupItem value="cod" id="cod" />
+                    <div className="flex items-center gap-2 font-bold text-sm">
+                      <span className="text-lg">💵</span> Cash on Delivery
+                      <Badge className="ml-auto bg-green-100 text-green-700 border-green-200 text-[10px]">
+                        Recommended
+                      </Badge>
+                    </div>
+                  </label>
+                </RadioGroup>
+
+                {/* Order Summary */}
+                <div className="mt-4 p-4 bg-gray-50 rounded-xl">
+                  <p className="font-bold text-sm mb-2">Order Summary</p>
+                  <div className="space-y-1">
+                    {items.map((item) => (
+                      <div
+                        key={item.product.id}
+                        className="flex justify-between text-xs text-gray-600"
+                      >
+                        <span>
+                          {item.product.name} × {item.qty}
+                        </span>
+                        <span>₹{item.product.price * item.qty}</span>
+                      </div>
+                    ))}
+                    <div className="border-t pt-1 flex justify-between font-black text-sm">
+                      <span>Total Payable</span>
+                      <span>₹{subtotal >= 300 ? total : total + 30}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-3 mt-5">
+                  <Button
+                    variant="outline"
+                    onClick={() => setStep(2)}
+                    data-ocid="checkout.cancel_button"
+                    className="flex-1"
+                  >
+                    ← Back
+                  </Button>
+                  <Button
+                    className="flex-1 font-bold"
+                    style={{
+                      background: "linear-gradient(135deg, #f97316, #ea580c)",
+                    }}
+                    onClick={placeOrder}
+                    data-ocid="checkout.submit_button"
+                  >
+                    Place Order 🛍️
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Step 4: Order Confirmed */}
+            {step === 4 && (
+              <div className="text-center py-6">
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-5"
+                  style={{
+                    background: "linear-gradient(135deg, #22c55e, #16a34a)",
+                  }}
+                >
+                  <CheckCircle2 className="w-12 h-12 text-white" />
+                </motion.div>
+                <h3 className="font-black text-2xl text-gray-900 mb-1">
+                  Order Placed Successfully! 🎉
+                </h3>
+                <p className="text-gray-500 text-sm mb-4">
+                  Thank you for shopping at Annapurna Shop!
+                </p>
+                <div className="inline-block px-4 py-2 rounded-xl bg-gray-100 mb-4">
+                  <p className="text-xs text-gray-500">Order ID</p>
+                  <p className="font-black text-lg text-gray-800 tracking-widest">
+                    #ANP{orderId}
+                  </p>
+                </div>
+                <div className="p-4 bg-green-50 rounded-xl border border-green-200 mb-4">
+                  <p className="font-bold text-green-700 text-sm">
+                    🚚 Expected Delivery: 2–3 Business Days
+                  </p>
+                  <p className="text-green-600 text-xs mt-1">
+                    Delivering to: {address.house}, {address.city}{" "}
+                    {address.pincode}
+                  </p>
+                </div>
+                <div className="text-left p-4 bg-gray-50 rounded-xl mb-5 space-y-1.5">
+                  {items.map((item) => (
+                    <div
+                      key={item.product.id}
+                      className="flex items-center gap-3"
+                    >
+                      <img
+                        src={item.product.image}
+                        alt={item.product.name}
+                        className="w-10 h-10 object-contain bg-white rounded-lg p-1"
+                      />
+                      <span className="text-sm flex-1">
+                        {item.product.name}
+                      </span>
+                      <span className="text-sm font-bold">×{item.qty}</span>
+                    </div>
+                  ))}
+                </div>
+                <Button
+                  data-ocid="checkout.close_button"
+                  className="w-full font-bold py-5"
+                  style={{
+                    background: "linear-gradient(135deg, #f97316, #ea580c)",
+                  }}
+                  onClick={handleClose}
+                >
+                  Continue Shopping 🛒
+                </Button>
+              </div>
+            )}
+          </div>
+        </ScrollArea>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -643,35 +1464,20 @@ function CartPanel({
   onClose,
   onUpdateQty,
   onRemove,
+  onClearCart,
 }: {
   items: CartItem[];
   onClose: () => void;
-  onUpdateQty: (name: string, delta: number) => void;
-  onRemove: (name: string) => void;
+  onUpdateQty: (id: number, delta: number) => void;
+  onRemove: (id: number) => void;
+  onClearCart: () => void;
 }) {
-  const [orderOpen, setOrderOpen] = useState(false);
-  const [orderName, setOrderName] = useState("");
-  const [orderPhone, setOrderPhone] = useState("");
-  const [orderAddress, setOrderAddress] = useState("");
-
-  const subtotal = items.reduce(
-    (s, i) => s + Number(i.product.price) * i.qty,
-    0,
-  );
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const subtotal = items.reduce((s, i) => s + i.product.price * i.qty, 0);
   const coupon = getBestCoupon(subtotal);
   const nextCoupon = getNextCoupon(subtotal);
   const discount = coupon ? Math.round(subtotal * coupon.discount) : 0;
   const total = subtotal - discount;
-
-  const placeOrder = () => {
-    if (!orderName.trim() || !orderPhone.trim() || !orderAddress.trim()) {
-      toast.error("Please fill all fields.");
-      return;
-    }
-    setOrderOpen(false);
-    onClose();
-    toast.success("Order placed! We'll deliver to your address. 🎉");
-  };
 
   return (
     <>
@@ -690,7 +1496,6 @@ function CartPanel({
         transition={{ type: "spring", stiffness: 320, damping: 30 }}
         className="fixed top-0 right-0 h-full w-full max-w-sm bg-white z-50 shadow-2xl flex flex-col"
       >
-        {/* Header */}
         <div
           className="flex items-center justify-between px-5 py-4 border-b"
           style={{ background: "linear-gradient(135deg, #f97316, #ea580c)" }}
@@ -723,53 +1528,58 @@ function CartPanel({
           </div>
         ) : (
           <ScrollArea className="flex-1 px-4 py-3">
-            <div className="flex flex-col gap-3">
+            <div className="space-y-3">
               {items.map((item, i) => (
                 <div
-                  key={item.product.name}
+                  key={item.product.id}
                   data-ocid={`cart.item.${i + 1}`}
-                  className="flex items-center gap-3 p-3 rounded-xl border bg-gray-50"
+                  className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl"
                 >
                   <img
-                    src={CATEGORY_IMAGES[item.product.category]}
-                    alt={item.product.category}
-                    className="w-12 h-12 rounded-lg object-cover shrink-0"
+                    src={item.product.image}
+                    alt={item.product.name}
+                    className="w-14 h-14 object-contain bg-white rounded-lg p-1 shrink-0"
                   />
                   <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-xs text-gray-800 truncate">
+                    <p className="font-semibold text-xs truncate">
                       {item.product.name}
                     </p>
-                    <p className="text-orange-600 font-bold text-sm">
-                      ₹{Number(item.product.price) * item.qty}
+                    <p className="text-[10px] text-gray-400">
+                      {item.product.quantity}
+                    </p>
+                    <p className="font-bold text-sm text-orange-600 mt-0.5">
+                      ₹{item.product.price * item.qty}
                     </p>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <button
-                      type="button"
-                      data-ocid={`cart.toggle.${i + 1}`}
-                      onClick={() => onUpdateQty(item.product.name, -1)}
-                      className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition-colors"
-                    >
-                      <Minus className="w-3 h-3" />
-                    </button>
-                    <span className="w-6 text-center text-sm font-bold">
-                      {item.qty}
-                    </span>
-                    <button
-                      type="button"
-                      data-ocid={`cart.toggle.${i + 1}`}
-                      onClick={() => onUpdateQty(item.product.name, 1)}
-                      className="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center hover:bg-orange-200 transition-colors"
-                    >
-                      <Plus className="w-3 h-3 text-orange-600" />
-                    </button>
+                  <div className="flex flex-col items-center gap-1 shrink-0">
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        data-ocid={`cart.toggle.${i + 1}`}
+                        onClick={() => onUpdateQty(item.product.id, -1)}
+                        className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition-colors"
+                      >
+                        <Minus className="w-3 h-3" />
+                      </button>
+                      <span className="w-6 text-center text-xs font-bold">
+                        {item.qty}
+                      </span>
+                      <button
+                        type="button"
+                        data-ocid={`cart.toggle.${i + 1}`}
+                        onClick={() => onUpdateQty(item.product.id, 1)}
+                        className="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center hover:bg-orange-200 transition-colors"
+                      >
+                        <Plus className="w-3 h-3" />
+                      </button>
+                    </div>
                     <button
                       type="button"
                       data-ocid={`cart.delete_button.${i + 1}`}
-                      onClick={() => onRemove(item.product.name)}
-                      className="w-6 h-6 rounded-full bg-red-100 flex items-center justify-center hover:bg-red-200 transition-colors ml-1"
+                      onClick={() => onRemove(item.product.id)}
+                      className="w-6 h-6 rounded-full bg-red-50 flex items-center justify-center hover:bg-red-100 transition-colors"
                     >
-                      <Trash2 className="w-3 h-3 text-red-500" />
+                      <Trash2 className="w-3 h-3 text-red-400" />
                     </button>
                   </div>
                 </div>
@@ -778,142 +1588,60 @@ function CartPanel({
           </ScrollArea>
         )}
 
-        {/* Footer */}
         {items.length > 0 && (
-          <div className="px-4 py-4 border-t bg-gray-50">
-            {/* Coupon progress */}
+          <div className="border-t p-4 space-y-3">
+            {coupon && (
+              <div className="flex items-center gap-2 p-2.5 bg-green-50 rounded-xl border border-green-200 text-xs">
+                <Tag className="w-4 h-4 text-green-600 shrink-0" />
+                <span className="font-bold text-green-700">
+                  {coupon.code} — You save ₹{discount}!
+                </span>
+              </div>
+            )}
             {nextCoupon && (
-              <div className="mb-3 p-2.5 rounded-xl bg-green-50 border border-green-200 text-xs text-green-700">
-                <Zap className="w-3.5 h-3.5 inline mr-1" />
-                You're <strong>₹{nextCoupon.minOrder - subtotal}</strong> away
-                from <strong>{nextCoupon.code}</strong> (
-                {Math.round(nextCoupon.discount * 100)}% off)!
-              </div>
+              <p className="text-[10px] text-center text-gray-500">
+                Add ₹{nextCoupon.minOrder - subtotal} more for{" "}
+                <strong>{nextCoupon.code}</strong> (
+                {Math.round(nextCoupon.discount * 100)}% off)
+              </p>
             )}
-            {coupon && (
-              <div className="mb-3 p-2.5 rounded-xl bg-orange-50 border border-orange-200 text-xs">
-                <Tag className="w-3.5 h-3.5 inline mr-1 text-orange-500" />
-                <span className="text-orange-700">
-                  Coupon <strong>{coupon.code}</strong> applied! You save ₹
-                  {discount} 🎉
-                </span>
-              </div>
-            )}
-            <div className="flex justify-between text-sm mb-1">
+            <div className="flex justify-between text-sm">
               <span className="text-gray-500">Subtotal</span>
-              <span className="font-semibold">₹{subtotal}</span>
+              <span>₹{subtotal}</span>
             </div>
-            {coupon && (
-              <div className="flex justify-between text-sm mb-1">
-                <span className="text-green-600">Discount ({coupon.code})</span>
-                <span className="text-green-600 font-semibold">
-                  -₹{discount}
-                </span>
+            {discount > 0 && (
+              <div className="flex justify-between text-sm text-green-600">
+                <span>Discount</span>
+                <span>-₹{discount}</span>
               </div>
             )}
-            <Separator className="my-2" />
-            <div className="flex justify-between text-base font-bold mb-3">
+            <div className="flex justify-between font-black text-lg">
               <span>Total</span>
-              <span className="text-orange-600">₹{total}</span>
+              <span>₹{total}</span>
             </div>
             <Button
-              data-ocid="cart.primary_button"
-              className="w-full font-bold"
-              onClick={() => setOrderOpen(true)}
+              data-ocid="checkout.open_modal_button"
+              className="w-full font-bold py-5"
               style={{
                 background: "linear-gradient(135deg, #f97316, #ea580c)",
               }}
+              onClick={() => setCheckoutOpen(true)}
             >
-              Place Order →
+              Proceed to Checkout →
             </Button>
           </div>
         )}
       </motion.aside>
 
-      {/* Order modal */}
-      <Dialog open={orderOpen} onOpenChange={setOrderOpen}>
-        <DialogContent data-ocid="order.dialog" className="max-w-sm">
-          <DialogHeader>
-            <DialogTitle className="text-lg font-bold">
-              Complete Your Order
-            </DialogTitle>
-          </DialogHeader>
-          <div className="flex flex-col gap-3 mt-2">
-            <div>
-              <Label
-                htmlFor="order-name"
-                className="text-xs font-semibold mb-1 block"
-              >
-                Your Name
-              </Label>
-              <Input
-                data-ocid="order.input"
-                id="order-name"
-                placeholder="e.g. Rahul Sharma"
-                value={orderName}
-                onChange={(e) => setOrderName(e.target.value)}
-              />
-            </div>
-            <div>
-              <Label
-                htmlFor="order-phone"
-                className="text-xs font-semibold mb-1 block"
-              >
-                Phone Number
-              </Label>
-              <Input
-                data-ocid="order.input"
-                id="order-phone"
-                placeholder="e.g. 9760123456"
-                value={orderPhone}
-                onChange={(e) => setOrderPhone(e.target.value)}
-              />
-            </div>
-            <div>
-              <Label
-                htmlFor="order-address"
-                className="text-xs font-semibold mb-1 block"
-              >
-                Delivery Address
-              </Label>
-              <Textarea
-                data-ocid="order.textarea"
-                id="order-address"
-                placeholder="Room no., hostel, GBPIET..."
-                value={orderAddress}
-                onChange={(e) => setOrderAddress(e.target.value)}
-                rows={3}
-              />
-            </div>
-            <div className="flex justify-between items-center p-3 rounded-xl bg-orange-50 border border-orange-200">
-              <span className="text-sm text-gray-600">Order Total</span>
-              <span className="font-bold text-orange-600 text-lg">
-                ₹{total}
-              </span>
-            </div>
-          </div>
-          <div className="flex gap-2 mt-2">
-            <Button
-              data-ocid="order.cancel_button"
-              variant="outline"
-              className="flex-1"
-              onClick={() => setOrderOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              data-ocid="order.submit_button"
-              className="flex-1 font-bold"
-              onClick={placeOrder}
-              style={{
-                background: "linear-gradient(135deg, #f97316, #ea580c)",
-              }}
-            >
-              Confirm Order 🛍️
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <CheckoutWizard
+        open={checkoutOpen}
+        onClose={() => setCheckoutOpen(false)}
+        items={items}
+        onClearCart={() => {
+          onClearCart();
+          onClose();
+        }}
+      />
     </>
   );
 }
@@ -923,7 +1651,7 @@ const DEALS = [
   {
     icon: "🍟",
     title: "Buy 2 Chips, Get 1 Free!",
-    desc: "On all Lays, Kurkure & Bingo packs",
+    desc: "On all chips and namkeen packs",
     badge: "HOT",
     color: "#f97316",
   },
@@ -936,14 +1664,14 @@ const DEALS = [
   },
   {
     icon: "🍪",
-    title: "Any 3 Biscuits for ₹50!",
-    desc: "Mix & match Parle-G, Oreo, Marie",
+    title: "Any 3 Biscuits for ₹80!",
+    desc: "Mix & match biscuit packs",
     badge: "DEAL",
     color: "#7c3aed",
   },
   {
     icon: "🧃",
-    title: "Free Maaza with orders above ₹200",
+    title: "Free Water Bottle with orders above ₹200",
     desc: "Auto-added to qualifying orders",
     badge: "FREE",
     color: "#16a34a",
@@ -951,7 +1679,7 @@ const DEALS = [
   {
     icon: "🎒",
     title: "Student Special: 15% off Stationery",
-    desc: "Notebooks, files, folders & copies",
+    desc: "Notebooks, files, pens & copies",
     badge: "STUDENT",
     color: "#dc2626",
   },
@@ -968,33 +1696,18 @@ function OffersSection() {
       }}
     >
       <div className="container max-w-6xl mx-auto">
-        {/* Banner */}
-        <div className="relative rounded-2xl overflow-hidden mb-8 shadow-hero">
-          <img
-            src="/assets/generated/offers-banner.dim_600x200.jpg"
-            alt="Offers & Deals"
-            className="w-full h-40 object-cover"
-          />
-          <div
-            className="absolute inset-0 flex items-center justify-center"
-            style={{ background: "rgba(0,0,0,0.4)" }}
-          >
-            <div className="text-center">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <Tag className="w-6 h-6 text-yellow-300" />
-                <h2 className="text-white font-display font-black text-3xl md:text-4xl">
-                  Offers & Deals
-                </h2>
-                <Tag className="w-6 h-6 text-yellow-300" />
-              </div>
-              <p className="text-yellow-200 text-sm">
-                Exclusive savings just for you!
-              </p>
-            </div>
+        <div className="text-center mb-6">
+          <div className="flex items-center justify-center gap-2 mb-1">
+            <Tag className="w-6 h-6" style={{ color: "#f97316" }} />
+            <h2 className="font-display font-black text-2xl md:text-3xl text-gray-800">
+              Offers & Deals
+            </h2>
+            <Tag className="w-6 h-6" style={{ color: "#f97316" }} />
           </div>
+          <p className="text-gray-500 text-sm">
+            Exclusive savings just for you!
+          </p>
         </div>
-
-        {/* Deal cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {DEALS.map((deal, i) => (
             <motion.div
@@ -1004,14 +1717,12 @@ function OffersSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08 }}
-              className="bg-white rounded-2xl p-5 shadow-card border border-gray-100 hover:shadow-hero hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
+              className="bg-white rounded-2xl p-5 shadow-md border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
             >
-              {/* Color accent bar */}
               <div
                 className="absolute top-0 left-0 right-0 h-1"
                 style={{ background: deal.color }}
               />
-
               <div className="flex items-start gap-3">
                 <span className="text-3xl">{deal.icon}</span>
                 <div className="flex-1">
@@ -1043,37 +1754,32 @@ function OffersSection() {
   );
 }
 
-// ─── Lucky Draw Section ────────────────────────────────────────────────────
+// ─── Lucky Draw ────────────────────────────────────────────────────────────
 function LuckyDrawSection() {
   const [spinning, setSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [result, setResult] = useState<(typeof WHEEL_SEGMENTS)[0] | null>(null);
   const [resultOpen, setResultOpen] = useState(false);
   const spinRef = useRef(false);
-
-  const lastSpinKey = "luckyDrawLastSpin";
   const today = new Date().toDateString();
-  const alreadySpun = localStorage.getItem(lastSpinKey) === today;
+  const alreadySpun = localStorage.getItem("luckyDrawLastSpin") === today;
 
   const spin = () => {
     if (spinning || spinRef.current || alreadySpun) return;
     spinRef.current = true;
     setSpinning(true);
-
     const segmentIndex = Math.floor(Math.random() * WHEEL_SEGMENTS.length);
     const degreesPerSegment = 360 / WHEEL_SEGMENTS.length;
-    // Land pointer (top) on the chosen segment
     const targetAngle =
       360 * 5 +
       (360 - segmentIndex * degreesPerSegment - degreesPerSegment / 2);
     setRotation((prev) => prev + targetAngle);
-
     setTimeout(() => {
       setSpinning(false);
       spinRef.current = false;
       setResult(WHEEL_SEGMENTS[segmentIndex]);
       setResultOpen(true);
-      localStorage.setItem(lastSpinKey, today);
+      localStorage.setItem("luckyDrawLastSpin", today);
     }, 4200);
   };
 
@@ -1086,32 +1792,18 @@ function LuckyDrawSection() {
   return (
     <section id="lucky-draw" className="py-12 px-4 bg-white">
       <div className="container max-w-4xl mx-auto">
-        {/* Banner */}
-        <div className="relative rounded-2xl overflow-hidden mb-8 shadow-hero">
-          <img
-            src="/assets/generated/lucky-draw-banner.dim_600x200.jpg"
-            alt="Lucky Draw"
-            className="w-full h-40 object-cover"
-          />
-          <div
-            className="absolute inset-0 flex items-center justify-center"
-            style={{ background: "rgba(0,0,0,0.45)" }}
-          >
-            <div className="text-center">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <Gift className="w-6 h-6 text-yellow-300" />
-                <h2 className="text-white font-display font-black text-3xl md:text-4xl">
-                  Lucky Draw
-                </h2>
-                <Gift className="w-6 h-6 text-yellow-300" />
-              </div>
-              <p className="text-yellow-200 text-sm">
-                Spin once a day to win exciting prizes!
-              </p>
-            </div>
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-2 mb-1">
+            <Gift className="w-6 h-6 text-yellow-500" />
+            <h2 className="font-display font-black text-2xl md:text-3xl text-gray-800">
+              Lucky Draw
+            </h2>
+            <Gift className="w-6 h-6 text-yellow-500" />
           </div>
+          <p className="text-gray-500 text-sm">
+            Spin once a day to win exciting prizes!
+          </p>
         </div>
-
         <div className="flex flex-col items-center gap-6">
           {alreadySpun ? (
             <div
@@ -1132,69 +1824,36 @@ function LuckyDrawSection() {
               <SpinningWheel spinning={spinning} rotation={rotation} />
               <button
                 type="button"
-                data-ocid="lucky.primary_button"
+                data-ocid="lucky.button"
                 onClick={spin}
                 disabled={spinning}
-                className="flex items-center gap-2 px-10 py-4 rounded-full font-black text-white text-lg shadow-hero transition-all hover:scale-105 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+                className="px-10 py-4 rounded-2xl font-black text-white text-lg shadow-lg transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
-                  background: "linear-gradient(135deg, #f97316, #dc2626)",
+                  background: "linear-gradient(135deg, #f97316, #ea580c)",
                 }}
               >
-                <Star className="w-5 h-5" />
-                {spinning ? "Spinning..." : "SPIN!"}
+                {spinning ? "Spinning..." : "🎯 SPIN TO WIN!"}
               </button>
             </>
           )}
         </div>
-
-        {/* Coupon hint */}
-        <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {[
-            { code: "SAVE10", desc: "10% off on ₹300+", color: "#f97316" },
-            { code: "SAVE15", desc: "15% off on ₹500+", color: "#16a34a" },
-            { code: "SAVE20", desc: "20% off on ₹1000+", color: "#7c3aed" },
-          ].map((c) => (
-            <div
-              key={c.code}
-              data-ocid="lucky.card"
-              className="flex items-center gap-3 p-4 rounded-xl border-2 bg-white shadow-card"
-              style={{ borderColor: c.color }}
-            >
-              <Tag className="w-5 h-5 shrink-0" style={{ color: c.color }} />
-              <div className="flex-1">
-                <p className="font-bold text-sm" style={{ color: c.color }}>
-                  {c.code}
-                </p>
-                <p className="text-xs text-gray-500">{c.desc}</p>
-              </div>
-              <button
-                type="button"
-                data-ocid="lucky.secondary_button"
-                onClick={() => copyCode(c.code)}
-                className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                <Copy className="w-3.5 h-3.5 text-gray-500" />
-              </button>
-            </div>
-          ))}
-        </div>
       </div>
 
-      {/* Result modal */}
       <Dialog open={resultOpen} onOpenChange={setResultOpen}>
         <DialogContent
-          data-ocid="lucky.dialog"
           className="max-w-sm text-center"
+          data-ocid="lucky.dialog"
         >
-          <div className="flex flex-col items-center gap-4 py-4">
-            <div className="relative">
-              <span className="text-7xl block animate-bounce">🎉</span>
-            </div>
-            <h2 className="font-display font-black text-2xl">You Won!</h2>
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-black">
+              🎉 You Won!
+            </DialogTitle>
+          </DialogHeader>
+          <div className="py-4 flex flex-col items-center gap-4">
             {result && (
               <>
                 <div
-                  className="w-32 h-32 rounded-full flex items-center justify-center text-white font-black text-lg shadow-hero"
+                  className="w-24 h-24 rounded-full flex items-center justify-center text-3xl font-black text-white"
                   style={{ background: result.color }}
                 >
                   {result.label}
@@ -1219,10 +1878,9 @@ function LuckyDrawSection() {
                       onClick={() =>
                         copyCode(
                           result.label
-                            .replace(" ", "")
+                            .replace(/ /g, "")
                             .replace("%", "PCT")
-                            .replace("₹", "")
-                            .replace(" ", ""),
+                            .replace("₹", ""),
                         )
                       }
                       className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
@@ -1258,13 +1916,15 @@ function GroceryApp() {
   const [seeded, setSeeded] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<LocalProduct | null>(
+    null,
+  );
+  const [detailOpen, setDetailOpen] = useState(false);
 
   const { data: shopInfo } = useShopInfo();
-  const { data: products, isLoading: productsLoading } = useAllProducts();
   const { mutateAsync: setShopInfo } = useSetShopInfo();
   const { mutateAsync: addProduct } = useAddOrUpdateProduct();
 
-  // Initialize
   useEffect(() => {
     if (!actor || actorFetching || seeded) return;
     const init = async () => {
@@ -1273,11 +1933,21 @@ function GroceryApp() {
         await setShopInfo({
           name: "Annapurna Shop",
           location: "GBPIET, PAURI",
-          contact: "9760xxxxxx",
+          contact: "7895784954",
         });
         const existing = await actor.getAllProducts();
         if (existing.length === 0) {
-          await Promise.all(SAMPLE_PRODUCTS.map((p) => addProduct(p)));
+          await Promise.all(
+            LOCAL_PRODUCTS.map((p) =>
+              addProduct({
+                name: p.name,
+                category: p.category,
+                price: BigInt(p.price),
+                quantity: BigInt(50),
+                isAvailable: p.inStock,
+              }),
+            ),
+          );
         }
       } catch (e) {
         console.error("Init error", e);
@@ -1286,44 +1956,46 @@ function GroceryApp() {
     init();
   }, [actor, actorFetching, seeded, setShopInfo, addProduct]);
 
-  const filteredProducts =
-    activeCategory === "All"
-      ? (products ?? [])
-      : (products ?? []).filter((p) => p.category === activeCategory);
-
   const shopName = shopInfo?.name ?? "Annapurna Shop";
   const shopLocation = shopInfo?.location ?? "GBPIET, PAURI";
-  const shopContact = shopInfo?.contact ?? "9760xxxxxx";
+  const shopContact = shopInfo?.contact ?? "7895784954";
+
+  const filteredProducts =
+    activeCategory === "All"
+      ? LOCAL_PRODUCTS
+      : LOCAL_PRODUCTS.filter((p) => p.category === activeCategory);
 
   const totalCartCount = cartItems.reduce((s, i) => s + i.qty, 0);
 
-  const addToCart = (product: Product) => {
+  const addToCart = (product: LocalProduct) => {
     setCartItems((prev) => {
-      const existing = prev.find((i) => i.product.name === product.name);
-      if (existing) {
+      const existing = prev.find((i) => i.product.id === product.id);
+      if (existing)
         return prev.map((i) =>
-          i.product.name === product.name ? { ...i, qty: i.qty + 1 } : i,
+          i.product.id === product.id ? { ...i, qty: i.qty + 1 } : i,
         );
-      }
       return [...prev, { product, qty: 1 }];
     });
     toast.success(`${product.name} added to cart!`);
   };
 
-  const updateQty = (name: string, delta: number) => {
+  const updateQty = (id: number, delta: number) => {
     setCartItems((prev) => {
-      const item = prev.find((i) => i.product.name === name);
+      const item = prev.find((i) => i.product.id === id);
       if (!item) return prev;
       const newQty = item.qty + delta;
-      if (newQty <= 0) return prev.filter((i) => i.product.name !== name);
-      return prev.map((i) =>
-        i.product.name === name ? { ...i, qty: newQty } : i,
-      );
+      if (newQty <= 0) return prev.filter((i) => i.product.id !== id);
+      return prev.map((i) => (i.product.id === id ? { ...i, qty: newQty } : i));
     });
   };
 
-  const removeFromCart = (name: string) => {
-    setCartItems((prev) => prev.filter((i) => i.product.name !== name));
+  const removeFromCart = (id: number) =>
+    setCartItems((prev) => prev.filter((i) => i.product.id !== id));
+  const clearCart = () => setCartItems([]);
+
+  const openDetail = (p: LocalProduct) => {
+    setSelectedProduct(p);
+    setDetailOpen(true);
   };
 
   return (
@@ -1331,7 +2003,7 @@ function GroceryApp() {
       <OwnerPopup />
 
       {/* Navigation */}
-      <nav className="sticky top-0 z-30 bg-white/95 backdrop-blur-sm border-b shadow-xs">
+      <nav className="sticky top-0 z-30 bg-white/95 backdrop-blur-sm border-b shadow-sm">
         <div className="container max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <span className="text-xl">🛕</span>
@@ -1393,7 +2065,7 @@ function GroceryApp() {
         </div>
       </nav>
 
-      {/* Hero Header */}
+      {/* Hero */}
       <header data-ocid="header.section" className="relative overflow-hidden">
         <img
           src="/assets/generated/annapurna-hero.dim_1200x400.jpg"
@@ -1417,22 +2089,19 @@ function GroceryApp() {
               <span className="text-3xl">🛕</span>
               <h1
                 className="font-display font-black text-4xl md:text-6xl text-white"
-                style={{
-                  textShadow: "0 2px 20px rgba(0,0,0,0.5)",
-                  letterSpacing: "0.02em",
-                }}
+                style={{ textShadow: "0 2px 20px rgba(0,0,0,0.5)" }}
               >
                 {shopName}
               </h1>
               <span className="text-3xl">🛕</span>
             </div>
             <p className="text-yellow-200 font-body text-sm md:text-base italic mb-4">
-              Your trusted neighbourhood store since 2010 — GBPIET, PAURI
+              Your trusted neighbourhood store — GBPIET, PAURI
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <a
                 href={`tel:${shopContact}`}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm transition-all hover:scale-105"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm hover:scale-105 transition-all"
                 style={{ background: "#f97316", color: "white" }}
               >
                 <Phone className="w-4 h-4" /> {shopContact}
@@ -1452,10 +2121,16 @@ function GroceryApp() {
         </div>
       </header>
 
-      {/* Offers & Deals */}
+      {/* Offer Marquee */}
+      <OfferBanner />
+
+      {/* Floating Featured Cards */}
+      <FloatingFeaturedCards />
+
+      {/* Offers Section */}
       <OffersSection />
 
-      {/* Products Section */}
+      {/* Products */}
       <main
         id="products"
         data-ocid="products.section"
@@ -1467,7 +2142,7 @@ function GroceryApp() {
             All Products
           </h2>
           <Badge className="bg-orange-100 text-orange-600 border-orange-200">
-            {(products ?? []).length} items
+            {LOCAL_PRODUCTS.length} items
           </Badge>
         </div>
 
@@ -1495,23 +2170,7 @@ function GroceryApp() {
             </TabsList>
           </div>
 
-          {productsLoading ? (
-            <div
-              data-ocid="products.loading_state"
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3"
-            >
-              {[1, 2, 3, 4, 5, 6, 7, 8].map((k) => (
-                <div key={k} className="rounded-xl border overflow-hidden flex">
-                  <Skeleton className="w-20 h-20 shrink-0" />
-                  <div className="flex-1 p-3">
-                    <Skeleton className="h-3 w-full mb-2 rounded" />
-                    <Skeleton className="h-3 w-2/3 mb-3 rounded" />
-                    <Skeleton className="h-6 w-16 rounded" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : filteredProducts.length === 0 ? (
+          {filteredProducts.length === 0 ? (
             <div
               data-ocid="products.empty_state"
               className="text-center py-20 text-gray-400"
@@ -1523,13 +2182,14 @@ function GroceryApp() {
             </div>
           ) : (
             <AnimatePresence mode="wait">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                 {filteredProducts.map((product, i) => (
                   <ProductCard
-                    key={product.name}
+                    key={product.id}
                     product={product}
                     index={i + 1}
                     onAddToCart={addToCart}
+                    onViewDetail={openDetail}
                   />
                 ))}
               </div>
@@ -1607,7 +2267,7 @@ function GroceryApp() {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={() => setCartOpen(true)}
-        className="fixed bottom-6 right-6 z-30 w-14 h-14 rounded-full text-white shadow-hero flex items-center justify-center"
+        className="fixed bottom-6 right-6 z-30 w-14 h-14 rounded-full text-white shadow-xl flex items-center justify-center"
         style={{ background: "linear-gradient(135deg, #f97316, #ea580c)" }}
       >
         <ShoppingCart className="w-6 h-6" />
@@ -1618,6 +2278,14 @@ function GroceryApp() {
         )}
       </motion.button>
 
+      {/* Product Detail Popup */}
+      <ProductDetailDialog
+        product={selectedProduct}
+        open={detailOpen}
+        onClose={() => setDetailOpen(false)}
+        onAddToCart={addToCart}
+      />
+
       {/* Cart panel */}
       <AnimatePresence>
         {cartOpen && (
@@ -1626,6 +2294,7 @@ function GroceryApp() {
             onClose={() => setCartOpen(false)}
             onUpdateQty={updateQty}
             onRemove={removeFromCart}
+            onClearCart={clearCart}
           />
         )}
       </AnimatePresence>

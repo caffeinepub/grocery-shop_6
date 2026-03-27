@@ -3049,10 +3049,10 @@ react_production.version = "19.1.1";
   react.exports = react_production;
 }
 var reactExports = react.exports;
-const React2 = /* @__PURE__ */ getDefaultExportFromCjs(reactExports);
+const o$1 = /* @__PURE__ */ getDefaultExportFromCjs(reactExports);
 const React$2 = /* @__PURE__ */ _mergeNamespaces({
   __proto__: null,
-  default: React2
+  default: o$1
 }, [reactExports]);
 var QueryClientContext = reactExports.createContext(
   void 0
@@ -19052,7 +19052,7 @@ var DialogTrigger = reactExports.forwardRef(
         "aria-haspopup": "dialog",
         "aria-expanded": context.open,
         "aria-controls": context.contentId,
-        "data-state": getState(context.open),
+        "data-state": getState$1(context.open),
         ...triggerProps,
         ref: composedTriggerRef,
         onClick: composeEventHandlers(props.onClick, context.onOpenToggle)
@@ -19092,7 +19092,7 @@ var DialogOverlayImpl = reactExports.forwardRef(
       /* @__PURE__ */ jsxRuntimeExports.jsx(ReactRemoveScroll, { as: Slot, allowPinchZoom: true, shards: [context.contentRef], children: /* @__PURE__ */ jsxRuntimeExports.jsx(
         Primitive.div,
         {
-          "data-state": getState(context.open),
+          "data-state": getState$1(context.open),
           ...overlayProps,
           ref: forwardedRef,
           style: { pointerEvents: "auto", ...overlayProps.style }
@@ -19211,7 +19211,7 @@ var DialogContentImpl = reactExports.forwardRef(
               id: context.contentId,
               "aria-describedby": context.descriptionId,
               "aria-labelledby": context.titleId,
-              "data-state": getState(context.open),
+              "data-state": getState$1(context.open),
               ...contentProps,
               ref: composedRefs,
               onDismiss: () => context.onOpenChange(false)
@@ -19261,7 +19261,7 @@ var DialogClose = reactExports.forwardRef(
   }
 );
 DialogClose.displayName = CLOSE_NAME;
-function getState(open) {
+function getState$1(open) {
   return open ? "open" : "closed";
 }
 var TITLE_WARNING_NAME = "DialogTitleWarning";
@@ -19299,7 +19299,7 @@ var DescriptionWarning = ({ contentRef, descriptionId }) => {
   }, [MESSAGE, contentRef, descriptionId]);
   return null;
 };
-var Root$4 = Dialog$1;
+var Root$3 = Dialog$1;
 var Portal = DialogPortal$1;
 var Overlay = DialogOverlay$1;
 var Content = DialogContent$1;
@@ -19410,18 +19410,56 @@ const createLucideIcon = (iconName, iconNode) => {
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$c = [
-  ["rect", { width: "14", height: "14", x: "8", y: "8", rx: "2", ry: "2", key: "17jyea" }],
-  ["path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2", key: "zix9uf" }]
-];
-const Copy = createLucideIcon("copy", __iconNode$c);
+const __iconNode$h = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]];
+const ChevronRight = createLucideIcon("chevron-right", __iconNode$h);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$b = [
+const __iconNode$g = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
+];
+const CircleCheck = createLucideIcon("circle-check", __iconNode$g);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$f = [["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }]];
+const Circle = createLucideIcon("circle", __iconNode$f);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$e = [
+  ["rect", { width: "14", height: "14", x: "8", y: "8", rx: "2", ry: "2", key: "17jyea" }],
+  ["path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2", key: "zix9uf" }]
+];
+const Copy = createLucideIcon("copy", __iconNode$e);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$d = [
+  ["rect", { width: "20", height: "14", x: "2", y: "5", rx: "2", key: "ynyp8z" }],
+  ["line", { x1: "2", x2: "22", y1: "10", y2: "10", key: "1b3vmo" }]
+];
+const CreditCard = createLucideIcon("credit-card", __iconNode$d);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$c = [
   ["rect", { x: "3", y: "8", width: "18", height: "4", rx: "1", key: "bkv52" }],
   ["path", { d: "M12 8v13", key: "1c76mn" }],
   ["path", { d: "M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7", key: "6wjy6b" }],
@@ -19433,14 +19471,14 @@ const __iconNode$b = [
     }
   ]
 ];
-const Gift = createLucideIcon("gift", __iconNode$b);
+const Gift = createLucideIcon("gift", __iconNode$c);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$a = [
+const __iconNode$b = [
   [
     "path",
     {
@@ -19450,22 +19488,22 @@ const __iconNode$a = [
   ],
   ["circle", { cx: "12", cy: "10", r: "3", key: "ilqhr7" }]
 ];
-const MapPin = createLucideIcon("map-pin", __iconNode$a);
+const MapPin = createLucideIcon("map-pin", __iconNode$b);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$9 = [["path", { d: "M5 12h14", key: "1ays0h" }]];
-const Minus = createLucideIcon("minus", __iconNode$9);
+const __iconNode$a = [["path", { d: "M5 12h14", key: "1ays0h" }]];
+const Minus = createLucideIcon("minus", __iconNode$a);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$8 = [
+const __iconNode$9 = [
   [
     "path",
     {
@@ -19474,7 +19512,18 @@ const __iconNode$8 = [
     }
   ]
 ];
-const Phone = createLucideIcon("phone", __iconNode$8);
+const Phone = createLucideIcon("phone", __iconNode$9);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$8 = [
+  ["path", { d: "M5 12h14", key: "1ays0h" }],
+  ["path", { d: "M12 5v14", key: "s699le" }]
+];
+const Plus = createLucideIcon("plus", __iconNode$8);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -19482,17 +19531,6 @@ const Phone = createLucideIcon("phone", __iconNode$8);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$7 = [
-  ["path", { d: "M5 12h14", key: "1ays0h" }],
-  ["path", { d: "M12 5v14", key: "s699le" }]
-];
-const Plus = createLucideIcon("plus", __iconNode$7);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$6 = [
   ["circle", { cx: "8", cy: "21", r: "1", key: "jimo8o" }],
   ["circle", { cx: "19", cy: "21", r: "1", key: "13723u" }],
   [
@@ -19503,7 +19541,18 @@ const __iconNode$6 = [
     }
   ]
 ];
-const ShoppingCart = createLucideIcon("shopping-cart", __iconNode$6);
+const ShoppingCart = createLucideIcon("shopping-cart", __iconNode$7);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$6 = [
+  ["rect", { width: "14", height: "20", x: "5", y: "2", rx: "2", ry: "2", key: "1yt0o3" }],
+  ["path", { d: "M12 18h.01", key: "mhygvu" }]
+];
+const Smartphone = createLucideIcon("smartphone", __iconNode$6);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -19601,7 +19650,7 @@ const Zap = createLucideIcon("zap", __iconNode);
 function Dialog({
   ...props
 }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(Root$4, { "data-slot": "dialog", ...props });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Root$3, { "data-slot": "dialog", ...props });
 }
 function DialogPortal({
   ...props
@@ -19698,7 +19747,7 @@ function Input({ className, type, ...props }) {
     }
   );
 }
-var NAME$1 = "Label";
+var NAME = "Label";
 var Label$1 = reactExports.forwardRef((props, forwardedRef) => {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
     Primitive.label,
@@ -19715,14 +19764,14 @@ var Label$1 = reactExports.forwardRef((props, forwardedRef) => {
     }
   );
 });
-Label$1.displayName = NAME$1;
-var Root$3 = Label$1;
+Label$1.displayName = NAME;
+var Root$2 = Label$1;
 function Label({
   className,
   ...props
 }) {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    Root$3,
+    Root$2,
     {
       "data-slot": "label",
       className: cn(
@@ -19733,10 +19782,630 @@ function Label({
     }
   );
 }
+function createCollection(name) {
+  const PROVIDER_NAME = name + "CollectionProvider";
+  const [createCollectionContext, createCollectionScope2] = createContextScope(PROVIDER_NAME);
+  const [CollectionProviderImpl, useCollectionContext] = createCollectionContext(
+    PROVIDER_NAME,
+    { collectionRef: { current: null }, itemMap: /* @__PURE__ */ new Map() }
+  );
+  const CollectionProvider = (props) => {
+    const { scope, children } = props;
+    const ref = o$1.useRef(null);
+    const itemMap = o$1.useRef(/* @__PURE__ */ new Map()).current;
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(CollectionProviderImpl, { scope, itemMap, collectionRef: ref, children });
+  };
+  CollectionProvider.displayName = PROVIDER_NAME;
+  const COLLECTION_SLOT_NAME = name + "CollectionSlot";
+  const CollectionSlotImpl = /* @__PURE__ */ createSlot(COLLECTION_SLOT_NAME);
+  const CollectionSlot = o$1.forwardRef(
+    (props, forwardedRef) => {
+      const { scope, children } = props;
+      const context = useCollectionContext(COLLECTION_SLOT_NAME, scope);
+      const composedRefs = useComposedRefs$1(forwardedRef, context.collectionRef);
+      return /* @__PURE__ */ jsxRuntimeExports.jsx(CollectionSlotImpl, { ref: composedRefs, children });
+    }
+  );
+  CollectionSlot.displayName = COLLECTION_SLOT_NAME;
+  const ITEM_SLOT_NAME = name + "CollectionItemSlot";
+  const ITEM_DATA_ATTR = "data-radix-collection-item";
+  const CollectionItemSlotImpl = /* @__PURE__ */ createSlot(ITEM_SLOT_NAME);
+  const CollectionItemSlot = o$1.forwardRef(
+    (props, forwardedRef) => {
+      const { scope, children, ...itemData } = props;
+      const ref = o$1.useRef(null);
+      const composedRefs = useComposedRefs$1(forwardedRef, ref);
+      const context = useCollectionContext(ITEM_SLOT_NAME, scope);
+      o$1.useEffect(() => {
+        context.itemMap.set(ref, { ref, ...itemData });
+        return () => void context.itemMap.delete(ref);
+      });
+      return /* @__PURE__ */ jsxRuntimeExports.jsx(CollectionItemSlotImpl, { ...{ [ITEM_DATA_ATTR]: "" }, ref: composedRefs, children });
+    }
+  );
+  CollectionItemSlot.displayName = ITEM_SLOT_NAME;
+  function useCollection2(scope) {
+    const context = useCollectionContext(name + "CollectionConsumer", scope);
+    const getItems = o$1.useCallback(() => {
+      const collectionNode = context.collectionRef.current;
+      if (!collectionNode) return [];
+      const orderedNodes = Array.from(collectionNode.querySelectorAll(`[${ITEM_DATA_ATTR}]`));
+      const items = Array.from(context.itemMap.values());
+      const orderedItems = items.sort(
+        (a2, b2) => orderedNodes.indexOf(a2.ref.current) - orderedNodes.indexOf(b2.ref.current)
+      );
+      return orderedItems;
+    }, [context.collectionRef, context.itemMap]);
+    return getItems;
+  }
+  return [
+    { Provider: CollectionProvider, Slot: CollectionSlot, ItemSlot: CollectionItemSlot },
+    useCollection2,
+    createCollectionScope2
+  ];
+}
 var DirectionContext = reactExports.createContext(void 0);
 function useDirection(localDir) {
   const globalDir = reactExports.useContext(DirectionContext);
   return localDir || globalDir || "ltr";
+}
+var ENTRY_FOCUS = "rovingFocusGroup.onEntryFocus";
+var EVENT_OPTIONS = { bubbles: false, cancelable: true };
+var GROUP_NAME = "RovingFocusGroup";
+var [Collection, useCollection, createCollectionScope] = createCollection(GROUP_NAME);
+var [createRovingFocusGroupContext, createRovingFocusGroupScope] = createContextScope(
+  GROUP_NAME,
+  [createCollectionScope]
+);
+var [RovingFocusProvider, useRovingFocusContext] = createRovingFocusGroupContext(GROUP_NAME);
+var RovingFocusGroup = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(Collection.Provider, { scope: props.__scopeRovingFocusGroup, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Collection.Slot, { scope: props.__scopeRovingFocusGroup, children: /* @__PURE__ */ jsxRuntimeExports.jsx(RovingFocusGroupImpl, { ...props, ref: forwardedRef }) }) });
+  }
+);
+RovingFocusGroup.displayName = GROUP_NAME;
+var RovingFocusGroupImpl = reactExports.forwardRef((props, forwardedRef) => {
+  const {
+    __scopeRovingFocusGroup,
+    orientation,
+    loop = false,
+    dir,
+    currentTabStopId: currentTabStopIdProp,
+    defaultCurrentTabStopId,
+    onCurrentTabStopIdChange,
+    onEntryFocus,
+    preventScrollOnEntryFocus = false,
+    ...groupProps
+  } = props;
+  const ref = reactExports.useRef(null);
+  const composedRefs = useComposedRefs$1(forwardedRef, ref);
+  const direction = useDirection(dir);
+  const [currentTabStopId, setCurrentTabStopId] = useControllableState({
+    prop: currentTabStopIdProp,
+    defaultProp: defaultCurrentTabStopId ?? null,
+    onChange: onCurrentTabStopIdChange,
+    caller: GROUP_NAME
+  });
+  const [isTabbingBackOut, setIsTabbingBackOut] = reactExports.useState(false);
+  const handleEntryFocus = useCallbackRef$1(onEntryFocus);
+  const getItems = useCollection(__scopeRovingFocusGroup);
+  const isClickFocusRef = reactExports.useRef(false);
+  const [focusableItemsCount, setFocusableItemsCount] = reactExports.useState(0);
+  reactExports.useEffect(() => {
+    const node = ref.current;
+    if (node) {
+      node.addEventListener(ENTRY_FOCUS, handleEntryFocus);
+      return () => node.removeEventListener(ENTRY_FOCUS, handleEntryFocus);
+    }
+  }, [handleEntryFocus]);
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    RovingFocusProvider,
+    {
+      scope: __scopeRovingFocusGroup,
+      orientation,
+      dir: direction,
+      loop,
+      currentTabStopId,
+      onItemFocus: reactExports.useCallback(
+        (tabStopId) => setCurrentTabStopId(tabStopId),
+        [setCurrentTabStopId]
+      ),
+      onItemShiftTab: reactExports.useCallback(() => setIsTabbingBackOut(true), []),
+      onFocusableItemAdd: reactExports.useCallback(
+        () => setFocusableItemsCount((prevCount) => prevCount + 1),
+        []
+      ),
+      onFocusableItemRemove: reactExports.useCallback(
+        () => setFocusableItemsCount((prevCount) => prevCount - 1),
+        []
+      ),
+      children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Primitive.div,
+        {
+          tabIndex: isTabbingBackOut || focusableItemsCount === 0 ? -1 : 0,
+          "data-orientation": orientation,
+          ...groupProps,
+          ref: composedRefs,
+          style: { outline: "none", ...props.style },
+          onMouseDown: composeEventHandlers(props.onMouseDown, () => {
+            isClickFocusRef.current = true;
+          }),
+          onFocus: composeEventHandlers(props.onFocus, (event) => {
+            const isKeyboardFocus = !isClickFocusRef.current;
+            if (event.target === event.currentTarget && isKeyboardFocus && !isTabbingBackOut) {
+              const entryFocusEvent = new CustomEvent(ENTRY_FOCUS, EVENT_OPTIONS);
+              event.currentTarget.dispatchEvent(entryFocusEvent);
+              if (!entryFocusEvent.defaultPrevented) {
+                const items = getItems().filter((item) => item.focusable);
+                const activeItem = items.find((item) => item.active);
+                const currentItem = items.find((item) => item.id === currentTabStopId);
+                const candidateItems = [activeItem, currentItem, ...items].filter(
+                  Boolean
+                );
+                const candidateNodes = candidateItems.map((item) => item.ref.current);
+                focusFirst(candidateNodes, preventScrollOnEntryFocus);
+              }
+            }
+            isClickFocusRef.current = false;
+          }),
+          onBlur: composeEventHandlers(props.onBlur, () => setIsTabbingBackOut(false))
+        }
+      )
+    }
+  );
+});
+var ITEM_NAME$1 = "RovingFocusGroupItem";
+var RovingFocusGroupItem = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const {
+      __scopeRovingFocusGroup,
+      focusable = true,
+      active = false,
+      tabStopId,
+      children,
+      ...itemProps
+    } = props;
+    const autoId = useId();
+    const id2 = tabStopId || autoId;
+    const context = useRovingFocusContext(ITEM_NAME$1, __scopeRovingFocusGroup);
+    const isCurrentTabStop = context.currentTabStopId === id2;
+    const getItems = useCollection(__scopeRovingFocusGroup);
+    const { onFocusableItemAdd, onFocusableItemRemove, currentTabStopId } = context;
+    reactExports.useEffect(() => {
+      if (focusable) {
+        onFocusableItemAdd();
+        return () => onFocusableItemRemove();
+      }
+    }, [focusable, onFocusableItemAdd, onFocusableItemRemove]);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Collection.ItemSlot,
+      {
+        scope: __scopeRovingFocusGroup,
+        id: id2,
+        focusable,
+        active,
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Primitive.span,
+          {
+            tabIndex: isCurrentTabStop ? 0 : -1,
+            "data-orientation": context.orientation,
+            ...itemProps,
+            ref: forwardedRef,
+            onMouseDown: composeEventHandlers(props.onMouseDown, (event) => {
+              if (!focusable) event.preventDefault();
+              else context.onItemFocus(id2);
+            }),
+            onFocus: composeEventHandlers(props.onFocus, () => context.onItemFocus(id2)),
+            onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+              if (event.key === "Tab" && event.shiftKey) {
+                context.onItemShiftTab();
+                return;
+              }
+              if (event.target !== event.currentTarget) return;
+              const focusIntent = getFocusIntent(event, context.orientation, context.dir);
+              if (focusIntent !== void 0) {
+                if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
+                event.preventDefault();
+                const items = getItems().filter((item) => item.focusable);
+                let candidateNodes = items.map((item) => item.ref.current);
+                if (focusIntent === "last") candidateNodes.reverse();
+                else if (focusIntent === "prev" || focusIntent === "next") {
+                  if (focusIntent === "prev") candidateNodes.reverse();
+                  const currentIndex = candidateNodes.indexOf(event.currentTarget);
+                  candidateNodes = context.loop ? wrapArray(candidateNodes, currentIndex + 1) : candidateNodes.slice(currentIndex + 1);
+                }
+                setTimeout(() => focusFirst(candidateNodes));
+              }
+            }),
+            children: typeof children === "function" ? children({ isCurrentTabStop, hasTabStop: currentTabStopId != null }) : children
+          }
+        )
+      }
+    );
+  }
+);
+RovingFocusGroupItem.displayName = ITEM_NAME$1;
+var MAP_KEY_TO_FOCUS_INTENT = {
+  ArrowLeft: "prev",
+  ArrowUp: "prev",
+  ArrowRight: "next",
+  ArrowDown: "next",
+  PageUp: "first",
+  Home: "first",
+  PageDown: "last",
+  End: "last"
+};
+function getDirectionAwareKey(key, dir) {
+  if (dir !== "rtl") return key;
+  return key === "ArrowLeft" ? "ArrowRight" : key === "ArrowRight" ? "ArrowLeft" : key;
+}
+function getFocusIntent(event, orientation, dir) {
+  const key = getDirectionAwareKey(event.key, dir);
+  if (orientation === "vertical" && ["ArrowLeft", "ArrowRight"].includes(key)) return void 0;
+  if (orientation === "horizontal" && ["ArrowUp", "ArrowDown"].includes(key)) return void 0;
+  return MAP_KEY_TO_FOCUS_INTENT[key];
+}
+function focusFirst(candidates, preventScroll = false) {
+  const PREVIOUSLY_FOCUSED_ELEMENT = document.activeElement;
+  for (const candidate of candidates) {
+    if (candidate === PREVIOUSLY_FOCUSED_ELEMENT) return;
+    candidate.focus({ preventScroll });
+    if (document.activeElement !== PREVIOUSLY_FOCUSED_ELEMENT) return;
+  }
+}
+function wrapArray(array, startIndex) {
+  return array.map((_2, index2) => array[(startIndex + index2) % array.length]);
+}
+var Root$1 = RovingFocusGroup;
+var Item = RovingFocusGroupItem;
+function useSize(element) {
+  const [size, setSize] = reactExports.useState(void 0);
+  useLayoutEffect2(() => {
+    if (element) {
+      setSize({ width: element.offsetWidth, height: element.offsetHeight });
+      const resizeObserver = new ResizeObserver((entries) => {
+        if (!Array.isArray(entries)) {
+          return;
+        }
+        if (!entries.length) {
+          return;
+        }
+        const entry = entries[0];
+        let width;
+        let height;
+        if ("borderBoxSize" in entry) {
+          const borderSizeEntry = entry["borderBoxSize"];
+          const borderSize = Array.isArray(borderSizeEntry) ? borderSizeEntry[0] : borderSizeEntry;
+          width = borderSize["inlineSize"];
+          height = borderSize["blockSize"];
+        } else {
+          width = element.offsetWidth;
+          height = element.offsetHeight;
+        }
+        setSize({ width, height });
+      });
+      resizeObserver.observe(element, { box: "border-box" });
+      return () => resizeObserver.unobserve(element);
+    } else {
+      setSize(void 0);
+    }
+  }, [element]);
+  return size;
+}
+function usePrevious(value) {
+  const ref = reactExports.useRef({ value, previous: value });
+  return reactExports.useMemo(() => {
+    if (ref.current.value !== value) {
+      ref.current.previous = ref.current.value;
+      ref.current.value = value;
+    }
+    return ref.current.previous;
+  }, [value]);
+}
+var RADIO_NAME = "Radio";
+var [createRadioContext, createRadioScope] = createContextScope(RADIO_NAME);
+var [RadioProvider, useRadioContext] = createRadioContext(RADIO_NAME);
+var Radio = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const {
+      __scopeRadio,
+      name,
+      checked = false,
+      required,
+      disabled,
+      value = "on",
+      onCheck,
+      form,
+      ...radioProps
+    } = props;
+    const [button, setButton] = reactExports.useState(null);
+    const composedRefs = useComposedRefs$1(forwardedRef, (node) => setButton(node));
+    const hasConsumerStoppedPropagationRef = reactExports.useRef(false);
+    const isFormControl = button ? form || !!button.closest("form") : true;
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs(RadioProvider, { scope: __scopeRadio, checked, disabled, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Primitive.button,
+        {
+          type: "button",
+          role: "radio",
+          "aria-checked": checked,
+          "data-state": getState(checked),
+          "data-disabled": disabled ? "" : void 0,
+          disabled,
+          value,
+          ...radioProps,
+          ref: composedRefs,
+          onClick: composeEventHandlers(props.onClick, (event) => {
+            if (!checked) onCheck == null ? void 0 : onCheck();
+            if (isFormControl) {
+              hasConsumerStoppedPropagationRef.current = event.isPropagationStopped();
+              if (!hasConsumerStoppedPropagationRef.current) event.stopPropagation();
+            }
+          })
+        }
+      ),
+      isFormControl && /* @__PURE__ */ jsxRuntimeExports.jsx(
+        RadioBubbleInput,
+        {
+          control: button,
+          bubbles: !hasConsumerStoppedPropagationRef.current,
+          name,
+          value,
+          checked,
+          required,
+          disabled,
+          form,
+          style: { transform: "translateX(-100%)" }
+        }
+      )
+    ] });
+  }
+);
+Radio.displayName = RADIO_NAME;
+var INDICATOR_NAME = "RadioIndicator";
+var RadioIndicator = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeRadio, forceMount, ...indicatorProps } = props;
+    const context = useRadioContext(INDICATOR_NAME, __scopeRadio);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(Presence, { present: forceMount || context.checked, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Primitive.span,
+      {
+        "data-state": getState(context.checked),
+        "data-disabled": context.disabled ? "" : void 0,
+        ...indicatorProps,
+        ref: forwardedRef
+      }
+    ) });
+  }
+);
+RadioIndicator.displayName = INDICATOR_NAME;
+var BUBBLE_INPUT_NAME = "RadioBubbleInput";
+var RadioBubbleInput = reactExports.forwardRef(
+  ({
+    __scopeRadio,
+    control,
+    checked,
+    bubbles = true,
+    ...props
+  }, forwardedRef) => {
+    const ref = reactExports.useRef(null);
+    const composedRefs = useComposedRefs$1(ref, forwardedRef);
+    const prevChecked = usePrevious(checked);
+    const controlSize = useSize(control);
+    reactExports.useEffect(() => {
+      const input = ref.current;
+      if (!input) return;
+      const inputProto = window.HTMLInputElement.prototype;
+      const descriptor = Object.getOwnPropertyDescriptor(
+        inputProto,
+        "checked"
+      );
+      const setChecked = descriptor.set;
+      if (prevChecked !== checked && setChecked) {
+        const event = new Event("click", { bubbles });
+        setChecked.call(input, checked);
+        input.dispatchEvent(event);
+      }
+    }, [prevChecked, checked, bubbles]);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Primitive.input,
+      {
+        type: "radio",
+        "aria-hidden": true,
+        defaultChecked: checked,
+        ...props,
+        tabIndex: -1,
+        ref: composedRefs,
+        style: {
+          ...props.style,
+          ...controlSize,
+          position: "absolute",
+          pointerEvents: "none",
+          opacity: 0,
+          margin: 0
+        }
+      }
+    );
+  }
+);
+RadioBubbleInput.displayName = BUBBLE_INPUT_NAME;
+function getState(checked) {
+  return checked ? "checked" : "unchecked";
+}
+var ARROW_KEYS = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+var RADIO_GROUP_NAME = "RadioGroup";
+var [createRadioGroupContext] = createContextScope(RADIO_GROUP_NAME, [
+  createRovingFocusGroupScope,
+  createRadioScope
+]);
+var useRovingFocusGroupScope$1 = createRovingFocusGroupScope();
+var useRadioScope = createRadioScope();
+var [RadioGroupProvider, useRadioGroupContext] = createRadioGroupContext(RADIO_GROUP_NAME);
+var RadioGroup$1 = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const {
+      __scopeRadioGroup,
+      name,
+      defaultValue,
+      value: valueProp,
+      required = false,
+      disabled = false,
+      orientation,
+      dir,
+      loop = true,
+      onValueChange,
+      ...groupProps
+    } = props;
+    const rovingFocusGroupScope = useRovingFocusGroupScope$1(__scopeRadioGroup);
+    const direction = useDirection(dir);
+    const [value, setValue] = useControllableState({
+      prop: valueProp,
+      defaultProp: defaultValue ?? null,
+      onChange: onValueChange,
+      caller: RADIO_GROUP_NAME
+    });
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      RadioGroupProvider,
+      {
+        scope: __scopeRadioGroup,
+        name,
+        required,
+        disabled,
+        value,
+        onValueChange: setValue,
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Root$1,
+          {
+            asChild: true,
+            ...rovingFocusGroupScope,
+            orientation,
+            dir: direction,
+            loop,
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Primitive.div,
+              {
+                role: "radiogroup",
+                "aria-required": required,
+                "aria-orientation": orientation,
+                "data-disabled": disabled ? "" : void 0,
+                dir: direction,
+                ...groupProps,
+                ref: forwardedRef
+              }
+            )
+          }
+        )
+      }
+    );
+  }
+);
+RadioGroup$1.displayName = RADIO_GROUP_NAME;
+var ITEM_NAME = "RadioGroupItem";
+var RadioGroupItem$1 = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeRadioGroup, disabled, ...itemProps } = props;
+    const context = useRadioGroupContext(ITEM_NAME, __scopeRadioGroup);
+    const isDisabled = context.disabled || disabled;
+    const rovingFocusGroupScope = useRovingFocusGroupScope$1(__scopeRadioGroup);
+    const radioScope = useRadioScope(__scopeRadioGroup);
+    const ref = reactExports.useRef(null);
+    const composedRefs = useComposedRefs$1(forwardedRef, ref);
+    const checked = context.value === itemProps.value;
+    const isArrowKeyPressedRef = reactExports.useRef(false);
+    reactExports.useEffect(() => {
+      const handleKeyDown = (event) => {
+        if (ARROW_KEYS.includes(event.key)) {
+          isArrowKeyPressedRef.current = true;
+        }
+      };
+      const handleKeyUp = () => isArrowKeyPressedRef.current = false;
+      document.addEventListener("keydown", handleKeyDown);
+      document.addEventListener("keyup", handleKeyUp);
+      return () => {
+        document.removeEventListener("keydown", handleKeyDown);
+        document.removeEventListener("keyup", handleKeyUp);
+      };
+    }, []);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Item,
+      {
+        asChild: true,
+        ...rovingFocusGroupScope,
+        focusable: !isDisabled,
+        active: checked,
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Radio,
+          {
+            disabled: isDisabled,
+            required: context.required,
+            checked,
+            ...radioScope,
+            ...itemProps,
+            name: context.name,
+            ref: composedRefs,
+            onCheck: () => context.onValueChange(itemProps.value),
+            onKeyDown: composeEventHandlers((event) => {
+              if (event.key === "Enter") event.preventDefault();
+            }),
+            onFocus: composeEventHandlers(itemProps.onFocus, () => {
+              var _a3;
+              if (isArrowKeyPressedRef.current) (_a3 = ref.current) == null ? void 0 : _a3.click();
+            })
+          }
+        )
+      }
+    );
+  }
+);
+RadioGroupItem$1.displayName = ITEM_NAME;
+var INDICATOR_NAME2 = "RadioGroupIndicator";
+var RadioGroupIndicator = reactExports.forwardRef(
+  (props, forwardedRef) => {
+    const { __scopeRadioGroup, ...indicatorProps } = props;
+    const radioScope = useRadioScope(__scopeRadioGroup);
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(RadioIndicator, { ...radioScope, ...indicatorProps, ref: forwardedRef });
+  }
+);
+RadioGroupIndicator.displayName = INDICATOR_NAME2;
+var Root2$1 = RadioGroup$1;
+var Item2 = RadioGroupItem$1;
+var Indicator = RadioGroupIndicator;
+function RadioGroup({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    Root2$1,
+    {
+      "data-slot": "radio-group",
+      className: cn("grid gap-3", className),
+      ...props
+    }
+  );
+}
+function RadioGroupItem({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    Item2,
+    {
+      "data-slot": "radio-group-item",
+      className: cn(
+        "border-input text-primary focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 aspect-square size-4 shrink-0 rounded-full border shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
+        className
+      ),
+      ...props,
+      children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Indicator,
+        {
+          "data-slot": "radio-group-indicator",
+          className: "relative flex items-center justify-center",
+          children: /* @__PURE__ */ jsxRuntimeExports.jsx(Circle, { className: "fill-primary absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2" })
+        }
+      )
+    }
+  );
 }
 function clamp$1(value, [min, max]) {
   return Math.min(max, Math.max(min, value));
@@ -20444,7 +21113,7 @@ function useResizeObserver(element, onResize) {
     }
   }, [element, handleResize]);
 }
-var Root$2 = ScrollArea$1;
+var Root = ScrollArea$1;
 var Viewport = ScrollAreaViewport;
 var Corner = ScrollAreaCorner;
 function ScrollArea({
@@ -20453,7 +21122,7 @@ function ScrollArea({
   ...props
 }) {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    Root$2,
+    Root,
     {
       "data-slot": "scroll-area",
       className: cn("relative", className),
@@ -20500,59 +21169,6 @@ function ScrollBar({
     }
   );
 }
-var NAME = "Separator";
-var DEFAULT_ORIENTATION = "horizontal";
-var ORIENTATIONS = ["horizontal", "vertical"];
-var Separator$1 = reactExports.forwardRef((props, forwardedRef) => {
-  const { decorative, orientation: orientationProp = DEFAULT_ORIENTATION, ...domProps } = props;
-  const orientation = isValidOrientation(orientationProp) ? orientationProp : DEFAULT_ORIENTATION;
-  const ariaOrientation = orientation === "vertical" ? orientation : void 0;
-  const semanticProps = decorative ? { role: "none" } : { "aria-orientation": ariaOrientation, role: "separator" };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    Primitive.div,
-    {
-      "data-orientation": orientation,
-      ...semanticProps,
-      ...domProps,
-      ref: forwardedRef
-    }
-  );
-});
-Separator$1.displayName = NAME;
-function isValidOrientation(orientation) {
-  return ORIENTATIONS.includes(orientation);
-}
-var Root$1 = Separator$1;
-function Separator({
-  className,
-  orientation = "horizontal",
-  decorative = true,
-  ...props
-}) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    Root$1,
-    {
-      "data-slot": "separator",
-      decorative,
-      orientation,
-      className: cn(
-        "bg-border shrink-0 data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px",
-        className
-      ),
-      ...props
-    }
-  );
-}
-function Skeleton({ className, ...props }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "div",
-    {
-      "data-slot": "skeleton",
-      className: cn("bg-accent animate-pulse rounded-md", className),
-      ...props
-    }
-  );
-}
 var M$2 = (e, i, s2, u, m2, a2, l, h2) => {
   let d2 = document.documentElement, w2 = ["light", "dark"];
   function p2(n) {
@@ -20596,10 +21212,10 @@ var jt = (n) => {
     default:
       return null;
   }
-}, te = Array(12).fill(0), Yt = ({ visible: n, className: e }) => React2.createElement("div", { className: ["sonner-loading-wrapper", e].filter(Boolean).join(" "), "data-visible": n }, React2.createElement("div", { className: "sonner-spinner" }, te.map((t, a2) => React2.createElement("div", { className: "sonner-loading-bar", key: `spinner-bar-${a2}` })))), ee = React2.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 20 20", fill: "currentColor", height: "20", width: "20" }, React2.createElement("path", { fillRule: "evenodd", d: "M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z", clipRule: "evenodd" })), oe = React2.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", fill: "currentColor", height: "20", width: "20" }, React2.createElement("path", { fillRule: "evenodd", d: "M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z", clipRule: "evenodd" })), ae = React2.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 20 20", fill: "currentColor", height: "20", width: "20" }, React2.createElement("path", { fillRule: "evenodd", d: "M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z", clipRule: "evenodd" })), se = React2.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 20 20", fill: "currentColor", height: "20", width: "20" }, React2.createElement("path", { fillRule: "evenodd", d: "M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z", clipRule: "evenodd" })), Ot = React2.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", width: "12", height: "12", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" }, React2.createElement("line", { x1: "18", y1: "6", x2: "6", y2: "18" }), React2.createElement("line", { x1: "6", y1: "6", x2: "18", y2: "18" }));
+}, te = Array(12).fill(0), Yt = ({ visible: n, className: e }) => o$1.createElement("div", { className: ["sonner-loading-wrapper", e].filter(Boolean).join(" "), "data-visible": n }, o$1.createElement("div", { className: "sonner-spinner" }, te.map((t, a2) => o$1.createElement("div", { className: "sonner-loading-bar", key: `spinner-bar-${a2}` })))), ee = o$1.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 20 20", fill: "currentColor", height: "20", width: "20" }, o$1.createElement("path", { fillRule: "evenodd", d: "M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z", clipRule: "evenodd" })), oe = o$1.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", fill: "currentColor", height: "20", width: "20" }, o$1.createElement("path", { fillRule: "evenodd", d: "M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z", clipRule: "evenodd" })), ae = o$1.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 20 20", fill: "currentColor", height: "20", width: "20" }, o$1.createElement("path", { fillRule: "evenodd", d: "M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z", clipRule: "evenodd" })), se = o$1.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 20 20", fill: "currentColor", height: "20", width: "20" }, o$1.createElement("path", { fillRule: "evenodd", d: "M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z", clipRule: "evenodd" })), Ot = o$1.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", width: "12", height: "12", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" }, o$1.createElement("line", { x1: "18", y1: "6", x2: "6", y2: "18" }), o$1.createElement("line", { x1: "6", y1: "6", x2: "18", y2: "18" }));
 var Ft = () => {
-  let [n, e] = React2.useState(document.hidden);
-  return React2.useEffect(() => {
+  let [n, e] = o$1.useState(document.hidden);
+  return o$1.useEffect(() => {
     let t = () => {
       e(document.hidden);
     };
@@ -20637,7 +21253,7 @@ var bt = 1, yt = class {
       let a2;
       t.loading !== void 0 && (a2 = this.create({ ...t, promise: e, type: "loading", message: t.loading, description: typeof t.description != "function" ? t.description : void 0 }));
       let u = e instanceof Promise ? e : e(), f = a2 !== void 0, w2, S2 = u.then(async (i) => {
-        if (w2 = ["resolve", i], React2.isValidElement(i)) f = false, this.create({ id: a2, type: "default", message: i });
+        if (w2 = ["resolve", i], o$1.isValidElement(i)) f = false, this.create({ id: a2, type: "default", message: i });
         else if (ie(i) && !i.ok) {
           f = false;
           let T2 = typeof t.error == "function" ? await t.error(`HTTP error! status: ${i.status}`) : t.error, F2 = typeof t.description == "function" ? await t.description(`HTTP error! status: ${i.status}`) : t.description;
@@ -20690,33 +21306,33 @@ function xe(n) {
 }
 var ve = (n) => {
   var Dt, Pt, Nt, Bt, Ct, kt, It, Mt, Ht, At, Lt;
-  let { invert: e, toast: t, unstyled: a2, interacting: u, setHeights: f, visibleToasts: w2, heights: S2, index: g2, toasts: i, expanded: D, removeToast: T2, defaultRichColors: F2, closeButton: et2, style: ut2, cancelButtonStyle: ft2, actionButtonStyle: l, className: ot2 = "", descriptionClassName: at = "", duration: X2, position: st2, gap: pt, loadingIcon: rt, expandByDefault: B2, classNames: s2, icons: P2, closeButtonAriaLabel: nt2 = "Close toast", pauseWhenPageIsHidden: it2 } = n, [Y2, C2] = React2.useState(null), [lt, J2] = React2.useState(null), [W2, H2] = React2.useState(false), [A2, mt] = React2.useState(false), [L2, z2] = React2.useState(false), [ct2, d2] = React2.useState(false), [h2, y2] = React2.useState(false), [R2, j2] = React2.useState(0), [p2, _2] = React2.useState(0), O2 = React2.useRef(t.duration || X2 || Wt), G2 = React2.useRef(null), k2 = React2.useRef(null), Vt = g2 === 0, Ut = g2 + 1 <= w2, N2 = t.type, V2 = t.dismissible !== false, Kt = t.className || "", Xt = t.descriptionClassName || "", dt2 = React2.useMemo(() => S2.findIndex((r2) => r2.toastId === t.id) || 0, [S2, t.id]), Jt = React2.useMemo(() => {
+  let { invert: e, toast: t, unstyled: a2, interacting: u, setHeights: f, visibleToasts: w2, heights: S2, index: g2, toasts: i, expanded: D, removeToast: T2, defaultRichColors: F2, closeButton: et2, style: ut2, cancelButtonStyle: ft2, actionButtonStyle: l, className: ot2 = "", descriptionClassName: at = "", duration: X2, position: st2, gap: pt, loadingIcon: rt, expandByDefault: B2, classNames: s2, icons: P2, closeButtonAriaLabel: nt2 = "Close toast", pauseWhenPageIsHidden: it2 } = n, [Y2, C2] = o$1.useState(null), [lt, J2] = o$1.useState(null), [W2, H2] = o$1.useState(false), [A2, mt] = o$1.useState(false), [L2, z2] = o$1.useState(false), [ct2, d2] = o$1.useState(false), [h2, y2] = o$1.useState(false), [R2, j2] = o$1.useState(0), [p2, _2] = o$1.useState(0), O2 = o$1.useRef(t.duration || X2 || Wt), G2 = o$1.useRef(null), k2 = o$1.useRef(null), Vt = g2 === 0, Ut = g2 + 1 <= w2, N2 = t.type, V2 = t.dismissible !== false, Kt = t.className || "", Xt = t.descriptionClassName || "", dt2 = o$1.useMemo(() => S2.findIndex((r2) => r2.toastId === t.id) || 0, [S2, t.id]), Jt = o$1.useMemo(() => {
     var r2;
     return (r2 = t.closeButton) != null ? r2 : et2;
-  }, [t.closeButton, et2]), Tt = React2.useMemo(() => t.duration || X2 || Wt, [t.duration, X2]), gt = React2.useRef(0), U2 = React2.useRef(0), St = React2.useRef(0), K2 = React2.useRef(null), [Gt, Qt] = st2.split("-"), Rt = React2.useMemo(() => S2.reduce((r2, m2, c2) => c2 >= dt2 ? r2 : r2 + m2.height, 0), [S2, dt2]), Et = Ft(), qt = t.invert || e, ht = N2 === "loading";
-  U2.current = React2.useMemo(() => dt2 * pt + Rt, [dt2, Rt]), React2.useEffect(() => {
+  }, [t.closeButton, et2]), Tt = o$1.useMemo(() => t.duration || X2 || Wt, [t.duration, X2]), gt = o$1.useRef(0), U2 = o$1.useRef(0), St = o$1.useRef(0), K2 = o$1.useRef(null), [Gt, Qt] = st2.split("-"), Rt = o$1.useMemo(() => S2.reduce((r2, m2, c2) => c2 >= dt2 ? r2 : r2 + m2.height, 0), [S2, dt2]), Et = Ft(), qt = t.invert || e, ht = N2 === "loading";
+  U2.current = o$1.useMemo(() => dt2 * pt + Rt, [dt2, Rt]), o$1.useEffect(() => {
     O2.current = Tt;
-  }, [Tt]), React2.useEffect(() => {
+  }, [Tt]), o$1.useEffect(() => {
     H2(true);
-  }, []), React2.useEffect(() => {
+  }, []), o$1.useEffect(() => {
     let r2 = k2.current;
     if (r2) {
       let m2 = r2.getBoundingClientRect().height;
       return _2(m2), f((c2) => [{ toastId: t.id, height: m2, position: t.position }, ...c2]), () => f((c2) => c2.filter((b2) => b2.toastId !== t.id));
     }
-  }, [f, t.id]), React2.useLayoutEffect(() => {
+  }, [f, t.id]), o$1.useLayoutEffect(() => {
     if (!W2) return;
     let r2 = k2.current, m2 = r2.style.height;
     r2.style.height = "auto";
     let c2 = r2.getBoundingClientRect().height;
     r2.style.height = m2, _2(c2), f((b2) => b2.find((x2) => x2.toastId === t.id) ? b2.map((x2) => x2.toastId === t.id ? { ...x2, height: c2 } : x2) : [{ toastId: t.id, height: c2, position: t.position }, ...b2]);
   }, [W2, t.title, t.description, f, t.id]);
-  let $2 = React2.useCallback(() => {
+  let $2 = o$1.useCallback(() => {
     mt(true), j2(U2.current), f((r2) => r2.filter((m2) => m2.toastId !== t.id)), setTimeout(() => {
       T2(t);
     }, we);
   }, [t, T2, f, U2]);
-  React2.useEffect(() => {
+  o$1.useEffect(() => {
     if (t.promise && N2 === "loading" || t.duration === 1 / 0 || t.type === "loading") return;
     let r2;
     return D || u || it2 && Et ? (() => {
@@ -20731,14 +21347,14 @@ var ve = (n) => {
         (b2 = t.onAutoClose) == null || b2.call(t, t), $2();
       }, O2.current));
     })(), () => clearTimeout(r2);
-  }, [D, u, t, N2, it2, Et, $2]), React2.useEffect(() => {
+  }, [D, u, t, N2, it2, Et, $2]), o$1.useEffect(() => {
     t.delete && $2();
   }, [$2, t.delete]);
   function Zt() {
     var r2, m2, c2;
-    return P2 != null && P2.loading ? React2.createElement("div", { className: M$1(s2 == null ? void 0 : s2.loader, (r2 = t == null ? void 0 : t.classNames) == null ? void 0 : r2.loader, "sonner-loader"), "data-visible": N2 === "loading" }, P2.loading) : rt ? React2.createElement("div", { className: M$1(s2 == null ? void 0 : s2.loader, (m2 = t == null ? void 0 : t.classNames) == null ? void 0 : m2.loader, "sonner-loader"), "data-visible": N2 === "loading" }, rt) : React2.createElement(Yt, { className: M$1(s2 == null ? void 0 : s2.loader, (c2 = t == null ? void 0 : t.classNames) == null ? void 0 : c2.loader), visible: N2 === "loading" });
+    return P2 != null && P2.loading ? o$1.createElement("div", { className: M$1(s2 == null ? void 0 : s2.loader, (r2 = t == null ? void 0 : t.classNames) == null ? void 0 : r2.loader, "sonner-loader"), "data-visible": N2 === "loading" }, P2.loading) : rt ? o$1.createElement("div", { className: M$1(s2 == null ? void 0 : s2.loader, (m2 = t == null ? void 0 : t.classNames) == null ? void 0 : m2.loader, "sonner-loader"), "data-visible": N2 === "loading" }, rt) : o$1.createElement(Yt, { className: M$1(s2 == null ? void 0 : s2.loader, (c2 = t == null ? void 0 : t.classNames) == null ? void 0 : c2.loader), visible: N2 === "loading" });
   }
-  return React2.createElement("li", { tabIndex: 0, ref: k2, className: M$1(ot2, Kt, s2 == null ? void 0 : s2.toast, (Dt = t == null ? void 0 : t.classNames) == null ? void 0 : Dt.toast, s2 == null ? void 0 : s2.default, s2 == null ? void 0 : s2[N2], (Pt = t == null ? void 0 : t.classNames) == null ? void 0 : Pt[N2]), "data-sonner-toast": "", "data-rich-colors": (Nt = t.richColors) != null ? Nt : F2, "data-styled": !(t.jsx || t.unstyled || a2), "data-mounted": W2, "data-promise": !!t.promise, "data-swiped": h2, "data-removed": A2, "data-visible": Ut, "data-y-position": Gt, "data-x-position": Qt, "data-index": g2, "data-front": Vt, "data-swiping": L2, "data-dismissible": V2, "data-type": N2, "data-invert": qt, "data-swipe-out": ct2, "data-swipe-direction": lt, "data-expanded": !!(D || B2 && W2), style: { "--index": g2, "--toasts-before": g2, "--z-index": i.length - g2, "--offset": `${A2 ? R2 : U2.current}px`, "--initial-height": B2 ? "auto" : `${p2}px`, ...ut2, ...t.style }, onDragEnd: () => {
+  return o$1.createElement("li", { tabIndex: 0, ref: k2, className: M$1(ot2, Kt, s2 == null ? void 0 : s2.toast, (Dt = t == null ? void 0 : t.classNames) == null ? void 0 : Dt.toast, s2 == null ? void 0 : s2.default, s2 == null ? void 0 : s2[N2], (Pt = t == null ? void 0 : t.classNames) == null ? void 0 : Pt[N2]), "data-sonner-toast": "", "data-rich-colors": (Nt = t.richColors) != null ? Nt : F2, "data-styled": !(t.jsx || t.unstyled || a2), "data-mounted": W2, "data-promise": !!t.promise, "data-swiped": h2, "data-removed": A2, "data-visible": Ut, "data-y-position": Gt, "data-x-position": Qt, "data-index": g2, "data-front": Vt, "data-swiping": L2, "data-dismissible": V2, "data-type": N2, "data-invert": qt, "data-swipe-out": ct2, "data-swipe-direction": lt, "data-expanded": !!(D || B2 && W2), style: { "--index": g2, "--toasts-before": g2, "--z-index": i.length - g2, "--offset": `${A2 ? R2 : U2.current}px`, "--initial-height": B2 ? "auto" : `${p2}px`, ...ut2, ...t.style }, onDragEnd: () => {
     z2(false), C2(null), K2.current = null;
   }, onPointerDown: (r2) => {
     ht || !V2 || (G2.current = /* @__PURE__ */ new Date(), j2(U2.current), r2.target.setPointerCapture(r2.pointerId), r2.target.tagName !== "BUTTON" && (z2(true), K2.current = { x: r2.clientX, y: r2.clientY }));
@@ -20759,14 +21375,14 @@ var ve = (n) => {
     !Y2 && (Math.abs(b2) > 1 || Math.abs(c2) > 1) && C2(Math.abs(b2) > Math.abs(c2) ? "x" : "y");
     let x2 = { x: 0, y: 0 };
     Y2 === "y" ? (I2.includes("top") || I2.includes("bottom")) && (I2.includes("top") && c2 < 0 || I2.includes("bottom") && c2 > 0) && (x2.y = c2) : Y2 === "x" && (I2.includes("left") || I2.includes("right")) && (I2.includes("left") && b2 < 0 || I2.includes("right") && b2 > 0) && (x2.x = b2), (Math.abs(x2.x) > 0 || Math.abs(x2.y) > 0) && y2(true), (Z2 = k2.current) == null || Z2.style.setProperty("--swipe-amount-x", `${x2.x}px`), (zt = k2.current) == null || zt.style.setProperty("--swipe-amount-y", `${x2.y}px`);
-  } }, Jt && !t.jsx ? React2.createElement("button", { "aria-label": nt2, "data-disabled": ht, "data-close-button": true, onClick: ht || !V2 ? () => {
+  } }, Jt && !t.jsx ? o$1.createElement("button", { "aria-label": nt2, "data-disabled": ht, "data-close-button": true, onClick: ht || !V2 ? () => {
   } : () => {
     var r2;
     $2(), (r2 = t.onDismiss) == null || r2.call(t, t);
-  }, className: M$1(s2 == null ? void 0 : s2.closeButton, (Bt = t == null ? void 0 : t.classNames) == null ? void 0 : Bt.closeButton) }, (Ct = P2 == null ? void 0 : P2.close) != null ? Ct : Ot) : null, t.jsx || reactExports.isValidElement(t.title) ? t.jsx ? t.jsx : typeof t.title == "function" ? t.title() : t.title : React2.createElement(React2.Fragment, null, N2 || t.icon || t.promise ? React2.createElement("div", { "data-icon": "", className: M$1(s2 == null ? void 0 : s2.icon, (kt = t == null ? void 0 : t.classNames) == null ? void 0 : kt.icon) }, t.promise || t.type === "loading" && !t.icon ? t.icon || Zt() : null, t.type !== "loading" ? t.icon || (P2 == null ? void 0 : P2[N2]) || jt(N2) : null) : null, React2.createElement("div", { "data-content": "", className: M$1(s2 == null ? void 0 : s2.content, (It = t == null ? void 0 : t.classNames) == null ? void 0 : It.content) }, React2.createElement("div", { "data-title": "", className: M$1(s2 == null ? void 0 : s2.title, (Mt = t == null ? void 0 : t.classNames) == null ? void 0 : Mt.title) }, typeof t.title == "function" ? t.title() : t.title), t.description ? React2.createElement("div", { "data-description": "", className: M$1(at, Xt, s2 == null ? void 0 : s2.description, (Ht = t == null ? void 0 : t.classNames) == null ? void 0 : Ht.description) }, typeof t.description == "function" ? t.description() : t.description) : null), reactExports.isValidElement(t.cancel) ? t.cancel : t.cancel && tt$1(t.cancel) ? React2.createElement("button", { "data-button": true, "data-cancel": true, style: t.cancelButtonStyle || ft2, onClick: (r2) => {
+  }, className: M$1(s2 == null ? void 0 : s2.closeButton, (Bt = t == null ? void 0 : t.classNames) == null ? void 0 : Bt.closeButton) }, (Ct = P2 == null ? void 0 : P2.close) != null ? Ct : Ot) : null, t.jsx || reactExports.isValidElement(t.title) ? t.jsx ? t.jsx : typeof t.title == "function" ? t.title() : t.title : o$1.createElement(o$1.Fragment, null, N2 || t.icon || t.promise ? o$1.createElement("div", { "data-icon": "", className: M$1(s2 == null ? void 0 : s2.icon, (kt = t == null ? void 0 : t.classNames) == null ? void 0 : kt.icon) }, t.promise || t.type === "loading" && !t.icon ? t.icon || Zt() : null, t.type !== "loading" ? t.icon || (P2 == null ? void 0 : P2[N2]) || jt(N2) : null) : null, o$1.createElement("div", { "data-content": "", className: M$1(s2 == null ? void 0 : s2.content, (It = t == null ? void 0 : t.classNames) == null ? void 0 : It.content) }, o$1.createElement("div", { "data-title": "", className: M$1(s2 == null ? void 0 : s2.title, (Mt = t == null ? void 0 : t.classNames) == null ? void 0 : Mt.title) }, typeof t.title == "function" ? t.title() : t.title), t.description ? o$1.createElement("div", { "data-description": "", className: M$1(at, Xt, s2 == null ? void 0 : s2.description, (Ht = t == null ? void 0 : t.classNames) == null ? void 0 : Ht.description) }, typeof t.description == "function" ? t.description() : t.description) : null), reactExports.isValidElement(t.cancel) ? t.cancel : t.cancel && tt$1(t.cancel) ? o$1.createElement("button", { "data-button": true, "data-cancel": true, style: t.cancelButtonStyle || ft2, onClick: (r2) => {
     var m2, c2;
     tt$1(t.cancel) && V2 && ((c2 = (m2 = t.cancel).onClick) == null || c2.call(m2, r2), $2());
-  }, className: M$1(s2 == null ? void 0 : s2.cancelButton, (At = t == null ? void 0 : t.classNames) == null ? void 0 : At.cancelButton) }, t.cancel.label) : null, reactExports.isValidElement(t.action) ? t.action : t.action && tt$1(t.action) ? React2.createElement("button", { "data-button": true, "data-action": true, style: t.actionButtonStyle || l, onClick: (r2) => {
+  }, className: M$1(s2 == null ? void 0 : s2.cancelButton, (At = t == null ? void 0 : t.classNames) == null ? void 0 : At.cancelButton) }, t.cancel.label) : null, reactExports.isValidElement(t.action) ? t.action : t.action && tt$1(t.action) ? o$1.createElement("button", { "data-button": true, "data-action": true, style: t.actionButtonStyle || l, onClick: (r2) => {
     var m2, c2;
     tt$1(t.action) && ((c2 = (m2 = t.action).onClick) == null || c2.call(m2, r2), !r2.defaultPrevented && $2());
   }, className: M$1(s2 == null ? void 0 : s2.actionButton, (Lt = t == null ? void 0 : t.classNames) == null ? void 0 : Lt.actionButton) }, t.action.label) : null));
@@ -20791,13 +21407,13 @@ function Te(n, e) {
   }), t;
 }
 var $e = reactExports.forwardRef(function(e, t) {
-  let { invert: a2, position: u = "bottom-right", hotkey: f = ["altKey", "KeyT"], expand: w2, closeButton: S2, className: g2, offset: i, mobileOffset: D, theme: T2 = "light", richColors: F2, duration: et2, style: ut2, visibleToasts: ft2 = pe, toastOptions: l, dir: ot2 = _t(), gap: at = be, loadingIcon: X2, icons: st2, containerAriaLabel: pt = "Notifications", pauseWhenPageIsHidden: rt } = e, [B2, s2] = React2.useState([]), P2 = React2.useMemo(() => Array.from(new Set([u].concat(B2.filter((d2) => d2.position).map((d2) => d2.position)))), [B2, u]), [nt2, it2] = React2.useState([]), [Y2, C2] = React2.useState(false), [lt, J2] = React2.useState(false), [W2, H2] = React2.useState(T2 !== "system" ? T2 : typeof window != "undefined" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"), A2 = React2.useRef(null), mt = f.join("+").replace(/Key/g, "").replace(/Digit/g, ""), L2 = React2.useRef(null), z2 = React2.useRef(false), ct2 = React2.useCallback((d2) => {
+  let { invert: a2, position: u = "bottom-right", hotkey: f = ["altKey", "KeyT"], expand: w2, closeButton: S2, className: g2, offset: i, mobileOffset: D, theme: T2 = "light", richColors: F2, duration: et2, style: ut2, visibleToasts: ft2 = pe, toastOptions: l, dir: ot2 = _t(), gap: at = be, loadingIcon: X2, icons: st2, containerAriaLabel: pt = "Notifications", pauseWhenPageIsHidden: rt } = e, [B2, s2] = o$1.useState([]), P2 = o$1.useMemo(() => Array.from(new Set([u].concat(B2.filter((d2) => d2.position).map((d2) => d2.position)))), [B2, u]), [nt2, it2] = o$1.useState([]), [Y2, C2] = o$1.useState(false), [lt, J2] = o$1.useState(false), [W2, H2] = o$1.useState(T2 !== "system" ? T2 : typeof window != "undefined" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"), A2 = o$1.useRef(null), mt = f.join("+").replace(/Key/g, "").replace(/Digit/g, ""), L2 = o$1.useRef(null), z2 = o$1.useRef(false), ct2 = o$1.useCallback((d2) => {
     s2((h2) => {
       var y2;
       return (y2 = h2.find((R2) => R2.id === d2.id)) != null && y2.delete || v$1.dismiss(d2.id), h2.filter(({ id: R2 }) => R2 !== d2.id);
     });
   }, []);
-  return React2.useEffect(() => v$1.subscribe((d2) => {
+  return o$1.useEffect(() => v$1.subscribe((d2) => {
     if (d2.dismiss) {
       s2((h2) => h2.map((y2) => y2.id === d2.id ? { ...y2, delete: true } : y2));
       return;
@@ -20810,7 +21426,7 @@ var $e = reactExports.forwardRef(function(e, t) {
         });
       });
     });
-  }), []), React2.useEffect(() => {
+  }), []), o$1.useEffect(() => {
     if (T2 !== "system") {
       H2(T2);
       return;
@@ -20830,22 +21446,22 @@ var $e = reactExports.forwardRef(function(e, t) {
         }
       });
     }
-  }, [T2]), React2.useEffect(() => {
+  }, [T2]), o$1.useEffect(() => {
     B2.length <= 1 && C2(false);
-  }, [B2]), React2.useEffect(() => {
+  }, [B2]), o$1.useEffect(() => {
     let d2 = (h2) => {
       var R2, j2;
       f.every((p2) => h2[p2] || h2.code === p2) && (C2(true), (R2 = A2.current) == null || R2.focus()), h2.code === "Escape" && (document.activeElement === A2.current || (j2 = A2.current) != null && j2.contains(document.activeElement)) && C2(false);
     };
     return document.addEventListener("keydown", d2), () => document.removeEventListener("keydown", d2);
-  }, [f]), React2.useEffect(() => {
+  }, [f]), o$1.useEffect(() => {
     if (A2.current) return () => {
       L2.current && (L2.current.focus({ preventScroll: true }), L2.current = null, z2.current = false);
     };
-  }, [A2.current]), React2.createElement("section", { ref: t, "aria-label": `${pt} ${mt}`, tabIndex: -1, "aria-live": "polite", "aria-relevant": "additions text", "aria-atomic": "false", suppressHydrationWarning: true }, P2.map((d2, h2) => {
+  }, [A2.current]), o$1.createElement("section", { ref: t, "aria-label": `${pt} ${mt}`, tabIndex: -1, "aria-live": "polite", "aria-relevant": "additions text", "aria-atomic": "false", suppressHydrationWarning: true }, P2.map((d2, h2) => {
     var j2;
     let [y2, R2] = d2.split("-");
-    return B2.length ? React2.createElement("ol", { key: d2, dir: ot2 === "auto" ? _t() : ot2, tabIndex: -1, ref: A2, className: g2, "data-sonner-toaster": true, "data-theme": W2, "data-y-position": y2, "data-lifted": Y2 && B2.length > 1 && !w2, "data-x-position": R2, style: { "--front-toast-height": `${((j2 = nt2[0]) == null ? void 0 : j2.height) || 0}px`, "--width": `${he}px`, "--gap": `${at}px`, ...ut2, ...Te(i, D) }, onBlur: (p2) => {
+    return B2.length ? o$1.createElement("ol", { key: d2, dir: ot2 === "auto" ? _t() : ot2, tabIndex: -1, ref: A2, className: g2, "data-sonner-toaster": true, "data-theme": W2, "data-y-position": y2, "data-lifted": Y2 && B2.length > 1 && !w2, "data-x-position": R2, style: { "--front-toast-height": `${((j2 = nt2[0]) == null ? void 0 : j2.height) || 0}px`, "--width": `${he}px`, "--gap": `${at}px`, ...ut2, ...Te(i, D) }, onBlur: (p2) => {
       z2.current && !p2.currentTarget.contains(p2.relatedTarget) && (z2.current = false, L2.current && (L2.current.focus({ preventScroll: true }), L2.current = null));
     }, onFocus: (p2) => {
       p2.target instanceof HTMLElement && p2.target.dataset.dismissible === "false" || z2.current || (z2.current = true, L2.current = p2.relatedTarget);
@@ -20855,7 +21471,7 @@ var $e = reactExports.forwardRef(function(e, t) {
       p2.target instanceof HTMLElement && p2.target.dataset.dismissible === "false" || J2(true);
     }, onPointerUp: () => J2(false) }, B2.filter((p2) => !p2.position && h2 === 0 || p2.position === d2).map((p2, _2) => {
       var O2, G2;
-      return React2.createElement(ve, { key: p2.id, icons: st2, index: _2, toast: p2, defaultRichColors: F2, duration: (O2 = l == null ? void 0 : l.duration) != null ? O2 : et2, className: l == null ? void 0 : l.className, descriptionClassName: l == null ? void 0 : l.descriptionClassName, invert: a2, visibleToasts: ft2, closeButton: (G2 = l == null ? void 0 : l.closeButton) != null ? G2 : S2, interacting: lt, position: d2, style: l == null ? void 0 : l.style, unstyled: l == null ? void 0 : l.unstyled, classNames: l == null ? void 0 : l.classNames, cancelButtonStyle: l == null ? void 0 : l.cancelButtonStyle, actionButtonStyle: l == null ? void 0 : l.actionButtonStyle, removeToast: ct2, toasts: B2.filter((k2) => k2.position == p2.position), heights: nt2.filter((k2) => k2.position == p2.position), setHeights: it2, expandByDefault: w2, gap: at, loadingIcon: X2, expanded: Y2, pauseWhenPageIsHidden: rt, swipeDirections: e.swipeDirections });
+      return o$1.createElement(ve, { key: p2.id, icons: st2, index: _2, toast: p2, defaultRichColors: F2, duration: (O2 = l == null ? void 0 : l.duration) != null ? O2 : et2, className: l == null ? void 0 : l.className, descriptionClassName: l == null ? void 0 : l.descriptionClassName, invert: a2, visibleToasts: ft2, closeButton: (G2 = l == null ? void 0 : l.closeButton) != null ? G2 : S2, interacting: lt, position: d2, style: l == null ? void 0 : l.style, unstyled: l == null ? void 0 : l.unstyled, classNames: l == null ? void 0 : l.classNames, cancelButtonStyle: l == null ? void 0 : l.cancelButtonStyle, actionButtonStyle: l == null ? void 0 : l.actionButtonStyle, removeToast: ct2, toasts: B2.filter((k2) => k2.position == p2.position), heights: nt2.filter((k2) => k2.position == p2.position), setHeights: it2, expandByDefault: w2, gap: at, loadingIcon: X2, expanded: Y2, pauseWhenPageIsHidden: rt, swipeDirections: e.swipeDirections });
     })) : null;
   }));
 });
@@ -20875,277 +21491,6 @@ const Toaster = ({ ...props }) => {
     }
   );
 };
-function createCollection(name) {
-  const PROVIDER_NAME = name + "CollectionProvider";
-  const [createCollectionContext, createCollectionScope2] = createContextScope(PROVIDER_NAME);
-  const [CollectionProviderImpl, useCollectionContext] = createCollectionContext(
-    PROVIDER_NAME,
-    { collectionRef: { current: null }, itemMap: /* @__PURE__ */ new Map() }
-  );
-  const CollectionProvider = (props) => {
-    const { scope, children } = props;
-    const ref = React2.useRef(null);
-    const itemMap = React2.useRef(/* @__PURE__ */ new Map()).current;
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(CollectionProviderImpl, { scope, itemMap, collectionRef: ref, children });
-  };
-  CollectionProvider.displayName = PROVIDER_NAME;
-  const COLLECTION_SLOT_NAME = name + "CollectionSlot";
-  const CollectionSlotImpl = /* @__PURE__ */ createSlot(COLLECTION_SLOT_NAME);
-  const CollectionSlot = React2.forwardRef(
-    (props, forwardedRef) => {
-      const { scope, children } = props;
-      const context = useCollectionContext(COLLECTION_SLOT_NAME, scope);
-      const composedRefs = useComposedRefs$1(forwardedRef, context.collectionRef);
-      return /* @__PURE__ */ jsxRuntimeExports.jsx(CollectionSlotImpl, { ref: composedRefs, children });
-    }
-  );
-  CollectionSlot.displayName = COLLECTION_SLOT_NAME;
-  const ITEM_SLOT_NAME = name + "CollectionItemSlot";
-  const ITEM_DATA_ATTR = "data-radix-collection-item";
-  const CollectionItemSlotImpl = /* @__PURE__ */ createSlot(ITEM_SLOT_NAME);
-  const CollectionItemSlot = React2.forwardRef(
-    (props, forwardedRef) => {
-      const { scope, children, ...itemData } = props;
-      const ref = React2.useRef(null);
-      const composedRefs = useComposedRefs$1(forwardedRef, ref);
-      const context = useCollectionContext(ITEM_SLOT_NAME, scope);
-      React2.useEffect(() => {
-        context.itemMap.set(ref, { ref, ...itemData });
-        return () => void context.itemMap.delete(ref);
-      });
-      return /* @__PURE__ */ jsxRuntimeExports.jsx(CollectionItemSlotImpl, { ...{ [ITEM_DATA_ATTR]: "" }, ref: composedRefs, children });
-    }
-  );
-  CollectionItemSlot.displayName = ITEM_SLOT_NAME;
-  function useCollection2(scope) {
-    const context = useCollectionContext(name + "CollectionConsumer", scope);
-    const getItems = React2.useCallback(() => {
-      const collectionNode = context.collectionRef.current;
-      if (!collectionNode) return [];
-      const orderedNodes = Array.from(collectionNode.querySelectorAll(`[${ITEM_DATA_ATTR}]`));
-      const items = Array.from(context.itemMap.values());
-      const orderedItems = items.sort(
-        (a2, b2) => orderedNodes.indexOf(a2.ref.current) - orderedNodes.indexOf(b2.ref.current)
-      );
-      return orderedItems;
-    }, [context.collectionRef, context.itemMap]);
-    return getItems;
-  }
-  return [
-    { Provider: CollectionProvider, Slot: CollectionSlot, ItemSlot: CollectionItemSlot },
-    useCollection2,
-    createCollectionScope2
-  ];
-}
-var ENTRY_FOCUS = "rovingFocusGroup.onEntryFocus";
-var EVENT_OPTIONS = { bubbles: false, cancelable: true };
-var GROUP_NAME = "RovingFocusGroup";
-var [Collection, useCollection, createCollectionScope] = createCollection(GROUP_NAME);
-var [createRovingFocusGroupContext, createRovingFocusGroupScope] = createContextScope(
-  GROUP_NAME,
-  [createCollectionScope]
-);
-var [RovingFocusProvider, useRovingFocusContext] = createRovingFocusGroupContext(GROUP_NAME);
-var RovingFocusGroup = reactExports.forwardRef(
-  (props, forwardedRef) => {
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(Collection.Provider, { scope: props.__scopeRovingFocusGroup, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Collection.Slot, { scope: props.__scopeRovingFocusGroup, children: /* @__PURE__ */ jsxRuntimeExports.jsx(RovingFocusGroupImpl, { ...props, ref: forwardedRef }) }) });
-  }
-);
-RovingFocusGroup.displayName = GROUP_NAME;
-var RovingFocusGroupImpl = reactExports.forwardRef((props, forwardedRef) => {
-  const {
-    __scopeRovingFocusGroup,
-    orientation,
-    loop = false,
-    dir,
-    currentTabStopId: currentTabStopIdProp,
-    defaultCurrentTabStopId,
-    onCurrentTabStopIdChange,
-    onEntryFocus,
-    preventScrollOnEntryFocus = false,
-    ...groupProps
-  } = props;
-  const ref = reactExports.useRef(null);
-  const composedRefs = useComposedRefs$1(forwardedRef, ref);
-  const direction = useDirection(dir);
-  const [currentTabStopId, setCurrentTabStopId] = useControllableState({
-    prop: currentTabStopIdProp,
-    defaultProp: defaultCurrentTabStopId ?? null,
-    onChange: onCurrentTabStopIdChange,
-    caller: GROUP_NAME
-  });
-  const [isTabbingBackOut, setIsTabbingBackOut] = reactExports.useState(false);
-  const handleEntryFocus = useCallbackRef$1(onEntryFocus);
-  const getItems = useCollection(__scopeRovingFocusGroup);
-  const isClickFocusRef = reactExports.useRef(false);
-  const [focusableItemsCount, setFocusableItemsCount] = reactExports.useState(0);
-  reactExports.useEffect(() => {
-    const node = ref.current;
-    if (node) {
-      node.addEventListener(ENTRY_FOCUS, handleEntryFocus);
-      return () => node.removeEventListener(ENTRY_FOCUS, handleEntryFocus);
-    }
-  }, [handleEntryFocus]);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    RovingFocusProvider,
-    {
-      scope: __scopeRovingFocusGroup,
-      orientation,
-      dir: direction,
-      loop,
-      currentTabStopId,
-      onItemFocus: reactExports.useCallback(
-        (tabStopId) => setCurrentTabStopId(tabStopId),
-        [setCurrentTabStopId]
-      ),
-      onItemShiftTab: reactExports.useCallback(() => setIsTabbingBackOut(true), []),
-      onFocusableItemAdd: reactExports.useCallback(
-        () => setFocusableItemsCount((prevCount) => prevCount + 1),
-        []
-      ),
-      onFocusableItemRemove: reactExports.useCallback(
-        () => setFocusableItemsCount((prevCount) => prevCount - 1),
-        []
-      ),
-      children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-        Primitive.div,
-        {
-          tabIndex: isTabbingBackOut || focusableItemsCount === 0 ? -1 : 0,
-          "data-orientation": orientation,
-          ...groupProps,
-          ref: composedRefs,
-          style: { outline: "none", ...props.style },
-          onMouseDown: composeEventHandlers(props.onMouseDown, () => {
-            isClickFocusRef.current = true;
-          }),
-          onFocus: composeEventHandlers(props.onFocus, (event) => {
-            const isKeyboardFocus = !isClickFocusRef.current;
-            if (event.target === event.currentTarget && isKeyboardFocus && !isTabbingBackOut) {
-              const entryFocusEvent = new CustomEvent(ENTRY_FOCUS, EVENT_OPTIONS);
-              event.currentTarget.dispatchEvent(entryFocusEvent);
-              if (!entryFocusEvent.defaultPrevented) {
-                const items = getItems().filter((item) => item.focusable);
-                const activeItem = items.find((item) => item.active);
-                const currentItem = items.find((item) => item.id === currentTabStopId);
-                const candidateItems = [activeItem, currentItem, ...items].filter(
-                  Boolean
-                );
-                const candidateNodes = candidateItems.map((item) => item.ref.current);
-                focusFirst(candidateNodes, preventScrollOnEntryFocus);
-              }
-            }
-            isClickFocusRef.current = false;
-          }),
-          onBlur: composeEventHandlers(props.onBlur, () => setIsTabbingBackOut(false))
-        }
-      )
-    }
-  );
-});
-var ITEM_NAME = "RovingFocusGroupItem";
-var RovingFocusGroupItem = reactExports.forwardRef(
-  (props, forwardedRef) => {
-    const {
-      __scopeRovingFocusGroup,
-      focusable = true,
-      active = false,
-      tabStopId,
-      children,
-      ...itemProps
-    } = props;
-    const autoId = useId();
-    const id2 = tabStopId || autoId;
-    const context = useRovingFocusContext(ITEM_NAME, __scopeRovingFocusGroup);
-    const isCurrentTabStop = context.currentTabStopId === id2;
-    const getItems = useCollection(__scopeRovingFocusGroup);
-    const { onFocusableItemAdd, onFocusableItemRemove, currentTabStopId } = context;
-    reactExports.useEffect(() => {
-      if (focusable) {
-        onFocusableItemAdd();
-        return () => onFocusableItemRemove();
-      }
-    }, [focusable, onFocusableItemAdd, onFocusableItemRemove]);
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(
-      Collection.ItemSlot,
-      {
-        scope: __scopeRovingFocusGroup,
-        id: id2,
-        focusable,
-        active,
-        children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-          Primitive.span,
-          {
-            tabIndex: isCurrentTabStop ? 0 : -1,
-            "data-orientation": context.orientation,
-            ...itemProps,
-            ref: forwardedRef,
-            onMouseDown: composeEventHandlers(props.onMouseDown, (event) => {
-              if (!focusable) event.preventDefault();
-              else context.onItemFocus(id2);
-            }),
-            onFocus: composeEventHandlers(props.onFocus, () => context.onItemFocus(id2)),
-            onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
-              if (event.key === "Tab" && event.shiftKey) {
-                context.onItemShiftTab();
-                return;
-              }
-              if (event.target !== event.currentTarget) return;
-              const focusIntent = getFocusIntent(event, context.orientation, context.dir);
-              if (focusIntent !== void 0) {
-                if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
-                event.preventDefault();
-                const items = getItems().filter((item) => item.focusable);
-                let candidateNodes = items.map((item) => item.ref.current);
-                if (focusIntent === "last") candidateNodes.reverse();
-                else if (focusIntent === "prev" || focusIntent === "next") {
-                  if (focusIntent === "prev") candidateNodes.reverse();
-                  const currentIndex = candidateNodes.indexOf(event.currentTarget);
-                  candidateNodes = context.loop ? wrapArray(candidateNodes, currentIndex + 1) : candidateNodes.slice(currentIndex + 1);
-                }
-                setTimeout(() => focusFirst(candidateNodes));
-              }
-            }),
-            children: typeof children === "function" ? children({ isCurrentTabStop, hasTabStop: currentTabStopId != null }) : children
-          }
-        )
-      }
-    );
-  }
-);
-RovingFocusGroupItem.displayName = ITEM_NAME;
-var MAP_KEY_TO_FOCUS_INTENT = {
-  ArrowLeft: "prev",
-  ArrowUp: "prev",
-  ArrowRight: "next",
-  ArrowDown: "next",
-  PageUp: "first",
-  Home: "first",
-  PageDown: "last",
-  End: "last"
-};
-function getDirectionAwareKey(key, dir) {
-  if (dir !== "rtl") return key;
-  return key === "ArrowLeft" ? "ArrowRight" : key === "ArrowRight" ? "ArrowLeft" : key;
-}
-function getFocusIntent(event, orientation, dir) {
-  const key = getDirectionAwareKey(event.key, dir);
-  if (orientation === "vertical" && ["ArrowLeft", "ArrowRight"].includes(key)) return void 0;
-  if (orientation === "horizontal" && ["ArrowUp", "ArrowDown"].includes(key)) return void 0;
-  return MAP_KEY_TO_FOCUS_INTENT[key];
-}
-function focusFirst(candidates, preventScroll = false) {
-  const PREVIOUSLY_FOCUSED_ELEMENT = document.activeElement;
-  for (const candidate of candidates) {
-    if (candidate === PREVIOUSLY_FOCUSED_ELEMENT) return;
-    candidate.focus({ preventScroll });
-    if (document.activeElement !== PREVIOUSLY_FOCUSED_ELEMENT) return;
-  }
-}
-function wrapArray(array, startIndex) {
-  return array.map((_2, index2) => array[(startIndex + index2) % array.length]);
-}
-var Root = RovingFocusGroup;
-var Item = RovingFocusGroupItem;
 var TABS_NAME = "Tabs";
 var [createTabsContext] = createContextScope(TABS_NAME, [
   createRovingFocusGroupScope
@@ -21202,7 +21547,7 @@ var TabsList$1 = reactExports.forwardRef(
     const context = useTabsContext(TAB_LIST_NAME, __scopeTabs);
     const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeTabs);
     return /* @__PURE__ */ jsxRuntimeExports.jsx(
-      Root,
+      Root$1,
       {
         asChild: true,
         ...rovingFocusGroupScope,
@@ -21358,19 +21703,6 @@ function TabsTrigger({
       "data-slot": "tabs-trigger",
       className: cn(
         "data-[state=active]:bg-background dark:data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-foreground dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className
-      ),
-      ...props
-    }
-  );
-}
-function Textarea({ className, ...props }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "textarea",
-    {
-      "data-slot": "textarea",
-      className: cn(
-        "border-input placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 flex field-sizing-content min-h-16 w-full rounded-md border bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
         className
       ),
       ...props
@@ -42174,17 +42506,6 @@ function useShopInfo() {
     enabled: !!actor && !isFetching
   });
 }
-function useAllProducts() {
-  const { actor, isFetching } = useActor();
-  return useQuery({
-    queryKey: ["products"],
-    queryFn: async () => {
-      if (!actor) return [];
-      return actor.getAllProducts();
-    },
-    enabled: !!actor && !isFetching
-  });
-}
 function useSetShopInfo() {
   const { actor } = useActor();
   const qc = useQueryClient();
@@ -42208,264 +42529,278 @@ function useAddOrUpdateProduct() {
   });
 }
 const queryClient$1 = new QueryClient();
-const CATEGORY_IMAGES = {
-  "Cold Drinks": "/assets/generated/cat-cold-drinks.dim_200x200.jpg",
-  Chips: "/assets/generated/cat-chips.dim_200x200.jpg",
-  Biscuits: "/assets/generated/cat-biscuits.dim_200x200.jpg",
-  "Juice Bottles": "/assets/generated/cat-juice.dim_200x200.jpg",
-  Notebooks: "/assets/generated/cat-notebooks.dim_200x200.jpg",
-  "Graph Copies": "/assets/generated/cat-graph-copies.dim_200x200.jpg",
-  "Project Files": "/assets/generated/cat-project-files.dim_200x200.jpg",
-  Folders: "/assets/generated/cat-folders.dim_200x200.jpg"
-};
-const CATEGORY_ICONS = {
-  "Cold Drinks": "🥤",
-  Chips: "🍟",
-  Biscuits: "🍪",
-  "Juice Bottles": "🧃",
-  Notebooks: "📓",
-  "Graph Copies": "📊",
-  "Project Files": "📁",
-  Folders: "🗂️",
-  All: "🛒"
-};
-const CATEGORIES = [
-  "All",
-  "Cold Drinks",
-  "Chips",
-  "Biscuits",
-  "Juice Bottles",
-  "Notebooks",
-  "Graph Copies",
-  "Project Files",
-  "Folders"
-];
-const SAMPLE_PRODUCTS = [
+const LOCAL_PRODUCTS = [
+  // Beverages
   {
-    name: "Coca-Cola 500ml",
-    category: "Cold Drinks",
-    price: 40n,
-    quantity: 50n,
-    isAvailable: true
+    id: 1,
+    name: "Cold Drink Can",
+    category: "Beverages",
+    image: "/assets/generated/cold-drink-transparent.dim_300x300.png",
+    price: 40,
+    mrp: 45,
+    quantity: "1 Can",
+    rating: 4.2,
+    reviews: 128,
+    description: "Refreshing carbonated cold drink, chilled to perfection. Perfect for hot days!",
+    inStock: true
   },
   {
-    name: "Pepsi 600ml",
-    category: "Cold Drinks",
-    price: 45n,
-    quantity: 30n,
-    isAvailable: true
+    id: 2,
+    name: "Juice Bottle 1L",
+    category: "Beverages",
+    image: "/assets/generated/juice-transparent.dim_300x300.png",
+    price: 85,
+    mrp: 95,
+    quantity: "1 Litre",
+    rating: 4.5,
+    reviews: 89,
+    description: "100% natural fruit juice in a convenient 1-litre bottle. No added preservatives.",
+    inStock: true
   },
   {
-    name: "Sprite 500ml",
-    category: "Cold Drinks",
-    price: 40n,
-    quantity: 20n,
-    isAvailable: true
+    id: 3,
+    name: "Water Bottle 1L",
+    category: "Beverages",
+    image: "/assets/generated/water-bottle-transparent.dim_300x300.png",
+    price: 20,
+    mrp: 25,
+    quantity: "1 Litre",
+    rating: 4,
+    reviews: 234,
+    description: "Pure mineral water sourced from natural springs. Sealed for freshness.",
+    inStock: true
   },
   {
-    name: "Mountain Dew 600ml",
-    category: "Cold Drinks",
-    price: 45n,
-    quantity: 15n,
-    isAvailable: true
+    id: 4,
+    name: "Tea 250g",
+    category: "Beverages",
+    image: "/assets/generated/tea-transparent.dim_300x300.png",
+    price: 120,
+    mrp: 140,
+    quantity: "250g Pack",
+    rating: 4.7,
+    reviews: 312,
+    description: "Premium quality Assam tea leaves with rich aroma and strong flavour.",
+    inStock: true
+  },
+  // Snacks
+  {
+    id: 5,
+    name: "Chips 100g",
+    category: "Snacks",
+    image: "/assets/generated/chips-transparent.dim_300x300.png",
+    price: 20,
+    mrp: 25,
+    quantity: "100g Pack",
+    rating: 4.3,
+    reviews: 456,
+    description: "Extra crispy potato chips with perfect seasoning. Great for snacking!",
+    inStock: true
   },
   {
-    name: "Thums Up 500ml",
-    category: "Cold Drinks",
-    price: 40n,
-    quantity: 0n,
-    isAvailable: false
+    id: 6,
+    name: "Chocolate Bar",
+    category: "Snacks",
+    image: "/assets/generated/chocolate-transparent.dim_300x300.png",
+    price: 40,
+    mrp: 50,
+    quantity: "1 Bar (50g)",
+    rating: 4.6,
+    reviews: 389,
+    description: "Rich and creamy milk chocolate bar. A delightful treat any time of day.",
+    inStock: true
   },
   {
-    name: "Lays Classic",
-    category: "Chips",
-    price: 20n,
-    quantity: 100n,
-    isAvailable: true
+    id: 7,
+    name: "Biscuits 200g",
+    category: "Snacks",
+    image: "/assets/generated/biscuits-transparent.dim_300x300.png",
+    price: 30,
+    mrp: 35,
+    quantity: "200g Pack",
+    rating: 4.1,
+    reviews: 178,
+    description: "Classic crispy biscuits, perfect with your morning tea or coffee.",
+    inStock: true
   },
   {
-    name: "Kurkure Masala",
-    category: "Chips",
-    price: 20n,
-    quantity: 80n,
-    isAvailable: true
+    id: 8,
+    name: "Namkeen 200g",
+    category: "Snacks",
+    image: "/assets/generated/namkeen-transparent.dim_300x300.png",
+    price: 30,
+    mrp: 35,
+    quantity: "200g Pack",
+    rating: 4.4,
+    reviews: 145,
+    description: "Spicy and savory mixed namkeen, a beloved Indian snack.",
+    inStock: true
   },
   {
-    name: "Bingo Mad Angles",
-    category: "Chips",
-    price: 20n,
-    quantity: 60n,
-    isAvailable: true
+    id: 9,
+    name: "Noodles 70g",
+    category: "Snacks",
+    image: "/assets/generated/noodles-transparent.dim_300x300.png",
+    price: 15,
+    mrp: 18,
+    quantity: "70g Pack",
+    rating: 4.2,
+    reviews: 567,
+    description: "Instant masala noodles ready in just 2 minutes. A quick and tasty meal.",
+    inStock: true
+  },
+  // Daily Routine
+  {
+    id: 10,
+    name: "Soap Bar",
+    category: "Daily Routine",
+    image: "/assets/generated/soap-transparent.dim_300x300.png",
+    price: 45,
+    mrp: 55,
+    quantity: "1 Bar (100g)",
+    rating: 4,
+    reviews: 203,
+    description: "Gentle moisturizing soap bar for smooth and clean skin. Suitable for all skin types.",
+    inStock: true
   },
   {
-    name: "Pringles Original",
-    category: "Chips",
-    price: 99n,
-    quantity: 10n,
-    isAvailable: true
+    id: 11,
+    name: "Toothpaste 150g",
+    category: "Daily Routine",
+    image: "/assets/generated/toothpaste-transparent.dim_300x300.png",
+    price: 65,
+    mrp: 80,
+    quantity: "150g Tube",
+    rating: 4.5,
+    reviews: 412,
+    description: "Fluoride-enriched toothpaste for complete cavity protection and fresh breath.",
+    inStock: true
   },
   {
-    name: "Parle-G 250g",
-    category: "Biscuits",
-    price: 15n,
-    quantity: 200n,
-    isAvailable: true
+    id: 12,
+    name: "Shampoo 200ml",
+    category: "Daily Routine",
+    image: "/assets/generated/shampoo-transparent.dim_300x300.png",
+    price: 130,
+    mrp: 160,
+    quantity: "200ml Bottle",
+    rating: 4.3,
+    reviews: 267,
+    description: "Nourishing shampoo with herbal extracts for smooth, shiny and healthy hair.",
+    inStock: true
   },
   {
-    name: "Oreo Chocolate",
-    category: "Biscuits",
-    price: 30n,
-    quantity: 70n,
-    isAvailable: true
+    id: 13,
+    name: "Sanitizer 100ml",
+    category: "Daily Routine",
+    image: "/assets/generated/sanitizer-transparent.dim_300x300.png",
+    price: 80,
+    mrp: 100,
+    quantity: "100ml Bottle",
+    rating: 4.4,
+    reviews: 189,
+    description: "Instant hand sanitizer with 70% alcohol. Kills 99.9% of germs.",
+    inStock: true
+  },
+  // Stationery
+  {
+    id: 14,
+    name: "Notebook 200 Pages",
+    category: "Stationery",
+    image: "/assets/generated/notebook-transparent.dim_300x300.png",
+    price: 60,
+    mrp: 75,
+    quantity: "200 Pages",
+    rating: 4.6,
+    reviews: 234,
+    description: "Premium ruled notebook with thick pages for smooth writing. Ideal for students.",
+    inStock: true
   },
   {
-    name: "Marie Light",
-    category: "Biscuits",
-    price: 25n,
-    quantity: 50n,
-    isAvailable: true
+    id: 15,
+    name: "Graph Copy 100 Pages",
+    category: "Stationery",
+    image: "/assets/generated/graph-copy-transparent.dim_300x300.png",
+    price: 45,
+    mrp: 55,
+    quantity: "100 Pages",
+    rating: 4.4,
+    reviews: 156,
+    description: "Fine grid graph paper copy for engineering and mathematical drawings.",
+    inStock: true
   },
   {
-    name: "Bourbon",
-    category: "Biscuits",
-    price: 20n,
-    quantity: 40n,
-    isAvailable: true
+    id: 16,
+    name: "Pens Pack of 10",
+    category: "Stationery",
+    image: "/assets/generated/pens-transparent.dim_300x300.png",
+    price: 50,
+    mrp: 65,
+    quantity: "Pack of 10",
+    rating: 4.5,
+    reviews: 312,
+    description: "Smooth writing ballpoint pens in blue ink. Comfortable grip for long writing sessions.",
+    inStock: true
   },
   {
-    name: "Hide & Seek",
-    category: "Biscuits",
-    price: 30n,
-    quantity: 0n,
-    isAvailable: false
+    id: 17,
+    name: "Pencils Pack of 12",
+    category: "Stationery",
+    image: "/assets/generated/pencils-transparent.dim_300x300.png",
+    price: 40,
+    mrp: 50,
+    quantity: "Pack of 12",
+    rating: 4.3,
+    reviews: 198,
+    description: "HB grade pencils, pre-sharpened and ready for use. Smooth and consistent lines.",
+    inStock: true
   },
   {
-    name: "Real Orange 1L",
-    category: "Juice Bottles",
-    price: 80n,
-    quantity: 30n,
-    isAvailable: true
+    id: 18,
+    name: "Eraser Pack of 5",
+    category: "Stationery",
+    image: "/assets/generated/eraser-transparent.dim_300x300.png",
+    price: 25,
+    mrp: 30,
+    quantity: "Pack of 5",
+    rating: 4.1,
+    reviews: 87,
+    description: "Soft vinyl erasers that clean completely without tearing the paper.",
+    inStock: true
   },
   {
-    name: "Tropicana Mango 1L",
-    category: "Juice Bottles",
-    price: 90n,
-    quantity: 25n,
-    isAvailable: true
-  },
-  {
-    name: "Maaza 600ml",
-    category: "Juice Bottles",
-    price: 40n,
-    quantity: 40n,
-    isAvailable: true
-  },
-  {
-    name: "Frooti 200ml",
-    category: "Juice Bottles",
-    price: 15n,
-    quantity: 60n,
-    isAvailable: true
-  },
-  {
-    name: "Classmate Notebook 200pg",
-    category: "Notebooks",
-    price: 60n,
-    quantity: 50n,
-    isAvailable: true
-  },
-  {
-    name: "Long Notebook 100pg",
-    category: "Notebooks",
-    price: 35n,
-    quantity: 40n,
-    isAvailable: true
-  },
-  {
-    name: "Spiral Notebook",
-    category: "Notebooks",
-    price: 50n,
-    quantity: 30n,
-    isAvailable: true
-  },
-  {
-    name: "Ruled Notebook 80pg",
-    category: "Notebooks",
-    price: 25n,
-    quantity: 20n,
-    isAvailable: true
-  },
-  {
-    name: "Graph Copy 100pg",
-    category: "Graph Copies",
-    price: 40n,
-    quantity: 30n,
-    isAvailable: true
-  },
-  {
-    name: "Graph Copy 60pg",
-    category: "Graph Copies",
-    price: 25n,
-    quantity: 20n,
-    isAvailable: true
-  },
-  {
-    name: "Plain Graph Sheet",
-    category: "Graph Copies",
-    price: 5n,
-    quantity: 100n,
-    isAvailable: true
-  },
-  {
-    name: "A4 Project File",
-    category: "Project Files",
-    price: 15n,
-    quantity: 60n,
-    isAvailable: true
-  },
-  {
-    name: "Hard Cover File",
-    category: "Project Files",
-    price: 35n,
-    quantity: 25n,
-    isAvailable: true
-  },
-  {
-    name: "Transparent File Cover",
-    category: "Project Files",
-    price: 10n,
-    quantity: 80n,
-    isAvailable: true
-  },
-  {
-    name: "Plastic Folder A4",
-    category: "Folders",
-    price: 20n,
-    quantity: 40n,
-    isAvailable: true
-  },
-  {
-    name: "Cardboard Folder",
-    category: "Folders",
-    price: 15n,
-    quantity: 35n,
-    isAvailable: true
-  },
-  {
-    name: "Expandable Folder",
-    category: "Folders",
-    price: 45n,
-    quantity: 20n,
-    isAvailable: true
-  },
-  {
-    name: "Zip Folder",
-    category: "Folders",
-    price: 60n,
-    quantity: 10n,
-    isAvailable: true
+    id: 19,
+    name: "Project File A4",
+    category: "Stationery",
+    image: "/assets/generated/project-file-transparent.dim_300x300.png",
+    price: 35,
+    mrp: 45,
+    quantity: "1 File",
+    rating: 4.2,
+    reviews: 134,
+    description: "A4 size project file with transparent cover and inside pockets for documents.",
+    inStock: true
   }
 ];
+const FEATURED_PRODUCTS = [
+  LOCAL_PRODUCTS[0],
+  LOCAL_PRODUCTS[5],
+  LOCAL_PRODUCTS[14]
+];
+const CATEGORIES = [
+  "All",
+  "Beverages",
+  "Snacks",
+  "Daily Routine",
+  "Stationery"
+];
+const CATEGORY_ICONS = {
+  All: "🛒",
+  Beverages: "🥤",
+  Snacks: "🍟",
+  "Daily Routine": "🧴",
+  Stationery: "✏️"
+};
 const COUPONS = [
   { code: "SAVE10", discount: 0.1, minOrder: 300 },
   { code: "SAVE15", discount: 0.15, minOrder: 500 },
@@ -42477,16 +42812,32 @@ function getBestCoupon(subtotal) {
   return applicable[applicable.length - 1];
 }
 function getNextCoupon(subtotal) {
-  const next = COUPONS.find((c2) => subtotal < c2.minOrder);
-  return next ?? null;
+  return COUPONS.find((c2) => subtotal < c2.minOrder) ?? null;
+}
+function discountPct(price, mrp) {
+  return Math.round((mrp - price) / mrp * 100);
+}
+function StarRating({
+  rating,
+  size = "sm"
+}) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-0.5", children: [1, 2, 3, 4, 5].map((s2) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+    Star,
+    {
+      className: size === "sm" ? "w-3 h-3" : "w-4 h-4",
+      fill: rating >= s2 ? "#ff9f00" : "none",
+      stroke: rating >= s2 - 0.5 ? "#ff9f00" : "#d1d5db"
+    },
+    s2
+  )) });
 }
 const WHEEL_SEGMENTS = [
-  { label: "5% Off", color: "#f97316", bg: "#fff7ed" },
-  { label: "10% Off", color: "#16a34a", bg: "#f0fdf4" },
-  { label: "Free Item", color: "#7c3aed", bg: "#f5f3ff" },
-  { label: "₹20 Cashback", color: "#2563eb", bg: "#eff6ff" },
-  { label: "15% Off", color: "#dc2626", bg: "#fef2f2" },
-  { label: "Better Luck!", color: "#6b7280", bg: "#f9fafb" }
+  { label: "5% Off", color: "#f97316" },
+  { label: "10% Off", color: "#16a34a" },
+  { label: "Free Item", color: "#7c3aed" },
+  { label: "₹20 Cashback", color: "#2563eb" },
+  { label: "15% Off", color: "#dc2626" },
+  { label: "Better Luck!", color: "#6b7280" }
 ];
 function SpinningWheel({
   spinning,
@@ -42508,7 +42859,7 @@ function SpinningWheel({
     const midAngle = startAngle + anglePerSegment / 2;
     const tx = cx2 + r2 * 0.65 * Math.cos(midAngle);
     const ty = cy + r2 * 0.65 * Math.sin(midAngle);
-    return { ...seg, x1, y1, x2, y2, tx, ty, midAngle, startAngle, endAngle };
+    return { ...seg, x1, y1, x2, y2, tx, ty, midAngle };
   });
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative inline-flex items-center justify-center", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -42593,9 +42944,9 @@ function SpinningWheel({
   ] });
 }
 function OwnerPopup() {
-  const [visible, setVisible] = reactExports.useState(() => {
-    return sessionStorage.getItem("ownerPopupDismissed") !== "true";
-  });
+  const [visible, setVisible] = reactExports.useState(
+    () => sessionStorage.getItem("ownerPopupDismissed") !== "true"
+  );
   const dismiss = () => {
     sessionStorage.setItem("ownerPopupDismissed", "true");
     setVisible(false);
@@ -42640,8 +42991,8 @@ function OwnerPopup() {
                 children: /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { className: "w-5 h-5 text-gray-600" })
               }
             ),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-6 pt-6 pb-8 text-center", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 mb-1", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-8 text-center", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 mb-2", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5", style: { color: "#f97316" } }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "span",
@@ -42713,99 +43064,865 @@ function OwnerPopup() {
     "owner-popup"
   ) });
 }
-function ProductCard({
+const OFFER_TEXTS = [
+  "🔥 50% OFF on Chips!",
+  "🎁 Buy 2 Get 1 FREE on Biscuits",
+  "⚡ Flash Sale: Cold Drinks at ₹35!",
+  "🎯 Free Delivery on orders above ₹300!",
+  "🌟 New Arrival: Premium Tea at ₹120",
+  "💥 Combo Deal: Shampoo + Soap for ₹160",
+  "🎉 Student Discount: 15% off Stationery!",
+  "🛒 Buy 3 Notebooks, Get ₹20 Off!"
+];
+function OfferBanner() {
+  const repeated = [...OFFER_TEXTS, ...OFFER_TEXTS];
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "div",
+    {
+      className: "overflow-hidden py-3",
+      style: {
+        background: "linear-gradient(135deg, #1a1a2e 0%, #f97316 100%)"
+      },
+      children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex whitespace-nowrap animate-marquee", children: repeated.map((text, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "span",
+        {
+          className: "inline-flex items-center gap-2 text-white font-bold text-sm px-8",
+          children: [
+            text,
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-yellow-300 mx-2", children: "•" })
+          ]
+        },
+        String(i) + text.slice(0, 6)
+      )) })
+    }
+  );
+}
+function FloatingFeaturedCards() {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "section",
+    {
+      className: "py-8 px-4",
+      style: {
+        background: "linear-gradient(135deg, #fff7ed 0%, #fef3c7 50%, #f0fdf4 100%)"
+      },
+      children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "container max-w-6xl mx-auto", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-6", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "h2",
+            {
+              className: "font-display font-black text-2xl md:text-3xl",
+              style: { color: "#1a1a1a" },
+              children: "✨ Featured Items"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-500 text-sm mt-1", children: "Best sellers, handpicked for you" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-3 gap-6", children: FEATURED_PRODUCTS.map((p2, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "bg-white rounded-2xl shadow-lg p-5 text-center border border-orange-100 animate-float",
+            style: { animationDelay: `${i * 0.8}s` },
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-28 h-28 mx-auto mb-3 bg-gray-50 rounded-xl flex items-center justify-center overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "img",
+                {
+                  src: p2.image,
+                  alt: p2.name,
+                  className: "w-full h-full object-contain"
+                }
+              ) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-bold text-gray-800 text-sm mb-1", children: p2.name }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-1 mb-2", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(StarRating, { rating: p2.rating, size: "sm" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs text-gray-500", children: [
+                  "(",
+                  p2.reviews,
+                  ")"
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "span",
+                  {
+                    className: "font-black text-lg",
+                    style: { color: "#f97316" },
+                    children: [
+                      "₹",
+                      p2.price
+                    ]
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-gray-400 text-xs line-through", children: [
+                  "₹",
+                  p2.mrp
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs font-bold text-green-600", children: [
+                  discountPct(p2.price, p2.mrp),
+                  "% off"
+                ] })
+              ] })
+            ]
+          },
+          p2.id
+        )) })
+      ] })
+    }
+  );
+}
+function ProductDetailDialog({
   product,
-  index: index2,
+  open,
+  onClose,
   onAddToCart
 }) {
-  const img = CATEGORY_IMAGES[product.category];
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    motion.div,
+  if (!product) return null;
+  const pct = discountPct(product.price, product.mrp);
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Dialog, { open, onOpenChange: (v2) => !v2 && onClose(), children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+    DialogContent,
     {
-      "data-ocid": `product.item.${index2}`,
-      initial: { opacity: 0, y: 20 },
-      animate: { opacity: 1, y: 0 },
-      transition: { duration: 0.35, delay: Math.min(index2 * 0.04, 0.4) },
-      className: `bg-card rounded-xl shadow-card border border-border overflow-hidden hover:shadow-hero hover:-translate-y-0.5 transition-all duration-300 ${!product.isAvailable ? "opacity-70" : ""}`,
-      children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-stretch gap-0", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 shrink-0 overflow-hidden bg-muted", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+      className: "max-w-2xl p-0 overflow-hidden",
+      "data-ocid": "product.dialog",
+      children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "sm:w-64 shrink-0 bg-gray-50 flex items-center justify-center p-8 border-b sm:border-b-0 sm:border-r border-gray-100", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
           "img",
           {
-            src: img,
-            alt: product.category,
-            className: "w-full h-full object-cover",
-            onError: (e) => {
-              e.currentTarget.style.display = "none";
-            }
+            src: product.image,
+            alt: product.name,
+            className: "w-48 h-48 object-contain"
           }
         ) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 p-3 flex flex-col justify-between min-w-0", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between gap-1", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "h3",
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 p-6 flex flex-col gap-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(DialogHeader, { className: "pb-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx(DialogTitle, { className: "text-xl font-black text-gray-900 leading-snug text-left", children: product.name }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "span",
               {
-                className: "font-body font-semibold text-foreground text-xs leading-snug flex-1 truncate",
-                title: product.name,
-                children: product.name
+                className: "inline-flex items-center gap-1 px-2 py-0.5 rounded text-white text-xs font-bold",
+                style: { background: "#388e3c" },
+                children: [
+                  product.rating,
+                  " ",
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Star, { className: "w-3 h-3", fill: "white", stroke: "white" })
+                ]
               }
             ),
-            product.isAvailable ? /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { className: "text-available bg-available border border-available shrink-0 text-[9px] font-semibold px-1.5 py-0 ml-1", children: "In Stock" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { className: "text-unavailable bg-unavailable border border-unavailable shrink-0 text-[9px] font-semibold px-1.5 py-0 ml-1", children: "Out" })
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs text-gray-400", children: [
+              product.reviews.toLocaleString(),
+              " ratings"
+            ] })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mt-1", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-display font-bold text-primary text-base", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-baseline gap-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-3xl font-black text-gray-900", children: [
               "₹",
-              product.price.toString()
+              product.price
             ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-gray-400 text-sm line-through", children: [
+              "₹",
+              product.mrp
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-green-600 font-bold text-sm", children: [
+              pct,
+              "% off"
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-gray-500", children: [
+            "📦 Pack:",
+            " ",
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-semibold text-gray-700", children: product.quantity })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-gray-600 leading-relaxed", children: product.description }),
+          product.inStock ? /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "inline-flex items-center gap-1 text-green-700 text-xs font-semibold", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-4 h-4" }),
+            " In Stock"
+          ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "inline-flex items-center gap-1 text-red-600 text-xs font-semibold", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { className: "w-4 h-4" }),
+            " Out of Stock"
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-3 mt-2", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
+              Button,
               {
-                type: "button",
-                "data-ocid": `product.add_button.${index2}`,
-                onClick: () => onAddToCart(product),
-                disabled: !product.isAvailable,
-                className: "flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-bold text-white transition-all hover:scale-105 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100",
-                style: {
-                  background: product.isAvailable ? "linear-gradient(135deg, #f97316, #ea580c)" : void 0
+                "data-ocid": "product.primary_button",
+                className: "flex-1 font-bold text-white",
+                style: { background: "#ff9f00" },
+                disabled: !product.inStock,
+                onClick: () => {
+                  onAddToCart(product);
+                  onClose();
                 },
                 children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "w-3 h-3" }),
-                  "Add"
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-4 h-4 mr-2" }),
+                  " ADD TO CART"
                 ]
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Button,
+              {
+                "data-ocid": "product.secondary_button",
+                className: "flex-1 font-bold text-white",
+                style: { background: "#fb641b" },
+                disabled: !product.inStock,
+                onClick: () => {
+                  onAddToCart(product);
+                  onClose();
+                },
+                children: "BUY NOW"
               }
             )
           ] })
         ] })
       ] })
     }
+  ) });
+}
+function ProductCard({
+  product,
+  index: index2,
+  onAddToCart,
+  onViewDetail
+}) {
+  const pct = discountPct(product.price, product.mrp);
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    motion.div,
+    {
+      "data-ocid": `product.item.${index2}`,
+      initial: { opacity: 0, y: 20 },
+      animate: { opacity: 1, y: 0 },
+      transition: { duration: 0.35, delay: Math.min(index2 * 0.04, 0.4) },
+      className: "bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col",
+      onClick: () => onViewDetail(product),
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-gray-50 flex items-center justify-center h-40 relative px-4 pt-4", children: [
+          pct > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "absolute top-2 left-2 bg-green-500 text-white text-[10px] font-black px-2 py-0.5 rounded", children: [
+            pct,
+            "% off"
+          ] }),
+          !product.inStock && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "absolute top-2 right-2 bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded", children: "Out of Stock" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "img",
+            {
+              src: product.image,
+              alt: product.name,
+              className: "h-32 w-full object-contain"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 flex flex-col gap-1.5 flex-1", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-semibold text-gray-800 text-sm leading-snug line-clamp-2", children: product.name }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "span",
+              {
+                className: "inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-white text-[10px] font-bold",
+                style: { background: "#388e3c" },
+                children: [
+                  product.rating,
+                  " ",
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Star, { className: "w-2.5 h-2.5", fill: "white", stroke: "white" })
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(StarRating, { rating: product.rating, size: "sm" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[10px] text-gray-400", children: [
+              "(",
+              product.reviews,
+              ")"
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-baseline gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-black text-base text-gray-900", children: [
+              "₹",
+              product.price
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-gray-400 text-xs line-through", children: [
+              "₹",
+              product.mrp
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-green-600 text-[10px] font-bold", children: [
+              pct,
+              "% off"
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-gray-500", children: product.quantity }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            Button,
+            {
+              "data-ocid": `product.add_button.${index2}`,
+              size: "sm",
+              className: "mt-auto w-full font-bold text-xs",
+              style: {
+                background: product.inStock ? "linear-gradient(135deg, #f97316, #ea580c)" : void 0
+              },
+              disabled: !product.inStock,
+              onClick: (e) => {
+                e.stopPropagation();
+                onAddToCart(product);
+              },
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-3 h-3 mr-1" }),
+                " Add to Cart"
+              ]
+            }
+          )
+        ] })
+      ]
+    }
   );
+}
+function CheckoutWizard({
+  open,
+  onClose,
+  items,
+  onClearCart
+}) {
+  const [step, setStep] = reactExports.useState(1);
+  const [address, setAddress] = reactExports.useState({
+    name: "",
+    mobile: "",
+    house: "",
+    street: "",
+    city: "",
+    state: "",
+    pincode: "",
+    landmark: ""
+  });
+  const [payMethod, setPayMethod] = reactExports.useState("cod");
+  const [upiId, setUpiId] = reactExports.useState("");
+  const [cardNum, setCardNum] = reactExports.useState("");
+  const [cardExpiry, setCardExpiry] = reactExports.useState("");
+  const [cardCvv, setCardCvv] = reactExports.useState("");
+  const [orderId] = reactExports.useState(
+    () => Math.random().toString(36).substring(2, 10).toUpperCase()
+  );
+  const subtotal = items.reduce((s2, i) => s2 + i.product.price * i.qty, 0);
+  const coupon = getBestCoupon(subtotal);
+  const discount = coupon ? Math.round(subtotal * coupon.discount) : 0;
+  const total = subtotal - discount;
+  const stepLabels = ["Cart", "Address", "Payment", "Confirmed"];
+  const handleClose = () => {
+    if (step === 4) onClearCart();
+    setStep(1);
+    onClose();
+  };
+  const goToStep2 = () => setStep(2);
+  const goToStep3 = () => {
+    if (!address.name || !address.mobile || !address.house || !address.city || !address.pincode) {
+      ue.error("Please fill all required fields");
+      return;
+    }
+    setStep(3);
+  };
+  const placeOrder = () => {
+    if (payMethod === "upi" && !upiId) {
+      ue.error("Please enter UPI ID");
+      return;
+    }
+    if (payMethod === "card" && (!cardNum || !cardExpiry || !cardCvv)) {
+      ue.error("Please fill card details");
+      return;
+    }
+    setStep(4);
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(Dialog, { open, onOpenChange: (v2) => !v2 && handleClose(), children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    DialogContent,
+    {
+      className: "max-w-2xl p-0 overflow-hidden max-h-[90vh]",
+      "data-ocid": "checkout.dialog",
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            className: "px-6 pt-5 pb-3",
+            style: { background: "linear-gradient(135deg, #f97316, #ea580c)" },
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-between mb-1", children: stepLabels.map((label, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "div",
+                {
+                  className: `w-7 h-7 rounded-full flex items-center justify-center text-xs font-black transition-colors ${step > i + 1 ? "bg-green-400 text-white" : step === i + 1 ? "bg-white text-orange-600" : "bg-white/30 text-white"}`,
+                  children: step > i + 1 ? "✓" : i + 1
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "span",
+                {
+                  className: `text-xs font-semibold hidden sm:inline ${step === i + 1 ? "text-white" : "text-white/60"}`,
+                  children: label
+                }
+              ),
+              i < 3 && /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "w-3 h-3 text-white/40 mx-1" })
+            ] }, label)) })
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(ScrollArea, { className: "max-h-[calc(90vh-100px)]", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6", children: [
+          step === 1 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-black text-xl mb-4", children: "🛒 Review Your Cart" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3 mb-4", children: items.map((item, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "div",
+              {
+                "data-ocid": `cart.item.${i + 1}`,
+                className: "flex items-center gap-3 p-3 bg-gray-50 rounded-xl",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "img",
+                    {
+                      src: item.product.image,
+                      alt: item.product.name,
+                      className: "w-14 h-14 object-contain bg-white rounded-lg p-1"
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-semibold text-sm truncate", children: item.product.name }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500", children: item.product.quantity })
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-right shrink-0", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-bold text-sm", children: [
+                      "₹",
+                      item.product.price * item.qty
+                    ] }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-gray-400", children: [
+                      "Qty: ",
+                      item.qty
+                    ] })
+                  ] })
+                ]
+              },
+              item.product.id
+            )) }),
+            coupon && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 p-3 bg-green-50 rounded-xl border border-green-200 mb-4", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Tag, { className: "w-4 h-4 text-green-600" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-sm font-bold text-green-700", children: [
+                coupon.code,
+                " applied — You save ₹",
+                discount,
+                "!"
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t pt-3 space-y-1.5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "Subtotal" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+                  "₹",
+                  subtotal
+                ] })
+              ] }),
+              discount > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-600", children: "Coupon Discount" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-green-600", children: [
+                  "-₹",
+                  discount
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "Delivery" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-600", children: subtotal >= 300 ? "FREE" : "₹30" })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between font-black text-lg border-t pt-2", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Total" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+                  "₹",
+                  subtotal >= 300 ? total : total + 30
+                ] })
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Button,
+              {
+                "data-ocid": "checkout.primary_button",
+                className: "w-full mt-5 font-bold py-6",
+                style: {
+                  background: "linear-gradient(135deg, #f97316, #ea580c)"
+                },
+                onClick: goToStep2,
+                children: "Proceed to Address →"
+              }
+            )
+          ] }),
+          step === 2 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-black text-xl mb-4", children: "📍 Delivery Address" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-4", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Label, { className: "text-xs font-bold", children: "Full Name *" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  Input,
+                  {
+                    "data-ocid": "checkout.input",
+                    placeholder: "Enter your name",
+                    value: address.name,
+                    onChange: (e) => setAddress((a2) => ({ ...a2, name: e.target.value }))
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Label, { className: "text-xs font-bold", children: "Mobile Number *" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  Input,
+                  {
+                    "data-ocid": "checkout.input",
+                    placeholder: "10-digit mobile",
+                    value: address.mobile,
+                    onChange: (e) => setAddress((a2) => ({ ...a2, mobile: e.target.value })),
+                    maxLength: 10
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1 sm:col-span-2", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Label, { className: "text-xs font-bold", children: "House / Flat No. *" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  Input,
+                  {
+                    "data-ocid": "checkout.input",
+                    placeholder: "House/Flat/Block No.",
+                    value: address.house,
+                    onChange: (e) => setAddress((a2) => ({ ...a2, house: e.target.value }))
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1 sm:col-span-2", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Label, { className: "text-xs font-bold", children: "Street / Area / Colony" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  Input,
+                  {
+                    "data-ocid": "checkout.input",
+                    placeholder: "Street name or area",
+                    value: address.street,
+                    onChange: (e) => setAddress((a2) => ({ ...a2, street: e.target.value }))
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Label, { className: "text-xs font-bold", children: "City *" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  Input,
+                  {
+                    "data-ocid": "checkout.input",
+                    placeholder: "City",
+                    value: address.city,
+                    onChange: (e) => setAddress((a2) => ({ ...a2, city: e.target.value }))
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Label, { className: "text-xs font-bold", children: "State" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  Input,
+                  {
+                    "data-ocid": "checkout.input",
+                    placeholder: "State",
+                    value: address.state,
+                    onChange: (e) => setAddress((a2) => ({ ...a2, state: e.target.value }))
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Label, { className: "text-xs font-bold", children: "Pincode *" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  Input,
+                  {
+                    "data-ocid": "checkout.input",
+                    placeholder: "6-digit pincode",
+                    value: address.pincode,
+                    onChange: (e) => setAddress((a2) => ({ ...a2, pincode: e.target.value })),
+                    maxLength: 6
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Label, { className: "text-xs font-bold", children: "Landmark" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  Input,
+                  {
+                    "data-ocid": "checkout.input",
+                    placeholder: "Near landmark",
+                    value: address.landmark,
+                    onChange: (e) => setAddress((a2) => ({ ...a2, landmark: e.target.value }))
+                  }
+                )
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-3 mt-6", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                Button,
+                {
+                  variant: "outline",
+                  onClick: () => setStep(1),
+                  "data-ocid": "checkout.cancel_button",
+                  className: "flex-1",
+                  children: "← Back"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                Button,
+                {
+                  className: "flex-1 font-bold",
+                  style: {
+                    background: "linear-gradient(135deg, #f97316, #ea580c)"
+                  },
+                  onClick: goToStep3,
+                  "data-ocid": "checkout.primary_button",
+                  children: "Save & Continue →"
+                }
+              )
+            ] })
+          ] }),
+          step === 3 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-black text-xl mb-4", children: "💳 Choose Payment Method" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              RadioGroup,
+              {
+                value: payMethod,
+                onValueChange: (v2) => setPayMethod(v2),
+                className: "space-y-3",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "label",
+                    {
+                      "data-ocid": "checkout.radio",
+                      htmlFor: "upi",
+                      className: `flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${payMethod === "upi" ? "border-orange-500 bg-orange-50" : "border-gray-200 hover:border-gray-300"}`,
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(RadioGroupItem, { value: "upi", id: "upi", className: "mt-0.5" }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 font-bold text-sm", children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsx(Smartphone, { className: "w-4 h-4 text-orange-500" }),
+                            " UPI Payment",
+                            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex gap-1 ml-auto", children: ["G Pay", "PhonePe", "Paytm"].map((app) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+                              "span",
+                              {
+                                className: "text-[9px] font-black px-1.5 py-0.5 rounded bg-orange-100 text-orange-700",
+                                children: app
+                              },
+                              app
+                            )) })
+                          ] }),
+                          payMethod === "upi" && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                            Input,
+                            {
+                              "data-ocid": "checkout.input",
+                              className: "mt-2 text-sm",
+                              placeholder: "Enter UPI ID (e.g. name@upi)",
+                              value: upiId,
+                              onChange: (e) => setUpiId(e.target.value)
+                            }
+                          )
+                        ] })
+                      ]
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "label",
+                    {
+                      "data-ocid": "checkout.radio",
+                      htmlFor: "card",
+                      className: `flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${payMethod === "card" ? "border-orange-500 bg-orange-50" : "border-gray-200 hover:border-gray-300"}`,
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(RadioGroupItem, { value: "card", id: "card", className: "mt-0.5" }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 font-bold text-sm", children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsx(CreditCard, { className: "w-4 h-4 text-blue-500" }),
+                            " Credit / Debit Card"
+                          ] }),
+                          payMethod === "card" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-2 grid grid-cols-2 gap-2", children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsx(
+                              Input,
+                              {
+                                "data-ocid": "checkout.input",
+                                className: "col-span-2 text-sm",
+                                placeholder: "Card Number (16 digits)",
+                                value: cardNum,
+                                onChange: (e) => setCardNum(e.target.value),
+                                maxLength: 16
+                              }
+                            ),
+                            /* @__PURE__ */ jsxRuntimeExports.jsx(
+                              Input,
+                              {
+                                "data-ocid": "checkout.input",
+                                className: "text-sm",
+                                placeholder: "MM/YY",
+                                value: cardExpiry,
+                                onChange: (e) => setCardExpiry(e.target.value),
+                                maxLength: 5
+                              }
+                            ),
+                            /* @__PURE__ */ jsxRuntimeExports.jsx(
+                              Input,
+                              {
+                                "data-ocid": "checkout.input",
+                                className: "text-sm",
+                                placeholder: "CVV",
+                                value: cardCvv,
+                                onChange: (e) => setCardCvv(e.target.value),
+                                maxLength: 3,
+                                type: "password"
+                              }
+                            )
+                          ] })
+                        ] })
+                      ]
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "label",
+                    {
+                      "data-ocid": "checkout.radio",
+                      htmlFor: "cod",
+                      className: `flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${payMethod === "cod" ? "border-orange-500 bg-orange-50" : "border-gray-200 hover:border-gray-300"}`,
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(RadioGroupItem, { value: "cod", id: "cod" }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 font-bold text-sm", children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg", children: "💵" }),
+                          " Cash on Delivery",
+                          /* @__PURE__ */ jsxRuntimeExports.jsx(Badge, { className: "ml-auto bg-green-100 text-green-700 border-green-200 text-[10px]", children: "Recommended" })
+                        ] })
+                      ]
+                    }
+                  )
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 p-4 bg-gray-50 rounded-xl", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-bold text-sm mb-2", children: "Order Summary" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1", children: [
+                items.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "div",
+                  {
+                    className: "flex justify-between text-xs text-gray-600",
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+                        item.product.name,
+                        " × ",
+                        item.qty
+                      ] }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+                        "₹",
+                        item.product.price * item.qty
+                      ] })
+                    ]
+                  },
+                  item.product.id
+                )),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t pt-1 flex justify-between font-black text-sm", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Total Payable" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+                    "₹",
+                    subtotal >= 300 ? total : total + 30
+                  ] })
+                ] })
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-3 mt-5", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                Button,
+                {
+                  variant: "outline",
+                  onClick: () => setStep(2),
+                  "data-ocid": "checkout.cancel_button",
+                  className: "flex-1",
+                  children: "← Back"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                Button,
+                {
+                  className: "flex-1 font-bold",
+                  style: {
+                    background: "linear-gradient(135deg, #f97316, #ea580c)"
+                  },
+                  onClick: placeOrder,
+                  "data-ocid": "checkout.submit_button",
+                  children: "Place Order 🛍️"
+                }
+              )
+            ] })
+          ] }),
+          step === 4 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center py-6", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              motion.div,
+              {
+                initial: { scale: 0 },
+                animate: { scale: 1 },
+                transition: { type: "spring", stiffness: 300, damping: 20 },
+                className: "w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-5",
+                style: {
+                  background: "linear-gradient(135deg, #22c55e, #16a34a)"
+                },
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { className: "w-12 h-12 text-white" })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-black text-2xl text-gray-900 mb-1", children: "Order Placed Successfully! 🎉" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-500 text-sm mb-4", children: "Thank you for shopping at Annapurna Shop!" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "inline-block px-4 py-2 rounded-xl bg-gray-100 mb-4", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500", children: "Order ID" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-black text-lg text-gray-800 tracking-widest", children: [
+                "#ANP",
+                orderId
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-green-50 rounded-xl border border-green-200 mb-4", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-bold text-green-700 text-sm", children: "🚚 Expected Delivery: 2–3 Business Days" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-green-600 text-xs mt-1", children: [
+                "Delivering to: ",
+                address.house,
+                ", ",
+                address.city,
+                " ",
+                address.pincode
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-left p-4 bg-gray-50 rounded-xl mb-5 space-y-1.5", children: items.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "div",
+              {
+                className: "flex items-center gap-3",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "img",
+                    {
+                      src: item.product.image,
+                      alt: item.product.name,
+                      className: "w-10 h-10 object-contain bg-white rounded-lg p-1"
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm flex-1", children: item.product.name }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-sm font-bold", children: [
+                    "×",
+                    item.qty
+                  ] })
+                ]
+              },
+              item.product.id
+            )) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Button,
+              {
+                "data-ocid": "checkout.close_button",
+                className: "w-full font-bold py-5",
+                style: {
+                  background: "linear-gradient(135deg, #f97316, #ea580c)"
+                },
+                onClick: handleClose,
+                children: "Continue Shopping 🛒"
+              }
+            )
+          ] })
+        ] }) })
+      ]
+    }
+  ) });
 }
 function CartPanel({
   items,
   onClose,
   onUpdateQty,
-  onRemove
+  onRemove,
+  onClearCart
 }) {
-  const [orderOpen, setOrderOpen] = reactExports.useState(false);
-  const [orderName, setOrderName] = reactExports.useState("");
-  const [orderPhone, setOrderPhone] = reactExports.useState("");
-  const [orderAddress, setOrderAddress] = reactExports.useState("");
-  const subtotal = items.reduce(
-    (s2, i) => s2 + Number(i.product.price) * i.qty,
-    0
-  );
+  const [checkoutOpen, setCheckoutOpen] = reactExports.useState(false);
+  const subtotal = items.reduce((s2, i) => s2 + i.product.price * i.qty, 0);
   const coupon = getBestCoupon(subtotal);
   const nextCoupon = getNextCoupon(subtotal);
   const discount = coupon ? Math.round(subtotal * coupon.discount) : 0;
   const total = subtotal - discount;
-  const placeOrder = () => {
-    if (!orderName.trim() || !orderPhone.trim() || !orderAddress.trim()) {
-      ue.error("Please fill all fields.");
-      return;
-    }
-    setOrderOpen(false);
-    onClose();
-    ue.success("Order placed! We'll deliver to your address. 🎉");
-  };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(
       motion.div,
@@ -42865,110 +43982,104 @@ function CartPanel({
                 /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm", children: "Add items to get started!" })
               ]
             }
-          ) : /* @__PURE__ */ jsxRuntimeExports.jsx(ScrollArea, { className: "flex-1 px-4 py-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-col gap-3", children: items.map((item, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          ) : /* @__PURE__ */ jsxRuntimeExports.jsx(ScrollArea, { className: "flex-1 px-4 py-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: items.map((item, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "div",
             {
               "data-ocid": `cart.item.${i + 1}`,
-              className: "flex items-center gap-3 p-3 rounded-xl border bg-gray-50",
+              className: "flex items-center gap-3 p-3 bg-gray-50 rounded-xl",
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "img",
                   {
-                    src: CATEGORY_IMAGES[item.product.category],
-                    alt: item.product.category,
-                    className: "w-12 h-12 rounded-lg object-cover shrink-0"
+                    src: item.product.image,
+                    alt: item.product.name,
+                    className: "w-14 h-14 object-contain bg-white rounded-lg p-1 shrink-0"
                   }
                 ),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-semibold text-xs text-gray-800 truncate", children: item.product.name }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-orange-600 font-bold text-sm", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-semibold text-xs truncate", children: item.product.name }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-gray-400", children: item.product.quantity }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-bold text-sm text-orange-600 mt-0.5", children: [
                     "₹",
-                    Number(item.product.price) * item.qty
+                    item.product.price * item.qty
                   ] })
                 ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "button",
-                    {
-                      type: "button",
-                      "data-ocid": `cart.toggle.${i + 1}`,
-                      onClick: () => onUpdateQty(item.product.name, -1),
-                      className: "w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition-colors",
-                      children: /* @__PURE__ */ jsxRuntimeExports.jsx(Minus, { className: "w-3 h-3" })
-                    }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-6 text-center text-sm font-bold", children: item.qty }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "button",
-                    {
-                      type: "button",
-                      "data-ocid": `cart.toggle.${i + 1}`,
-                      onClick: () => onUpdateQty(item.product.name, 1),
-                      className: "w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center hover:bg-orange-200 transition-colors",
-                      children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "w-3 h-3 text-orange-600" })
-                    }
-                  ),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center gap-1 shrink-0", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "button",
+                      {
+                        type: "button",
+                        "data-ocid": `cart.toggle.${i + 1}`,
+                        onClick: () => onUpdateQty(item.product.id, -1),
+                        className: "w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition-colors",
+                        children: /* @__PURE__ */ jsxRuntimeExports.jsx(Minus, { className: "w-3 h-3" })
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-6 text-center text-xs font-bold", children: item.qty }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "button",
+                      {
+                        type: "button",
+                        "data-ocid": `cart.toggle.${i + 1}`,
+                        onClick: () => onUpdateQty(item.product.id, 1),
+                        className: "w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center hover:bg-orange-200 transition-colors",
+                        children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "w-3 h-3" })
+                      }
+                    )
+                  ] }),
                   /* @__PURE__ */ jsxRuntimeExports.jsx(
                     "button",
                     {
                       type: "button",
                       "data-ocid": `cart.delete_button.${i + 1}`,
-                      onClick: () => onRemove(item.product.name),
-                      className: "w-6 h-6 rounded-full bg-red-100 flex items-center justify-center hover:bg-red-200 transition-colors ml-1",
-                      children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-3 h-3 text-red-500" })
+                      onClick: () => onRemove(item.product.id),
+                      className: "w-6 h-6 rounded-full bg-red-50 flex items-center justify-center hover:bg-red-100 transition-colors",
+                      children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-3 h-3 text-red-400" })
                     }
                   )
                 ] })
               ]
             },
-            item.product.name
+            item.product.id
           )) }) }),
-          items.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 py-4 border-t bg-gray-50", children: [
-            nextCoupon && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-3 p-2.5 rounded-xl bg-green-50 border border-green-200 text-xs text-green-700", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-3.5 h-3.5 inline mr-1" }),
-              "You're ",
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("strong", { children: [
-                "₹",
-                nextCoupon.minOrder - subtotal
-              ] }),
-              " away from ",
+          items.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t p-4 space-y-3", children: [
+            coupon && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 p-2.5 bg-green-50 rounded-xl border border-green-200 text-xs", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Tag, { className: "w-4 h-4 text-green-600 shrink-0" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-bold text-green-700", children: [
+                coupon.code,
+                " — You save ₹",
+                discount,
+                "!"
+              ] })
+            ] }),
+            nextCoupon && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-[10px] text-center text-gray-500", children: [
+              "Add ₹",
+              nextCoupon.minOrder - subtotal,
+              " more for",
+              " ",
               /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: nextCoupon.code }),
               " (",
               Math.round(nextCoupon.discount * 100),
-              "% off)!"
+              "% off)"
             ] }),
-            coupon && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-3 p-2.5 rounded-xl bg-orange-50 border border-orange-200 text-xs", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Tag, { className: "w-3.5 h-3.5 inline mr-1 text-orange-500" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-orange-700", children: [
-                "Coupon ",
-                /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: coupon.code }),
-                " applied! You save ₹",
-                discount,
-                " 🎉"
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm mb-1", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "Subtotal" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-semibold", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
                 "₹",
                 subtotal
               ] })
             ] }),
-            coupon && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm mb-1", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-green-600", children: [
-                "Discount (",
-                coupon.code,
-                ")"
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-green-600 font-semibold", children: [
+            discount > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm text-green-600", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Discount" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
                 "-₹",
                 discount
               ] })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Separator, { className: "my-2" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-base font-bold mb-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between font-black text-lg", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Total" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-orange-600", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
                 "₹",
                 total
               ] })
@@ -42976,123 +44087,38 @@ function CartPanel({
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               Button,
               {
-                "data-ocid": "cart.primary_button",
-                className: "w-full font-bold",
-                onClick: () => setOrderOpen(true),
+                "data-ocid": "checkout.open_modal_button",
+                className: "w-full font-bold py-5",
                 style: {
                   background: "linear-gradient(135deg, #f97316, #ea580c)"
                 },
-                children: "Place Order →"
+                onClick: () => setCheckoutOpen(true),
+                children: "Proceed to Checkout →"
               }
             )
           ] })
         ]
       }
     ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Dialog, { open: orderOpen, onOpenChange: setOrderOpen, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogContent, { "data-ocid": "order.dialog", className: "max-w-sm", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(DialogHeader, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(DialogTitle, { className: "text-lg font-bold", children: "Complete Your Order" }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-3 mt-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Label,
-            {
-              htmlFor: "order-name",
-              className: "text-xs font-semibold mb-1 block",
-              children: "Your Name"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Input,
-            {
-              "data-ocid": "order.input",
-              id: "order-name",
-              placeholder: "e.g. Rahul Sharma",
-              value: orderName,
-              onChange: (e) => setOrderName(e.target.value)
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Label,
-            {
-              htmlFor: "order-phone",
-              className: "text-xs font-semibold mb-1 block",
-              children: "Phone Number"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Input,
-            {
-              "data-ocid": "order.input",
-              id: "order-phone",
-              placeholder: "e.g. 9760123456",
-              value: orderPhone,
-              onChange: (e) => setOrderPhone(e.target.value)
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Label,
-            {
-              htmlFor: "order-address",
-              className: "text-xs font-semibold mb-1 block",
-              children: "Delivery Address"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Textarea,
-            {
-              "data-ocid": "order.textarea",
-              id: "order-address",
-              placeholder: "Room no., hostel, GBPIET...",
-              value: orderAddress,
-              onChange: (e) => setOrderAddress(e.target.value),
-              rows: 3
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between items-center p-3 rounded-xl bg-orange-50 border border-orange-200", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm text-gray-600", children: "Order Total" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-bold text-orange-600 text-lg", children: [
-            "₹",
-            total
-          ] })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 mt-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          Button,
-          {
-            "data-ocid": "order.cancel_button",
-            variant: "outline",
-            className: "flex-1",
-            onClick: () => setOrderOpen(false),
-            children: "Cancel"
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          Button,
-          {
-            "data-ocid": "order.submit_button",
-            className: "flex-1 font-bold",
-            onClick: placeOrder,
-            style: {
-              background: "linear-gradient(135deg, #f97316, #ea580c)"
-            },
-            children: "Confirm Order 🛍️"
-          }
-        )
-      ] })
-    ] }) })
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      CheckoutWizard,
+      {
+        open: checkoutOpen,
+        onClose: () => setCheckoutOpen(false),
+        items,
+        onClearCart: () => {
+          onClearCart();
+          onClose();
+        }
+      }
+    )
   ] });
 }
 const DEALS = [
   {
     icon: "🍟",
     title: "Buy 2 Chips, Get 1 Free!",
-    desc: "On all Lays, Kurkure & Bingo packs",
+    desc: "On all chips and namkeen packs",
     badge: "HOT",
     color: "#f97316"
   },
@@ -43105,14 +44131,14 @@ const DEALS = [
   },
   {
     icon: "🍪",
-    title: "Any 3 Biscuits for ₹50!",
-    desc: "Mix & match Parle-G, Oreo, Marie",
+    title: "Any 3 Biscuits for ₹80!",
+    desc: "Mix & match biscuit packs",
     badge: "DEAL",
     color: "#7c3aed"
   },
   {
     icon: "🧃",
-    title: "Free Maaza with orders above ₹200",
+    title: "Free Water Bottle with orders above ₹200",
     desc: "Auto-added to qualifying orders",
     badge: "FREE",
     color: "#16a34a"
@@ -43120,7 +44146,7 @@ const DEALS = [
   {
     icon: "🎒",
     title: "Student Special: 15% off Stationery",
-    desc: "Notebooks, files, folders & copies",
+    desc: "Notebooks, files, pens & copies",
     badge: "STUDENT",
     color: "#dc2626"
   }
@@ -43135,30 +44161,13 @@ function OffersSection() {
         background: "linear-gradient(135deg, oklch(0.97 0.03 70) 0%, oklch(0.96 0.02 140) 100%)"
       },
       children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "container max-w-6xl mx-auto", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative rounded-2xl overflow-hidden mb-8 shadow-hero", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "img",
-            {
-              src: "/assets/generated/offers-banner.dim_600x200.jpg",
-              alt: "Offers & Deals",
-              className: "w-full h-40 object-cover"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "div",
-            {
-              className: "absolute inset-0 flex items-center justify-center",
-              style: { background: "rgba(0,0,0,0.4)" },
-              children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 mb-1", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Tag, { className: "w-6 h-6 text-yellow-300" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-white font-display font-black text-3xl md:text-4xl", children: "Offers & Deals" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Tag, { className: "w-6 h-6 text-yellow-300" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-yellow-200 text-sm", children: "Exclusive savings just for you!" })
-              ] })
-            }
-          )
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-6", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 mb-1", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Tag, { className: "w-6 h-6", style: { color: "#f97316" } }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "font-display font-black text-2xl md:text-3xl text-gray-800", children: "Offers & Deals" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Tag, { className: "w-6 h-6", style: { color: "#f97316" } })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-500 text-sm", children: "Exclusive savings just for you!" })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4", children: DEALS.map((deal, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
           motion.div,
@@ -43168,7 +44177,7 @@ function OffersSection() {
             whileInView: { opacity: 1, y: 0 },
             viewport: { once: true },
             transition: { delay: i * 0.08 },
-            className: "bg-white rounded-2xl p-5 shadow-card border border-gray-100 hover:shadow-hero hover:-translate-y-1 transition-all duration-300 relative overflow-hidden",
+            className: "bg-white rounded-2xl p-5 shadow-md border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "div",
@@ -43219,9 +44228,8 @@ function LuckyDrawSection() {
   const [result, setResult] = reactExports.useState(null);
   const [resultOpen, setResultOpen] = reactExports.useState(false);
   const spinRef = reactExports.useRef(false);
-  const lastSpinKey = "luckyDrawLastSpin";
   const today = (/* @__PURE__ */ new Date()).toDateString();
-  const alreadySpun = localStorage.getItem(lastSpinKey) === today;
+  const alreadySpun = localStorage.getItem("luckyDrawLastSpin") === today;
   const spin = () => {
     if (spinning || spinRef.current || alreadySpun) return;
     spinRef.current = true;
@@ -43235,7 +44243,7 @@ function LuckyDrawSection() {
       spinRef.current = false;
       setResult(WHEEL_SEGMENTS[segmentIndex]);
       setResultOpen(true);
-      localStorage.setItem(lastSpinKey, today);
+      localStorage.setItem("luckyDrawLastSpin", today);
     }, 4200);
   };
   const copyCode = (code) => {
@@ -43243,30 +44251,13 @@ function LuckyDrawSection() {
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { id: "lucky-draw", className: "py-12 px-4 bg-white", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "container max-w-4xl mx-auto", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative rounded-2xl overflow-hidden mb-8 shadow-hero", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "img",
-          {
-            src: "/assets/generated/lucky-draw-banner.dim_600x200.jpg",
-            alt: "Lucky Draw",
-            className: "w-full h-40 object-cover"
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "div",
-          {
-            className: "absolute inset-0 flex items-center justify-center",
-            style: { background: "rgba(0,0,0,0.45)" },
-            children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 mb-1", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Gift, { className: "w-6 h-6 text-yellow-300" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-white font-display font-black text-3xl md:text-4xl", children: "Lucky Draw" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Gift, { className: "w-6 h-6 text-yellow-300" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-yellow-200 text-sm", children: "Spin once a day to win exciting prizes!" })
-            ] })
-          }
-        )
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-8", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 mb-1", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Gift, { className: "w-6 h-6 text-yellow-500" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "font-display font-black text-2xl md:text-3xl text-gray-800", children: "Lucky Draw" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Gift, { className: "w-6 h-6 text-yellow-500" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-gray-500 text-sm", children: "Spin once a day to win exciting prizes!" })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-col items-center gap-6", children: alreadySpun ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "div",
@@ -43281,123 +44272,91 @@ function LuckyDrawSection() {
         }
       ) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(SpinningWheel, { spinning, rotation }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
           {
             type: "button",
-            "data-ocid": "lucky.primary_button",
+            "data-ocid": "lucky.button",
             onClick: spin,
             disabled: spinning,
-            className: "flex items-center gap-2 px-10 py-4 rounded-full font-black text-white text-lg shadow-hero transition-all hover:scale-105 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed",
+            className: "px-10 py-4 rounded-2xl font-black text-white text-lg shadow-lg transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed",
             style: {
-              background: "linear-gradient(135deg, #f97316, #dc2626)"
+              background: "linear-gradient(135deg, #f97316, #ea580c)"
             },
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Star, { className: "w-5 h-5" }),
-              spinning ? "Spinning..." : "SPIN!"
-            ]
+            children: spinning ? "Spinning..." : "🎯 SPIN TO WIN!"
           }
         )
-      ] }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4", children: [
-        { code: "SAVE10", desc: "10% off on ₹300+", color: "#f97316" },
-        { code: "SAVE15", desc: "15% off on ₹500+", color: "#16a34a" },
-        { code: "SAVE20", desc: "20% off on ₹1000+", color: "#7c3aed" }
-      ].map((c2) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          "data-ocid": "lucky.card",
-          className: "flex items-center gap-3 p-4 rounded-xl border-2 bg-white shadow-card",
-          style: { borderColor: c2.color },
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Tag, { className: "w-5 h-5 shrink-0", style: { color: c2.color } }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-bold text-sm", style: { color: c2.color }, children: c2.code }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500", children: c2.desc })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                "data-ocid": "lucky.secondary_button",
-                onClick: () => copyCode(c2.code),
-                className: "p-1.5 rounded-lg hover:bg-gray-100 transition-colors",
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-3.5 h-3.5 text-gray-500" })
-              }
-            )
-          ]
-        },
-        c2.code
-      )) })
+      ] }) })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Dialog, { open: resultOpen, onOpenChange: setResultOpen, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Dialog, { open: resultOpen, onOpenChange: setResultOpen, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
       DialogContent,
       {
-        "data-ocid": "lucky.dialog",
         className: "max-w-sm text-center",
-        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center gap-4 py-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-7xl block animate-bounce", children: "🎉" }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "font-display font-black text-2xl", children: "You Won!" }),
-          result && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "div",
-              {
-                className: "w-32 h-32 rounded-full flex items-center justify-center text-white font-black text-lg shadow-hero",
-                style: { background: result.color },
-                children: result.label
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-gray-600 text-sm", children: [
-              "Your prize: ",
-              /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: result.label })
+        "data-ocid": "lucky.dialog",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(DialogHeader, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(DialogTitle, { className: "text-2xl font-black", children: "🎉 You Won!" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "py-4 flex flex-col items-center gap-4", children: [
+            result && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "div",
+                {
+                  className: "w-24 h-24 rounded-full flex items-center justify-center text-3xl font-black text-white",
+                  style: { background: result.color },
+                  children: result.label
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-gray-600 text-sm", children: [
+                "Your prize: ",
+                /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: result.label })
+              ] }),
+              result.label !== "Better Luck!" && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "div",
+                {
+                  className: "flex items-center gap-2 px-4 py-2 rounded-xl border-2",
+                  style: { borderColor: result.color },
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "span",
+                      {
+                        className: "font-bold text-sm",
+                        style: { color: result.color },
+                        children: "Copy your code"
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "button",
+                      {
+                        type: "button",
+                        "data-ocid": "lucky.secondary_button",
+                        onClick: () => copyCode(
+                          result.label.replace(/ /g, "").replace("%", "PCT").replace("₹", "")
+                        ),
+                        className: "p-1.5 rounded-lg hover:bg-gray-100 transition-colors",
+                        children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                          Copy,
+                          {
+                            className: "w-4 h-4",
+                            style: { color: result.color }
+                          }
+                        )
+                      }
+                    )
+                  ]
+                }
+              )
             ] }),
-            result.label !== "Better Luck!" && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "div",
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Button,
               {
-                className: "flex items-center gap-2 px-4 py-2 rounded-xl border-2",
-                style: { borderColor: result.color },
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "span",
-                    {
-                      className: "font-bold text-sm",
-                      style: { color: result.color },
-                      children: "Copy your code"
-                    }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "button",
-                    {
-                      type: "button",
-                      "data-ocid": "lucky.secondary_button",
-                      onClick: () => copyCode(
-                        result.label.replace(" ", "").replace("%", "PCT").replace("₹", "").replace(" ", "")
-                      ),
-                      className: "p-1.5 rounded-lg hover:bg-gray-100 transition-colors",
-                      children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-                        Copy,
-                        {
-                          className: "w-4 h-4",
-                          style: { color: result.color }
-                        }
-                      )
-                    }
-                  )
-                ]
+                "data-ocid": "lucky.close_button",
+                onClick: () => setResultOpen(false),
+                className: "w-full font-bold",
+                style: { background: result == null ? void 0 : result.color },
+                children: "Awesome! 🛍️"
               }
             )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Button,
-            {
-              "data-ocid": "lucky.close_button",
-              onClick: () => setResultOpen(false),
-              className: "w-full font-bold",
-              style: { background: result == null ? void 0 : result.color },
-              children: "Awesome! 🛍️"
-            }
-          )
-        ] })
+          ] })
+        ]
       }
     ) })
   ] });
@@ -43408,8 +44367,11 @@ function GroceryApp() {
   const [seeded, setSeeded] = reactExports.useState(false);
   const [cartOpen, setCartOpen] = reactExports.useState(false);
   const [cartItems, setCartItems] = reactExports.useState([]);
+  const [selectedProduct, setSelectedProduct] = reactExports.useState(
+    null
+  );
+  const [detailOpen, setDetailOpen] = reactExports.useState(false);
   const { data: shopInfo } = useShopInfo();
-  const { data: products, isLoading: productsLoading } = useAllProducts();
   const { mutateAsync: setShopInfo } = useSetShopInfo();
   const { mutateAsync: addProduct } = useAddOrUpdateProduct();
   reactExports.useEffect(() => {
@@ -43420,11 +44382,21 @@ function GroceryApp() {
         await setShopInfo({
           name: "Annapurna Shop",
           location: "GBPIET, PAURI",
-          contact: "9760xxxxxx"
+          contact: "7895784954"
         });
         const existing = await actor.getAllProducts();
         if (existing.length === 0) {
-          await Promise.all(SAMPLE_PRODUCTS.map((p2) => addProduct(p2)));
+          await Promise.all(
+            LOCAL_PRODUCTS.map(
+              (p2) => addProduct({
+                name: p2.name,
+                category: p2.category,
+                price: BigInt(p2.price),
+                quantity: BigInt(50),
+                isAvailable: p2.inStock
+              })
+            )
+          );
         }
       } catch (e) {
         console.error("Init error", e);
@@ -43432,40 +44404,40 @@ function GroceryApp() {
     };
     init();
   }, [actor, actorFetching, seeded, setShopInfo, addProduct]);
-  const filteredProducts = activeCategory === "All" ? products ?? [] : (products ?? []).filter((p2) => p2.category === activeCategory);
   const shopName = (shopInfo == null ? void 0 : shopInfo.name) ?? "Annapurna Shop";
   const shopLocation = (shopInfo == null ? void 0 : shopInfo.location) ?? "GBPIET, PAURI";
-  const shopContact = (shopInfo == null ? void 0 : shopInfo.contact) ?? "9760xxxxxx";
+  const shopContact = (shopInfo == null ? void 0 : shopInfo.contact) ?? "7895784954";
+  const filteredProducts = activeCategory === "All" ? LOCAL_PRODUCTS : LOCAL_PRODUCTS.filter((p2) => p2.category === activeCategory);
   const totalCartCount = cartItems.reduce((s2, i) => s2 + i.qty, 0);
   const addToCart = (product) => {
     setCartItems((prev) => {
-      const existing = prev.find((i) => i.product.name === product.name);
-      if (existing) {
+      const existing = prev.find((i) => i.product.id === product.id);
+      if (existing)
         return prev.map(
-          (i) => i.product.name === product.name ? { ...i, qty: i.qty + 1 } : i
+          (i) => i.product.id === product.id ? { ...i, qty: i.qty + 1 } : i
         );
-      }
       return [...prev, { product, qty: 1 }];
     });
     ue.success(`${product.name} added to cart!`);
   };
-  const updateQty = (name, delta) => {
+  const updateQty = (id2, delta) => {
     setCartItems((prev) => {
-      const item = prev.find((i) => i.product.name === name);
+      const item = prev.find((i) => i.product.id === id2);
       if (!item) return prev;
       const newQty = item.qty + delta;
-      if (newQty <= 0) return prev.filter((i) => i.product.name !== name);
-      return prev.map(
-        (i) => i.product.name === name ? { ...i, qty: newQty } : i
-      );
+      if (newQty <= 0) return prev.filter((i) => i.product.id !== id2);
+      return prev.map((i) => i.product.id === id2 ? { ...i, qty: newQty } : i);
     });
   };
-  const removeFromCart = (name) => {
-    setCartItems((prev) => prev.filter((i) => i.product.name !== name));
+  const removeFromCart = (id2) => setCartItems((prev) => prev.filter((i) => i.product.id !== id2));
+  const clearCart = () => setCartItems([]);
+  const openDetail = (p2) => {
+    setSelectedProduct(p2);
+    setDetailOpen(true);
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-background flex flex-col", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(OwnerPopup, {}),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { className: "sticky top-0 z-30 bg-white/95 backdrop-blur-sm border-b shadow-xs", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "container max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-4", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { className: "sticky top-0 z-30 bg-white/95 backdrop-blur-sm border-b shadow-sm", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "container max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-4", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xl", children: "🛕" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -43568,22 +44540,19 @@ function GroceryApp() {
                     "h1",
                     {
                       className: "font-display font-black text-4xl md:text-6xl text-white",
-                      style: {
-                        textShadow: "0 2px 20px rgba(0,0,0,0.5)",
-                        letterSpacing: "0.02em"
-                      },
+                      style: { textShadow: "0 2px 20px rgba(0,0,0,0.5)" },
                       children: shopName
                     }
                   ),
                   /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-3xl", children: "🛕" })
                 ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-yellow-200 font-body text-sm md:text-base italic mb-4", children: "Your trusted neighbourhood store since 2010 — GBPIET, PAURI" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-yellow-200 font-body text-sm md:text-base italic mb-4", children: "Your trusted neighbourhood store — GBPIET, PAURI" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-3", children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsxs(
                     "a",
                     {
                       href: `tel:${shopContact}`,
-                      className: "flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm transition-all hover:scale-105",
+                      className: "flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm hover:scale-105 transition-all",
                       style: { background: "#f97316", color: "white" },
                       children: [
                         /* @__PURE__ */ jsxRuntimeExports.jsx(Phone, { className: "w-4 h-4" }),
@@ -43615,6 +44584,8 @@ function GroceryApp() {
         }
       )
     ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(OfferBanner, {}),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(FloatingFeaturedCards, {}),
     /* @__PURE__ */ jsxRuntimeExports.jsx(OffersSection, {}),
     /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "main",
@@ -43627,7 +44598,7 @@ function GroceryApp() {
             /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-6 h-6", style: { color: "#f97316" } }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "font-display font-black text-2xl text-gray-800", children: "All Products" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs(Badge, { className: "bg-orange-100 text-orange-600 border-orange-200", children: [
-              (products ?? []).length,
+              LOCAL_PRODUCTS.length,
               " items"
             ] })
           ] }),
@@ -43658,21 +44629,7 @@ function GroceryApp() {
                     ))
                   }
                 ) }),
-                productsLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "div",
-                  {
-                    "data-ocid": "products.loading_state",
-                    className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3",
-                    children: [1, 2, 3, 4, 5, 6, 7, 8].map((k2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-xl border overflow-hidden flex", children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "w-20 h-20 shrink-0" }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 p-3", children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-3 w-full mb-2 rounded" }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-3 w-2/3 mb-3 rounded" }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-6 w-16 rounded" })
-                      ] })
-                    ] }, k2))
-                  }
-                ) : filteredProducts.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                filteredProducts.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
                   "div",
                   {
                     "data-ocid": "products.empty_state",
@@ -43682,14 +44639,15 @@ function GroceryApp() {
                       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-body text-lg", children: "No products in this category yet." })
                     ]
                   }
-                ) : /* @__PURE__ */ jsxRuntimeExports.jsx(AnimatePresence, { mode: "wait", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3", children: filteredProducts.map((product, i) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+                ) : /* @__PURE__ */ jsxRuntimeExports.jsx(AnimatePresence, { mode: "wait", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4", children: filteredProducts.map((product, i) => /* @__PURE__ */ jsxRuntimeExports.jsx(
                   ProductCard,
                   {
                     product,
                     index: i + 1,
-                    onAddToCart: addToCart
+                    onAddToCart: addToCart,
+                    onViewDetail: openDetail
                   },
-                  product.name
+                  product.id
                 )) }) })
               ]
             }
@@ -43786,12 +44744,21 @@ function GroceryApp() {
         whileHover: { scale: 1.1 },
         whileTap: { scale: 0.9 },
         onClick: () => setCartOpen(true),
-        className: "fixed bottom-6 right-6 z-30 w-14 h-14 rounded-full text-white shadow-hero flex items-center justify-center",
+        className: "fixed bottom-6 right-6 z-30 w-14 h-14 rounded-full text-white shadow-xl flex items-center justify-center",
         style: { background: "linear-gradient(135deg, #f97316, #ea580c)" },
         children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { className: "w-6 h-6" }),
           totalCartCount > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "absolute -top-1 -right-1 w-6 h-6 rounded-full bg-red-500 text-white text-xs font-black flex items-center justify-center", children: totalCartCount })
         ]
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      ProductDetailDialog,
+      {
+        product: selectedProduct,
+        open: detailOpen,
+        onClose: () => setDetailOpen(false),
+        onAddToCart: addToCart
       }
     ),
     /* @__PURE__ */ jsxRuntimeExports.jsx(AnimatePresence, { children: cartOpen && /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -43800,7 +44767,8 @@ function GroceryApp() {
         items: cartItems,
         onClose: () => setCartOpen(false),
         onUpdateQty: updateQty,
-        onRemove: removeFromCart
+        onRemove: removeFromCart,
+        onClearCart: clearCart
       }
     ) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(Toaster, {})

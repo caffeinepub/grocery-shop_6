@@ -1,32 +1,38 @@
-# Annapurna Shop
+# Annapurna Shop - Version 3
 
 ## Current State
-A grocery shop website showing products from backend (32 items in 8 categories) with category filtering. Shows shop name "GROCERY SHOP", contact, and location. No shopping cart, no images on products, no offers, no coupons, no lucky draw, no owner popup.
+The app has a grocery shop site with:
+- Welcome popup (owner photo)
+- Product cards with category images (not individual item images)
+- Shopping cart with add-to-cart
+- Auto-coupons for threshold shopping
+- Offers & Deals section
+- Lucky Draw Wheel
+- Contact number: 9760xxxxxx
 
 ## Requested Changes (Diff)
 
 ### Add
-- Shop renamed to "Annapurna Shop" (update seeded name)
-- Shop owners welcome popup: shows uploaded photo on first visit, customer can close/dismiss it
-- Product images: each product card shows the category image on the left side
-- Shopping cart: add-to-cart button on each product, floating cart icon with item count, cart drawer/panel with items, quantities, total, and a checkout form (name, phone, address) with a "Place Order" button
-- Offers & Deals section: prominent section with current deals (Buy 2 get 1 on chips, 10% off on notebooks, combo packs etc.) with the offers-banner image
-- Lucky Draw section: spinning wheel UI that customers can spin once per day; prizes like 5% off, 10% off, free item, etc. With lucky-draw-banner image
-- Coupon system: automatically apply coupon when cart total exceeds ₹300 (SAVE10 = 10% off), ₹500 (SAVE15 = 15% off), ₹1000 (SAVE20 = 20% off); show applied coupon in cart with savings amount
-- Hero banner uses new annapurna-hero image
+- Individual product images beside each item (generated images for each product)
+- Expanded product catalog covering: cold drinks, notebooks, graph copies, chips, chocolate, biscuits, juice, noodles (Maggi), tea, namkeen, water bottles, pens, pencils, erasers, project files, soap, toothpaste, shampoo, sanitizer, and other daily routine items
+- Flipkart-style product popup (on clicking a product card) showing: large product image, name, price, rating stars, number of reviews, quantity options, stock status, add-to-cart button, description
+- Animated AI mascot/banner with marquee/floating animation showing current offers and featured items
+- Step-by-step online payment flow (multi-step checkout): Step 1 - Cart Review, Step 2 - Delivery Address, Step 3 - Payment Method (UPI / Card / Cash on Delivery), Step 4 - Order Confirmation
+- Contact number updated to 7895784954
 
 ### Modify
-- Header: rename from "GROCERY SHOP" to "Annapurna Shop" in seeded data and display
-- Product cards: horizontal layout with category image on left, product details on right, "Add to Cart" button
-- More vibrant, festive Indian grocery store aesthetic
+- Replace generic category images with individual product-specific images from /assets/generated/
+- Replace old contact number with 7895784954
+- Product cards to look like Flipkart-style cards with image, name, price, rating
 
 ### Remove
-- Nothing removed
+- Old generic category placeholder images
 
 ## Implementation Plan
-1. Update App.tsx completely — rename shop, add owner popup, add shopping cart state, update product cards with images, add Offers section, add Lucky Draw section, add coupon logic
-2. Category images map: Cold Drinks→/assets/generated/cat-cold-drinks.dim_200x200.jpg, Chips→cat-chips, Biscuits→cat-biscuits, Juice Bottles→cat-juice, Notebooks→cat-notebooks, Graph Copies→cat-graph-copies, Project Files→cat-project-files, Folders→cat-folders
-3. Owner popup: shows /assets/uploads/screenshot_20260327-092046_2-019d2d6c-fd52-72a2-a138-7440113cce5f-1.png, with close button, stored in sessionStorage so it shows once per session
-4. Cart: local state, add/remove items, quantity controls, subtotal, coupon auto-apply at ₹300/500/1000 thresholds, place order shows success toast
-5. Lucky draw: spinning wheel animation, prizes array, spin button disabled after use (localStorage), confetti effect on win
-6. Offers section: hardcoded deals with visual cards
+1. Update product data with 30+ items, each with individual image path from /assets/generated/, price, quantity, rating, reviews count
+2. Replace product cards with Flipkart-style cards (image at top, name, price with MRP strikethrough, star rating)
+3. Add ProductDetailPopup component (Dialog) with full product details, Flipkart-style layout
+4. Add AnimatedBanner component with CSS keyframe animations showing offers/deals with moving text and floating product images
+5. Replace checkout with multi-step payment flow: Cart -> Address -> Payment method selection (UPI/Card/COD) -> Confirmation
+6. Update contact number to 7895784954 throughout
+7. Keep lucky draw, coupons, welcome popup

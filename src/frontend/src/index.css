@@ -80,27 +80,36 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-body;
+    @apply bg-background text-foreground;
+    font-family: "Figtree", sans-serif;
   }
 }
 
-@layer utilities {
-  .text-available {
-    color: oklch(var(--available));
+/* Marquee animation */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
   }
-  .bg-available {
-    background-color: oklch(var(--available) / 0.12);
+  to {
+    transform: translateX(-50%);
   }
-  .text-unavailable {
-    color: oklch(var(--unavailable));
+}
+
+/* Floating animation */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
   }
-  .bg-unavailable {
-    background-color: oklch(var(--unavailable) / 0.12);
+  50% {
+    transform: translateY(-8px);
   }
-  .border-available {
-    border-color: oklch(var(--available) / 0.4);
-  }
-  .border-unavailable {
-    border-color: oklch(var(--unavailable) / 0.4);
-  }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
 }
