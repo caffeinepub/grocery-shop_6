@@ -18,25 +18,6 @@ var __privateWrapper = (obj, member, setter, getter) => ({
   }
 });
 var _provider, _providerCalled, _a, _focused, _cleanup, _setup, _b, _online, _cleanup2, _setup2, _c, _gcTimeout, _d, _initialState, _revertState, _cache, _client, _retryer, _defaultOptions, _abortSignalConsumed, _Query_instances, dispatch_fn, _e, _client2, _observers, _mutationCache, _retryer2, _Mutation_instances, dispatch_fn2, _f, _mutations, _scopes, _mutationId, _g, _queries, _h, _queryCache, _mutationCache2, _defaultOptions2, _queryDefaults, _mutationDefaults, _mountCount, _unsubscribeFocus, _unsubscribeOnline, _i, _rawKey, _derKey, _publicKey, _privateKey, _inner, _delegation, _options;
-function _mergeNamespaces(n, m) {
-  for (var i = 0; i < m.length; i++) {
-    const e = m[i];
-    if (typeof e !== "string" && !Array.isArray(e)) {
-      for (const k in e) {
-        if (k !== "default" && !(k in n)) {
-          const d = Object.getOwnPropertyDescriptor(e, k);
-          if (d) {
-            Object.defineProperty(n, k, d.get ? d : {
-              enumerable: true,
-              get: () => e[k]
-            });
-          }
-        }
-      }
-    }
-  }
-  return Object.freeze(Object.defineProperty(n, Symbol.toStringTag, { value: "Module" }));
-}
 (function polyfill() {
   const relList = document.createElement("link").relList;
   if (relList && relList.supports && relList.supports("modulepreload")) {
@@ -2220,9 +2201,9 @@ function mapIntoArray(children, array, escapedPrefix, nameSoFar, callback) {
 }
 function mapChildren(children, func, context) {
   if (null == children) return children;
-  var result = [], count2 = 0;
+  var result = [], count = 0;
   mapIntoArray(children, result, "", "", function(child) {
-    return func.call(context, child, count2++);
+    return func.call(context, child, count++);
   });
   return result;
 }
@@ -2467,10 +2448,6 @@ react_production.version = "19.1.1";
 }
 var reactExports = react.exports;
 const o = /* @__PURE__ */ getDefaultExportFromCjs(reactExports);
-const React$2 = /* @__PURE__ */ _mergeNamespaces({
-  __proto__: null,
-  default: o
-}, [reactExports]);
 var QueryClientContext = reactExports.createContext(
   void 0
 );
@@ -4057,14 +4034,14 @@ function getListener(inst, registrationName) {
 var canUseDOM = !("undefined" === typeof window || "undefined" === typeof window.document || "undefined" === typeof window.document.createElement), passiveBrowserEventsSupported = false;
 if (canUseDOM)
   try {
-    var options$1 = {};
-    Object.defineProperty(options$1, "passive", {
+    var options = {};
+    Object.defineProperty(options, "passive", {
       get: function() {
         passiveBrowserEventsSupported = true;
       }
     });
-    window.addEventListener("test", options$1, options$1);
-    window.removeEventListener("test", options$1, options$1);
+    window.addEventListener("test", options, options);
+    window.removeEventListener("test", options, options);
   } catch (e) {
     passiveBrowserEventsSupported = false;
   }
@@ -4602,9 +4579,9 @@ function markUpdateLaneFromFiberToRoot(sourceFiber, update, lane) {
   sourceFiber.lanes |= lane;
   var alternate = sourceFiber.alternate;
   null !== alternate && (alternate.lanes |= lane);
-  for (var isHidden2 = false, parent = sourceFiber.return; null !== parent; )
-    parent.childLanes |= lane, alternate = parent.alternate, null !== alternate && (alternate.childLanes |= lane), 22 === parent.tag && (sourceFiber = parent.stateNode, null === sourceFiber || sourceFiber._visibility & 1 || (isHidden2 = true)), sourceFiber = parent, parent = parent.return;
-  return 3 === sourceFiber.tag ? (parent = sourceFiber.stateNode, isHidden2 && null !== update && (isHidden2 = 31 - clz32(lane), sourceFiber = parent.hiddenUpdates, alternate = sourceFiber[isHidden2], null === alternate ? sourceFiber[isHidden2] = [update] : alternate.push(update), update.lane = lane | 536870912), parent) : null;
+  for (var isHidden = false, parent = sourceFiber.return; null !== parent; )
+    parent.childLanes |= lane, alternate = parent.alternate, null !== alternate && (alternate.childLanes |= lane), 22 === parent.tag && (sourceFiber = parent.stateNode, null === sourceFiber || sourceFiber._visibility & 1 || (isHidden = true)), sourceFiber = parent, parent = parent.return;
+  return 3 === sourceFiber.tag ? (parent = sourceFiber.stateNode, isHidden && null !== update && (isHidden = 31 - clz32(lane), sourceFiber = parent.hiddenUpdates, alternate = sourceFiber[isHidden], null === alternate ? sourceFiber[isHidden] = [update] : alternate.push(update), update.lane = lane | 536870912), parent) : null;
 }
 function getRootForUpdatedFiber(sourceFiber) {
   if (50 < nestedUpdateCount)
@@ -13994,4953 +13971,6 @@ function checkDCE() {
 }
 var clientExports = client.exports;
 const ReactDOM = /* @__PURE__ */ getDefaultExportFromCjs(clientExports);
-function setRef(ref, value) {
-  if (typeof ref === "function") {
-    return ref(value);
-  } else if (ref !== null && ref !== void 0) {
-    ref.current = value;
-  }
-}
-function composeRefs(...refs) {
-  return (node) => {
-    let hasCleanup = false;
-    const cleanups = refs.map((ref) => {
-      const cleanup = setRef(ref, node);
-      if (!hasCleanup && typeof cleanup == "function") {
-        hasCleanup = true;
-      }
-      return cleanup;
-    });
-    if (hasCleanup) {
-      return () => {
-        for (let i = 0; i < cleanups.length; i++) {
-          const cleanup = cleanups[i];
-          if (typeof cleanup == "function") {
-            cleanup();
-          } else {
-            setRef(refs[i], null);
-          }
-        }
-      };
-    }
-  };
-}
-function useComposedRefs(...refs) {
-  return reactExports.useCallback(composeRefs(...refs), refs);
-}
-// @__NO_SIDE_EFFECTS__
-function createSlot(ownerName) {
-  const SlotClone = /* @__PURE__ */ createSlotClone(ownerName);
-  const Slot2 = reactExports.forwardRef((props, forwardedRef) => {
-    const { children, ...slotProps } = props;
-    const childrenArray = reactExports.Children.toArray(children);
-    const slottable = childrenArray.find(isSlottable);
-    if (slottable) {
-      const newElement = slottable.props.children;
-      const newChildren = childrenArray.map((child) => {
-        if (child === slottable) {
-          if (reactExports.Children.count(newElement) > 1) return reactExports.Children.only(null);
-          return reactExports.isValidElement(newElement) ? newElement.props.children : null;
-        } else {
-          return child;
-        }
-      });
-      return /* @__PURE__ */ jsxRuntimeExports.jsx(SlotClone, { ...slotProps, ref: forwardedRef, children: reactExports.isValidElement(newElement) ? reactExports.cloneElement(newElement, void 0, newChildren) : null });
-    }
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(SlotClone, { ...slotProps, ref: forwardedRef, children });
-  });
-  Slot2.displayName = `${ownerName}.Slot`;
-  return Slot2;
-}
-var Slot$1 = /* @__PURE__ */ createSlot("Slot");
-// @__NO_SIDE_EFFECTS__
-function createSlotClone(ownerName) {
-  const SlotClone = reactExports.forwardRef((props, forwardedRef) => {
-    const { children, ...slotProps } = props;
-    if (reactExports.isValidElement(children)) {
-      const childrenRef = getElementRef$1(children);
-      const props2 = mergeProps(slotProps, children.props);
-      if (children.type !== reactExports.Fragment) {
-        props2.ref = forwardedRef ? composeRefs(forwardedRef, childrenRef) : childrenRef;
-      }
-      return reactExports.cloneElement(children, props2);
-    }
-    return reactExports.Children.count(children) > 1 ? reactExports.Children.only(null) : null;
-  });
-  SlotClone.displayName = `${ownerName}.SlotClone`;
-  return SlotClone;
-}
-var SLOTTABLE_IDENTIFIER = Symbol("radix.slottable");
-function isSlottable(child) {
-  return reactExports.isValidElement(child) && typeof child.type === "function" && "__radixId" in child.type && child.type.__radixId === SLOTTABLE_IDENTIFIER;
-}
-function mergeProps(slotProps, childProps) {
-  const overrideProps = { ...childProps };
-  for (const propName in childProps) {
-    const slotPropValue = slotProps[propName];
-    const childPropValue = childProps[propName];
-    const isHandler = /^on[A-Z]/.test(propName);
-    if (isHandler) {
-      if (slotPropValue && childPropValue) {
-        overrideProps[propName] = (...args) => {
-          const result = childPropValue(...args);
-          slotPropValue(...args);
-          return result;
-        };
-      } else if (slotPropValue) {
-        overrideProps[propName] = slotPropValue;
-      }
-    } else if (propName === "style") {
-      overrideProps[propName] = { ...slotPropValue, ...childPropValue };
-    } else if (propName === "className") {
-      overrideProps[propName] = [slotPropValue, childPropValue].filter(Boolean).join(" ");
-    }
-  }
-  return { ...slotProps, ...overrideProps };
-}
-function getElementRef$1(element) {
-  var _a2, _b2;
-  let getter = (_a2 = Object.getOwnPropertyDescriptor(element.props, "ref")) == null ? void 0 : _a2.get;
-  let mayWarn = getter && "isReactWarning" in getter && getter.isReactWarning;
-  if (mayWarn) {
-    return element.ref;
-  }
-  getter = (_b2 = Object.getOwnPropertyDescriptor(element, "ref")) == null ? void 0 : _b2.get;
-  mayWarn = getter && "isReactWarning" in getter && getter.isReactWarning;
-  if (mayWarn) {
-    return element.props.ref;
-  }
-  return element.props.ref || element.ref;
-}
-function r(e) {
-  var t, f, n = "";
-  if ("string" == typeof e || "number" == typeof e) n += e;
-  else if ("object" == typeof e) if (Array.isArray(e)) {
-    var o2 = e.length;
-    for (t = 0; t < o2; t++) e[t] && (f = r(e[t])) && (n && (n += " "), n += f);
-  } else for (f in e) e[f] && (n && (n += " "), n += f);
-  return n;
-}
-function clsx() {
-  for (var e, t, f = 0, n = "", o2 = arguments.length; f < o2; f++) (e = arguments[f]) && (t = r(e)) && (n && (n += " "), n += t);
-  return n;
-}
-const falsyToString = (value) => typeof value === "boolean" ? `${value}` : value === 0 ? "0" : value;
-const cx = clsx;
-const cva = (base, config) => (props) => {
-  var _config_compoundVariants;
-  if ((config === null || config === void 0 ? void 0 : config.variants) == null) return cx(base, props === null || props === void 0 ? void 0 : props.class, props === null || props === void 0 ? void 0 : props.className);
-  const { variants, defaultVariants } = config;
-  const getVariantClassNames = Object.keys(variants).map((variant) => {
-    const variantProp = props === null || props === void 0 ? void 0 : props[variant];
-    const defaultVariantProp = defaultVariants === null || defaultVariants === void 0 ? void 0 : defaultVariants[variant];
-    if (variantProp === null) return null;
-    const variantKey = falsyToString(variantProp) || falsyToString(defaultVariantProp);
-    return variants[variant][variantKey];
-  });
-  const propsWithoutUndefined = props && Object.entries(props).reduce((acc, param) => {
-    let [key, value] = param;
-    if (value === void 0) {
-      return acc;
-    }
-    acc[key] = value;
-    return acc;
-  }, {});
-  const getCompoundVariantClassNames = config === null || config === void 0 ? void 0 : (_config_compoundVariants = config.compoundVariants) === null || _config_compoundVariants === void 0 ? void 0 : _config_compoundVariants.reduce((acc, param) => {
-    let { class: cvClass, className: cvClassName, ...compoundVariantOptions } = param;
-    return Object.entries(compoundVariantOptions).every((param2) => {
-      let [key, value] = param2;
-      return Array.isArray(value) ? value.includes({
-        ...defaultVariants,
-        ...propsWithoutUndefined
-      }[key]) : {
-        ...defaultVariants,
-        ...propsWithoutUndefined
-      }[key] === value;
-    }) ? [
-      ...acc,
-      cvClass,
-      cvClassName
-    ] : acc;
-  }, []);
-  return cx(base, getVariantClassNames, getCompoundVariantClassNames, props === null || props === void 0 ? void 0 : props.class, props === null || props === void 0 ? void 0 : props.className);
-};
-const CLASS_PART_SEPARATOR = "-";
-const createClassGroupUtils = (config) => {
-  const classMap = createClassMap(config);
-  const {
-    conflictingClassGroups,
-    conflictingClassGroupModifiers
-  } = config;
-  const getClassGroupId = (className) => {
-    const classParts = className.split(CLASS_PART_SEPARATOR);
-    if (classParts[0] === "" && classParts.length !== 1) {
-      classParts.shift();
-    }
-    return getGroupRecursive(classParts, classMap) || getGroupIdForArbitraryProperty(className);
-  };
-  const getConflictingClassGroupIds = (classGroupId, hasPostfixModifier) => {
-    const conflicts = conflictingClassGroups[classGroupId] || [];
-    if (hasPostfixModifier && conflictingClassGroupModifiers[classGroupId]) {
-      return [...conflicts, ...conflictingClassGroupModifiers[classGroupId]];
-    }
-    return conflicts;
-  };
-  return {
-    getClassGroupId,
-    getConflictingClassGroupIds
-  };
-};
-const getGroupRecursive = (classParts, classPartObject) => {
-  var _a2;
-  if (classParts.length === 0) {
-    return classPartObject.classGroupId;
-  }
-  const currentClassPart = classParts[0];
-  const nextClassPartObject = classPartObject.nextPart.get(currentClassPart);
-  const classGroupFromNextClassPart = nextClassPartObject ? getGroupRecursive(classParts.slice(1), nextClassPartObject) : void 0;
-  if (classGroupFromNextClassPart) {
-    return classGroupFromNextClassPart;
-  }
-  if (classPartObject.validators.length === 0) {
-    return void 0;
-  }
-  const classRest = classParts.join(CLASS_PART_SEPARATOR);
-  return (_a2 = classPartObject.validators.find(({
-    validator
-  }) => validator(classRest))) == null ? void 0 : _a2.classGroupId;
-};
-const arbitraryPropertyRegex = /^\[(.+)\]$/;
-const getGroupIdForArbitraryProperty = (className) => {
-  if (arbitraryPropertyRegex.test(className)) {
-    const arbitraryPropertyClassName = arbitraryPropertyRegex.exec(className)[1];
-    const property = arbitraryPropertyClassName == null ? void 0 : arbitraryPropertyClassName.substring(0, arbitraryPropertyClassName.indexOf(":"));
-    if (property) {
-      return "arbitrary.." + property;
-    }
-  }
-};
-const createClassMap = (config) => {
-  const {
-    theme,
-    prefix: prefix2
-  } = config;
-  const classMap = {
-    nextPart: /* @__PURE__ */ new Map(),
-    validators: []
-  };
-  const prefixedClassGroupEntries = getPrefixedClassGroupEntries(Object.entries(config.classGroups), prefix2);
-  prefixedClassGroupEntries.forEach(([classGroupId, classGroup]) => {
-    processClassesRecursively(classGroup, classMap, classGroupId, theme);
-  });
-  return classMap;
-};
-const processClassesRecursively = (classGroup, classPartObject, classGroupId, theme) => {
-  classGroup.forEach((classDefinition) => {
-    if (typeof classDefinition === "string") {
-      const classPartObjectToEdit = classDefinition === "" ? classPartObject : getPart(classPartObject, classDefinition);
-      classPartObjectToEdit.classGroupId = classGroupId;
-      return;
-    }
-    if (typeof classDefinition === "function") {
-      if (isThemeGetter(classDefinition)) {
-        processClassesRecursively(classDefinition(theme), classPartObject, classGroupId, theme);
-        return;
-      }
-      classPartObject.validators.push({
-        validator: classDefinition,
-        classGroupId
-      });
-      return;
-    }
-    Object.entries(classDefinition).forEach(([key, classGroup2]) => {
-      processClassesRecursively(classGroup2, getPart(classPartObject, key), classGroupId, theme);
-    });
-  });
-};
-const getPart = (classPartObject, path) => {
-  let currentClassPartObject = classPartObject;
-  path.split(CLASS_PART_SEPARATOR).forEach((pathPart) => {
-    if (!currentClassPartObject.nextPart.has(pathPart)) {
-      currentClassPartObject.nextPart.set(pathPart, {
-        nextPart: /* @__PURE__ */ new Map(),
-        validators: []
-      });
-    }
-    currentClassPartObject = currentClassPartObject.nextPart.get(pathPart);
-  });
-  return currentClassPartObject;
-};
-const isThemeGetter = (func) => func.isThemeGetter;
-const getPrefixedClassGroupEntries = (classGroupEntries, prefix2) => {
-  if (!prefix2) {
-    return classGroupEntries;
-  }
-  return classGroupEntries.map(([classGroupId, classGroup]) => {
-    const prefixedClassGroup = classGroup.map((classDefinition) => {
-      if (typeof classDefinition === "string") {
-        return prefix2 + classDefinition;
-      }
-      if (typeof classDefinition === "object") {
-        return Object.fromEntries(Object.entries(classDefinition).map(([key, value]) => [prefix2 + key, value]));
-      }
-      return classDefinition;
-    });
-    return [classGroupId, prefixedClassGroup];
-  });
-};
-const createLruCache = (maxCacheSize) => {
-  if (maxCacheSize < 1) {
-    return {
-      get: () => void 0,
-      set: () => {
-      }
-    };
-  }
-  let cacheSize = 0;
-  let cache = /* @__PURE__ */ new Map();
-  let previousCache = /* @__PURE__ */ new Map();
-  const update = (key, value) => {
-    cache.set(key, value);
-    cacheSize++;
-    if (cacheSize > maxCacheSize) {
-      cacheSize = 0;
-      previousCache = cache;
-      cache = /* @__PURE__ */ new Map();
-    }
-  };
-  return {
-    get(key) {
-      let value = cache.get(key);
-      if (value !== void 0) {
-        return value;
-      }
-      if ((value = previousCache.get(key)) !== void 0) {
-        update(key, value);
-        return value;
-      }
-    },
-    set(key, value) {
-      if (cache.has(key)) {
-        cache.set(key, value);
-      } else {
-        update(key, value);
-      }
-    }
-  };
-};
-const IMPORTANT_MODIFIER = "!";
-const createParseClassName = (config) => {
-  const {
-    separator,
-    experimentalParseClassName
-  } = config;
-  const isSeparatorSingleCharacter = separator.length === 1;
-  const firstSeparatorCharacter = separator[0];
-  const separatorLength = separator.length;
-  const parseClassName = (className) => {
-    const modifiers = [];
-    let bracketDepth = 0;
-    let modifierStart = 0;
-    let postfixModifierPosition;
-    for (let index2 = 0; index2 < className.length; index2++) {
-      let currentCharacter = className[index2];
-      if (bracketDepth === 0) {
-        if (currentCharacter === firstSeparatorCharacter && (isSeparatorSingleCharacter || className.slice(index2, index2 + separatorLength) === separator)) {
-          modifiers.push(className.slice(modifierStart, index2));
-          modifierStart = index2 + separatorLength;
-          continue;
-        }
-        if (currentCharacter === "/") {
-          postfixModifierPosition = index2;
-          continue;
-        }
-      }
-      if (currentCharacter === "[") {
-        bracketDepth++;
-      } else if (currentCharacter === "]") {
-        bracketDepth--;
-      }
-    }
-    const baseClassNameWithImportantModifier = modifiers.length === 0 ? className : className.substring(modifierStart);
-    const hasImportantModifier = baseClassNameWithImportantModifier.startsWith(IMPORTANT_MODIFIER);
-    const baseClassName = hasImportantModifier ? baseClassNameWithImportantModifier.substring(1) : baseClassNameWithImportantModifier;
-    const maybePostfixModifierPosition = postfixModifierPosition && postfixModifierPosition > modifierStart ? postfixModifierPosition - modifierStart : void 0;
-    return {
-      modifiers,
-      hasImportantModifier,
-      baseClassName,
-      maybePostfixModifierPosition
-    };
-  };
-  if (experimentalParseClassName) {
-    return (className) => experimentalParseClassName({
-      className,
-      parseClassName
-    });
-  }
-  return parseClassName;
-};
-const sortModifiers = (modifiers) => {
-  if (modifiers.length <= 1) {
-    return modifiers;
-  }
-  const sortedModifiers = [];
-  let unsortedModifiers = [];
-  modifiers.forEach((modifier) => {
-    const isArbitraryVariant = modifier[0] === "[";
-    if (isArbitraryVariant) {
-      sortedModifiers.push(...unsortedModifiers.sort(), modifier);
-      unsortedModifiers = [];
-    } else {
-      unsortedModifiers.push(modifier);
-    }
-  });
-  sortedModifiers.push(...unsortedModifiers.sort());
-  return sortedModifiers;
-};
-const createConfigUtils = (config) => ({
-  cache: createLruCache(config.cacheSize),
-  parseClassName: createParseClassName(config),
-  ...createClassGroupUtils(config)
-});
-const SPLIT_CLASSES_REGEX = /\s+/;
-const mergeClassList = (classList, configUtils) => {
-  const {
-    parseClassName,
-    getClassGroupId,
-    getConflictingClassGroupIds
-  } = configUtils;
-  const classGroupsInConflict = [];
-  const classNames = classList.trim().split(SPLIT_CLASSES_REGEX);
-  let result = "";
-  for (let index2 = classNames.length - 1; index2 >= 0; index2 -= 1) {
-    const originalClassName = classNames[index2];
-    const {
-      modifiers,
-      hasImportantModifier,
-      baseClassName,
-      maybePostfixModifierPosition
-    } = parseClassName(originalClassName);
-    let hasPostfixModifier = Boolean(maybePostfixModifierPosition);
-    let classGroupId = getClassGroupId(hasPostfixModifier ? baseClassName.substring(0, maybePostfixModifierPosition) : baseClassName);
-    if (!classGroupId) {
-      if (!hasPostfixModifier) {
-        result = originalClassName + (result.length > 0 ? " " + result : result);
-        continue;
-      }
-      classGroupId = getClassGroupId(baseClassName);
-      if (!classGroupId) {
-        result = originalClassName + (result.length > 0 ? " " + result : result);
-        continue;
-      }
-      hasPostfixModifier = false;
-    }
-    const variantModifier = sortModifiers(modifiers).join(":");
-    const modifierId = hasImportantModifier ? variantModifier + IMPORTANT_MODIFIER : variantModifier;
-    const classId = modifierId + classGroupId;
-    if (classGroupsInConflict.includes(classId)) {
-      continue;
-    }
-    classGroupsInConflict.push(classId);
-    const conflictGroups = getConflictingClassGroupIds(classGroupId, hasPostfixModifier);
-    for (let i = 0; i < conflictGroups.length; ++i) {
-      const group = conflictGroups[i];
-      classGroupsInConflict.push(modifierId + group);
-    }
-    result = originalClassName + (result.length > 0 ? " " + result : result);
-  }
-  return result;
-};
-function twJoin() {
-  let index2 = 0;
-  let argument;
-  let resolvedValue;
-  let string = "";
-  while (index2 < arguments.length) {
-    if (argument = arguments[index2++]) {
-      if (resolvedValue = toValue(argument)) {
-        string && (string += " ");
-        string += resolvedValue;
-      }
-    }
-  }
-  return string;
-}
-const toValue = (mix) => {
-  if (typeof mix === "string") {
-    return mix;
-  }
-  let resolvedValue;
-  let string = "";
-  for (let k = 0; k < mix.length; k++) {
-    if (mix[k]) {
-      if (resolvedValue = toValue(mix[k])) {
-        string && (string += " ");
-        string += resolvedValue;
-      }
-    }
-  }
-  return string;
-};
-function createTailwindMerge(createConfigFirst, ...createConfigRest) {
-  let configUtils;
-  let cacheGet;
-  let cacheSet;
-  let functionToCall = initTailwindMerge;
-  function initTailwindMerge(classList) {
-    const config = createConfigRest.reduce((previousConfig, createConfigCurrent) => createConfigCurrent(previousConfig), createConfigFirst());
-    configUtils = createConfigUtils(config);
-    cacheGet = configUtils.cache.get;
-    cacheSet = configUtils.cache.set;
-    functionToCall = tailwindMerge;
-    return tailwindMerge(classList);
-  }
-  function tailwindMerge(classList) {
-    const cachedResult = cacheGet(classList);
-    if (cachedResult) {
-      return cachedResult;
-    }
-    const result = mergeClassList(classList, configUtils);
-    cacheSet(classList, result);
-    return result;
-  }
-  return function callTailwindMerge() {
-    return functionToCall(twJoin.apply(null, arguments));
-  };
-}
-const fromTheme = (key) => {
-  const themeGetter = (theme) => theme[key] || [];
-  themeGetter.isThemeGetter = true;
-  return themeGetter;
-};
-const arbitraryValueRegex = /^\[(?:([a-z-]+):)?(.+)\]$/i;
-const fractionRegex = /^\d+\/\d+$/;
-const stringLengths = /* @__PURE__ */ new Set(["px", "full", "screen"]);
-const tshirtUnitRegex = /^(\d+(\.\d+)?)?(xs|sm|md|lg|xl)$/;
-const lengthUnitRegex = /\d+(%|px|r?em|[sdl]?v([hwib]|min|max)|pt|pc|in|cm|mm|cap|ch|ex|r?lh|cq(w|h|i|b|min|max))|\b(calc|min|max|clamp)\(.+\)|^0$/;
-const colorFunctionRegex = /^(rgba?|hsla?|hwb|(ok)?(lab|lch))\(.+\)$/;
-const shadowRegex = /^(inset_)?-?((\d+)?\.?(\d+)[a-z]+|0)_-?((\d+)?\.?(\d+)[a-z]+|0)/;
-const imageRegex = /^(url|image|image-set|cross-fade|element|(repeating-)?(linear|radial|conic)-gradient)\(.+\)$/;
-const isLength = (value) => isNumber(value) || stringLengths.has(value) || fractionRegex.test(value);
-const isArbitraryLength = (value) => getIsArbitraryValue(value, "length", isLengthOnly);
-const isNumber = (value) => Boolean(value) && !Number.isNaN(Number(value));
-const isArbitraryNumber = (value) => getIsArbitraryValue(value, "number", isNumber);
-const isInteger = (value) => Boolean(value) && Number.isInteger(Number(value));
-const isPercent = (value) => value.endsWith("%") && isNumber(value.slice(0, -1));
-const isArbitraryValue = (value) => arbitraryValueRegex.test(value);
-const isTshirtSize = (value) => tshirtUnitRegex.test(value);
-const sizeLabels = /* @__PURE__ */ new Set(["length", "size", "percentage"]);
-const isArbitrarySize = (value) => getIsArbitraryValue(value, sizeLabels, isNever);
-const isArbitraryPosition = (value) => getIsArbitraryValue(value, "position", isNever);
-const imageLabels = /* @__PURE__ */ new Set(["image", "url"]);
-const isArbitraryImage = (value) => getIsArbitraryValue(value, imageLabels, isImage);
-const isArbitraryShadow = (value) => getIsArbitraryValue(value, "", isShadow);
-const isAny = () => true;
-const getIsArbitraryValue = (value, label, testValue) => {
-  const result = arbitraryValueRegex.exec(value);
-  if (result) {
-    if (result[1]) {
-      return typeof label === "string" ? result[1] === label : label.has(result[1]);
-    }
-    return testValue(result[2]);
-  }
-  return false;
-};
-const isLengthOnly = (value) => (
-  // `colorFunctionRegex` check is necessary because color functions can have percentages in them which which would be incorrectly classified as lengths.
-  // For example, `hsl(0 0% 0%)` would be classified as a length without this check.
-  // I could also use lookbehind assertion in `lengthUnitRegex` but that isn't supported widely enough.
-  lengthUnitRegex.test(value) && !colorFunctionRegex.test(value)
-);
-const isNever = () => false;
-const isShadow = (value) => shadowRegex.test(value);
-const isImage = (value) => imageRegex.test(value);
-const getDefaultConfig = () => {
-  const colors = fromTheme("colors");
-  const spacing = fromTheme("spacing");
-  const blur = fromTheme("blur");
-  const brightness = fromTheme("brightness");
-  const borderColor = fromTheme("borderColor");
-  const borderRadius = fromTheme("borderRadius");
-  const borderSpacing = fromTheme("borderSpacing");
-  const borderWidth = fromTheme("borderWidth");
-  const contrast = fromTheme("contrast");
-  const grayscale = fromTheme("grayscale");
-  const hueRotate = fromTheme("hueRotate");
-  const invert2 = fromTheme("invert");
-  const gap = fromTheme("gap");
-  const gradientColorStops = fromTheme("gradientColorStops");
-  const gradientColorStopPositions = fromTheme("gradientColorStopPositions");
-  const inset = fromTheme("inset");
-  const margin = fromTheme("margin");
-  const opacity = fromTheme("opacity");
-  const padding = fromTheme("padding");
-  const saturate = fromTheme("saturate");
-  const scale = fromTheme("scale");
-  const sepia = fromTheme("sepia");
-  const skew = fromTheme("skew");
-  const space = fromTheme("space");
-  const translate = fromTheme("translate");
-  const getOverscroll = () => ["auto", "contain", "none"];
-  const getOverflow = () => ["auto", "hidden", "clip", "visible", "scroll"];
-  const getSpacingWithAutoAndArbitrary = () => ["auto", isArbitraryValue, spacing];
-  const getSpacingWithArbitrary = () => [isArbitraryValue, spacing];
-  const getLengthWithEmptyAndArbitrary = () => ["", isLength, isArbitraryLength];
-  const getNumberWithAutoAndArbitrary = () => ["auto", isNumber, isArbitraryValue];
-  const getPositions = () => ["bottom", "center", "left", "left-bottom", "left-top", "right", "right-bottom", "right-top", "top"];
-  const getLineStyles = () => ["solid", "dashed", "dotted", "double", "none"];
-  const getBlendModes = () => ["normal", "multiply", "screen", "overlay", "darken", "lighten", "color-dodge", "color-burn", "hard-light", "soft-light", "difference", "exclusion", "hue", "saturation", "color", "luminosity"];
-  const getAlign = () => ["start", "end", "center", "between", "around", "evenly", "stretch"];
-  const getZeroAndEmpty = () => ["", "0", isArbitraryValue];
-  const getBreaks = () => ["auto", "avoid", "all", "avoid-page", "page", "left", "right", "column"];
-  const getNumberAndArbitrary = () => [isNumber, isArbitraryValue];
-  return {
-    cacheSize: 500,
-    separator: ":",
-    theme: {
-      colors: [isAny],
-      spacing: [isLength, isArbitraryLength],
-      blur: ["none", "", isTshirtSize, isArbitraryValue],
-      brightness: getNumberAndArbitrary(),
-      borderColor: [colors],
-      borderRadius: ["none", "", "full", isTshirtSize, isArbitraryValue],
-      borderSpacing: getSpacingWithArbitrary(),
-      borderWidth: getLengthWithEmptyAndArbitrary(),
-      contrast: getNumberAndArbitrary(),
-      grayscale: getZeroAndEmpty(),
-      hueRotate: getNumberAndArbitrary(),
-      invert: getZeroAndEmpty(),
-      gap: getSpacingWithArbitrary(),
-      gradientColorStops: [colors],
-      gradientColorStopPositions: [isPercent, isArbitraryLength],
-      inset: getSpacingWithAutoAndArbitrary(),
-      margin: getSpacingWithAutoAndArbitrary(),
-      opacity: getNumberAndArbitrary(),
-      padding: getSpacingWithArbitrary(),
-      saturate: getNumberAndArbitrary(),
-      scale: getNumberAndArbitrary(),
-      sepia: getZeroAndEmpty(),
-      skew: getNumberAndArbitrary(),
-      space: getSpacingWithArbitrary(),
-      translate: getSpacingWithArbitrary()
-    },
-    classGroups: {
-      // Layout
-      /**
-       * Aspect Ratio
-       * @see https://tailwindcss.com/docs/aspect-ratio
-       */
-      aspect: [{
-        aspect: ["auto", "square", "video", isArbitraryValue]
-      }],
-      /**
-       * Container
-       * @see https://tailwindcss.com/docs/container
-       */
-      container: ["container"],
-      /**
-       * Columns
-       * @see https://tailwindcss.com/docs/columns
-       */
-      columns: [{
-        columns: [isTshirtSize]
-      }],
-      /**
-       * Break After
-       * @see https://tailwindcss.com/docs/break-after
-       */
-      "break-after": [{
-        "break-after": getBreaks()
-      }],
-      /**
-       * Break Before
-       * @see https://tailwindcss.com/docs/break-before
-       */
-      "break-before": [{
-        "break-before": getBreaks()
-      }],
-      /**
-       * Break Inside
-       * @see https://tailwindcss.com/docs/break-inside
-       */
-      "break-inside": [{
-        "break-inside": ["auto", "avoid", "avoid-page", "avoid-column"]
-      }],
-      /**
-       * Box Decoration Break
-       * @see https://tailwindcss.com/docs/box-decoration-break
-       */
-      "box-decoration": [{
-        "box-decoration": ["slice", "clone"]
-      }],
-      /**
-       * Box Sizing
-       * @see https://tailwindcss.com/docs/box-sizing
-       */
-      box: [{
-        box: ["border", "content"]
-      }],
-      /**
-       * Display
-       * @see https://tailwindcss.com/docs/display
-       */
-      display: ["block", "inline-block", "inline", "flex", "inline-flex", "table", "inline-table", "table-caption", "table-cell", "table-column", "table-column-group", "table-footer-group", "table-header-group", "table-row-group", "table-row", "flow-root", "grid", "inline-grid", "contents", "list-item", "hidden"],
-      /**
-       * Floats
-       * @see https://tailwindcss.com/docs/float
-       */
-      float: [{
-        float: ["right", "left", "none", "start", "end"]
-      }],
-      /**
-       * Clear
-       * @see https://tailwindcss.com/docs/clear
-       */
-      clear: [{
-        clear: ["left", "right", "both", "none", "start", "end"]
-      }],
-      /**
-       * Isolation
-       * @see https://tailwindcss.com/docs/isolation
-       */
-      isolation: ["isolate", "isolation-auto"],
-      /**
-       * Object Fit
-       * @see https://tailwindcss.com/docs/object-fit
-       */
-      "object-fit": [{
-        object: ["contain", "cover", "fill", "none", "scale-down"]
-      }],
-      /**
-       * Object Position
-       * @see https://tailwindcss.com/docs/object-position
-       */
-      "object-position": [{
-        object: [...getPositions(), isArbitraryValue]
-      }],
-      /**
-       * Overflow
-       * @see https://tailwindcss.com/docs/overflow
-       */
-      overflow: [{
-        overflow: getOverflow()
-      }],
-      /**
-       * Overflow X
-       * @see https://tailwindcss.com/docs/overflow
-       */
-      "overflow-x": [{
-        "overflow-x": getOverflow()
-      }],
-      /**
-       * Overflow Y
-       * @see https://tailwindcss.com/docs/overflow
-       */
-      "overflow-y": [{
-        "overflow-y": getOverflow()
-      }],
-      /**
-       * Overscroll Behavior
-       * @see https://tailwindcss.com/docs/overscroll-behavior
-       */
-      overscroll: [{
-        overscroll: getOverscroll()
-      }],
-      /**
-       * Overscroll Behavior X
-       * @see https://tailwindcss.com/docs/overscroll-behavior
-       */
-      "overscroll-x": [{
-        "overscroll-x": getOverscroll()
-      }],
-      /**
-       * Overscroll Behavior Y
-       * @see https://tailwindcss.com/docs/overscroll-behavior
-       */
-      "overscroll-y": [{
-        "overscroll-y": getOverscroll()
-      }],
-      /**
-       * Position
-       * @see https://tailwindcss.com/docs/position
-       */
-      position: ["static", "fixed", "absolute", "relative", "sticky"],
-      /**
-       * Top / Right / Bottom / Left
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      inset: [{
-        inset: [inset]
-      }],
-      /**
-       * Right / Left
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      "inset-x": [{
-        "inset-x": [inset]
-      }],
-      /**
-       * Top / Bottom
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      "inset-y": [{
-        "inset-y": [inset]
-      }],
-      /**
-       * Start
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      start: [{
-        start: [inset]
-      }],
-      /**
-       * End
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      end: [{
-        end: [inset]
-      }],
-      /**
-       * Top
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      top: [{
-        top: [inset]
-      }],
-      /**
-       * Right
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      right: [{
-        right: [inset]
-      }],
-      /**
-       * Bottom
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      bottom: [{
-        bottom: [inset]
-      }],
-      /**
-       * Left
-       * @see https://tailwindcss.com/docs/top-right-bottom-left
-       */
-      left: [{
-        left: [inset]
-      }],
-      /**
-       * Visibility
-       * @see https://tailwindcss.com/docs/visibility
-       */
-      visibility: ["visible", "invisible", "collapse"],
-      /**
-       * Z-Index
-       * @see https://tailwindcss.com/docs/z-index
-       */
-      z: [{
-        z: ["auto", isInteger, isArbitraryValue]
-      }],
-      // Flexbox and Grid
-      /**
-       * Flex Basis
-       * @see https://tailwindcss.com/docs/flex-basis
-       */
-      basis: [{
-        basis: getSpacingWithAutoAndArbitrary()
-      }],
-      /**
-       * Flex Direction
-       * @see https://tailwindcss.com/docs/flex-direction
-       */
-      "flex-direction": [{
-        flex: ["row", "row-reverse", "col", "col-reverse"]
-      }],
-      /**
-       * Flex Wrap
-       * @see https://tailwindcss.com/docs/flex-wrap
-       */
-      "flex-wrap": [{
-        flex: ["wrap", "wrap-reverse", "nowrap"]
-      }],
-      /**
-       * Flex
-       * @see https://tailwindcss.com/docs/flex
-       */
-      flex: [{
-        flex: ["1", "auto", "initial", "none", isArbitraryValue]
-      }],
-      /**
-       * Flex Grow
-       * @see https://tailwindcss.com/docs/flex-grow
-       */
-      grow: [{
-        grow: getZeroAndEmpty()
-      }],
-      /**
-       * Flex Shrink
-       * @see https://tailwindcss.com/docs/flex-shrink
-       */
-      shrink: [{
-        shrink: getZeroAndEmpty()
-      }],
-      /**
-       * Order
-       * @see https://tailwindcss.com/docs/order
-       */
-      order: [{
-        order: ["first", "last", "none", isInteger, isArbitraryValue]
-      }],
-      /**
-       * Grid Template Columns
-       * @see https://tailwindcss.com/docs/grid-template-columns
-       */
-      "grid-cols": [{
-        "grid-cols": [isAny]
-      }],
-      /**
-       * Grid Column Start / End
-       * @see https://tailwindcss.com/docs/grid-column
-       */
-      "col-start-end": [{
-        col: ["auto", {
-          span: ["full", isInteger, isArbitraryValue]
-        }, isArbitraryValue]
-      }],
-      /**
-       * Grid Column Start
-       * @see https://tailwindcss.com/docs/grid-column
-       */
-      "col-start": [{
-        "col-start": getNumberWithAutoAndArbitrary()
-      }],
-      /**
-       * Grid Column End
-       * @see https://tailwindcss.com/docs/grid-column
-       */
-      "col-end": [{
-        "col-end": getNumberWithAutoAndArbitrary()
-      }],
-      /**
-       * Grid Template Rows
-       * @see https://tailwindcss.com/docs/grid-template-rows
-       */
-      "grid-rows": [{
-        "grid-rows": [isAny]
-      }],
-      /**
-       * Grid Row Start / End
-       * @see https://tailwindcss.com/docs/grid-row
-       */
-      "row-start-end": [{
-        row: ["auto", {
-          span: [isInteger, isArbitraryValue]
-        }, isArbitraryValue]
-      }],
-      /**
-       * Grid Row Start
-       * @see https://tailwindcss.com/docs/grid-row
-       */
-      "row-start": [{
-        "row-start": getNumberWithAutoAndArbitrary()
-      }],
-      /**
-       * Grid Row End
-       * @see https://tailwindcss.com/docs/grid-row
-       */
-      "row-end": [{
-        "row-end": getNumberWithAutoAndArbitrary()
-      }],
-      /**
-       * Grid Auto Flow
-       * @see https://tailwindcss.com/docs/grid-auto-flow
-       */
-      "grid-flow": [{
-        "grid-flow": ["row", "col", "dense", "row-dense", "col-dense"]
-      }],
-      /**
-       * Grid Auto Columns
-       * @see https://tailwindcss.com/docs/grid-auto-columns
-       */
-      "auto-cols": [{
-        "auto-cols": ["auto", "min", "max", "fr", isArbitraryValue]
-      }],
-      /**
-       * Grid Auto Rows
-       * @see https://tailwindcss.com/docs/grid-auto-rows
-       */
-      "auto-rows": [{
-        "auto-rows": ["auto", "min", "max", "fr", isArbitraryValue]
-      }],
-      /**
-       * Gap
-       * @see https://tailwindcss.com/docs/gap
-       */
-      gap: [{
-        gap: [gap]
-      }],
-      /**
-       * Gap X
-       * @see https://tailwindcss.com/docs/gap
-       */
-      "gap-x": [{
-        "gap-x": [gap]
-      }],
-      /**
-       * Gap Y
-       * @see https://tailwindcss.com/docs/gap
-       */
-      "gap-y": [{
-        "gap-y": [gap]
-      }],
-      /**
-       * Justify Content
-       * @see https://tailwindcss.com/docs/justify-content
-       */
-      "justify-content": [{
-        justify: ["normal", ...getAlign()]
-      }],
-      /**
-       * Justify Items
-       * @see https://tailwindcss.com/docs/justify-items
-       */
-      "justify-items": [{
-        "justify-items": ["start", "end", "center", "stretch"]
-      }],
-      /**
-       * Justify Self
-       * @see https://tailwindcss.com/docs/justify-self
-       */
-      "justify-self": [{
-        "justify-self": ["auto", "start", "end", "center", "stretch"]
-      }],
-      /**
-       * Align Content
-       * @see https://tailwindcss.com/docs/align-content
-       */
-      "align-content": [{
-        content: ["normal", ...getAlign(), "baseline"]
-      }],
-      /**
-       * Align Items
-       * @see https://tailwindcss.com/docs/align-items
-       */
-      "align-items": [{
-        items: ["start", "end", "center", "baseline", "stretch"]
-      }],
-      /**
-       * Align Self
-       * @see https://tailwindcss.com/docs/align-self
-       */
-      "align-self": [{
-        self: ["auto", "start", "end", "center", "stretch", "baseline"]
-      }],
-      /**
-       * Place Content
-       * @see https://tailwindcss.com/docs/place-content
-       */
-      "place-content": [{
-        "place-content": [...getAlign(), "baseline"]
-      }],
-      /**
-       * Place Items
-       * @see https://tailwindcss.com/docs/place-items
-       */
-      "place-items": [{
-        "place-items": ["start", "end", "center", "baseline", "stretch"]
-      }],
-      /**
-       * Place Self
-       * @see https://tailwindcss.com/docs/place-self
-       */
-      "place-self": [{
-        "place-self": ["auto", "start", "end", "center", "stretch"]
-      }],
-      // Spacing
-      /**
-       * Padding
-       * @see https://tailwindcss.com/docs/padding
-       */
-      p: [{
-        p: [padding]
-      }],
-      /**
-       * Padding X
-       * @see https://tailwindcss.com/docs/padding
-       */
-      px: [{
-        px: [padding]
-      }],
-      /**
-       * Padding Y
-       * @see https://tailwindcss.com/docs/padding
-       */
-      py: [{
-        py: [padding]
-      }],
-      /**
-       * Padding Start
-       * @see https://tailwindcss.com/docs/padding
-       */
-      ps: [{
-        ps: [padding]
-      }],
-      /**
-       * Padding End
-       * @see https://tailwindcss.com/docs/padding
-       */
-      pe: [{
-        pe: [padding]
-      }],
-      /**
-       * Padding Top
-       * @see https://tailwindcss.com/docs/padding
-       */
-      pt: [{
-        pt: [padding]
-      }],
-      /**
-       * Padding Right
-       * @see https://tailwindcss.com/docs/padding
-       */
-      pr: [{
-        pr: [padding]
-      }],
-      /**
-       * Padding Bottom
-       * @see https://tailwindcss.com/docs/padding
-       */
-      pb: [{
-        pb: [padding]
-      }],
-      /**
-       * Padding Left
-       * @see https://tailwindcss.com/docs/padding
-       */
-      pl: [{
-        pl: [padding]
-      }],
-      /**
-       * Margin
-       * @see https://tailwindcss.com/docs/margin
-       */
-      m: [{
-        m: [margin]
-      }],
-      /**
-       * Margin X
-       * @see https://tailwindcss.com/docs/margin
-       */
-      mx: [{
-        mx: [margin]
-      }],
-      /**
-       * Margin Y
-       * @see https://tailwindcss.com/docs/margin
-       */
-      my: [{
-        my: [margin]
-      }],
-      /**
-       * Margin Start
-       * @see https://tailwindcss.com/docs/margin
-       */
-      ms: [{
-        ms: [margin]
-      }],
-      /**
-       * Margin End
-       * @see https://tailwindcss.com/docs/margin
-       */
-      me: [{
-        me: [margin]
-      }],
-      /**
-       * Margin Top
-       * @see https://tailwindcss.com/docs/margin
-       */
-      mt: [{
-        mt: [margin]
-      }],
-      /**
-       * Margin Right
-       * @see https://tailwindcss.com/docs/margin
-       */
-      mr: [{
-        mr: [margin]
-      }],
-      /**
-       * Margin Bottom
-       * @see https://tailwindcss.com/docs/margin
-       */
-      mb: [{
-        mb: [margin]
-      }],
-      /**
-       * Margin Left
-       * @see https://tailwindcss.com/docs/margin
-       */
-      ml: [{
-        ml: [margin]
-      }],
-      /**
-       * Space Between X
-       * @see https://tailwindcss.com/docs/space
-       */
-      "space-x": [{
-        "space-x": [space]
-      }],
-      /**
-       * Space Between X Reverse
-       * @see https://tailwindcss.com/docs/space
-       */
-      "space-x-reverse": ["space-x-reverse"],
-      /**
-       * Space Between Y
-       * @see https://tailwindcss.com/docs/space
-       */
-      "space-y": [{
-        "space-y": [space]
-      }],
-      /**
-       * Space Between Y Reverse
-       * @see https://tailwindcss.com/docs/space
-       */
-      "space-y-reverse": ["space-y-reverse"],
-      // Sizing
-      /**
-       * Width
-       * @see https://tailwindcss.com/docs/width
-       */
-      w: [{
-        w: ["auto", "min", "max", "fit", "svw", "lvw", "dvw", isArbitraryValue, spacing]
-      }],
-      /**
-       * Min-Width
-       * @see https://tailwindcss.com/docs/min-width
-       */
-      "min-w": [{
-        "min-w": [isArbitraryValue, spacing, "min", "max", "fit"]
-      }],
-      /**
-       * Max-Width
-       * @see https://tailwindcss.com/docs/max-width
-       */
-      "max-w": [{
-        "max-w": [isArbitraryValue, spacing, "none", "full", "min", "max", "fit", "prose", {
-          screen: [isTshirtSize]
-        }, isTshirtSize]
-      }],
-      /**
-       * Height
-       * @see https://tailwindcss.com/docs/height
-       */
-      h: [{
-        h: [isArbitraryValue, spacing, "auto", "min", "max", "fit", "svh", "lvh", "dvh"]
-      }],
-      /**
-       * Min-Height
-       * @see https://tailwindcss.com/docs/min-height
-       */
-      "min-h": [{
-        "min-h": [isArbitraryValue, spacing, "min", "max", "fit", "svh", "lvh", "dvh"]
-      }],
-      /**
-       * Max-Height
-       * @see https://tailwindcss.com/docs/max-height
-       */
-      "max-h": [{
-        "max-h": [isArbitraryValue, spacing, "min", "max", "fit", "svh", "lvh", "dvh"]
-      }],
-      /**
-       * Size
-       * @see https://tailwindcss.com/docs/size
-       */
-      size: [{
-        size: [isArbitraryValue, spacing, "auto", "min", "max", "fit"]
-      }],
-      // Typography
-      /**
-       * Font Size
-       * @see https://tailwindcss.com/docs/font-size
-       */
-      "font-size": [{
-        text: ["base", isTshirtSize, isArbitraryLength]
-      }],
-      /**
-       * Font Smoothing
-       * @see https://tailwindcss.com/docs/font-smoothing
-       */
-      "font-smoothing": ["antialiased", "subpixel-antialiased"],
-      /**
-       * Font Style
-       * @see https://tailwindcss.com/docs/font-style
-       */
-      "font-style": ["italic", "not-italic"],
-      /**
-       * Font Weight
-       * @see https://tailwindcss.com/docs/font-weight
-       */
-      "font-weight": [{
-        font: ["thin", "extralight", "light", "normal", "medium", "semibold", "bold", "extrabold", "black", isArbitraryNumber]
-      }],
-      /**
-       * Font Family
-       * @see https://tailwindcss.com/docs/font-family
-       */
-      "font-family": [{
-        font: [isAny]
-      }],
-      /**
-       * Font Variant Numeric
-       * @see https://tailwindcss.com/docs/font-variant-numeric
-       */
-      "fvn-normal": ["normal-nums"],
-      /**
-       * Font Variant Numeric
-       * @see https://tailwindcss.com/docs/font-variant-numeric
-       */
-      "fvn-ordinal": ["ordinal"],
-      /**
-       * Font Variant Numeric
-       * @see https://tailwindcss.com/docs/font-variant-numeric
-       */
-      "fvn-slashed-zero": ["slashed-zero"],
-      /**
-       * Font Variant Numeric
-       * @see https://tailwindcss.com/docs/font-variant-numeric
-       */
-      "fvn-figure": ["lining-nums", "oldstyle-nums"],
-      /**
-       * Font Variant Numeric
-       * @see https://tailwindcss.com/docs/font-variant-numeric
-       */
-      "fvn-spacing": ["proportional-nums", "tabular-nums"],
-      /**
-       * Font Variant Numeric
-       * @see https://tailwindcss.com/docs/font-variant-numeric
-       */
-      "fvn-fraction": ["diagonal-fractions", "stacked-fractions"],
-      /**
-       * Letter Spacing
-       * @see https://tailwindcss.com/docs/letter-spacing
-       */
-      tracking: [{
-        tracking: ["tighter", "tight", "normal", "wide", "wider", "widest", isArbitraryValue]
-      }],
-      /**
-       * Line Clamp
-       * @see https://tailwindcss.com/docs/line-clamp
-       */
-      "line-clamp": [{
-        "line-clamp": ["none", isNumber, isArbitraryNumber]
-      }],
-      /**
-       * Line Height
-       * @see https://tailwindcss.com/docs/line-height
-       */
-      leading: [{
-        leading: ["none", "tight", "snug", "normal", "relaxed", "loose", isLength, isArbitraryValue]
-      }],
-      /**
-       * List Style Image
-       * @see https://tailwindcss.com/docs/list-style-image
-       */
-      "list-image": [{
-        "list-image": ["none", isArbitraryValue]
-      }],
-      /**
-       * List Style Type
-       * @see https://tailwindcss.com/docs/list-style-type
-       */
-      "list-style-type": [{
-        list: ["none", "disc", "decimal", isArbitraryValue]
-      }],
-      /**
-       * List Style Position
-       * @see https://tailwindcss.com/docs/list-style-position
-       */
-      "list-style-position": [{
-        list: ["inside", "outside"]
-      }],
-      /**
-       * Placeholder Color
-       * @deprecated since Tailwind CSS v3.0.0
-       * @see https://tailwindcss.com/docs/placeholder-color
-       */
-      "placeholder-color": [{
-        placeholder: [colors]
-      }],
-      /**
-       * Placeholder Opacity
-       * @see https://tailwindcss.com/docs/placeholder-opacity
-       */
-      "placeholder-opacity": [{
-        "placeholder-opacity": [opacity]
-      }],
-      /**
-       * Text Alignment
-       * @see https://tailwindcss.com/docs/text-align
-       */
-      "text-alignment": [{
-        text: ["left", "center", "right", "justify", "start", "end"]
-      }],
-      /**
-       * Text Color
-       * @see https://tailwindcss.com/docs/text-color
-       */
-      "text-color": [{
-        text: [colors]
-      }],
-      /**
-       * Text Opacity
-       * @see https://tailwindcss.com/docs/text-opacity
-       */
-      "text-opacity": [{
-        "text-opacity": [opacity]
-      }],
-      /**
-       * Text Decoration
-       * @see https://tailwindcss.com/docs/text-decoration
-       */
-      "text-decoration": ["underline", "overline", "line-through", "no-underline"],
-      /**
-       * Text Decoration Style
-       * @see https://tailwindcss.com/docs/text-decoration-style
-       */
-      "text-decoration-style": [{
-        decoration: [...getLineStyles(), "wavy"]
-      }],
-      /**
-       * Text Decoration Thickness
-       * @see https://tailwindcss.com/docs/text-decoration-thickness
-       */
-      "text-decoration-thickness": [{
-        decoration: ["auto", "from-font", isLength, isArbitraryLength]
-      }],
-      /**
-       * Text Underline Offset
-       * @see https://tailwindcss.com/docs/text-underline-offset
-       */
-      "underline-offset": [{
-        "underline-offset": ["auto", isLength, isArbitraryValue]
-      }],
-      /**
-       * Text Decoration Color
-       * @see https://tailwindcss.com/docs/text-decoration-color
-       */
-      "text-decoration-color": [{
-        decoration: [colors]
-      }],
-      /**
-       * Text Transform
-       * @see https://tailwindcss.com/docs/text-transform
-       */
-      "text-transform": ["uppercase", "lowercase", "capitalize", "normal-case"],
-      /**
-       * Text Overflow
-       * @see https://tailwindcss.com/docs/text-overflow
-       */
-      "text-overflow": ["truncate", "text-ellipsis", "text-clip"],
-      /**
-       * Text Wrap
-       * @see https://tailwindcss.com/docs/text-wrap
-       */
-      "text-wrap": [{
-        text: ["wrap", "nowrap", "balance", "pretty"]
-      }],
-      /**
-       * Text Indent
-       * @see https://tailwindcss.com/docs/text-indent
-       */
-      indent: [{
-        indent: getSpacingWithArbitrary()
-      }],
-      /**
-       * Vertical Alignment
-       * @see https://tailwindcss.com/docs/vertical-align
-       */
-      "vertical-align": [{
-        align: ["baseline", "top", "middle", "bottom", "text-top", "text-bottom", "sub", "super", isArbitraryValue]
-      }],
-      /**
-       * Whitespace
-       * @see https://tailwindcss.com/docs/whitespace
-       */
-      whitespace: [{
-        whitespace: ["normal", "nowrap", "pre", "pre-line", "pre-wrap", "break-spaces"]
-      }],
-      /**
-       * Word Break
-       * @see https://tailwindcss.com/docs/word-break
-       */
-      break: [{
-        break: ["normal", "words", "all", "keep"]
-      }],
-      /**
-       * Hyphens
-       * @see https://tailwindcss.com/docs/hyphens
-       */
-      hyphens: [{
-        hyphens: ["none", "manual", "auto"]
-      }],
-      /**
-       * Content
-       * @see https://tailwindcss.com/docs/content
-       */
-      content: [{
-        content: ["none", isArbitraryValue]
-      }],
-      // Backgrounds
-      /**
-       * Background Attachment
-       * @see https://tailwindcss.com/docs/background-attachment
-       */
-      "bg-attachment": [{
-        bg: ["fixed", "local", "scroll"]
-      }],
-      /**
-       * Background Clip
-       * @see https://tailwindcss.com/docs/background-clip
-       */
-      "bg-clip": [{
-        "bg-clip": ["border", "padding", "content", "text"]
-      }],
-      /**
-       * Background Opacity
-       * @deprecated since Tailwind CSS v3.0.0
-       * @see https://tailwindcss.com/docs/background-opacity
-       */
-      "bg-opacity": [{
-        "bg-opacity": [opacity]
-      }],
-      /**
-       * Background Origin
-       * @see https://tailwindcss.com/docs/background-origin
-       */
-      "bg-origin": [{
-        "bg-origin": ["border", "padding", "content"]
-      }],
-      /**
-       * Background Position
-       * @see https://tailwindcss.com/docs/background-position
-       */
-      "bg-position": [{
-        bg: [...getPositions(), isArbitraryPosition]
-      }],
-      /**
-       * Background Repeat
-       * @see https://tailwindcss.com/docs/background-repeat
-       */
-      "bg-repeat": [{
-        bg: ["no-repeat", {
-          repeat: ["", "x", "y", "round", "space"]
-        }]
-      }],
-      /**
-       * Background Size
-       * @see https://tailwindcss.com/docs/background-size
-       */
-      "bg-size": [{
-        bg: ["auto", "cover", "contain", isArbitrarySize]
-      }],
-      /**
-       * Background Image
-       * @see https://tailwindcss.com/docs/background-image
-       */
-      "bg-image": [{
-        bg: ["none", {
-          "gradient-to": ["t", "tr", "r", "br", "b", "bl", "l", "tl"]
-        }, isArbitraryImage]
-      }],
-      /**
-       * Background Color
-       * @see https://tailwindcss.com/docs/background-color
-       */
-      "bg-color": [{
-        bg: [colors]
-      }],
-      /**
-       * Gradient Color Stops From Position
-       * @see https://tailwindcss.com/docs/gradient-color-stops
-       */
-      "gradient-from-pos": [{
-        from: [gradientColorStopPositions]
-      }],
-      /**
-       * Gradient Color Stops Via Position
-       * @see https://tailwindcss.com/docs/gradient-color-stops
-       */
-      "gradient-via-pos": [{
-        via: [gradientColorStopPositions]
-      }],
-      /**
-       * Gradient Color Stops To Position
-       * @see https://tailwindcss.com/docs/gradient-color-stops
-       */
-      "gradient-to-pos": [{
-        to: [gradientColorStopPositions]
-      }],
-      /**
-       * Gradient Color Stops From
-       * @see https://tailwindcss.com/docs/gradient-color-stops
-       */
-      "gradient-from": [{
-        from: [gradientColorStops]
-      }],
-      /**
-       * Gradient Color Stops Via
-       * @see https://tailwindcss.com/docs/gradient-color-stops
-       */
-      "gradient-via": [{
-        via: [gradientColorStops]
-      }],
-      /**
-       * Gradient Color Stops To
-       * @see https://tailwindcss.com/docs/gradient-color-stops
-       */
-      "gradient-to": [{
-        to: [gradientColorStops]
-      }],
-      // Borders
-      /**
-       * Border Radius
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      rounded: [{
-        rounded: [borderRadius]
-      }],
-      /**
-       * Border Radius Start
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-s": [{
-        "rounded-s": [borderRadius]
-      }],
-      /**
-       * Border Radius End
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-e": [{
-        "rounded-e": [borderRadius]
-      }],
-      /**
-       * Border Radius Top
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-t": [{
-        "rounded-t": [borderRadius]
-      }],
-      /**
-       * Border Radius Right
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-r": [{
-        "rounded-r": [borderRadius]
-      }],
-      /**
-       * Border Radius Bottom
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-b": [{
-        "rounded-b": [borderRadius]
-      }],
-      /**
-       * Border Radius Left
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-l": [{
-        "rounded-l": [borderRadius]
-      }],
-      /**
-       * Border Radius Start Start
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-ss": [{
-        "rounded-ss": [borderRadius]
-      }],
-      /**
-       * Border Radius Start End
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-se": [{
-        "rounded-se": [borderRadius]
-      }],
-      /**
-       * Border Radius End End
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-ee": [{
-        "rounded-ee": [borderRadius]
-      }],
-      /**
-       * Border Radius End Start
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-es": [{
-        "rounded-es": [borderRadius]
-      }],
-      /**
-       * Border Radius Top Left
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-tl": [{
-        "rounded-tl": [borderRadius]
-      }],
-      /**
-       * Border Radius Top Right
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-tr": [{
-        "rounded-tr": [borderRadius]
-      }],
-      /**
-       * Border Radius Bottom Right
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-br": [{
-        "rounded-br": [borderRadius]
-      }],
-      /**
-       * Border Radius Bottom Left
-       * @see https://tailwindcss.com/docs/border-radius
-       */
-      "rounded-bl": [{
-        "rounded-bl": [borderRadius]
-      }],
-      /**
-       * Border Width
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w": [{
-        border: [borderWidth]
-      }],
-      /**
-       * Border Width X
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-x": [{
-        "border-x": [borderWidth]
-      }],
-      /**
-       * Border Width Y
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-y": [{
-        "border-y": [borderWidth]
-      }],
-      /**
-       * Border Width Start
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-s": [{
-        "border-s": [borderWidth]
-      }],
-      /**
-       * Border Width End
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-e": [{
-        "border-e": [borderWidth]
-      }],
-      /**
-       * Border Width Top
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-t": [{
-        "border-t": [borderWidth]
-      }],
-      /**
-       * Border Width Right
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-r": [{
-        "border-r": [borderWidth]
-      }],
-      /**
-       * Border Width Bottom
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-b": [{
-        "border-b": [borderWidth]
-      }],
-      /**
-       * Border Width Left
-       * @see https://tailwindcss.com/docs/border-width
-       */
-      "border-w-l": [{
-        "border-l": [borderWidth]
-      }],
-      /**
-       * Border Opacity
-       * @see https://tailwindcss.com/docs/border-opacity
-       */
-      "border-opacity": [{
-        "border-opacity": [opacity]
-      }],
-      /**
-       * Border Style
-       * @see https://tailwindcss.com/docs/border-style
-       */
-      "border-style": [{
-        border: [...getLineStyles(), "hidden"]
-      }],
-      /**
-       * Divide Width X
-       * @see https://tailwindcss.com/docs/divide-width
-       */
-      "divide-x": [{
-        "divide-x": [borderWidth]
-      }],
-      /**
-       * Divide Width X Reverse
-       * @see https://tailwindcss.com/docs/divide-width
-       */
-      "divide-x-reverse": ["divide-x-reverse"],
-      /**
-       * Divide Width Y
-       * @see https://tailwindcss.com/docs/divide-width
-       */
-      "divide-y": [{
-        "divide-y": [borderWidth]
-      }],
-      /**
-       * Divide Width Y Reverse
-       * @see https://tailwindcss.com/docs/divide-width
-       */
-      "divide-y-reverse": ["divide-y-reverse"],
-      /**
-       * Divide Opacity
-       * @see https://tailwindcss.com/docs/divide-opacity
-       */
-      "divide-opacity": [{
-        "divide-opacity": [opacity]
-      }],
-      /**
-       * Divide Style
-       * @see https://tailwindcss.com/docs/divide-style
-       */
-      "divide-style": [{
-        divide: getLineStyles()
-      }],
-      /**
-       * Border Color
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color": [{
-        border: [borderColor]
-      }],
-      /**
-       * Border Color X
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-x": [{
-        "border-x": [borderColor]
-      }],
-      /**
-       * Border Color Y
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-y": [{
-        "border-y": [borderColor]
-      }],
-      /**
-       * Border Color S
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-s": [{
-        "border-s": [borderColor]
-      }],
-      /**
-       * Border Color E
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-e": [{
-        "border-e": [borderColor]
-      }],
-      /**
-       * Border Color Top
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-t": [{
-        "border-t": [borderColor]
-      }],
-      /**
-       * Border Color Right
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-r": [{
-        "border-r": [borderColor]
-      }],
-      /**
-       * Border Color Bottom
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-b": [{
-        "border-b": [borderColor]
-      }],
-      /**
-       * Border Color Left
-       * @see https://tailwindcss.com/docs/border-color
-       */
-      "border-color-l": [{
-        "border-l": [borderColor]
-      }],
-      /**
-       * Divide Color
-       * @see https://tailwindcss.com/docs/divide-color
-       */
-      "divide-color": [{
-        divide: [borderColor]
-      }],
-      /**
-       * Outline Style
-       * @see https://tailwindcss.com/docs/outline-style
-       */
-      "outline-style": [{
-        outline: ["", ...getLineStyles()]
-      }],
-      /**
-       * Outline Offset
-       * @see https://tailwindcss.com/docs/outline-offset
-       */
-      "outline-offset": [{
-        "outline-offset": [isLength, isArbitraryValue]
-      }],
-      /**
-       * Outline Width
-       * @see https://tailwindcss.com/docs/outline-width
-       */
-      "outline-w": [{
-        outline: [isLength, isArbitraryLength]
-      }],
-      /**
-       * Outline Color
-       * @see https://tailwindcss.com/docs/outline-color
-       */
-      "outline-color": [{
-        outline: [colors]
-      }],
-      /**
-       * Ring Width
-       * @see https://tailwindcss.com/docs/ring-width
-       */
-      "ring-w": [{
-        ring: getLengthWithEmptyAndArbitrary()
-      }],
-      /**
-       * Ring Width Inset
-       * @see https://tailwindcss.com/docs/ring-width
-       */
-      "ring-w-inset": ["ring-inset"],
-      /**
-       * Ring Color
-       * @see https://tailwindcss.com/docs/ring-color
-       */
-      "ring-color": [{
-        ring: [colors]
-      }],
-      /**
-       * Ring Opacity
-       * @see https://tailwindcss.com/docs/ring-opacity
-       */
-      "ring-opacity": [{
-        "ring-opacity": [opacity]
-      }],
-      /**
-       * Ring Offset Width
-       * @see https://tailwindcss.com/docs/ring-offset-width
-       */
-      "ring-offset-w": [{
-        "ring-offset": [isLength, isArbitraryLength]
-      }],
-      /**
-       * Ring Offset Color
-       * @see https://tailwindcss.com/docs/ring-offset-color
-       */
-      "ring-offset-color": [{
-        "ring-offset": [colors]
-      }],
-      // Effects
-      /**
-       * Box Shadow
-       * @see https://tailwindcss.com/docs/box-shadow
-       */
-      shadow: [{
-        shadow: ["", "inner", "none", isTshirtSize, isArbitraryShadow]
-      }],
-      /**
-       * Box Shadow Color
-       * @see https://tailwindcss.com/docs/box-shadow-color
-       */
-      "shadow-color": [{
-        shadow: [isAny]
-      }],
-      /**
-       * Opacity
-       * @see https://tailwindcss.com/docs/opacity
-       */
-      opacity: [{
-        opacity: [opacity]
-      }],
-      /**
-       * Mix Blend Mode
-       * @see https://tailwindcss.com/docs/mix-blend-mode
-       */
-      "mix-blend": [{
-        "mix-blend": [...getBlendModes(), "plus-lighter", "plus-darker"]
-      }],
-      /**
-       * Background Blend Mode
-       * @see https://tailwindcss.com/docs/background-blend-mode
-       */
-      "bg-blend": [{
-        "bg-blend": getBlendModes()
-      }],
-      // Filters
-      /**
-       * Filter
-       * @deprecated since Tailwind CSS v3.0.0
-       * @see https://tailwindcss.com/docs/filter
-       */
-      filter: [{
-        filter: ["", "none"]
-      }],
-      /**
-       * Blur
-       * @see https://tailwindcss.com/docs/blur
-       */
-      blur: [{
-        blur: [blur]
-      }],
-      /**
-       * Brightness
-       * @see https://tailwindcss.com/docs/brightness
-       */
-      brightness: [{
-        brightness: [brightness]
-      }],
-      /**
-       * Contrast
-       * @see https://tailwindcss.com/docs/contrast
-       */
-      contrast: [{
-        contrast: [contrast]
-      }],
-      /**
-       * Drop Shadow
-       * @see https://tailwindcss.com/docs/drop-shadow
-       */
-      "drop-shadow": [{
-        "drop-shadow": ["", "none", isTshirtSize, isArbitraryValue]
-      }],
-      /**
-       * Grayscale
-       * @see https://tailwindcss.com/docs/grayscale
-       */
-      grayscale: [{
-        grayscale: [grayscale]
-      }],
-      /**
-       * Hue Rotate
-       * @see https://tailwindcss.com/docs/hue-rotate
-       */
-      "hue-rotate": [{
-        "hue-rotate": [hueRotate]
-      }],
-      /**
-       * Invert
-       * @see https://tailwindcss.com/docs/invert
-       */
-      invert: [{
-        invert: [invert2]
-      }],
-      /**
-       * Saturate
-       * @see https://tailwindcss.com/docs/saturate
-       */
-      saturate: [{
-        saturate: [saturate]
-      }],
-      /**
-       * Sepia
-       * @see https://tailwindcss.com/docs/sepia
-       */
-      sepia: [{
-        sepia: [sepia]
-      }],
-      /**
-       * Backdrop Filter
-       * @deprecated since Tailwind CSS v3.0.0
-       * @see https://tailwindcss.com/docs/backdrop-filter
-       */
-      "backdrop-filter": [{
-        "backdrop-filter": ["", "none"]
-      }],
-      /**
-       * Backdrop Blur
-       * @see https://tailwindcss.com/docs/backdrop-blur
-       */
-      "backdrop-blur": [{
-        "backdrop-blur": [blur]
-      }],
-      /**
-       * Backdrop Brightness
-       * @see https://tailwindcss.com/docs/backdrop-brightness
-       */
-      "backdrop-brightness": [{
-        "backdrop-brightness": [brightness]
-      }],
-      /**
-       * Backdrop Contrast
-       * @see https://tailwindcss.com/docs/backdrop-contrast
-       */
-      "backdrop-contrast": [{
-        "backdrop-contrast": [contrast]
-      }],
-      /**
-       * Backdrop Grayscale
-       * @see https://tailwindcss.com/docs/backdrop-grayscale
-       */
-      "backdrop-grayscale": [{
-        "backdrop-grayscale": [grayscale]
-      }],
-      /**
-       * Backdrop Hue Rotate
-       * @see https://tailwindcss.com/docs/backdrop-hue-rotate
-       */
-      "backdrop-hue-rotate": [{
-        "backdrop-hue-rotate": [hueRotate]
-      }],
-      /**
-       * Backdrop Invert
-       * @see https://tailwindcss.com/docs/backdrop-invert
-       */
-      "backdrop-invert": [{
-        "backdrop-invert": [invert2]
-      }],
-      /**
-       * Backdrop Opacity
-       * @see https://tailwindcss.com/docs/backdrop-opacity
-       */
-      "backdrop-opacity": [{
-        "backdrop-opacity": [opacity]
-      }],
-      /**
-       * Backdrop Saturate
-       * @see https://tailwindcss.com/docs/backdrop-saturate
-       */
-      "backdrop-saturate": [{
-        "backdrop-saturate": [saturate]
-      }],
-      /**
-       * Backdrop Sepia
-       * @see https://tailwindcss.com/docs/backdrop-sepia
-       */
-      "backdrop-sepia": [{
-        "backdrop-sepia": [sepia]
-      }],
-      // Tables
-      /**
-       * Border Collapse
-       * @see https://tailwindcss.com/docs/border-collapse
-       */
-      "border-collapse": [{
-        border: ["collapse", "separate"]
-      }],
-      /**
-       * Border Spacing
-       * @see https://tailwindcss.com/docs/border-spacing
-       */
-      "border-spacing": [{
-        "border-spacing": [borderSpacing]
-      }],
-      /**
-       * Border Spacing X
-       * @see https://tailwindcss.com/docs/border-spacing
-       */
-      "border-spacing-x": [{
-        "border-spacing-x": [borderSpacing]
-      }],
-      /**
-       * Border Spacing Y
-       * @see https://tailwindcss.com/docs/border-spacing
-       */
-      "border-spacing-y": [{
-        "border-spacing-y": [borderSpacing]
-      }],
-      /**
-       * Table Layout
-       * @see https://tailwindcss.com/docs/table-layout
-       */
-      "table-layout": [{
-        table: ["auto", "fixed"]
-      }],
-      /**
-       * Caption Side
-       * @see https://tailwindcss.com/docs/caption-side
-       */
-      caption: [{
-        caption: ["top", "bottom"]
-      }],
-      // Transitions and Animation
-      /**
-       * Tranisition Property
-       * @see https://tailwindcss.com/docs/transition-property
-       */
-      transition: [{
-        transition: ["none", "all", "", "colors", "opacity", "shadow", "transform", isArbitraryValue]
-      }],
-      /**
-       * Transition Duration
-       * @see https://tailwindcss.com/docs/transition-duration
-       */
-      duration: [{
-        duration: getNumberAndArbitrary()
-      }],
-      /**
-       * Transition Timing Function
-       * @see https://tailwindcss.com/docs/transition-timing-function
-       */
-      ease: [{
-        ease: ["linear", "in", "out", "in-out", isArbitraryValue]
-      }],
-      /**
-       * Transition Delay
-       * @see https://tailwindcss.com/docs/transition-delay
-       */
-      delay: [{
-        delay: getNumberAndArbitrary()
-      }],
-      /**
-       * Animation
-       * @see https://tailwindcss.com/docs/animation
-       */
-      animate: [{
-        animate: ["none", "spin", "ping", "pulse", "bounce", isArbitraryValue]
-      }],
-      // Transforms
-      /**
-       * Transform
-       * @see https://tailwindcss.com/docs/transform
-       */
-      transform: [{
-        transform: ["", "gpu", "none"]
-      }],
-      /**
-       * Scale
-       * @see https://tailwindcss.com/docs/scale
-       */
-      scale: [{
-        scale: [scale]
-      }],
-      /**
-       * Scale X
-       * @see https://tailwindcss.com/docs/scale
-       */
-      "scale-x": [{
-        "scale-x": [scale]
-      }],
-      /**
-       * Scale Y
-       * @see https://tailwindcss.com/docs/scale
-       */
-      "scale-y": [{
-        "scale-y": [scale]
-      }],
-      /**
-       * Rotate
-       * @see https://tailwindcss.com/docs/rotate
-       */
-      rotate: [{
-        rotate: [isInteger, isArbitraryValue]
-      }],
-      /**
-       * Translate X
-       * @see https://tailwindcss.com/docs/translate
-       */
-      "translate-x": [{
-        "translate-x": [translate]
-      }],
-      /**
-       * Translate Y
-       * @see https://tailwindcss.com/docs/translate
-       */
-      "translate-y": [{
-        "translate-y": [translate]
-      }],
-      /**
-       * Skew X
-       * @see https://tailwindcss.com/docs/skew
-       */
-      "skew-x": [{
-        "skew-x": [skew]
-      }],
-      /**
-       * Skew Y
-       * @see https://tailwindcss.com/docs/skew
-       */
-      "skew-y": [{
-        "skew-y": [skew]
-      }],
-      /**
-       * Transform Origin
-       * @see https://tailwindcss.com/docs/transform-origin
-       */
-      "transform-origin": [{
-        origin: ["center", "top", "top-right", "right", "bottom-right", "bottom", "bottom-left", "left", "top-left", isArbitraryValue]
-      }],
-      // Interactivity
-      /**
-       * Accent Color
-       * @see https://tailwindcss.com/docs/accent-color
-       */
-      accent: [{
-        accent: ["auto", colors]
-      }],
-      /**
-       * Appearance
-       * @see https://tailwindcss.com/docs/appearance
-       */
-      appearance: [{
-        appearance: ["none", "auto"]
-      }],
-      /**
-       * Cursor
-       * @see https://tailwindcss.com/docs/cursor
-       */
-      cursor: [{
-        cursor: ["auto", "default", "pointer", "wait", "text", "move", "help", "not-allowed", "none", "context-menu", "progress", "cell", "crosshair", "vertical-text", "alias", "copy", "no-drop", "grab", "grabbing", "all-scroll", "col-resize", "row-resize", "n-resize", "e-resize", "s-resize", "w-resize", "ne-resize", "nw-resize", "se-resize", "sw-resize", "ew-resize", "ns-resize", "nesw-resize", "nwse-resize", "zoom-in", "zoom-out", isArbitraryValue]
-      }],
-      /**
-       * Caret Color
-       * @see https://tailwindcss.com/docs/just-in-time-mode#caret-color-utilities
-       */
-      "caret-color": [{
-        caret: [colors]
-      }],
-      /**
-       * Pointer Events
-       * @see https://tailwindcss.com/docs/pointer-events
-       */
-      "pointer-events": [{
-        "pointer-events": ["none", "auto"]
-      }],
-      /**
-       * Resize
-       * @see https://tailwindcss.com/docs/resize
-       */
-      resize: [{
-        resize: ["none", "y", "x", ""]
-      }],
-      /**
-       * Scroll Behavior
-       * @see https://tailwindcss.com/docs/scroll-behavior
-       */
-      "scroll-behavior": [{
-        scroll: ["auto", "smooth"]
-      }],
-      /**
-       * Scroll Margin
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-m": [{
-        "scroll-m": getSpacingWithArbitrary()
-      }],
-      /**
-       * Scroll Margin X
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-mx": [{
-        "scroll-mx": getSpacingWithArbitrary()
-      }],
-      /**
-       * Scroll Margin Y
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-my": [{
-        "scroll-my": getSpacingWithArbitrary()
-      }],
-      /**
-       * Scroll Margin Start
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-ms": [{
-        "scroll-ms": getSpacingWithArbitrary()
-      }],
-      /**
-       * Scroll Margin End
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-me": [{
-        "scroll-me": getSpacingWithArbitrary()
-      }],
-      /**
-       * Scroll Margin Top
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-mt": [{
-        "scroll-mt": getSpacingWithArbitrary()
-      }],
-      /**
-       * Scroll Margin Right
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-mr": [{
-        "scroll-mr": getSpacingWithArbitrary()
-      }],
-      /**
-       * Scroll Margin Bottom
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-mb": [{
-        "scroll-mb": getSpacingWithArbitrary()
-      }],
-      /**
-       * Scroll Margin Left
-       * @see https://tailwindcss.com/docs/scroll-margin
-       */
-      "scroll-ml": [{
-        "scroll-ml": getSpacingWithArbitrary()
-      }],
-      /**
-       * Scroll Padding
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-p": [{
-        "scroll-p": getSpacingWithArbitrary()
-      }],
-      /**
-       * Scroll Padding X
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-px": [{
-        "scroll-px": getSpacingWithArbitrary()
-      }],
-      /**
-       * Scroll Padding Y
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-py": [{
-        "scroll-py": getSpacingWithArbitrary()
-      }],
-      /**
-       * Scroll Padding Start
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-ps": [{
-        "scroll-ps": getSpacingWithArbitrary()
-      }],
-      /**
-       * Scroll Padding End
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-pe": [{
-        "scroll-pe": getSpacingWithArbitrary()
-      }],
-      /**
-       * Scroll Padding Top
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-pt": [{
-        "scroll-pt": getSpacingWithArbitrary()
-      }],
-      /**
-       * Scroll Padding Right
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-pr": [{
-        "scroll-pr": getSpacingWithArbitrary()
-      }],
-      /**
-       * Scroll Padding Bottom
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-pb": [{
-        "scroll-pb": getSpacingWithArbitrary()
-      }],
-      /**
-       * Scroll Padding Left
-       * @see https://tailwindcss.com/docs/scroll-padding
-       */
-      "scroll-pl": [{
-        "scroll-pl": getSpacingWithArbitrary()
-      }],
-      /**
-       * Scroll Snap Align
-       * @see https://tailwindcss.com/docs/scroll-snap-align
-       */
-      "snap-align": [{
-        snap: ["start", "end", "center", "align-none"]
-      }],
-      /**
-       * Scroll Snap Stop
-       * @see https://tailwindcss.com/docs/scroll-snap-stop
-       */
-      "snap-stop": [{
-        snap: ["normal", "always"]
-      }],
-      /**
-       * Scroll Snap Type
-       * @see https://tailwindcss.com/docs/scroll-snap-type
-       */
-      "snap-type": [{
-        snap: ["none", "x", "y", "both"]
-      }],
-      /**
-       * Scroll Snap Type Strictness
-       * @see https://tailwindcss.com/docs/scroll-snap-type
-       */
-      "snap-strictness": [{
-        snap: ["mandatory", "proximity"]
-      }],
-      /**
-       * Touch Action
-       * @see https://tailwindcss.com/docs/touch-action
-       */
-      touch: [{
-        touch: ["auto", "none", "manipulation"]
-      }],
-      /**
-       * Touch Action X
-       * @see https://tailwindcss.com/docs/touch-action
-       */
-      "touch-x": [{
-        "touch-pan": ["x", "left", "right"]
-      }],
-      /**
-       * Touch Action Y
-       * @see https://tailwindcss.com/docs/touch-action
-       */
-      "touch-y": [{
-        "touch-pan": ["y", "up", "down"]
-      }],
-      /**
-       * Touch Action Pinch Zoom
-       * @see https://tailwindcss.com/docs/touch-action
-       */
-      "touch-pz": ["touch-pinch-zoom"],
-      /**
-       * User Select
-       * @see https://tailwindcss.com/docs/user-select
-       */
-      select: [{
-        select: ["none", "text", "all", "auto"]
-      }],
-      /**
-       * Will Change
-       * @see https://tailwindcss.com/docs/will-change
-       */
-      "will-change": [{
-        "will-change": ["auto", "scroll", "contents", "transform", isArbitraryValue]
-      }],
-      // SVG
-      /**
-       * Fill
-       * @see https://tailwindcss.com/docs/fill
-       */
-      fill: [{
-        fill: [colors, "none"]
-      }],
-      /**
-       * Stroke Width
-       * @see https://tailwindcss.com/docs/stroke-width
-       */
-      "stroke-w": [{
-        stroke: [isLength, isArbitraryLength, isArbitraryNumber]
-      }],
-      /**
-       * Stroke
-       * @see https://tailwindcss.com/docs/stroke
-       */
-      stroke: [{
-        stroke: [colors, "none"]
-      }],
-      // Accessibility
-      /**
-       * Screen Readers
-       * @see https://tailwindcss.com/docs/screen-readers
-       */
-      sr: ["sr-only", "not-sr-only"],
-      /**
-       * Forced Color Adjust
-       * @see https://tailwindcss.com/docs/forced-color-adjust
-       */
-      "forced-color-adjust": [{
-        "forced-color-adjust": ["auto", "none"]
-      }]
-    },
-    conflictingClassGroups: {
-      overflow: ["overflow-x", "overflow-y"],
-      overscroll: ["overscroll-x", "overscroll-y"],
-      inset: ["inset-x", "inset-y", "start", "end", "top", "right", "bottom", "left"],
-      "inset-x": ["right", "left"],
-      "inset-y": ["top", "bottom"],
-      flex: ["basis", "grow", "shrink"],
-      gap: ["gap-x", "gap-y"],
-      p: ["px", "py", "ps", "pe", "pt", "pr", "pb", "pl"],
-      px: ["pr", "pl"],
-      py: ["pt", "pb"],
-      m: ["mx", "my", "ms", "me", "mt", "mr", "mb", "ml"],
-      mx: ["mr", "ml"],
-      my: ["mt", "mb"],
-      size: ["w", "h"],
-      "font-size": ["leading"],
-      "fvn-normal": ["fvn-ordinal", "fvn-slashed-zero", "fvn-figure", "fvn-spacing", "fvn-fraction"],
-      "fvn-ordinal": ["fvn-normal"],
-      "fvn-slashed-zero": ["fvn-normal"],
-      "fvn-figure": ["fvn-normal"],
-      "fvn-spacing": ["fvn-normal"],
-      "fvn-fraction": ["fvn-normal"],
-      "line-clamp": ["display", "overflow"],
-      rounded: ["rounded-s", "rounded-e", "rounded-t", "rounded-r", "rounded-b", "rounded-l", "rounded-ss", "rounded-se", "rounded-ee", "rounded-es", "rounded-tl", "rounded-tr", "rounded-br", "rounded-bl"],
-      "rounded-s": ["rounded-ss", "rounded-es"],
-      "rounded-e": ["rounded-se", "rounded-ee"],
-      "rounded-t": ["rounded-tl", "rounded-tr"],
-      "rounded-r": ["rounded-tr", "rounded-br"],
-      "rounded-b": ["rounded-br", "rounded-bl"],
-      "rounded-l": ["rounded-tl", "rounded-bl"],
-      "border-spacing": ["border-spacing-x", "border-spacing-y"],
-      "border-w": ["border-w-s", "border-w-e", "border-w-t", "border-w-r", "border-w-b", "border-w-l"],
-      "border-w-x": ["border-w-r", "border-w-l"],
-      "border-w-y": ["border-w-t", "border-w-b"],
-      "border-color": ["border-color-s", "border-color-e", "border-color-t", "border-color-r", "border-color-b", "border-color-l"],
-      "border-color-x": ["border-color-r", "border-color-l"],
-      "border-color-y": ["border-color-t", "border-color-b"],
-      "scroll-m": ["scroll-mx", "scroll-my", "scroll-ms", "scroll-me", "scroll-mt", "scroll-mr", "scroll-mb", "scroll-ml"],
-      "scroll-mx": ["scroll-mr", "scroll-ml"],
-      "scroll-my": ["scroll-mt", "scroll-mb"],
-      "scroll-p": ["scroll-px", "scroll-py", "scroll-ps", "scroll-pe", "scroll-pt", "scroll-pr", "scroll-pb", "scroll-pl"],
-      "scroll-px": ["scroll-pr", "scroll-pl"],
-      "scroll-py": ["scroll-pt", "scroll-pb"],
-      touch: ["touch-x", "touch-y", "touch-pz"],
-      "touch-x": ["touch"],
-      "touch-y": ["touch"],
-      "touch-pz": ["touch"]
-    },
-    conflictingClassGroupModifiers: {
-      "font-size": ["leading"]
-    }
-  };
-};
-const twMerge = /* @__PURE__ */ createTailwindMerge(getDefaultConfig);
-function cn(...inputs) {
-  return twMerge(clsx(inputs));
-}
-const badgeVariants = cva(
-  "inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden",
-  {
-    variants: {
-      variant: {
-        default: "border-transparent bg-primary text-primary-foreground [a&]:hover:bg-primary/90",
-        secondary: "border-transparent bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90",
-        destructive: "border-transparent bg-destructive text-destructive-foreground [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
-        outline: "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground"
-      }
-    },
-    defaultVariants: {
-      variant: "default"
-    }
-  }
-);
-function Badge({
-  className,
-  variant,
-  asChild = false,
-  ...props
-}) {
-  const Comp = asChild ? Slot$1 : "span";
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    Comp,
-    {
-      "data-slot": "badge",
-      className: cn(badgeVariants({ variant }), className),
-      ...props
-    }
-  );
-}
-function composeEventHandlers(originalEventHandler, ourEventHandler, { checkForDefaultPrevented = true } = {}) {
-  return function handleEvent(event) {
-    originalEventHandler == null ? void 0 : originalEventHandler(event);
-    if (checkForDefaultPrevented === false || !event.defaultPrevented) {
-      return ourEventHandler == null ? void 0 : ourEventHandler(event);
-    }
-  };
-}
-function createContext2(rootComponentName, defaultContext) {
-  const Context = reactExports.createContext(defaultContext);
-  const Provider = (props) => {
-    const { children, ...context } = props;
-    const value = reactExports.useMemo(() => context, Object.values(context));
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(Context.Provider, { value, children });
-  };
-  Provider.displayName = rootComponentName + "Provider";
-  function useContext2(consumerName) {
-    const context = reactExports.useContext(Context);
-    if (context) return context;
-    if (defaultContext !== void 0) return defaultContext;
-    throw new Error(`\`${consumerName}\` must be used within \`${rootComponentName}\``);
-  }
-  return [Provider, useContext2];
-}
-function createContextScope(scopeName, createContextScopeDeps = []) {
-  let defaultContexts = [];
-  function createContext3(rootComponentName, defaultContext) {
-    const BaseContext = reactExports.createContext(defaultContext);
-    const index2 = defaultContexts.length;
-    defaultContexts = [...defaultContexts, defaultContext];
-    const Provider = (props) => {
-      var _a2;
-      const { scope, children, ...context } = props;
-      const Context = ((_a2 = scope == null ? void 0 : scope[scopeName]) == null ? void 0 : _a2[index2]) || BaseContext;
-      const value = reactExports.useMemo(() => context, Object.values(context));
-      return /* @__PURE__ */ jsxRuntimeExports.jsx(Context.Provider, { value, children });
-    };
-    Provider.displayName = rootComponentName + "Provider";
-    function useContext2(consumerName, scope) {
-      var _a2;
-      const Context = ((_a2 = scope == null ? void 0 : scope[scopeName]) == null ? void 0 : _a2[index2]) || BaseContext;
-      const context = reactExports.useContext(Context);
-      if (context) return context;
-      if (defaultContext !== void 0) return defaultContext;
-      throw new Error(`\`${consumerName}\` must be used within \`${rootComponentName}\``);
-    }
-    return [Provider, useContext2];
-  }
-  const createScope = () => {
-    const scopeContexts = defaultContexts.map((defaultContext) => {
-      return reactExports.createContext(defaultContext);
-    });
-    return function useScope(scope) {
-      const contexts = (scope == null ? void 0 : scope[scopeName]) || scopeContexts;
-      return reactExports.useMemo(
-        () => ({ [`__scope${scopeName}`]: { ...scope, [scopeName]: contexts } }),
-        [scope, contexts]
-      );
-    };
-  };
-  createScope.scopeName = scopeName;
-  return [createContext3, composeContextScopes(createScope, ...createContextScopeDeps)];
-}
-function composeContextScopes(...scopes) {
-  const baseScope = scopes[0];
-  if (scopes.length === 1) return baseScope;
-  const createScope = () => {
-    const scopeHooks = scopes.map((createScope2) => ({
-      useScope: createScope2(),
-      scopeName: createScope2.scopeName
-    }));
-    return function useComposedScopes(overrideScopes) {
-      const nextScopes = scopeHooks.reduce((nextScopes2, { useScope, scopeName }) => {
-        const scopeProps = useScope(overrideScopes);
-        const currentScope = scopeProps[`__scope${scopeName}`];
-        return { ...nextScopes2, ...currentScope };
-      }, {});
-      return reactExports.useMemo(() => ({ [`__scope${baseScope.scopeName}`]: nextScopes }), [nextScopes]);
-    };
-  };
-  createScope.scopeName = baseScope.scopeName;
-  return createScope;
-}
-var useLayoutEffect2 = (globalThis == null ? void 0 : globalThis.document) ? reactExports.useLayoutEffect : () => {
-};
-var useReactId = React$2[" useId ".trim().toString()] || (() => void 0);
-var count$1 = 0;
-function useId(deterministicId) {
-  const [id, setId] = reactExports.useState(useReactId());
-  useLayoutEffect2(() => {
-    setId((reactId) => reactId ?? String(count$1++));
-  }, [deterministicId]);
-  return deterministicId || (id ? `radix-${id}` : "");
-}
-var useInsertionEffect = React$2[" useInsertionEffect ".trim().toString()] || useLayoutEffect2;
-function useControllableState({
-  prop,
-  defaultProp,
-  onChange = () => {
-  },
-  caller
-}) {
-  const [uncontrolledProp, setUncontrolledProp, onChangeRef] = useUncontrolledState({
-    defaultProp,
-    onChange
-  });
-  const isControlled = prop !== void 0;
-  const value = isControlled ? prop : uncontrolledProp;
-  {
-    const isControlledRef = reactExports.useRef(prop !== void 0);
-    reactExports.useEffect(() => {
-      const wasControlled = isControlledRef.current;
-      if (wasControlled !== isControlled) {
-        const from = wasControlled ? "controlled" : "uncontrolled";
-        const to = isControlled ? "controlled" : "uncontrolled";
-        console.warn(
-          `${caller} is changing from ${from} to ${to}. Components should not switch from controlled to uncontrolled (or vice versa). Decide between using a controlled or uncontrolled value for the lifetime of the component.`
-        );
-      }
-      isControlledRef.current = isControlled;
-    }, [isControlled, caller]);
-  }
-  const setValue = reactExports.useCallback(
-    (nextValue) => {
-      var _a2;
-      if (isControlled) {
-        const value2 = isFunction(nextValue) ? nextValue(prop) : nextValue;
-        if (value2 !== prop) {
-          (_a2 = onChangeRef.current) == null ? void 0 : _a2.call(onChangeRef, value2);
-        }
-      } else {
-        setUncontrolledProp(nextValue);
-      }
-    },
-    [isControlled, prop, setUncontrolledProp, onChangeRef]
-  );
-  return [value, setValue];
-}
-function useUncontrolledState({
-  defaultProp,
-  onChange
-}) {
-  const [value, setValue] = reactExports.useState(defaultProp);
-  const prevValueRef = reactExports.useRef(value);
-  const onChangeRef = reactExports.useRef(onChange);
-  useInsertionEffect(() => {
-    onChangeRef.current = onChange;
-  }, [onChange]);
-  reactExports.useEffect(() => {
-    var _a2;
-    if (prevValueRef.current !== value) {
-      (_a2 = onChangeRef.current) == null ? void 0 : _a2.call(onChangeRef, value);
-      prevValueRef.current = value;
-    }
-  }, [value, prevValueRef]);
-  return [value, setValue, onChangeRef];
-}
-function isFunction(value) {
-  return typeof value === "function";
-}
-var NODES = [
-  "a",
-  "button",
-  "div",
-  "form",
-  "h2",
-  "h3",
-  "img",
-  "input",
-  "label",
-  "li",
-  "nav",
-  "ol",
-  "p",
-  "select",
-  "span",
-  "svg",
-  "ul"
-];
-var Primitive = NODES.reduce((primitive, node) => {
-  const Slot2 = /* @__PURE__ */ createSlot(`Primitive.${node}`);
-  const Node2 = reactExports.forwardRef((props, forwardedRef) => {
-    const { asChild, ...primitiveProps } = props;
-    const Comp = asChild ? Slot2 : node;
-    if (typeof window !== "undefined") {
-      window[Symbol.for("radix-ui")] = true;
-    }
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(Comp, { ...primitiveProps, ref: forwardedRef });
-  });
-  Node2.displayName = `Primitive.${node}`;
-  return { ...primitive, [node]: Node2 };
-}, {});
-function dispatchDiscreteCustomEvent(target, event) {
-  if (target) reactDomExports.flushSync(() => target.dispatchEvent(event));
-}
-function useCallbackRef$1(callback) {
-  const callbackRef = reactExports.useRef(callback);
-  reactExports.useEffect(() => {
-    callbackRef.current = callback;
-  });
-  return reactExports.useMemo(() => (...args) => {
-    var _a2;
-    return (_a2 = callbackRef.current) == null ? void 0 : _a2.call(callbackRef, ...args);
-  }, []);
-}
-function useEscapeKeydown(onEscapeKeyDownProp, ownerDocument = globalThis == null ? void 0 : globalThis.document) {
-  const onEscapeKeyDown = useCallbackRef$1(onEscapeKeyDownProp);
-  reactExports.useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === "Escape") {
-        onEscapeKeyDown(event);
-      }
-    };
-    ownerDocument.addEventListener("keydown", handleKeyDown, { capture: true });
-    return () => ownerDocument.removeEventListener("keydown", handleKeyDown, { capture: true });
-  }, [onEscapeKeyDown, ownerDocument]);
-}
-var DISMISSABLE_LAYER_NAME = "DismissableLayer";
-var CONTEXT_UPDATE = "dismissableLayer.update";
-var POINTER_DOWN_OUTSIDE = "dismissableLayer.pointerDownOutside";
-var FOCUS_OUTSIDE = "dismissableLayer.focusOutside";
-var originalBodyPointerEvents;
-var DismissableLayerContext = reactExports.createContext({
-  layers: /* @__PURE__ */ new Set(),
-  layersWithOutsidePointerEventsDisabled: /* @__PURE__ */ new Set(),
-  branches: /* @__PURE__ */ new Set()
-});
-var DismissableLayer = reactExports.forwardRef(
-  (props, forwardedRef) => {
-    const {
-      disableOutsidePointerEvents = false,
-      onEscapeKeyDown,
-      onPointerDownOutside,
-      onFocusOutside,
-      onInteractOutside,
-      onDismiss,
-      ...layerProps
-    } = props;
-    const context = reactExports.useContext(DismissableLayerContext);
-    const [node, setNode] = reactExports.useState(null);
-    const ownerDocument = (node == null ? void 0 : node.ownerDocument) ?? (globalThis == null ? void 0 : globalThis.document);
-    const [, force] = reactExports.useState({});
-    const composedRefs = useComposedRefs(forwardedRef, (node2) => setNode(node2));
-    const layers = Array.from(context.layers);
-    const [highestLayerWithOutsidePointerEventsDisabled] = [...context.layersWithOutsidePointerEventsDisabled].slice(-1);
-    const highestLayerWithOutsidePointerEventsDisabledIndex = layers.indexOf(highestLayerWithOutsidePointerEventsDisabled);
-    const index2 = node ? layers.indexOf(node) : -1;
-    const isBodyPointerEventsDisabled = context.layersWithOutsidePointerEventsDisabled.size > 0;
-    const isPointerEventsEnabled = index2 >= highestLayerWithOutsidePointerEventsDisabledIndex;
-    const pointerDownOutside = usePointerDownOutside((event) => {
-      const target = event.target;
-      const isPointerDownOnBranch = [...context.branches].some((branch) => branch.contains(target));
-      if (!isPointerEventsEnabled || isPointerDownOnBranch) return;
-      onPointerDownOutside == null ? void 0 : onPointerDownOutside(event);
-      onInteractOutside == null ? void 0 : onInteractOutside(event);
-      if (!event.defaultPrevented) onDismiss == null ? void 0 : onDismiss();
-    }, ownerDocument);
-    const focusOutside = useFocusOutside((event) => {
-      const target = event.target;
-      const isFocusInBranch = [...context.branches].some((branch) => branch.contains(target));
-      if (isFocusInBranch) return;
-      onFocusOutside == null ? void 0 : onFocusOutside(event);
-      onInteractOutside == null ? void 0 : onInteractOutside(event);
-      if (!event.defaultPrevented) onDismiss == null ? void 0 : onDismiss();
-    }, ownerDocument);
-    useEscapeKeydown((event) => {
-      const isHighestLayer = index2 === context.layers.size - 1;
-      if (!isHighestLayer) return;
-      onEscapeKeyDown == null ? void 0 : onEscapeKeyDown(event);
-      if (!event.defaultPrevented && onDismiss) {
-        event.preventDefault();
-        onDismiss();
-      }
-    }, ownerDocument);
-    reactExports.useEffect(() => {
-      if (!node) return;
-      if (disableOutsidePointerEvents) {
-        if (context.layersWithOutsidePointerEventsDisabled.size === 0) {
-          originalBodyPointerEvents = ownerDocument.body.style.pointerEvents;
-          ownerDocument.body.style.pointerEvents = "none";
-        }
-        context.layersWithOutsidePointerEventsDisabled.add(node);
-      }
-      context.layers.add(node);
-      dispatchUpdate();
-      return () => {
-        if (disableOutsidePointerEvents && context.layersWithOutsidePointerEventsDisabled.size === 1) {
-          ownerDocument.body.style.pointerEvents = originalBodyPointerEvents;
-        }
-      };
-    }, [node, ownerDocument, disableOutsidePointerEvents, context]);
-    reactExports.useEffect(() => {
-      return () => {
-        if (!node) return;
-        context.layers.delete(node);
-        context.layersWithOutsidePointerEventsDisabled.delete(node);
-        dispatchUpdate();
-      };
-    }, [node, context]);
-    reactExports.useEffect(() => {
-      const handleUpdate = () => force({});
-      document.addEventListener(CONTEXT_UPDATE, handleUpdate);
-      return () => document.removeEventListener(CONTEXT_UPDATE, handleUpdate);
-    }, []);
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(
-      Primitive.div,
-      {
-        ...layerProps,
-        ref: composedRefs,
-        style: {
-          pointerEvents: isBodyPointerEventsDisabled ? isPointerEventsEnabled ? "auto" : "none" : void 0,
-          ...props.style
-        },
-        onFocusCapture: composeEventHandlers(props.onFocusCapture, focusOutside.onFocusCapture),
-        onBlurCapture: composeEventHandlers(props.onBlurCapture, focusOutside.onBlurCapture),
-        onPointerDownCapture: composeEventHandlers(
-          props.onPointerDownCapture,
-          pointerDownOutside.onPointerDownCapture
-        )
-      }
-    );
-  }
-);
-DismissableLayer.displayName = DISMISSABLE_LAYER_NAME;
-var BRANCH_NAME = "DismissableLayerBranch";
-var DismissableLayerBranch = reactExports.forwardRef((props, forwardedRef) => {
-  const context = reactExports.useContext(DismissableLayerContext);
-  const ref = reactExports.useRef(null);
-  const composedRefs = useComposedRefs(forwardedRef, ref);
-  reactExports.useEffect(() => {
-    const node = ref.current;
-    if (node) {
-      context.branches.add(node);
-      return () => {
-        context.branches.delete(node);
-      };
-    }
-  }, [context.branches]);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(Primitive.div, { ...props, ref: composedRefs });
-});
-DismissableLayerBranch.displayName = BRANCH_NAME;
-function usePointerDownOutside(onPointerDownOutside, ownerDocument = globalThis == null ? void 0 : globalThis.document) {
-  const handlePointerDownOutside = useCallbackRef$1(onPointerDownOutside);
-  const isPointerInsideReactTreeRef = reactExports.useRef(false);
-  const handleClickRef = reactExports.useRef(() => {
-  });
-  reactExports.useEffect(() => {
-    const handlePointerDown = (event) => {
-      if (event.target && !isPointerInsideReactTreeRef.current) {
-        let handleAndDispatchPointerDownOutsideEvent2 = function() {
-          handleAndDispatchCustomEvent(
-            POINTER_DOWN_OUTSIDE,
-            handlePointerDownOutside,
-            eventDetail,
-            { discrete: true }
-          );
-        };
-        const eventDetail = { originalEvent: event };
-        if (event.pointerType === "touch") {
-          ownerDocument.removeEventListener("click", handleClickRef.current);
-          handleClickRef.current = handleAndDispatchPointerDownOutsideEvent2;
-          ownerDocument.addEventListener("click", handleClickRef.current, { once: true });
-        } else {
-          handleAndDispatchPointerDownOutsideEvent2();
-        }
-      } else {
-        ownerDocument.removeEventListener("click", handleClickRef.current);
-      }
-      isPointerInsideReactTreeRef.current = false;
-    };
-    const timerId = window.setTimeout(() => {
-      ownerDocument.addEventListener("pointerdown", handlePointerDown);
-    }, 0);
-    return () => {
-      window.clearTimeout(timerId);
-      ownerDocument.removeEventListener("pointerdown", handlePointerDown);
-      ownerDocument.removeEventListener("click", handleClickRef.current);
-    };
-  }, [ownerDocument, handlePointerDownOutside]);
-  return {
-    // ensures we check React component tree (not just DOM tree)
-    onPointerDownCapture: () => isPointerInsideReactTreeRef.current = true
-  };
-}
-function useFocusOutside(onFocusOutside, ownerDocument = globalThis == null ? void 0 : globalThis.document) {
-  const handleFocusOutside = useCallbackRef$1(onFocusOutside);
-  const isFocusInsideReactTreeRef = reactExports.useRef(false);
-  reactExports.useEffect(() => {
-    const handleFocus = (event) => {
-      if (event.target && !isFocusInsideReactTreeRef.current) {
-        const eventDetail = { originalEvent: event };
-        handleAndDispatchCustomEvent(FOCUS_OUTSIDE, handleFocusOutside, eventDetail, {
-          discrete: false
-        });
-      }
-    };
-    ownerDocument.addEventListener("focusin", handleFocus);
-    return () => ownerDocument.removeEventListener("focusin", handleFocus);
-  }, [ownerDocument, handleFocusOutside]);
-  return {
-    onFocusCapture: () => isFocusInsideReactTreeRef.current = true,
-    onBlurCapture: () => isFocusInsideReactTreeRef.current = false
-  };
-}
-function dispatchUpdate() {
-  const event = new CustomEvent(CONTEXT_UPDATE);
-  document.dispatchEvent(event);
-}
-function handleAndDispatchCustomEvent(name, handler, detail, { discrete }) {
-  const target = detail.originalEvent.target;
-  const event = new CustomEvent(name, { bubbles: false, cancelable: true, detail });
-  if (handler) target.addEventListener(name, handler, { once: true });
-  if (discrete) {
-    dispatchDiscreteCustomEvent(target, event);
-  } else {
-    target.dispatchEvent(event);
-  }
-}
-var AUTOFOCUS_ON_MOUNT = "focusScope.autoFocusOnMount";
-var AUTOFOCUS_ON_UNMOUNT = "focusScope.autoFocusOnUnmount";
-var EVENT_OPTIONS = { bubbles: false, cancelable: true };
-var FOCUS_SCOPE_NAME = "FocusScope";
-var FocusScope = reactExports.forwardRef((props, forwardedRef) => {
-  const {
-    loop = false,
-    trapped = false,
-    onMountAutoFocus: onMountAutoFocusProp,
-    onUnmountAutoFocus: onUnmountAutoFocusProp,
-    ...scopeProps
-  } = props;
-  const [container, setContainer] = reactExports.useState(null);
-  const onMountAutoFocus = useCallbackRef$1(onMountAutoFocusProp);
-  const onUnmountAutoFocus = useCallbackRef$1(onUnmountAutoFocusProp);
-  const lastFocusedElementRef = reactExports.useRef(null);
-  const composedRefs = useComposedRefs(forwardedRef, (node) => setContainer(node));
-  const focusScope = reactExports.useRef({
-    paused: false,
-    pause() {
-      this.paused = true;
-    },
-    resume() {
-      this.paused = false;
-    }
-  }).current;
-  reactExports.useEffect(() => {
-    if (trapped) {
-      let handleFocusIn2 = function(event) {
-        if (focusScope.paused || !container) return;
-        const target = event.target;
-        if (container.contains(target)) {
-          lastFocusedElementRef.current = target;
-        } else {
-          focus(lastFocusedElementRef.current, { select: true });
-        }
-      }, handleFocusOut2 = function(event) {
-        if (focusScope.paused || !container) return;
-        const relatedTarget = event.relatedTarget;
-        if (relatedTarget === null) return;
-        if (!container.contains(relatedTarget)) {
-          focus(lastFocusedElementRef.current, { select: true });
-        }
-      }, handleMutations2 = function(mutations) {
-        const focusedElement = document.activeElement;
-        if (focusedElement !== document.body) return;
-        for (const mutation of mutations) {
-          if (mutation.removedNodes.length > 0) focus(container);
-        }
-      };
-      document.addEventListener("focusin", handleFocusIn2);
-      document.addEventListener("focusout", handleFocusOut2);
-      const mutationObserver = new MutationObserver(handleMutations2);
-      if (container) mutationObserver.observe(container, { childList: true, subtree: true });
-      return () => {
-        document.removeEventListener("focusin", handleFocusIn2);
-        document.removeEventListener("focusout", handleFocusOut2);
-        mutationObserver.disconnect();
-      };
-    }
-  }, [trapped, container, focusScope.paused]);
-  reactExports.useEffect(() => {
-    if (container) {
-      focusScopesStack.add(focusScope);
-      const previouslyFocusedElement = document.activeElement;
-      const hasFocusedCandidate = container.contains(previouslyFocusedElement);
-      if (!hasFocusedCandidate) {
-        const mountEvent = new CustomEvent(AUTOFOCUS_ON_MOUNT, EVENT_OPTIONS);
-        container.addEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus);
-        container.dispatchEvent(mountEvent);
-        if (!mountEvent.defaultPrevented) {
-          focusFirst(removeLinks(getTabbableCandidates(container)), { select: true });
-          if (document.activeElement === previouslyFocusedElement) {
-            focus(container);
-          }
-        }
-      }
-      return () => {
-        container.removeEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus);
-        setTimeout(() => {
-          const unmountEvent = new CustomEvent(AUTOFOCUS_ON_UNMOUNT, EVENT_OPTIONS);
-          container.addEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus);
-          container.dispatchEvent(unmountEvent);
-          if (!unmountEvent.defaultPrevented) {
-            focus(previouslyFocusedElement ?? document.body, { select: true });
-          }
-          container.removeEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus);
-          focusScopesStack.remove(focusScope);
-        }, 0);
-      };
-    }
-  }, [container, onMountAutoFocus, onUnmountAutoFocus, focusScope]);
-  const handleKeyDown = reactExports.useCallback(
-    (event) => {
-      if (!loop && !trapped) return;
-      if (focusScope.paused) return;
-      const isTabKey = event.key === "Tab" && !event.altKey && !event.ctrlKey && !event.metaKey;
-      const focusedElement = document.activeElement;
-      if (isTabKey && focusedElement) {
-        const container2 = event.currentTarget;
-        const [first, last] = getTabbableEdges(container2);
-        const hasTabbableElementsInside = first && last;
-        if (!hasTabbableElementsInside) {
-          if (focusedElement === container2) event.preventDefault();
-        } else {
-          if (!event.shiftKey && focusedElement === last) {
-            event.preventDefault();
-            if (loop) focus(first, { select: true });
-          } else if (event.shiftKey && focusedElement === first) {
-            event.preventDefault();
-            if (loop) focus(last, { select: true });
-          }
-        }
-      }
-    },
-    [loop, trapped, focusScope.paused]
-  );
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(Primitive.div, { tabIndex: -1, ...scopeProps, ref: composedRefs, onKeyDown: handleKeyDown });
-});
-FocusScope.displayName = FOCUS_SCOPE_NAME;
-function focusFirst(candidates, { select = false } = {}) {
-  const previouslyFocusedElement = document.activeElement;
-  for (const candidate of candidates) {
-    focus(candidate, { select });
-    if (document.activeElement !== previouslyFocusedElement) return;
-  }
-}
-function getTabbableEdges(container) {
-  const candidates = getTabbableCandidates(container);
-  const first = findVisible(candidates, container);
-  const last = findVisible(candidates.reverse(), container);
-  return [first, last];
-}
-function getTabbableCandidates(container) {
-  const nodes = [];
-  const walker = document.createTreeWalker(container, NodeFilter.SHOW_ELEMENT, {
-    acceptNode: (node) => {
-      const isHiddenInput = node.tagName === "INPUT" && node.type === "hidden";
-      if (node.disabled || node.hidden || isHiddenInput) return NodeFilter.FILTER_SKIP;
-      return node.tabIndex >= 0 ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
-    }
-  });
-  while (walker.nextNode()) nodes.push(walker.currentNode);
-  return nodes;
-}
-function findVisible(elements, container) {
-  for (const element of elements) {
-    if (!isHidden(element, { upTo: container })) return element;
-  }
-}
-function isHidden(node, { upTo }) {
-  if (getComputedStyle(node).visibility === "hidden") return true;
-  while (node) {
-    if (upTo !== void 0 && node === upTo) return false;
-    if (getComputedStyle(node).display === "none") return true;
-    node = node.parentElement;
-  }
-  return false;
-}
-function isSelectableInput(element) {
-  return element instanceof HTMLInputElement && "select" in element;
-}
-function focus(element, { select = false } = {}) {
-  if (element && element.focus) {
-    const previouslyFocusedElement = document.activeElement;
-    element.focus({ preventScroll: true });
-    if (element !== previouslyFocusedElement && isSelectableInput(element) && select)
-      element.select();
-  }
-}
-var focusScopesStack = createFocusScopesStack();
-function createFocusScopesStack() {
-  let stack = [];
-  return {
-    add(focusScope) {
-      const activeFocusScope = stack[0];
-      if (focusScope !== activeFocusScope) {
-        activeFocusScope == null ? void 0 : activeFocusScope.pause();
-      }
-      stack = arrayRemove(stack, focusScope);
-      stack.unshift(focusScope);
-    },
-    remove(focusScope) {
-      var _a2;
-      stack = arrayRemove(stack, focusScope);
-      (_a2 = stack[0]) == null ? void 0 : _a2.resume();
-    }
-  };
-}
-function arrayRemove(array, item) {
-  const updatedArray = [...array];
-  const index2 = updatedArray.indexOf(item);
-  if (index2 !== -1) {
-    updatedArray.splice(index2, 1);
-  }
-  return updatedArray;
-}
-function removeLinks(items) {
-  return items.filter((item) => item.tagName !== "A");
-}
-var PORTAL_NAME$1 = "Portal";
-var Portal$1 = reactExports.forwardRef((props, forwardedRef) => {
-  var _a2;
-  const { container: containerProp, ...portalProps } = props;
-  const [mounted, setMounted] = reactExports.useState(false);
-  useLayoutEffect2(() => setMounted(true), []);
-  const container = containerProp || mounted && ((_a2 = globalThis == null ? void 0 : globalThis.document) == null ? void 0 : _a2.body);
-  return container ? vt.createPortal(/* @__PURE__ */ jsxRuntimeExports.jsx(Primitive.div, { ...portalProps, ref: forwardedRef }), container) : null;
-});
-Portal$1.displayName = PORTAL_NAME$1;
-function useStateMachine(initialState, machine) {
-  return reactExports.useReducer((state, event) => {
-    const nextState = machine[state][event];
-    return nextState ?? state;
-  }, initialState);
-}
-var Presence = (props) => {
-  const { present, children } = props;
-  const presence = usePresence(present);
-  const child = typeof children === "function" ? children({ present: presence.isPresent }) : reactExports.Children.only(children);
-  const ref = useComposedRefs(presence.ref, getElementRef(child));
-  const forceMount = typeof children === "function";
-  return forceMount || presence.isPresent ? reactExports.cloneElement(child, { ref }) : null;
-};
-Presence.displayName = "Presence";
-function usePresence(present) {
-  const [node, setNode] = reactExports.useState();
-  const stylesRef = reactExports.useRef(null);
-  const prevPresentRef = reactExports.useRef(present);
-  const prevAnimationNameRef = reactExports.useRef("none");
-  const initialState = present ? "mounted" : "unmounted";
-  const [state, send] = useStateMachine(initialState, {
-    mounted: {
-      UNMOUNT: "unmounted",
-      ANIMATION_OUT: "unmountSuspended"
-    },
-    unmountSuspended: {
-      MOUNT: "mounted",
-      ANIMATION_END: "unmounted"
-    },
-    unmounted: {
-      MOUNT: "mounted"
-    }
-  });
-  reactExports.useEffect(() => {
-    const currentAnimationName = getAnimationName(stylesRef.current);
-    prevAnimationNameRef.current = state === "mounted" ? currentAnimationName : "none";
-  }, [state]);
-  useLayoutEffect2(() => {
-    const styles = stylesRef.current;
-    const wasPresent = prevPresentRef.current;
-    const hasPresentChanged = wasPresent !== present;
-    if (hasPresentChanged) {
-      const prevAnimationName = prevAnimationNameRef.current;
-      const currentAnimationName = getAnimationName(styles);
-      if (present) {
-        send("MOUNT");
-      } else if (currentAnimationName === "none" || (styles == null ? void 0 : styles.display) === "none") {
-        send("UNMOUNT");
-      } else {
-        const isAnimating = prevAnimationName !== currentAnimationName;
-        if (wasPresent && isAnimating) {
-          send("ANIMATION_OUT");
-        } else {
-          send("UNMOUNT");
-        }
-      }
-      prevPresentRef.current = present;
-    }
-  }, [present, send]);
-  useLayoutEffect2(() => {
-    if (node) {
-      let timeoutId;
-      const ownerWindow = node.ownerDocument.defaultView ?? window;
-      const handleAnimationEnd = (event) => {
-        const currentAnimationName = getAnimationName(stylesRef.current);
-        const isCurrentAnimation = currentAnimationName.includes(CSS.escape(event.animationName));
-        if (event.target === node && isCurrentAnimation) {
-          send("ANIMATION_END");
-          if (!prevPresentRef.current) {
-            const currentFillMode = node.style.animationFillMode;
-            node.style.animationFillMode = "forwards";
-            timeoutId = ownerWindow.setTimeout(() => {
-              if (node.style.animationFillMode === "forwards") {
-                node.style.animationFillMode = currentFillMode;
-              }
-            });
-          }
-        }
-      };
-      const handleAnimationStart = (event) => {
-        if (event.target === node) {
-          prevAnimationNameRef.current = getAnimationName(stylesRef.current);
-        }
-      };
-      node.addEventListener("animationstart", handleAnimationStart);
-      node.addEventListener("animationcancel", handleAnimationEnd);
-      node.addEventListener("animationend", handleAnimationEnd);
-      return () => {
-        ownerWindow.clearTimeout(timeoutId);
-        node.removeEventListener("animationstart", handleAnimationStart);
-        node.removeEventListener("animationcancel", handleAnimationEnd);
-        node.removeEventListener("animationend", handleAnimationEnd);
-      };
-    } else {
-      send("ANIMATION_END");
-    }
-  }, [node, send]);
-  return {
-    isPresent: ["mounted", "unmountSuspended"].includes(state),
-    ref: reactExports.useCallback((node2) => {
-      stylesRef.current = node2 ? getComputedStyle(node2) : null;
-      setNode(node2);
-    }, [])
-  };
-}
-function getAnimationName(styles) {
-  return (styles == null ? void 0 : styles.animationName) || "none";
-}
-function getElementRef(element) {
-  var _a2, _b2;
-  let getter = (_a2 = Object.getOwnPropertyDescriptor(element.props, "ref")) == null ? void 0 : _a2.get;
-  let mayWarn = getter && "isReactWarning" in getter && getter.isReactWarning;
-  if (mayWarn) {
-    return element.ref;
-  }
-  getter = (_b2 = Object.getOwnPropertyDescriptor(element, "ref")) == null ? void 0 : _b2.get;
-  mayWarn = getter && "isReactWarning" in getter && getter.isReactWarning;
-  if (mayWarn) {
-    return element.props.ref;
-  }
-  return element.props.ref || element.ref;
-}
-var count = 0;
-function useFocusGuards() {
-  reactExports.useEffect(() => {
-    const edgeGuards = document.querySelectorAll("[data-radix-focus-guard]");
-    document.body.insertAdjacentElement("afterbegin", edgeGuards[0] ?? createFocusGuard());
-    document.body.insertAdjacentElement("beforeend", edgeGuards[1] ?? createFocusGuard());
-    count++;
-    return () => {
-      if (count === 1) {
-        document.querySelectorAll("[data-radix-focus-guard]").forEach((node) => node.remove());
-      }
-      count--;
-    };
-  }, []);
-}
-function createFocusGuard() {
-  const element = document.createElement("span");
-  element.setAttribute("data-radix-focus-guard", "");
-  element.tabIndex = 0;
-  element.style.outline = "none";
-  element.style.opacity = "0";
-  element.style.position = "fixed";
-  element.style.pointerEvents = "none";
-  return element;
-}
-var __assign = function() {
-  __assign = Object.assign || function __assign2(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-      s = arguments[i];
-      for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-    }
-    return t;
-  };
-  return __assign.apply(this, arguments);
-};
-function __rest(s, e) {
-  var t = {};
-  for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-    t[p] = s[p];
-  if (s != null && typeof Object.getOwnPropertySymbols === "function")
-    for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-      if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-        t[p[i]] = s[p[i]];
-    }
-  return t;
-}
-function __spreadArray(to, from, pack) {
-  if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-    if (ar || !(i in from)) {
-      if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-      ar[i] = from[i];
-    }
-  }
-  return to.concat(ar || Array.prototype.slice.call(from));
-}
-typeof SuppressedError === "function" ? SuppressedError : function(error, suppressed, message) {
-  var e = new Error(message);
-  return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
-};
-var zeroRightClassName = "right-scroll-bar-position";
-var fullWidthClassName = "width-before-scroll-bar";
-var noScrollbarsClassName = "with-scroll-bars-hidden";
-var removedBarSizeVariable = "--removed-body-scroll-bar-size";
-function assignRef(ref, value) {
-  if (typeof ref === "function") {
-    ref(value);
-  } else if (ref) {
-    ref.current = value;
-  }
-  return ref;
-}
-function useCallbackRef(initialValue, callback) {
-  var ref = reactExports.useState(function() {
-    return {
-      // value
-      value: initialValue,
-      // last callback
-      callback,
-      // "memoized" public interface
-      facade: {
-        get current() {
-          return ref.value;
-        },
-        set current(value) {
-          var last = ref.value;
-          if (last !== value) {
-            ref.value = value;
-            ref.callback(value, last);
-          }
-        }
-      }
-    };
-  })[0];
-  ref.callback = callback;
-  return ref.facade;
-}
-var useIsomorphicLayoutEffect = typeof window !== "undefined" ? reactExports.useLayoutEffect : reactExports.useEffect;
-var currentValues = /* @__PURE__ */ new WeakMap();
-function useMergeRefs(refs, defaultValue) {
-  var callbackRef = useCallbackRef(null, function(newValue) {
-    return refs.forEach(function(ref) {
-      return assignRef(ref, newValue);
-    });
-  });
-  useIsomorphicLayoutEffect(function() {
-    var oldValue = currentValues.get(callbackRef);
-    if (oldValue) {
-      var prevRefs_1 = new Set(oldValue);
-      var nextRefs_1 = new Set(refs);
-      var current_1 = callbackRef.current;
-      prevRefs_1.forEach(function(ref) {
-        if (!nextRefs_1.has(ref)) {
-          assignRef(ref, null);
-        }
-      });
-      nextRefs_1.forEach(function(ref) {
-        if (!prevRefs_1.has(ref)) {
-          assignRef(ref, current_1);
-        }
-      });
-    }
-    currentValues.set(callbackRef, refs);
-  }, [refs]);
-  return callbackRef;
-}
-function ItoI(a) {
-  return a;
-}
-function innerCreateMedium(defaults, middleware) {
-  if (middleware === void 0) {
-    middleware = ItoI;
-  }
-  var buffer = [];
-  var assigned = false;
-  var medium = {
-    read: function() {
-      if (assigned) {
-        throw new Error("Sidecar: could not `read` from an `assigned` medium. `read` could be used only with `useMedium`.");
-      }
-      if (buffer.length) {
-        return buffer[buffer.length - 1];
-      }
-      return defaults;
-    },
-    useMedium: function(data) {
-      var item = middleware(data, assigned);
-      buffer.push(item);
-      return function() {
-        buffer = buffer.filter(function(x2) {
-          return x2 !== item;
-        });
-      };
-    },
-    assignSyncMedium: function(cb) {
-      assigned = true;
-      while (buffer.length) {
-        var cbs = buffer;
-        buffer = [];
-        cbs.forEach(cb);
-      }
-      buffer = {
-        push: function(x2) {
-          return cb(x2);
-        },
-        filter: function() {
-          return buffer;
-        }
-      };
-    },
-    assignMedium: function(cb) {
-      assigned = true;
-      var pendingQueue = [];
-      if (buffer.length) {
-        var cbs = buffer;
-        buffer = [];
-        cbs.forEach(cb);
-        pendingQueue = buffer;
-      }
-      var executeQueue = function() {
-        var cbs2 = pendingQueue;
-        pendingQueue = [];
-        cbs2.forEach(cb);
-      };
-      var cycle = function() {
-        return Promise.resolve().then(executeQueue);
-      };
-      cycle();
-      buffer = {
-        push: function(x2) {
-          pendingQueue.push(x2);
-          cycle();
-        },
-        filter: function(filter) {
-          pendingQueue = pendingQueue.filter(filter);
-          return buffer;
-        }
-      };
-    }
-  };
-  return medium;
-}
-function createSidecarMedium(options) {
-  if (options === void 0) {
-    options = {};
-  }
-  var medium = innerCreateMedium(null);
-  medium.options = __assign({ async: true, ssr: false }, options);
-  return medium;
-}
-var SideCar$1 = function(_a2) {
-  var sideCar = _a2.sideCar, rest = __rest(_a2, ["sideCar"]);
-  if (!sideCar) {
-    throw new Error("Sidecar: please provide `sideCar` property to import the right car");
-  }
-  var Target = sideCar.read();
-  if (!Target) {
-    throw new Error("Sidecar medium not found");
-  }
-  return reactExports.createElement(Target, __assign({}, rest));
-};
-SideCar$1.isSideCarExport = true;
-function exportSidecar(medium, exported) {
-  medium.useMedium(exported);
-  return SideCar$1;
-}
-var effectCar = createSidecarMedium();
-var nothing = function() {
-  return;
-};
-var RemoveScroll = reactExports.forwardRef(function(props, parentRef) {
-  var ref = reactExports.useRef(null);
-  var _a2 = reactExports.useState({
-    onScrollCapture: nothing,
-    onWheelCapture: nothing,
-    onTouchMoveCapture: nothing
-  }), callbacks = _a2[0], setCallbacks = _a2[1];
-  var forwardProps = props.forwardProps, children = props.children, className = props.className, removeScrollBar = props.removeScrollBar, enabled = props.enabled, shards = props.shards, sideCar = props.sideCar, noRelative = props.noRelative, noIsolation = props.noIsolation, inert = props.inert, allowPinchZoom = props.allowPinchZoom, _b2 = props.as, Container = _b2 === void 0 ? "div" : _b2, gapMode = props.gapMode, rest = __rest(props, ["forwardProps", "children", "className", "removeScrollBar", "enabled", "shards", "sideCar", "noRelative", "noIsolation", "inert", "allowPinchZoom", "as", "gapMode"]);
-  var SideCar2 = sideCar;
-  var containerRef = useMergeRefs([ref, parentRef]);
-  var containerProps = __assign(__assign({}, rest), callbacks);
-  return reactExports.createElement(
-    reactExports.Fragment,
-    null,
-    enabled && reactExports.createElement(SideCar2, { sideCar: effectCar, removeScrollBar, shards, noRelative, noIsolation, inert, setCallbacks, allowPinchZoom: !!allowPinchZoom, lockRef: ref, gapMode }),
-    forwardProps ? reactExports.cloneElement(reactExports.Children.only(children), __assign(__assign({}, containerProps), { ref: containerRef })) : reactExports.createElement(Container, __assign({}, containerProps, { className, ref: containerRef }), children)
-  );
-});
-RemoveScroll.defaultProps = {
-  enabled: true,
-  removeScrollBar: true,
-  inert: false
-};
-RemoveScroll.classNames = {
-  fullWidth: fullWidthClassName,
-  zeroRight: zeroRightClassName
-};
-var getNonce = function() {
-  if (typeof __webpack_nonce__ !== "undefined") {
-    return __webpack_nonce__;
-  }
-  return void 0;
-};
-function makeStyleTag() {
-  if (!document)
-    return null;
-  var tag = document.createElement("style");
-  tag.type = "text/css";
-  var nonce = getNonce();
-  if (nonce) {
-    tag.setAttribute("nonce", nonce);
-  }
-  return tag;
-}
-function injectStyles(tag, css) {
-  if (tag.styleSheet) {
-    tag.styleSheet.cssText = css;
-  } else {
-    tag.appendChild(document.createTextNode(css));
-  }
-}
-function insertStyleTag(tag) {
-  var head = document.head || document.getElementsByTagName("head")[0];
-  head.appendChild(tag);
-}
-var stylesheetSingleton = function() {
-  var counter = 0;
-  var stylesheet = null;
-  return {
-    add: function(style2) {
-      if (counter == 0) {
-        if (stylesheet = makeStyleTag()) {
-          injectStyles(stylesheet, style2);
-          insertStyleTag(stylesheet);
-        }
-      }
-      counter++;
-    },
-    remove: function() {
-      counter--;
-      if (!counter && stylesheet) {
-        stylesheet.parentNode && stylesheet.parentNode.removeChild(stylesheet);
-        stylesheet = null;
-      }
-    }
-  };
-};
-var styleHookSingleton = function() {
-  var sheet = stylesheetSingleton();
-  return function(styles, isDynamic) {
-    reactExports.useEffect(function() {
-      sheet.add(styles);
-      return function() {
-        sheet.remove();
-      };
-    }, [styles && isDynamic]);
-  };
-};
-var styleSingleton = function() {
-  var useStyle = styleHookSingleton();
-  var Sheet2 = function(_a2) {
-    var styles = _a2.styles, dynamic = _a2.dynamic;
-    useStyle(styles, dynamic);
-    return null;
-  };
-  return Sheet2;
-};
-var zeroGap = {
-  left: 0,
-  top: 0,
-  right: 0,
-  gap: 0
-};
-var parse = function(x2) {
-  return parseInt(x2 || "", 10) || 0;
-};
-var getOffset = function(gapMode) {
-  var cs = window.getComputedStyle(document.body);
-  var left = cs[gapMode === "padding" ? "paddingLeft" : "marginLeft"];
-  var top = cs[gapMode === "padding" ? "paddingTop" : "marginTop"];
-  var right = cs[gapMode === "padding" ? "paddingRight" : "marginRight"];
-  return [parse(left), parse(top), parse(right)];
-};
-var getGapWidth = function(gapMode) {
-  if (gapMode === void 0) {
-    gapMode = "margin";
-  }
-  if (typeof window === "undefined") {
-    return zeroGap;
-  }
-  var offsets = getOffset(gapMode);
-  var documentWidth = document.documentElement.clientWidth;
-  var windowWidth = window.innerWidth;
-  return {
-    left: offsets[0],
-    top: offsets[1],
-    right: offsets[2],
-    gap: Math.max(0, windowWidth - documentWidth + offsets[2] - offsets[0])
-  };
-};
-var Style = styleSingleton();
-var lockAttribute = "data-scroll-locked";
-var getStyles = function(_a2, allowRelative, gapMode, important) {
-  var left = _a2.left, top = _a2.top, right = _a2.right, gap = _a2.gap;
-  if (gapMode === void 0) {
-    gapMode = "margin";
-  }
-  return "\n  .".concat(noScrollbarsClassName, " {\n   overflow: hidden ").concat(important, ";\n   padding-right: ").concat(gap, "px ").concat(important, ";\n  }\n  body[").concat(lockAttribute, "] {\n    overflow: hidden ").concat(important, ";\n    overscroll-behavior: contain;\n    ").concat([
-    allowRelative && "position: relative ".concat(important, ";"),
-    gapMode === "margin" && "\n    padding-left: ".concat(left, "px;\n    padding-top: ").concat(top, "px;\n    padding-right: ").concat(right, "px;\n    margin-left:0;\n    margin-top:0;\n    margin-right: ").concat(gap, "px ").concat(important, ";\n    "),
-    gapMode === "padding" && "padding-right: ".concat(gap, "px ").concat(important, ";")
-  ].filter(Boolean).join(""), "\n  }\n  \n  .").concat(zeroRightClassName, " {\n    right: ").concat(gap, "px ").concat(important, ";\n  }\n  \n  .").concat(fullWidthClassName, " {\n    margin-right: ").concat(gap, "px ").concat(important, ";\n  }\n  \n  .").concat(zeroRightClassName, " .").concat(zeroRightClassName, " {\n    right: 0 ").concat(important, ";\n  }\n  \n  .").concat(fullWidthClassName, " .").concat(fullWidthClassName, " {\n    margin-right: 0 ").concat(important, ";\n  }\n  \n  body[").concat(lockAttribute, "] {\n    ").concat(removedBarSizeVariable, ": ").concat(gap, "px;\n  }\n");
-};
-var getCurrentUseCounter = function() {
-  var counter = parseInt(document.body.getAttribute(lockAttribute) || "0", 10);
-  return isFinite(counter) ? counter : 0;
-};
-var useLockAttribute = function() {
-  reactExports.useEffect(function() {
-    document.body.setAttribute(lockAttribute, (getCurrentUseCounter() + 1).toString());
-    return function() {
-      var newCounter = getCurrentUseCounter() - 1;
-      if (newCounter <= 0) {
-        document.body.removeAttribute(lockAttribute);
-      } else {
-        document.body.setAttribute(lockAttribute, newCounter.toString());
-      }
-    };
-  }, []);
-};
-var RemoveScrollBar = function(_a2) {
-  var noRelative = _a2.noRelative, noImportant = _a2.noImportant, _b2 = _a2.gapMode, gapMode = _b2 === void 0 ? "margin" : _b2;
-  useLockAttribute();
-  var gap = reactExports.useMemo(function() {
-    return getGapWidth(gapMode);
-  }, [gapMode]);
-  return reactExports.createElement(Style, { styles: getStyles(gap, !noRelative, gapMode, !noImportant ? "!important" : "") });
-};
-var passiveSupported = false;
-if (typeof window !== "undefined") {
-  try {
-    var options = Object.defineProperty({}, "passive", {
-      get: function() {
-        passiveSupported = true;
-        return true;
-      }
-    });
-    window.addEventListener("test", options, options);
-    window.removeEventListener("test", options, options);
-  } catch (err) {
-    passiveSupported = false;
-  }
-}
-var nonPassive = passiveSupported ? { passive: false } : false;
-var alwaysContainsScroll = function(node) {
-  return node.tagName === "TEXTAREA";
-};
-var elementCanBeScrolled = function(node, overflow) {
-  if (!(node instanceof Element)) {
-    return false;
-  }
-  var styles = window.getComputedStyle(node);
-  return (
-    // not-not-scrollable
-    styles[overflow] !== "hidden" && // contains scroll inside self
-    !(styles.overflowY === styles.overflowX && !alwaysContainsScroll(node) && styles[overflow] === "visible")
-  );
-};
-var elementCouldBeVScrolled = function(node) {
-  return elementCanBeScrolled(node, "overflowY");
-};
-var elementCouldBeHScrolled = function(node) {
-  return elementCanBeScrolled(node, "overflowX");
-};
-var locationCouldBeScrolled = function(axis, node) {
-  var ownerDocument = node.ownerDocument;
-  var current = node;
-  do {
-    if (typeof ShadowRoot !== "undefined" && current instanceof ShadowRoot) {
-      current = current.host;
-    }
-    var isScrollable = elementCouldBeScrolled(axis, current);
-    if (isScrollable) {
-      var _a2 = getScrollVariables(axis, current), scrollHeight = _a2[1], clientHeight = _a2[2];
-      if (scrollHeight > clientHeight) {
-        return true;
-      }
-    }
-    current = current.parentNode;
-  } while (current && current !== ownerDocument.body);
-  return false;
-};
-var getVScrollVariables = function(_a2) {
-  var scrollTop = _a2.scrollTop, scrollHeight = _a2.scrollHeight, clientHeight = _a2.clientHeight;
-  return [
-    scrollTop,
-    scrollHeight,
-    clientHeight
-  ];
-};
-var getHScrollVariables = function(_a2) {
-  var scrollLeft = _a2.scrollLeft, scrollWidth = _a2.scrollWidth, clientWidth = _a2.clientWidth;
-  return [
-    scrollLeft,
-    scrollWidth,
-    clientWidth
-  ];
-};
-var elementCouldBeScrolled = function(axis, node) {
-  return axis === "v" ? elementCouldBeVScrolled(node) : elementCouldBeHScrolled(node);
-};
-var getScrollVariables = function(axis, node) {
-  return axis === "v" ? getVScrollVariables(node) : getHScrollVariables(node);
-};
-var getDirectionFactor = function(axis, direction) {
-  return axis === "h" && direction === "rtl" ? -1 : 1;
-};
-var handleScroll = function(axis, endTarget, event, sourceDelta, noOverscroll) {
-  var directionFactor = getDirectionFactor(axis, window.getComputedStyle(endTarget).direction);
-  var delta = directionFactor * sourceDelta;
-  var target = event.target;
-  var targetInLock = endTarget.contains(target);
-  var shouldCancelScroll = false;
-  var isDeltaPositive = delta > 0;
-  var availableScroll = 0;
-  var availableScrollTop = 0;
-  do {
-    if (!target) {
-      break;
-    }
-    var _a2 = getScrollVariables(axis, target), position = _a2[0], scroll_1 = _a2[1], capacity = _a2[2];
-    var elementScroll = scroll_1 - capacity - directionFactor * position;
-    if (position || elementScroll) {
-      if (elementCouldBeScrolled(axis, target)) {
-        availableScroll += elementScroll;
-        availableScrollTop += position;
-      }
-    }
-    var parent_1 = target.parentNode;
-    target = parent_1 && parent_1.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? parent_1.host : parent_1;
-  } while (
-    // portaled content
-    !targetInLock && target !== document.body || // self content
-    targetInLock && (endTarget.contains(target) || endTarget === target)
-  );
-  if (isDeltaPositive && (Math.abs(availableScroll) < 1 || false)) {
-    shouldCancelScroll = true;
-  } else if (!isDeltaPositive && (Math.abs(availableScrollTop) < 1 || false)) {
-    shouldCancelScroll = true;
-  }
-  return shouldCancelScroll;
-};
-var getTouchXY = function(event) {
-  return "changedTouches" in event ? [event.changedTouches[0].clientX, event.changedTouches[0].clientY] : [0, 0];
-};
-var getDeltaXY = function(event) {
-  return [event.deltaX, event.deltaY];
-};
-var extractRef = function(ref) {
-  return ref && "current" in ref ? ref.current : ref;
-};
-var deltaCompare = function(x2, y) {
-  return x2[0] === y[0] && x2[1] === y[1];
-};
-var generateStyle = function(id) {
-  return "\n  .block-interactivity-".concat(id, " {pointer-events: none;}\n  .allow-interactivity-").concat(id, " {pointer-events: all;}\n");
-};
-var idCounter = 0;
-var lockStack = [];
-function RemoveScrollSideCar(props) {
-  var shouldPreventQueue = reactExports.useRef([]);
-  var touchStartRef = reactExports.useRef([0, 0]);
-  var activeAxis = reactExports.useRef();
-  var id = reactExports.useState(idCounter++)[0];
-  var Style2 = reactExports.useState(styleSingleton)[0];
-  var lastProps = reactExports.useRef(props);
-  reactExports.useEffect(function() {
-    lastProps.current = props;
-  }, [props]);
-  reactExports.useEffect(function() {
-    if (props.inert) {
-      document.body.classList.add("block-interactivity-".concat(id));
-      var allow_1 = __spreadArray([props.lockRef.current], (props.shards || []).map(extractRef), true).filter(Boolean);
-      allow_1.forEach(function(el) {
-        return el.classList.add("allow-interactivity-".concat(id));
-      });
-      return function() {
-        document.body.classList.remove("block-interactivity-".concat(id));
-        allow_1.forEach(function(el) {
-          return el.classList.remove("allow-interactivity-".concat(id));
-        });
-      };
-    }
-    return;
-  }, [props.inert, props.lockRef.current, props.shards]);
-  var shouldCancelEvent = reactExports.useCallback(function(event, parent) {
-    if ("touches" in event && event.touches.length === 2 || event.type === "wheel" && event.ctrlKey) {
-      return !lastProps.current.allowPinchZoom;
-    }
-    var touch = getTouchXY(event);
-    var touchStart = touchStartRef.current;
-    var deltaX = "deltaX" in event ? event.deltaX : touchStart[0] - touch[0];
-    var deltaY = "deltaY" in event ? event.deltaY : touchStart[1] - touch[1];
-    var currentAxis;
-    var target = event.target;
-    var moveDirection = Math.abs(deltaX) > Math.abs(deltaY) ? "h" : "v";
-    if ("touches" in event && moveDirection === "h" && target.type === "range") {
-      return false;
-    }
-    var canBeScrolledInMainDirection = locationCouldBeScrolled(moveDirection, target);
-    if (!canBeScrolledInMainDirection) {
-      return true;
-    }
-    if (canBeScrolledInMainDirection) {
-      currentAxis = moveDirection;
-    } else {
-      currentAxis = moveDirection === "v" ? "h" : "v";
-      canBeScrolledInMainDirection = locationCouldBeScrolled(moveDirection, target);
-    }
-    if (!canBeScrolledInMainDirection) {
-      return false;
-    }
-    if (!activeAxis.current && "changedTouches" in event && (deltaX || deltaY)) {
-      activeAxis.current = currentAxis;
-    }
-    if (!currentAxis) {
-      return true;
-    }
-    var cancelingAxis = activeAxis.current || currentAxis;
-    return handleScroll(cancelingAxis, parent, event, cancelingAxis === "h" ? deltaX : deltaY);
-  }, []);
-  var shouldPrevent = reactExports.useCallback(function(_event) {
-    var event = _event;
-    if (!lockStack.length || lockStack[lockStack.length - 1] !== Style2) {
-      return;
-    }
-    var delta = "deltaY" in event ? getDeltaXY(event) : getTouchXY(event);
-    var sourceEvent = shouldPreventQueue.current.filter(function(e) {
-      return e.name === event.type && (e.target === event.target || event.target === e.shadowParent) && deltaCompare(e.delta, delta);
-    })[0];
-    if (sourceEvent && sourceEvent.should) {
-      if (event.cancelable) {
-        event.preventDefault();
-      }
-      return;
-    }
-    if (!sourceEvent) {
-      var shardNodes = (lastProps.current.shards || []).map(extractRef).filter(Boolean).filter(function(node) {
-        return node.contains(event.target);
-      });
-      var shouldStop = shardNodes.length > 0 ? shouldCancelEvent(event, shardNodes[0]) : !lastProps.current.noIsolation;
-      if (shouldStop) {
-        if (event.cancelable) {
-          event.preventDefault();
-        }
-      }
-    }
-  }, []);
-  var shouldCancel = reactExports.useCallback(function(name, delta, target, should) {
-    var event = { name, delta, target, should, shadowParent: getOutermostShadowParent(target) };
-    shouldPreventQueue.current.push(event);
-    setTimeout(function() {
-      shouldPreventQueue.current = shouldPreventQueue.current.filter(function(e) {
-        return e !== event;
-      });
-    }, 1);
-  }, []);
-  var scrollTouchStart = reactExports.useCallback(function(event) {
-    touchStartRef.current = getTouchXY(event);
-    activeAxis.current = void 0;
-  }, []);
-  var scrollWheel = reactExports.useCallback(function(event) {
-    shouldCancel(event.type, getDeltaXY(event), event.target, shouldCancelEvent(event, props.lockRef.current));
-  }, []);
-  var scrollTouchMove = reactExports.useCallback(function(event) {
-    shouldCancel(event.type, getTouchXY(event), event.target, shouldCancelEvent(event, props.lockRef.current));
-  }, []);
-  reactExports.useEffect(function() {
-    lockStack.push(Style2);
-    props.setCallbacks({
-      onScrollCapture: scrollWheel,
-      onWheelCapture: scrollWheel,
-      onTouchMoveCapture: scrollTouchMove
-    });
-    document.addEventListener("wheel", shouldPrevent, nonPassive);
-    document.addEventListener("touchmove", shouldPrevent, nonPassive);
-    document.addEventListener("touchstart", scrollTouchStart, nonPassive);
-    return function() {
-      lockStack = lockStack.filter(function(inst) {
-        return inst !== Style2;
-      });
-      document.removeEventListener("wheel", shouldPrevent, nonPassive);
-      document.removeEventListener("touchmove", shouldPrevent, nonPassive);
-      document.removeEventListener("touchstart", scrollTouchStart, nonPassive);
-    };
-  }, []);
-  var removeScrollBar = props.removeScrollBar, inert = props.inert;
-  return reactExports.createElement(
-    reactExports.Fragment,
-    null,
-    inert ? reactExports.createElement(Style2, { styles: generateStyle(id) }) : null,
-    removeScrollBar ? reactExports.createElement(RemoveScrollBar, { noRelative: props.noRelative, gapMode: props.gapMode }) : null
-  );
-}
-function getOutermostShadowParent(node) {
-  var shadowParent = null;
-  while (node !== null) {
-    if (node instanceof ShadowRoot) {
-      shadowParent = node.host;
-      node = node.host;
-    }
-    node = node.parentNode;
-  }
-  return shadowParent;
-}
-const SideCar = exportSidecar(effectCar, RemoveScrollSideCar);
-var ReactRemoveScroll = reactExports.forwardRef(function(props, ref) {
-  return reactExports.createElement(RemoveScroll, __assign({}, props, { ref, sideCar: SideCar }));
-});
-ReactRemoveScroll.classNames = RemoveScroll.classNames;
-var getDefaultParent = function(originalTarget) {
-  if (typeof document === "undefined") {
-    return null;
-  }
-  var sampleTarget = Array.isArray(originalTarget) ? originalTarget[0] : originalTarget;
-  return sampleTarget.ownerDocument.body;
-};
-var counterMap = /* @__PURE__ */ new WeakMap();
-var uncontrolledNodes = /* @__PURE__ */ new WeakMap();
-var markerMap = {};
-var lockCount = 0;
-var unwrapHost = function(node) {
-  return node && (node.host || unwrapHost(node.parentNode));
-};
-var correctTargets = function(parent, targets) {
-  return targets.map(function(target) {
-    if (parent.contains(target)) {
-      return target;
-    }
-    var correctedTarget = unwrapHost(target);
-    if (correctedTarget && parent.contains(correctedTarget)) {
-      return correctedTarget;
-    }
-    console.error("aria-hidden", target, "in not contained inside", parent, ". Doing nothing");
-    return null;
-  }).filter(function(x2) {
-    return Boolean(x2);
-  });
-};
-var applyAttributeToOthers = function(originalTarget, parentNode, markerName, controlAttribute) {
-  var targets = correctTargets(parentNode, Array.isArray(originalTarget) ? originalTarget : [originalTarget]);
-  if (!markerMap[markerName]) {
-    markerMap[markerName] = /* @__PURE__ */ new WeakMap();
-  }
-  var markerCounter = markerMap[markerName];
-  var hiddenNodes = [];
-  var elementsToKeep = /* @__PURE__ */ new Set();
-  var elementsToStop = new Set(targets);
-  var keep = function(el) {
-    if (!el || elementsToKeep.has(el)) {
-      return;
-    }
-    elementsToKeep.add(el);
-    keep(el.parentNode);
-  };
-  targets.forEach(keep);
-  var deep = function(parent) {
-    if (!parent || elementsToStop.has(parent)) {
-      return;
-    }
-    Array.prototype.forEach.call(parent.children, function(node) {
-      if (elementsToKeep.has(node)) {
-        deep(node);
-      } else {
-        try {
-          var attr = node.getAttribute(controlAttribute);
-          var alreadyHidden = attr !== null && attr !== "false";
-          var counterValue = (counterMap.get(node) || 0) + 1;
-          var markerValue = (markerCounter.get(node) || 0) + 1;
-          counterMap.set(node, counterValue);
-          markerCounter.set(node, markerValue);
-          hiddenNodes.push(node);
-          if (counterValue === 1 && alreadyHidden) {
-            uncontrolledNodes.set(node, true);
-          }
-          if (markerValue === 1) {
-            node.setAttribute(markerName, "true");
-          }
-          if (!alreadyHidden) {
-            node.setAttribute(controlAttribute, "true");
-          }
-        } catch (e) {
-          console.error("aria-hidden: cannot operate on ", node, e);
-        }
-      }
-    });
-  };
-  deep(parentNode);
-  elementsToKeep.clear();
-  lockCount++;
-  return function() {
-    hiddenNodes.forEach(function(node) {
-      var counterValue = counterMap.get(node) - 1;
-      var markerValue = markerCounter.get(node) - 1;
-      counterMap.set(node, counterValue);
-      markerCounter.set(node, markerValue);
-      if (!counterValue) {
-        if (!uncontrolledNodes.has(node)) {
-          node.removeAttribute(controlAttribute);
-        }
-        uncontrolledNodes.delete(node);
-      }
-      if (!markerValue) {
-        node.removeAttribute(markerName);
-      }
-    });
-    lockCount--;
-    if (!lockCount) {
-      counterMap = /* @__PURE__ */ new WeakMap();
-      counterMap = /* @__PURE__ */ new WeakMap();
-      uncontrolledNodes = /* @__PURE__ */ new WeakMap();
-      markerMap = {};
-    }
-  };
-};
-var hideOthers = function(originalTarget, parentNode, markerName) {
-  if (markerName === void 0) {
-    markerName = "data-aria-hidden";
-  }
-  var targets = Array.from(Array.isArray(originalTarget) ? originalTarget : [originalTarget]);
-  var activeParentNode = getDefaultParent(originalTarget);
-  if (!activeParentNode) {
-    return function() {
-      return null;
-    };
-  }
-  targets.push.apply(targets, Array.from(activeParentNode.querySelectorAll("[aria-live], script")));
-  return applyAttributeToOthers(targets, activeParentNode, markerName, "aria-hidden");
-};
-var DIALOG_NAME = "Dialog";
-var [createDialogContext] = createContextScope(DIALOG_NAME);
-var [DialogProvider, useDialogContext] = createDialogContext(DIALOG_NAME);
-var Dialog$1 = (props) => {
-  const {
-    __scopeDialog,
-    children,
-    open: openProp,
-    defaultOpen,
-    onOpenChange,
-    modal = true
-  } = props;
-  const triggerRef = reactExports.useRef(null);
-  const contentRef = reactExports.useRef(null);
-  const [open, setOpen] = useControllableState({
-    prop: openProp,
-    defaultProp: defaultOpen ?? false,
-    onChange: onOpenChange,
-    caller: DIALOG_NAME
-  });
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    DialogProvider,
-    {
-      scope: __scopeDialog,
-      triggerRef,
-      contentRef,
-      contentId: useId(),
-      titleId: useId(),
-      descriptionId: useId(),
-      open,
-      onOpenChange: setOpen,
-      onOpenToggle: reactExports.useCallback(() => setOpen((prevOpen) => !prevOpen), [setOpen]),
-      modal,
-      children
-    }
-  );
-};
-Dialog$1.displayName = DIALOG_NAME;
-var TRIGGER_NAME = "DialogTrigger";
-var DialogTrigger = reactExports.forwardRef(
-  (props, forwardedRef) => {
-    const { __scopeDialog, ...triggerProps } = props;
-    const context = useDialogContext(TRIGGER_NAME, __scopeDialog);
-    const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef);
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(
-      Primitive.button,
-      {
-        type: "button",
-        "aria-haspopup": "dialog",
-        "aria-expanded": context.open,
-        "aria-controls": context.contentId,
-        "data-state": getState(context.open),
-        ...triggerProps,
-        ref: composedTriggerRef,
-        onClick: composeEventHandlers(props.onClick, context.onOpenToggle)
-      }
-    );
-  }
-);
-DialogTrigger.displayName = TRIGGER_NAME;
-var PORTAL_NAME = "DialogPortal";
-var [PortalProvider, usePortalContext] = createDialogContext(PORTAL_NAME, {
-  forceMount: void 0
-});
-var DialogPortal$1 = (props) => {
-  const { __scopeDialog, forceMount, children, container } = props;
-  const context = useDialogContext(PORTAL_NAME, __scopeDialog);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(PortalProvider, { scope: __scopeDialog, forceMount, children: reactExports.Children.map(children, (child) => /* @__PURE__ */ jsxRuntimeExports.jsx(Presence, { present: forceMount || context.open, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Portal$1, { asChild: true, container, children: child }) })) });
-};
-DialogPortal$1.displayName = PORTAL_NAME;
-var OVERLAY_NAME = "DialogOverlay";
-var DialogOverlay$1 = reactExports.forwardRef(
-  (props, forwardedRef) => {
-    const portalContext = usePortalContext(OVERLAY_NAME, props.__scopeDialog);
-    const { forceMount = portalContext.forceMount, ...overlayProps } = props;
-    const context = useDialogContext(OVERLAY_NAME, props.__scopeDialog);
-    return context.modal ? /* @__PURE__ */ jsxRuntimeExports.jsx(Presence, { present: forceMount || context.open, children: /* @__PURE__ */ jsxRuntimeExports.jsx(DialogOverlayImpl, { ...overlayProps, ref: forwardedRef }) }) : null;
-  }
-);
-DialogOverlay$1.displayName = OVERLAY_NAME;
-var Slot = /* @__PURE__ */ createSlot("DialogOverlay.RemoveScroll");
-var DialogOverlayImpl = reactExports.forwardRef(
-  (props, forwardedRef) => {
-    const { __scopeDialog, ...overlayProps } = props;
-    const context = useDialogContext(OVERLAY_NAME, __scopeDialog);
-    return (
-      // Make sure `Content` is scrollable even when it doesn't live inside `RemoveScroll`
-      // ie. when `Overlay` and `Content` are siblings
-      /* @__PURE__ */ jsxRuntimeExports.jsx(ReactRemoveScroll, { as: Slot, allowPinchZoom: true, shards: [context.contentRef], children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-        Primitive.div,
-        {
-          "data-state": getState(context.open),
-          ...overlayProps,
-          ref: forwardedRef,
-          style: { pointerEvents: "auto", ...overlayProps.style }
-        }
-      ) })
-    );
-  }
-);
-var CONTENT_NAME = "DialogContent";
-var DialogContent$1 = reactExports.forwardRef(
-  (props, forwardedRef) => {
-    const portalContext = usePortalContext(CONTENT_NAME, props.__scopeDialog);
-    const { forceMount = portalContext.forceMount, ...contentProps } = props;
-    const context = useDialogContext(CONTENT_NAME, props.__scopeDialog);
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(Presence, { present: forceMount || context.open, children: context.modal ? /* @__PURE__ */ jsxRuntimeExports.jsx(DialogContentModal, { ...contentProps, ref: forwardedRef }) : /* @__PURE__ */ jsxRuntimeExports.jsx(DialogContentNonModal, { ...contentProps, ref: forwardedRef }) });
-  }
-);
-DialogContent$1.displayName = CONTENT_NAME;
-var DialogContentModal = reactExports.forwardRef(
-  (props, forwardedRef) => {
-    const context = useDialogContext(CONTENT_NAME, props.__scopeDialog);
-    const contentRef = reactExports.useRef(null);
-    const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef);
-    reactExports.useEffect(() => {
-      const content = contentRef.current;
-      if (content) return hideOthers(content);
-    }, []);
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(
-      DialogContentImpl,
-      {
-        ...props,
-        ref: composedRefs,
-        trapFocus: context.open,
-        disableOutsidePointerEvents: true,
-        onCloseAutoFocus: composeEventHandlers(props.onCloseAutoFocus, (event) => {
-          var _a2;
-          event.preventDefault();
-          (_a2 = context.triggerRef.current) == null ? void 0 : _a2.focus();
-        }),
-        onPointerDownOutside: composeEventHandlers(props.onPointerDownOutside, (event) => {
-          const originalEvent = event.detail.originalEvent;
-          const ctrlLeftClick = originalEvent.button === 0 && originalEvent.ctrlKey === true;
-          const isRightClick = originalEvent.button === 2 || ctrlLeftClick;
-          if (isRightClick) event.preventDefault();
-        }),
-        onFocusOutside: composeEventHandlers(
-          props.onFocusOutside,
-          (event) => event.preventDefault()
-        )
-      }
-    );
-  }
-);
-var DialogContentNonModal = reactExports.forwardRef(
-  (props, forwardedRef) => {
-    const context = useDialogContext(CONTENT_NAME, props.__scopeDialog);
-    const hasInteractedOutsideRef = reactExports.useRef(false);
-    const hasPointerDownOutsideRef = reactExports.useRef(false);
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(
-      DialogContentImpl,
-      {
-        ...props,
-        ref: forwardedRef,
-        trapFocus: false,
-        disableOutsidePointerEvents: false,
-        onCloseAutoFocus: (event) => {
-          var _a2, _b2;
-          (_a2 = props.onCloseAutoFocus) == null ? void 0 : _a2.call(props, event);
-          if (!event.defaultPrevented) {
-            if (!hasInteractedOutsideRef.current) (_b2 = context.triggerRef.current) == null ? void 0 : _b2.focus();
-            event.preventDefault();
-          }
-          hasInteractedOutsideRef.current = false;
-          hasPointerDownOutsideRef.current = false;
-        },
-        onInteractOutside: (event) => {
-          var _a2, _b2;
-          (_a2 = props.onInteractOutside) == null ? void 0 : _a2.call(props, event);
-          if (!event.defaultPrevented) {
-            hasInteractedOutsideRef.current = true;
-            if (event.detail.originalEvent.type === "pointerdown") {
-              hasPointerDownOutsideRef.current = true;
-            }
-          }
-          const target = event.target;
-          const targetIsTrigger = (_b2 = context.triggerRef.current) == null ? void 0 : _b2.contains(target);
-          if (targetIsTrigger) event.preventDefault();
-          if (event.detail.originalEvent.type === "focusin" && hasPointerDownOutsideRef.current) {
-            event.preventDefault();
-          }
-        }
-      }
-    );
-  }
-);
-var DialogContentImpl = reactExports.forwardRef(
-  (props, forwardedRef) => {
-    const { __scopeDialog, trapFocus, onOpenAutoFocus, onCloseAutoFocus, ...contentProps } = props;
-    const context = useDialogContext(CONTENT_NAME, __scopeDialog);
-    const contentRef = reactExports.useRef(null);
-    const composedRefs = useComposedRefs(forwardedRef, contentRef);
-    useFocusGuards();
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        FocusScope,
-        {
-          asChild: true,
-          loop: true,
-          trapped: trapFocus,
-          onMountAutoFocus: onOpenAutoFocus,
-          onUnmountAutoFocus: onCloseAutoFocus,
-          children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-            DismissableLayer,
-            {
-              role: "dialog",
-              id: context.contentId,
-              "aria-describedby": context.descriptionId,
-              "aria-labelledby": context.titleId,
-              "data-state": getState(context.open),
-              ...contentProps,
-              ref: composedRefs,
-              onDismiss: () => context.onOpenChange(false)
-            }
-          )
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(TitleWarning, { titleId: context.titleId }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(DescriptionWarning, { contentRef, descriptionId: context.descriptionId })
-      ] })
-    ] });
-  }
-);
-var TITLE_NAME = "DialogTitle";
-var DialogTitle$1 = reactExports.forwardRef(
-  (props, forwardedRef) => {
-    const { __scopeDialog, ...titleProps } = props;
-    const context = useDialogContext(TITLE_NAME, __scopeDialog);
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(Primitive.h2, { id: context.titleId, ...titleProps, ref: forwardedRef });
-  }
-);
-DialogTitle$1.displayName = TITLE_NAME;
-var DESCRIPTION_NAME = "DialogDescription";
-var DialogDescription = reactExports.forwardRef(
-  (props, forwardedRef) => {
-    const { __scopeDialog, ...descriptionProps } = props;
-    const context = useDialogContext(DESCRIPTION_NAME, __scopeDialog);
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(Primitive.p, { id: context.descriptionId, ...descriptionProps, ref: forwardedRef });
-  }
-);
-DialogDescription.displayName = DESCRIPTION_NAME;
-var CLOSE_NAME = "DialogClose";
-var DialogClose = reactExports.forwardRef(
-  (props, forwardedRef) => {
-    const { __scopeDialog, ...closeProps } = props;
-    const context = useDialogContext(CLOSE_NAME, __scopeDialog);
-    return /* @__PURE__ */ jsxRuntimeExports.jsx(
-      Primitive.button,
-      {
-        type: "button",
-        ...closeProps,
-        ref: forwardedRef,
-        onClick: composeEventHandlers(props.onClick, () => context.onOpenChange(false))
-      }
-    );
-  }
-);
-DialogClose.displayName = CLOSE_NAME;
-function getState(open) {
-  return open ? "open" : "closed";
-}
-var TITLE_WARNING_NAME = "DialogTitleWarning";
-var [WarningProvider, useWarningContext] = createContext2(TITLE_WARNING_NAME, {
-  contentName: CONTENT_NAME,
-  titleName: TITLE_NAME,
-  docsSlug: "dialog"
-});
-var TitleWarning = ({ titleId }) => {
-  const titleWarningContext = useWarningContext(TITLE_WARNING_NAME);
-  const MESSAGE = `\`${titleWarningContext.contentName}\` requires a \`${titleWarningContext.titleName}\` for the component to be accessible for screen reader users.
-
-If you want to hide the \`${titleWarningContext.titleName}\`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/${titleWarningContext.docsSlug}`;
-  reactExports.useEffect(() => {
-    if (titleId) {
-      const hasTitle = document.getElementById(titleId);
-      if (!hasTitle) console.error(MESSAGE);
-    }
-  }, [MESSAGE, titleId]);
-  return null;
-};
-var DESCRIPTION_WARNING_NAME = "DialogDescriptionWarning";
-var DescriptionWarning = ({ contentRef, descriptionId }) => {
-  const descriptionWarningContext = useWarningContext(DESCRIPTION_WARNING_NAME);
-  const MESSAGE = `Warning: Missing \`Description\` or \`aria-describedby={undefined}\` for {${descriptionWarningContext.contentName}}.`;
-  reactExports.useEffect(() => {
-    var _a2;
-    const describedById = (_a2 = contentRef.current) == null ? void 0 : _a2.getAttribute("aria-describedby");
-    if (descriptionId && describedById) {
-      const hasDescription = document.getElementById(descriptionId);
-      if (!hasDescription) console.warn(MESSAGE);
-    }
-  }, [MESSAGE, contentRef, descriptionId]);
-  return null;
-};
-var Root = Dialog$1;
-var Portal = DialogPortal$1;
-var Overlay = DialogOverlay$1;
-var Content = DialogContent$1;
-var Title = DialogTitle$1;
-var Close = DialogClose;
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const toKebabCase = (string) => string.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
-const toCamelCase = (string) => string.replace(
-  /^([A-Z])|[\s-_]+(\w)/g,
-  (match, p1, p2) => p2 ? p2.toUpperCase() : p1.toLowerCase()
-);
-const toPascalCase = (string) => {
-  const camelCase = toCamelCase(string);
-  return camelCase.charAt(0).toUpperCase() + camelCase.slice(1);
-};
-const mergeClasses = (...classes) => classes.filter((className, index2, array) => {
-  return Boolean(className) && className.trim() !== "" && array.indexOf(className) === index2;
-}).join(" ").trim();
-const hasA11yProp = (props) => {
-  for (const prop in props) {
-    if (prop.startsWith("aria-") || prop === "role" || prop === "title") {
-      return true;
-    }
-  }
-};
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-var defaultAttributes = {
-  xmlns: "http://www.w3.org/2000/svg",
-  width: 24,
-  height: 24,
-  viewBox: "0 0 24 24",
-  fill: "none",
-  stroke: "currentColor",
-  strokeWidth: 2,
-  strokeLinecap: "round",
-  strokeLinejoin: "round"
-};
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const Icon = reactExports.forwardRef(
-  ({
-    color = "currentColor",
-    size = 24,
-    strokeWidth = 2,
-    absoluteStrokeWidth,
-    className = "",
-    children,
-    iconNode,
-    ...rest
-  }, ref) => reactExports.createElement(
-    "svg",
-    {
-      ref,
-      ...defaultAttributes,
-      width: size,
-      height: size,
-      stroke: color,
-      strokeWidth: absoluteStrokeWidth ? Number(strokeWidth) * 24 / Number(size) : strokeWidth,
-      className: mergeClasses("lucide", className),
-      ...!children && !hasA11yProp(rest) && { "aria-hidden": "true" },
-      ...rest
-    },
-    [
-      ...iconNode.map(([tag, attrs]) => reactExports.createElement(tag, attrs)),
-      ...Array.isArray(children) ? children : [children]
-    ]
-  )
-);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const createLucideIcon = (iconName, iconNode) => {
-  const Component2 = reactExports.forwardRef(
-    ({ className, ...props }, ref) => reactExports.createElement(Icon, {
-      ref,
-      iconNode,
-      className: mergeClasses(
-        `lucide-${toKebabCase(toPascalCase(iconName))}`,
-        `lucide-${iconName}`,
-        className
-      ),
-      ...props
-    })
-  );
-  Component2.displayName = toPascalCase(iconName);
-  return Component2;
-};
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$b = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]];
-const ChevronRight = createLucideIcon("chevron-right", __iconNode$b);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$a = [
-  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["polyline", { points: "12 6 12 12 16 14", key: "68esgv" }]
-];
-const Clock = createLucideIcon("clock", __iconNode$a);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$9 = [["path", { d: "M21 12a9 9 0 1 1-6.219-8.56", key: "13zald" }]];
-const LoaderCircle = createLucideIcon("loader-circle", __iconNode$9);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$8 = [
-  [
-    "path",
-    {
-      d: "M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0",
-      key: "1r0f0z"
-    }
-  ],
-  ["circle", { cx: "12", cy: "10", r: "3", key: "ilqhr7" }]
-];
-const MapPin = createLucideIcon("map-pin", __iconNode$8);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$7 = [["path", { d: "M5 12h14", key: "1ays0h" }]];
-const Minus = createLucideIcon("minus", __iconNode$7);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$6 = [
-  [
-    "path",
-    {
-      d: "M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384",
-      key: "9njp5v"
-    }
-  ]
-];
-const Phone = createLucideIcon("phone", __iconNode$6);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$5 = [
-  ["path", { d: "M5 12h14", key: "1ays0h" }],
-  ["path", { d: "M12 5v14", key: "s699le" }]
-];
-const Plus = createLucideIcon("plus", __iconNode$5);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$4 = [
-  ["path", { d: "m21 21-4.34-4.34", key: "14j7rj" }],
-  ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
-];
-const Search = createLucideIcon("search", __iconNode$4);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$3 = [
-  ["circle", { cx: "8", cy: "21", r: "1", key: "jimo8o" }],
-  ["circle", { cx: "19", cy: "21", r: "1", key: "13723u" }],
-  [
-    "path",
-    {
-      d: "M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12",
-      key: "9zh506"
-    }
-  ]
-];
-const ShoppingCart = createLucideIcon("shopping-cart", __iconNode$3);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$2 = [
-  [
-    "path",
-    {
-      d: "M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z",
-      key: "r04s7s"
-    }
-  ]
-];
-const Star = createLucideIcon("star", __iconNode$2);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$1 = [
-  ["path", { d: "M18 6 6 18", key: "1bl5f8" }],
-  ["path", { d: "m6 6 12 12", key: "d8bk6v" }]
-];
-const X = createLucideIcon("x", __iconNode$1);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode = [
-  [
-    "path",
-    {
-      d: "M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z",
-      key: "1xq2db"
-    }
-  ]
-];
-const Zap = createLucideIcon("zap", __iconNode);
-function Dialog({
-  ...props
-}) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(Root, { "data-slot": "dialog", ...props });
-}
-function DialogPortal({
-  ...props
-}) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(Portal, { "data-slot": "dialog-portal", ...props });
-}
-function DialogOverlay({
-  className,
-  ...props
-}) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    Overlay,
-    {
-      "data-slot": "dialog-overlay",
-      className: cn(
-        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50",
-        className
-      ),
-      ...props
-    }
-  );
-}
-function DialogContent({
-  className,
-  children,
-  showCloseButton = true,
-  ...props
-}) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(DialogPortal, { "data-slot": "dialog-portal", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx(DialogOverlay, {}),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      Content,
-      {
-        "data-slot": "dialog-content",
-        className: cn(
-          "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border p-6 shadow-lg duration-200 sm:max-w-lg",
-          className
-        ),
-        ...props,
-        children: [
-          children,
-          showCloseButton && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            Close,
-            {
-              "data-slot": "dialog-close",
-              className: "ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(X, {}),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "sr-only", children: "Close" })
-              ]
-            }
-          )
-        ]
-      }
-    )
-  ] });
-}
-function DialogHeader({ className, ...props }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "div",
-    {
-      "data-slot": "dialog-header",
-      className: cn("flex flex-col gap-2 text-center sm:text-left", className),
-      ...props
-    }
-  );
-}
-function DialogTitle({
-  className,
-  ...props
-}) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    Title,
-    {
-      "data-slot": "dialog-title",
-      className: cn("text-lg leading-none font-semibold", className),
-      ...props
-    }
-  );
-}
-function Input({ className, type, ...props }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "input",
-    {
-      type,
-      "data-slot": "input",
-      className: cn(
-        "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-        "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-        "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
-        className
-      ),
-      ...props
-    }
-  );
-}
-function Sheet({ ...props }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(Root, { "data-slot": "sheet", ...props });
-}
-function SheetPortal({
-  ...props
-}) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(Portal, { "data-slot": "sheet-portal", ...props });
-}
-function SheetOverlay({
-  className,
-  ...props
-}) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    Overlay,
-    {
-      "data-slot": "sheet-overlay",
-      className: cn(
-        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50",
-        className
-      ),
-      ...props
-    }
-  );
-}
-function SheetContent({
-  className,
-  children,
-  side = "right",
-  ...props
-}) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(SheetPortal, { children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx(SheetOverlay, {}),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      Content,
-      {
-        "data-slot": "sheet-content",
-        className: cn(
-          "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out fixed z-50 flex flex-col gap-4 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500",
-          side === "right" && "data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm",
-          side === "left" && "data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm",
-          side === "top" && "data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top inset-x-0 top-0 h-auto border-b",
-          side === "bottom" && "data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom inset-x-0 bottom-0 h-auto border-t",
-          className
-        ),
-        ...props,
-        children: [
-          children,
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(Close, { className: "ring-offset-background focus:ring-ring data-[state=open]:bg-secondary absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "size-4" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "sr-only", children: "Close" })
-          ] })
-        ]
-      }
-    )
-  ] });
-}
-function SheetHeader({ className, ...props }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "div",
-    {
-      "data-slot": "sheet-header",
-      className: cn("flex flex-col gap-1.5 p-4", className),
-      ...props
-    }
-  );
-}
-function SheetTitle({
-  className,
-  ...props
-}) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    Title,
-    {
-      "data-slot": "sheet-title",
-      className: cn("text-foreground font-semibold", className),
-      ...props
-    }
-  );
-}
 var M$1 = (e, i, s, u, m, a, l, h) => {
   let d = document.documentElement, w = ["light", "dark"];
   function p(n) {
@@ -19078,35 +14108,35 @@ function xe(n) {
 }
 var ve = (n) => {
   var Dt, Pt, Nt, Bt, Ct, kt, It, Mt, Ht, At, Lt;
-  let { invert: e, toast: t, unstyled: a, interacting: u, setHeights: f, visibleToasts: w, heights: S, index: g, toasts: i, expanded: D, removeToast: T, defaultRichColors: F, closeButton: et, style: ut, cancelButtonStyle: ft, actionButtonStyle: l, className: ot = "", descriptionClassName: at = "", duration: X2, position: st, gap: pt, loadingIcon: rt, expandByDefault: B, classNames: s, icons: P, closeButtonAriaLabel: nt = "Close toast", pauseWhenPageIsHidden: it } = n, [Y, C] = o.useState(null), [lt, J] = o.useState(null), [W, H] = o.useState(false), [A, mt] = o.useState(false), [L, z2] = o.useState(false), [ct, d] = o.useState(false), [h, y] = o.useState(false), [R, j] = o.useState(0), [p, _] = o.useState(0), O = o.useRef(t.duration || X2 || Wt), G = o.useRef(null), k = o.useRef(null), Vt = g === 0, Ut = g + 1 <= w, N = t.type, V = t.dismissible !== false, Kt = t.className || "", Xt = t.descriptionClassName || "", dt = o.useMemo(() => S.findIndex((r2) => r2.toastId === t.id) || 0, [S, t.id]), Jt = o.useMemo(() => {
-    var r2;
-    return (r2 = t.closeButton) != null ? r2 : et;
-  }, [t.closeButton, et]), Tt = o.useMemo(() => t.duration || X2 || Wt, [t.duration, X2]), gt = o.useRef(0), U2 = o.useRef(0), St = o.useRef(0), K = o.useRef(null), [Gt, Qt] = st.split("-"), Rt = o.useMemo(() => S.reduce((r2, m, c) => c >= dt ? r2 : r2 + m.height, 0), [S, dt]), Et = Ft(), qt = t.invert || e, ht = N === "loading";
+  let { invert: e, toast: t, unstyled: a, interacting: u, setHeights: f, visibleToasts: w, heights: S, index: g, toasts: i, expanded: D, removeToast: T, defaultRichColors: F, closeButton: et, style: ut, cancelButtonStyle: ft, actionButtonStyle: l, className: ot = "", descriptionClassName: at = "", duration: X2, position: st, gap: pt, loadingIcon: rt, expandByDefault: B, classNames: s, icons: P, closeButtonAriaLabel: nt = "Close toast", pauseWhenPageIsHidden: it } = n, [Y, C] = o.useState(null), [lt, J] = o.useState(null), [W, H] = o.useState(false), [A, mt] = o.useState(false), [L, z2] = o.useState(false), [ct, d] = o.useState(false), [h, y] = o.useState(false), [R, j] = o.useState(0), [p, _] = o.useState(0), O = o.useRef(t.duration || X2 || Wt), G = o.useRef(null), k = o.useRef(null), Vt = g === 0, Ut = g + 1 <= w, N = t.type, V = t.dismissible !== false, Kt = t.className || "", Xt = t.descriptionClassName || "", dt = o.useMemo(() => S.findIndex((r) => r.toastId === t.id) || 0, [S, t.id]), Jt = o.useMemo(() => {
+    var r;
+    return (r = t.closeButton) != null ? r : et;
+  }, [t.closeButton, et]), Tt = o.useMemo(() => t.duration || X2 || Wt, [t.duration, X2]), gt = o.useRef(0), U2 = o.useRef(0), St = o.useRef(0), K = o.useRef(null), [Gt, Qt] = st.split("-"), Rt = o.useMemo(() => S.reduce((r, m, c) => c >= dt ? r : r + m.height, 0), [S, dt]), Et = Ft(), qt = t.invert || e, ht = N === "loading";
   U2.current = o.useMemo(() => dt * pt + Rt, [dt, Rt]), o.useEffect(() => {
     O.current = Tt;
   }, [Tt]), o.useEffect(() => {
     H(true);
   }, []), o.useEffect(() => {
-    let r2 = k.current;
-    if (r2) {
-      let m = r2.getBoundingClientRect().height;
+    let r = k.current;
+    if (r) {
+      let m = r.getBoundingClientRect().height;
       return _(m), f((c) => [{ toastId: t.id, height: m, position: t.position }, ...c]), () => f((c) => c.filter((b) => b.toastId !== t.id));
     }
   }, [f, t.id]), o.useLayoutEffect(() => {
     if (!W) return;
-    let r2 = k.current, m = r2.style.height;
-    r2.style.height = "auto";
-    let c = r2.getBoundingClientRect().height;
-    r2.style.height = m, _(c), f((b) => b.find((x2) => x2.toastId === t.id) ? b.map((x2) => x2.toastId === t.id ? { ...x2, height: c } : x2) : [{ toastId: t.id, height: c, position: t.position }, ...b]);
+    let r = k.current, m = r.style.height;
+    r.style.height = "auto";
+    let c = r.getBoundingClientRect().height;
+    r.style.height = m, _(c), f((b) => b.find((x2) => x2.toastId === t.id) ? b.map((x2) => x2.toastId === t.id ? { ...x2, height: c } : x2) : [{ toastId: t.id, height: c, position: t.position }, ...b]);
   }, [W, t.title, t.description, f, t.id]);
   let $ = o.useCallback(() => {
-    mt(true), j(U2.current), f((r2) => r2.filter((m) => m.toastId !== t.id)), setTimeout(() => {
+    mt(true), j(U2.current), f((r) => r.filter((m) => m.toastId !== t.id)), setTimeout(() => {
       T(t);
     }, we);
   }, [t, T, f, U2]);
   o.useEffect(() => {
     if (t.promise && N === "loading" || t.duration === 1 / 0 || t.type === "loading") return;
-    let r2;
+    let r;
     return D || u || it && Et ? (() => {
       if (St.current < gt.current) {
         let b = (/* @__PURE__ */ new Date()).getTime() - gt.current;
@@ -19114,49 +14144,49 @@ var ve = (n) => {
       }
       St.current = (/* @__PURE__ */ new Date()).getTime();
     })() : (() => {
-      O.current !== 1 / 0 && (gt.current = (/* @__PURE__ */ new Date()).getTime(), r2 = setTimeout(() => {
+      O.current !== 1 / 0 && (gt.current = (/* @__PURE__ */ new Date()).getTime(), r = setTimeout(() => {
         var b;
         (b = t.onAutoClose) == null || b.call(t, t), $();
       }, O.current));
-    })(), () => clearTimeout(r2);
+    })(), () => clearTimeout(r);
   }, [D, u, t, N, it, Et, $]), o.useEffect(() => {
     t.delete && $();
   }, [$, t.delete]);
   function Zt() {
-    var r2, m, c;
-    return P != null && P.loading ? o.createElement("div", { className: M(s == null ? void 0 : s.loader, (r2 = t == null ? void 0 : t.classNames) == null ? void 0 : r2.loader, "sonner-loader"), "data-visible": N === "loading" }, P.loading) : rt ? o.createElement("div", { className: M(s == null ? void 0 : s.loader, (m = t == null ? void 0 : t.classNames) == null ? void 0 : m.loader, "sonner-loader"), "data-visible": N === "loading" }, rt) : o.createElement(Yt, { className: M(s == null ? void 0 : s.loader, (c = t == null ? void 0 : t.classNames) == null ? void 0 : c.loader), visible: N === "loading" });
+    var r, m, c;
+    return P != null && P.loading ? o.createElement("div", { className: M(s == null ? void 0 : s.loader, (r = t == null ? void 0 : t.classNames) == null ? void 0 : r.loader, "sonner-loader"), "data-visible": N === "loading" }, P.loading) : rt ? o.createElement("div", { className: M(s == null ? void 0 : s.loader, (m = t == null ? void 0 : t.classNames) == null ? void 0 : m.loader, "sonner-loader"), "data-visible": N === "loading" }, rt) : o.createElement(Yt, { className: M(s == null ? void 0 : s.loader, (c = t == null ? void 0 : t.classNames) == null ? void 0 : c.loader), visible: N === "loading" });
   }
   return o.createElement("li", { tabIndex: 0, ref: k, className: M(ot, Kt, s == null ? void 0 : s.toast, (Dt = t == null ? void 0 : t.classNames) == null ? void 0 : Dt.toast, s == null ? void 0 : s.default, s == null ? void 0 : s[N], (Pt = t == null ? void 0 : t.classNames) == null ? void 0 : Pt[N]), "data-sonner-toast": "", "data-rich-colors": (Nt = t.richColors) != null ? Nt : F, "data-styled": !(t.jsx || t.unstyled || a), "data-mounted": W, "data-promise": !!t.promise, "data-swiped": h, "data-removed": A, "data-visible": Ut, "data-y-position": Gt, "data-x-position": Qt, "data-index": g, "data-front": Vt, "data-swiping": L, "data-dismissible": V, "data-type": N, "data-invert": qt, "data-swipe-out": ct, "data-swipe-direction": lt, "data-expanded": !!(D || B && W), style: { "--index": g, "--toasts-before": g, "--z-index": i.length - g, "--offset": `${A ? R : U2.current}px`, "--initial-height": B ? "auto" : `${p}px`, ...ut, ...t.style }, onDragEnd: () => {
     z2(false), C(null), K.current = null;
-  }, onPointerDown: (r2) => {
-    ht || !V || (G.current = /* @__PURE__ */ new Date(), j(U2.current), r2.target.setPointerCapture(r2.pointerId), r2.target.tagName !== "BUTTON" && (z2(true), K.current = { x: r2.clientX, y: r2.clientY }));
+  }, onPointerDown: (r) => {
+    ht || !V || (G.current = /* @__PURE__ */ new Date(), j(U2.current), r.target.setPointerCapture(r.pointerId), r.target.tagName !== "BUTTON" && (z2(true), K.current = { x: r.clientX, y: r.clientY }));
   }, onPointerUp: () => {
     var x2, Q, q, Z;
     if (ct || !V) return;
     K.current = null;
-    let r2 = Number(((x2 = k.current) == null ? void 0 : x2.style.getPropertyValue("--swipe-amount-x").replace("px", "")) || 0), m = Number(((Q = k.current) == null ? void 0 : Q.style.getPropertyValue("--swipe-amount-y").replace("px", "")) || 0), c = (/* @__PURE__ */ new Date()).getTime() - ((q = G.current) == null ? void 0 : q.getTime()), b = Y === "x" ? r2 : m, I = Math.abs(b) / c;
+    let r = Number(((x2 = k.current) == null ? void 0 : x2.style.getPropertyValue("--swipe-amount-x").replace("px", "")) || 0), m = Number(((Q = k.current) == null ? void 0 : Q.style.getPropertyValue("--swipe-amount-y").replace("px", "")) || 0), c = (/* @__PURE__ */ new Date()).getTime() - ((q = G.current) == null ? void 0 : q.getTime()), b = Y === "x" ? r : m, I = Math.abs(b) / c;
     if (Math.abs(b) >= ye || I > 0.11) {
-      j(U2.current), (Z = t.onDismiss) == null || Z.call(t, t), J(Y === "x" ? r2 > 0 ? "right" : "left" : m > 0 ? "down" : "up"), $(), d(true), y(false);
+      j(U2.current), (Z = t.onDismiss) == null || Z.call(t, t), J(Y === "x" ? r > 0 ? "right" : "left" : m > 0 ? "down" : "up"), $(), d(true), y(false);
       return;
     }
     z2(false), C(null);
-  }, onPointerMove: (r2) => {
+  }, onPointerMove: (r) => {
     var Q, q, Z, zt;
     if (!K.current || !V || ((Q = window.getSelection()) == null ? void 0 : Q.toString().length) > 0) return;
-    let c = r2.clientY - K.current.y, b = r2.clientX - K.current.x, I = (q = n.swipeDirections) != null ? q : xe(st);
+    let c = r.clientY - K.current.y, b = r.clientX - K.current.x, I = (q = n.swipeDirections) != null ? q : xe(st);
     !Y && (Math.abs(b) > 1 || Math.abs(c) > 1) && C(Math.abs(b) > Math.abs(c) ? "x" : "y");
     let x2 = { x: 0, y: 0 };
     Y === "y" ? (I.includes("top") || I.includes("bottom")) && (I.includes("top") && c < 0 || I.includes("bottom") && c > 0) && (x2.y = c) : Y === "x" && (I.includes("left") || I.includes("right")) && (I.includes("left") && b < 0 || I.includes("right") && b > 0) && (x2.x = b), (Math.abs(x2.x) > 0 || Math.abs(x2.y) > 0) && y(true), (Z = k.current) == null || Z.style.setProperty("--swipe-amount-x", `${x2.x}px`), (zt = k.current) == null || zt.style.setProperty("--swipe-amount-y", `${x2.y}px`);
   } }, Jt && !t.jsx ? o.createElement("button", { "aria-label": nt, "data-disabled": ht, "data-close-button": true, onClick: ht || !V ? () => {
   } : () => {
-    var r2;
-    $(), (r2 = t.onDismiss) == null || r2.call(t, t);
-  }, className: M(s == null ? void 0 : s.closeButton, (Bt = t == null ? void 0 : t.classNames) == null ? void 0 : Bt.closeButton) }, (Ct = P == null ? void 0 : P.close) != null ? Ct : Ot) : null, t.jsx || reactExports.isValidElement(t.title) ? t.jsx ? t.jsx : typeof t.title == "function" ? t.title() : t.title : o.createElement(o.Fragment, null, N || t.icon || t.promise ? o.createElement("div", { "data-icon": "", className: M(s == null ? void 0 : s.icon, (kt = t == null ? void 0 : t.classNames) == null ? void 0 : kt.icon) }, t.promise || t.type === "loading" && !t.icon ? t.icon || Zt() : null, t.type !== "loading" ? t.icon || (P == null ? void 0 : P[N]) || jt(N) : null) : null, o.createElement("div", { "data-content": "", className: M(s == null ? void 0 : s.content, (It = t == null ? void 0 : t.classNames) == null ? void 0 : It.content) }, o.createElement("div", { "data-title": "", className: M(s == null ? void 0 : s.title, (Mt = t == null ? void 0 : t.classNames) == null ? void 0 : Mt.title) }, typeof t.title == "function" ? t.title() : t.title), t.description ? o.createElement("div", { "data-description": "", className: M(at, Xt, s == null ? void 0 : s.description, (Ht = t == null ? void 0 : t.classNames) == null ? void 0 : Ht.description) }, typeof t.description == "function" ? t.description() : t.description) : null), reactExports.isValidElement(t.cancel) ? t.cancel : t.cancel && tt(t.cancel) ? o.createElement("button", { "data-button": true, "data-cancel": true, style: t.cancelButtonStyle || ft, onClick: (r2) => {
+    var r;
+    $(), (r = t.onDismiss) == null || r.call(t, t);
+  }, className: M(s == null ? void 0 : s.closeButton, (Bt = t == null ? void 0 : t.classNames) == null ? void 0 : Bt.closeButton) }, (Ct = P == null ? void 0 : P.close) != null ? Ct : Ot) : null, t.jsx || reactExports.isValidElement(t.title) ? t.jsx ? t.jsx : typeof t.title == "function" ? t.title() : t.title : o.createElement(o.Fragment, null, N || t.icon || t.promise ? o.createElement("div", { "data-icon": "", className: M(s == null ? void 0 : s.icon, (kt = t == null ? void 0 : t.classNames) == null ? void 0 : kt.icon) }, t.promise || t.type === "loading" && !t.icon ? t.icon || Zt() : null, t.type !== "loading" ? t.icon || (P == null ? void 0 : P[N]) || jt(N) : null) : null, o.createElement("div", { "data-content": "", className: M(s == null ? void 0 : s.content, (It = t == null ? void 0 : t.classNames) == null ? void 0 : It.content) }, o.createElement("div", { "data-title": "", className: M(s == null ? void 0 : s.title, (Mt = t == null ? void 0 : t.classNames) == null ? void 0 : Mt.title) }, typeof t.title == "function" ? t.title() : t.title), t.description ? o.createElement("div", { "data-description": "", className: M(at, Xt, s == null ? void 0 : s.description, (Ht = t == null ? void 0 : t.classNames) == null ? void 0 : Ht.description) }, typeof t.description == "function" ? t.description() : t.description) : null), reactExports.isValidElement(t.cancel) ? t.cancel : t.cancel && tt(t.cancel) ? o.createElement("button", { "data-button": true, "data-cancel": true, style: t.cancelButtonStyle || ft, onClick: (r) => {
     var m, c;
-    tt(t.cancel) && V && ((c = (m = t.cancel).onClick) == null || c.call(m, r2), $());
-  }, className: M(s == null ? void 0 : s.cancelButton, (At = t == null ? void 0 : t.classNames) == null ? void 0 : At.cancelButton) }, t.cancel.label) : null, reactExports.isValidElement(t.action) ? t.action : t.action && tt(t.action) ? o.createElement("button", { "data-button": true, "data-action": true, style: t.actionButtonStyle || l, onClick: (r2) => {
+    tt(t.cancel) && V && ((c = (m = t.cancel).onClick) == null || c.call(m, r), $());
+  }, className: M(s == null ? void 0 : s.cancelButton, (At = t == null ? void 0 : t.classNames) == null ? void 0 : At.cancelButton) }, t.cancel.label) : null, reactExports.isValidElement(t.action) ? t.action : t.action && tt(t.action) ? o.createElement("button", { "data-button": true, "data-action": true, style: t.actionButtonStyle || l, onClick: (r) => {
     var m, c;
-    tt(t.action) && ((c = (m = t.action).onClick) == null || c.call(m, r2), !r2.defaultPrevented && $());
+    tt(t.action) && ((c = (m = t.action).onClick) == null || c.call(m, r), !r.defaultPrevented && $());
   }, className: M(s == null ? void 0 : s.actionButton, (Lt = t == null ? void 0 : t.classNames) == null ? void 0 : Lt.actionButton) }, t.action.label) : null));
 };
 function _t() {
@@ -19263,6 +14293,207 @@ const Toaster = ({ ...props }) => {
     }
   );
 };
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const toKebabCase = (string) => string.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+const toCamelCase = (string) => string.replace(
+  /^([A-Z])|[\s-_]+(\w)/g,
+  (match, p1, p2) => p2 ? p2.toUpperCase() : p1.toLowerCase()
+);
+const toPascalCase = (string) => {
+  const camelCase = toCamelCase(string);
+  return camelCase.charAt(0).toUpperCase() + camelCase.slice(1);
+};
+const mergeClasses = (...classes) => classes.filter((className, index2, array) => {
+  return Boolean(className) && className.trim() !== "" && array.indexOf(className) === index2;
+}).join(" ").trim();
+const hasA11yProp = (props) => {
+  for (const prop in props) {
+    if (prop.startsWith("aria-") || prop === "role" || prop === "title") {
+      return true;
+    }
+  }
+};
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+var defaultAttributes = {
+  xmlns: "http://www.w3.org/2000/svg",
+  width: 24,
+  height: 24,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 2,
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+};
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const Icon = reactExports.forwardRef(
+  ({
+    color = "currentColor",
+    size = 24,
+    strokeWidth = 2,
+    absoluteStrokeWidth,
+    className = "",
+    children,
+    iconNode,
+    ...rest
+  }, ref) => reactExports.createElement(
+    "svg",
+    {
+      ref,
+      ...defaultAttributes,
+      width: size,
+      height: size,
+      stroke: color,
+      strokeWidth: absoluteStrokeWidth ? Number(strokeWidth) * 24 / Number(size) : strokeWidth,
+      className: mergeClasses("lucide", className),
+      ...!children && !hasA11yProp(rest) && { "aria-hidden": "true" },
+      ...rest
+    },
+    [
+      ...iconNode.map(([tag, attrs]) => reactExports.createElement(tag, attrs)),
+      ...Array.isArray(children) ? children : [children]
+    ]
+  )
+);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const createLucideIcon = (iconName, iconNode) => {
+  const Component2 = reactExports.forwardRef(
+    ({ className, ...props }, ref) => reactExports.createElement(Icon, {
+      ref,
+      iconNode,
+      className: mergeClasses(
+        `lucide-${toKebabCase(toPascalCase(iconName))}`,
+        `lucide-${iconName}`,
+        className
+      ),
+      ...props
+    })
+  );
+  Component2.displayName = toPascalCase(iconName);
+  return Component2;
+};
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$7 = [["path", { d: "m15 18-6-6 6-6", key: "1wnfg3" }]];
+const ChevronLeft = createLucideIcon("chevron-left", __iconNode$7);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$6 = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]];
+const ChevronRight = createLucideIcon("chevron-right", __iconNode$6);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$5 = [
+  ["rect", { x: "3", y: "8", width: "18", height: "4", rx: "1", key: "bkv52" }],
+  ["path", { d: "M12 8v13", key: "1c76mn" }],
+  ["path", { d: "M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7", key: "6wjy6b" }],
+  [
+    "path",
+    {
+      d: "M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5",
+      key: "1ihvrl"
+    }
+  ]
+];
+const Gift = createLucideIcon("gift", __iconNode$5);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$4 = [["path", { d: "M5 12h14", key: "1ays0h" }]];
+const Minus = createLucideIcon("minus", __iconNode$4);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$3 = [
+  ["path", { d: "M5 12h14", key: "1ays0h" }],
+  ["path", { d: "M12 5v14", key: "s699le" }]
+];
+const Plus = createLucideIcon("plus", __iconNode$3);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$2 = [
+  ["circle", { cx: "8", cy: "21", r: "1", key: "jimo8o" }],
+  ["circle", { cx: "19", cy: "21", r: "1", key: "13723u" }],
+  [
+    "path",
+    {
+      d: "M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12",
+      key: "9zh506"
+    }
+  ]
+];
+const ShoppingCart = createLucideIcon("shopping-cart", __iconNode$2);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$1 = [
+  ["path", { d: "M18 6 6 18", key: "1bl5f8" }],
+  ["path", { d: "m6 6 12 12", key: "d8bk6v" }]
+];
+const X = createLucideIcon("x", __iconNode$1);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode = [
+  [
+    "path",
+    {
+      d: "M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z",
+      key: "1xq2db"
+    }
+  ]
+];
+const Zap = createLucideIcon("zap", __iconNode);
+const FREE_DELIVERY_THRESHOLD = 500;
+const DELIVERY_FEE = 40;
+const MIN_ORDER = 200;
 const PRODUCTS = [
   // Fresh Produce
   {
@@ -19270,7 +14501,6 @@ const PRODUCTS = [
     name: "Tomatoes",
     quantity: "500g",
     price: 25,
-    emoji: "🍅",
     imageUrl: "/assets/generated/tomatoes.dim_300x300.jpg",
     vibe: "Freshly Picked",
     category: "Fresh Produce",
@@ -19281,7 +14511,6 @@ const PRODUCTS = [
     name: "Onions",
     quantity: "1kg",
     price: 30,
-    emoji: "🧅",
     imageUrl: "/assets/generated/onions.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Fresh Produce",
@@ -19292,7 +14521,6 @@ const PRODUCTS = [
     name: "Potatoes",
     quantity: "1kg",
     price: 25,
-    emoji: "🥔",
     imageUrl: "/assets/generated/potatoes.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Fresh Produce",
@@ -19303,7 +14531,6 @@ const PRODUCTS = [
     name: "Spinach",
     quantity: "250g",
     price: 15,
-    emoji: "🥬",
     imageUrl: "/assets/generated/spinach.dim_300x300.jpg",
     vibe: "Earth Friendly",
     category: "Fresh Produce",
@@ -19314,7 +14541,6 @@ const PRODUCTS = [
     name: "Cucumber",
     quantity: "2 pcs",
     price: 20,
-    emoji: "🥒",
     imageUrl: "/assets/generated/cucumber.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Fresh Produce",
@@ -19325,7 +14551,6 @@ const PRODUCTS = [
     name: "Capsicum",
     quantity: "250g",
     price: 30,
-    emoji: "🫑",
     imageUrl: "/assets/generated/capsicum.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Fresh Produce",
@@ -19336,7 +14561,6 @@ const PRODUCTS = [
     name: "Cabbage",
     quantity: "1 pc",
     price: 20,
-    emoji: "🥦",
     imageUrl: "/assets/generated/cabbage.dim_300x300.jpg",
     vibe: "Freshly Picked",
     category: "Fresh Produce",
@@ -19347,7 +14571,6 @@ const PRODUCTS = [
     name: "Coriander",
     quantity: "100g",
     price: 10,
-    emoji: "🌿",
     imageUrl: "/assets/generated/coriander.dim_300x300.jpg",
     vibe: "Earth Friendly",
     category: "Fresh Produce",
@@ -19358,7 +14581,6 @@ const PRODUCTS = [
     name: "Ginger",
     quantity: "100g",
     price: 15,
-    emoji: "🫚",
     imageUrl: "/assets/generated/ginger.dim_300x300.jpg",
     vibe: "Freshly Picked",
     category: "Fresh Produce",
@@ -19369,7 +14591,6 @@ const PRODUCTS = [
     name: "Garlic",
     quantity: "100g",
     price: 20,
-    emoji: "🧄",
     imageUrl: "/assets/generated/garlic.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Fresh Produce",
@@ -19380,7 +14601,6 @@ const PRODUCTS = [
     name: "Lemon",
     quantity: "4 pcs",
     price: 15,
-    emoji: "🍋",
     imageUrl: "/assets/generated/lemon.dim_300x300.jpg",
     vibe: "Freshly Picked",
     category: "Fresh Produce",
@@ -19391,7 +14611,6 @@ const PRODUCTS = [
     name: "Green Chilli",
     quantity: "100g",
     price: 10,
-    emoji: "🌶️",
     imageUrl: "/assets/generated/green-chilli.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Fresh Produce",
@@ -19403,7 +14622,6 @@ const PRODUCTS = [
     name: "Coca-Cola",
     quantity: "750ml",
     price: 40,
-    emoji: "🥤",
     imageUrl: "/assets/generated/coca-cola.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Beverages",
@@ -19414,7 +14632,6 @@ const PRODUCTS = [
     name: "Pepsi",
     quantity: "750ml",
     price: 40,
-    emoji: "🥤",
     imageUrl: "/assets/generated/pepsi.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Beverages",
@@ -19425,7 +14642,6 @@ const PRODUCTS = [
     name: "Sprite",
     quantity: "750ml",
     price: 40,
-    emoji: "🥤",
     imageUrl: "/assets/generated/sprite.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Beverages",
@@ -19436,7 +14652,6 @@ const PRODUCTS = [
     name: "Maaza Mango",
     quantity: "600ml",
     price: 40,
-    emoji: "🥭",
     imageUrl: "/assets/generated/maaza.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Beverages",
@@ -19447,7 +14662,6 @@ const PRODUCTS = [
     name: "Real Orange Juice",
     quantity: "1L",
     price: 80,
-    emoji: "🍊",
     imageUrl: "/assets/generated/real-orange-juice.dim_300x300.jpg",
     vibe: "Earth Friendly",
     category: "Beverages",
@@ -19458,7 +14672,6 @@ const PRODUCTS = [
     name: "Mountain Dew",
     quantity: "750ml",
     price: 40,
-    emoji: "💚",
     imageUrl: "/assets/generated/mountain-dew.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Beverages",
@@ -19469,7 +14682,6 @@ const PRODUCTS = [
     name: "Limca",
     quantity: "750ml",
     price: 40,
-    emoji: "🍋",
     imageUrl: "/assets/generated/limca.dim_300x300.jpg",
     vibe: "Freshly Picked",
     category: "Beverages",
@@ -19480,7 +14692,6 @@ const PRODUCTS = [
     name: "Red Bull",
     quantity: "250ml",
     price: 115,
-    emoji: "⚡",
     imageUrl: "/assets/generated/red-bull.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Beverages",
@@ -19491,7 +14702,6 @@ const PRODUCTS = [
     name: "Lassi Pouch",
     quantity: "200ml",
     price: 20,
-    emoji: "🥛",
     imageUrl: "/assets/generated/lassi-pouch.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Beverages",
@@ -19502,7 +14712,6 @@ const PRODUCTS = [
     name: "Rooh Afza",
     quantity: "750ml",
     price: 180,
-    emoji: "🌹",
     imageUrl: "/assets/generated/rooh-afza.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Beverages",
@@ -19514,7 +14723,6 @@ const PRODUCTS = [
     name: "Lays Classic",
     quantity: "50g",
     price: 20,
-    emoji: "🥔",
     imageUrl: "/assets/generated/lays.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Snacks",
@@ -19525,7 +14733,6 @@ const PRODUCTS = [
     name: "Kurkure Masala",
     quantity: "60g",
     price: 20,
-    emoji: "🌶️",
     imageUrl: "/assets/generated/kurkure.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Snacks",
@@ -19536,7 +14743,6 @@ const PRODUCTS = [
     name: "Bingo Chips",
     quantity: "60g",
     price: 20,
-    emoji: "🍟",
     imageUrl: "/assets/generated/bingo.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Snacks",
@@ -19547,7 +14753,6 @@ const PRODUCTS = [
     name: "Haldiram Bhujia",
     quantity: "200g",
     price: 70,
-    emoji: "🌟",
     imageUrl: "/assets/generated/haldiram-bhujia.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Snacks",
@@ -19558,7 +14763,6 @@ const PRODUCTS = [
     name: "Act II Popcorn",
     quantity: "30g",
     price: 15,
-    emoji: "🍿",
     imageUrl: "/assets/generated/act2-popcorn.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Snacks",
@@ -19569,7 +14773,6 @@ const PRODUCTS = [
     name: "Parle G Biscuit",
     quantity: "200g",
     price: 15,
-    emoji: "🍪",
     imageUrl: "/assets/generated/parle-g.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Snacks",
@@ -19580,7 +14783,6 @@ const PRODUCTS = [
     name: "Monaco Crackers",
     quantity: "200g",
     price: 25,
-    emoji: "🟡",
     imageUrl: "/assets/generated/monaco.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Snacks",
@@ -19591,7 +14793,6 @@ const PRODUCTS = [
     name: "Maggi Masala",
     quantity: "70g",
     price: 14,
-    emoji: "🍜",
     imageUrl: "/assets/generated/maggi-masala.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Snacks",
@@ -19602,7 +14803,6 @@ const PRODUCTS = [
     name: "Good Day Cookies",
     quantity: "100g",
     price: 25,
-    emoji: "🍪",
     imageUrl: "/assets/generated/good-day.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Snacks",
@@ -19613,7 +14813,6 @@ const PRODUCTS = [
     name: "Namkeen Mix",
     quantity: "200g",
     price: 40,
-    emoji: "🥜",
     imageUrl: "/assets/generated/namkeen-mix.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Snacks",
@@ -19625,7 +14824,6 @@ const PRODUCTS = [
     name: "Dairy Milk",
     quantity: "40g",
     price: 20,
-    emoji: "🍫",
     imageUrl: "/assets/generated/dairy-milk.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Chocolates",
@@ -19636,7 +14834,6 @@ const PRODUCTS = [
     name: "Kit Kat",
     quantity: "4-finger",
     price: 20,
-    emoji: "🍫",
     imageUrl: "/assets/generated/kitkat.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Chocolates",
@@ -19645,9 +14842,8 @@ const PRODUCTS = [
   {
     id: 35,
     name: "Munch",
-    quantity: "13g",
+    quantity: "1pc",
     price: 10,
-    emoji: "🍫",
     imageUrl: "/assets/generated/munch.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Chocolates",
@@ -19656,9 +14852,8 @@ const PRODUCTS = [
   {
     id: 36,
     name: "5 Star",
-    quantity: "22g",
-    price: 10,
-    emoji: "⭐",
+    quantity: "1pc",
+    price: 20,
     imageUrl: "/assets/generated/5star.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Chocolates",
@@ -19667,9 +14862,8 @@ const PRODUCTS = [
   {
     id: 37,
     name: "Perk",
-    quantity: "13g",
+    quantity: "1pc",
     price: 10,
-    emoji: "🍫",
     imageUrl: "/assets/generated/perk.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Chocolates",
@@ -19678,9 +14872,8 @@ const PRODUCTS = [
   {
     id: 38,
     name: "Bounty",
-    quantity: "57g",
-    price: 50,
-    emoji: "🥥",
+    quantity: "1pc",
+    price: 30,
     imageUrl: "/assets/generated/bounty.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Chocolates",
@@ -19690,8 +14883,7 @@ const PRODUCTS = [
     id: 39,
     name: "Ferrero Rocher",
     quantity: "3pc",
-    price: 99,
-    emoji: "✨",
+    price: 120,
     imageUrl: "/assets/generated/ferrero.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Chocolates",
@@ -19702,7 +14894,6 @@ const PRODUCTS = [
     name: "Snickers",
     quantity: "50g",
     price: 40,
-    emoji: "🥜",
     imageUrl: "/assets/generated/snickers.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Chocolates",
@@ -19714,7 +14905,6 @@ const PRODUCTS = [
     name: "Amul Milk",
     quantity: "500ml",
     price: 28,
-    emoji: "🥛",
     imageUrl: "/assets/generated/amul-milk.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Dairy",
@@ -19725,7 +14915,6 @@ const PRODUCTS = [
     name: "Amul Butter",
     quantity: "100g",
     price: 55,
-    emoji: "🧈",
     imageUrl: "/assets/generated/amul-butter.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Dairy",
@@ -19736,7 +14925,6 @@ const PRODUCTS = [
     name: "Amul Cheese Slice",
     quantity: "200g",
     price: 90,
-    emoji: "🧀",
     imageUrl: "/assets/generated/amul-cheese.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Dairy",
@@ -19747,7 +14935,6 @@ const PRODUCTS = [
     name: "Curd",
     quantity: "400g",
     price: 30,
-    emoji: "🥛",
     imageUrl: "/assets/generated/curd.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Dairy",
@@ -19758,7 +14945,6 @@ const PRODUCTS = [
     name: "Paneer",
     quantity: "200g",
     price: 80,
-    emoji: "🤍",
     imageUrl: "/assets/generated/paneer.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Dairy",
@@ -19769,7 +14955,6 @@ const PRODUCTS = [
     name: "Amul Ice Cream",
     quantity: "500ml",
     price: 120,
-    emoji: "🍦",
     imageUrl: "/assets/generated/amul-icecream.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Dairy",
@@ -19780,7 +14965,6 @@ const PRODUCTS = [
     name: "Amul Lassi",
     quantity: "200ml",
     price: 25,
-    emoji: "🥛",
     imageUrl: "/assets/generated/amul-lassi.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Dairy",
@@ -19791,7 +14975,6 @@ const PRODUCTS = [
     name: "Condensed Milk",
     quantity: "400g",
     price: 70,
-    emoji: "🍮",
     imageUrl: "/assets/generated/condensed-milk.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Dairy",
@@ -19803,7 +14986,6 @@ const PRODUCTS = [
     name: "Britannia Bread",
     quantity: "400g",
     price: 40,
-    emoji: "🍞",
     imageUrl: "/assets/generated/britannia-bread.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Bakery",
@@ -19814,7 +14996,6 @@ const PRODUCTS = [
     name: "Britannia Cake",
     quantity: "65g",
     price: 20,
-    emoji: "🎂",
     imageUrl: "/assets/generated/britannia-cake.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Bakery",
@@ -19825,7 +15006,6 @@ const PRODUCTS = [
     name: "Jim Jam Biscuits",
     quantity: "150g",
     price: 25,
-    emoji: "🍪",
     imageUrl: "/assets/generated/jim-jam.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Bakery",
@@ -19836,7 +15016,6 @@ const PRODUCTS = [
     name: "Marie Gold",
     quantity: "250g",
     price: 30,
-    emoji: "🍪",
     imageUrl: "/assets/generated/marie-gold.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Bakery",
@@ -19847,7 +15026,6 @@ const PRODUCTS = [
     name: "Toast Rusk",
     quantity: "250g",
     price: 35,
-    emoji: "🍞",
     imageUrl: "/assets/generated/toast-rusk.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Bakery",
@@ -19858,7 +15036,6 @@ const PRODUCTS = [
     name: "Pav Buns",
     quantity: "6pc",
     price: 30,
-    emoji: "🥖",
     imageUrl: "/assets/generated/pav-buns.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Bakery",
@@ -19870,7 +15047,6 @@ const PRODUCTS = [
     name: "Classmate Notebook",
     quantity: "200pg",
     price: 60,
-    emoji: "📓",
     imageUrl: "/assets/generated/classmate-notebook.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Stationery",
@@ -19881,7 +15057,6 @@ const PRODUCTS = [
     name: "Graph Copy A4",
     quantity: "1pc",
     price: 20,
-    emoji: "📊",
     imageUrl: "/assets/generated/graph-copy.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Stationery",
@@ -19892,7 +15067,6 @@ const PRODUCTS = [
     name: "Project File A4",
     quantity: "1pc",
     price: 25,
-    emoji: "📁",
     imageUrl: "/assets/generated/project-file.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Stationery",
@@ -19903,7 +15077,6 @@ const PRODUCTS = [
     name: "L-Folder",
     quantity: "1pc",
     price: 15,
-    emoji: "📂",
     imageUrl: "/assets/generated/l-folder.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Stationery",
@@ -19914,7 +15087,6 @@ const PRODUCTS = [
     name: "Reynolds Pen Blue",
     quantity: "1pc",
     price: 10,
-    emoji: "🖊️",
     imageUrl: "/assets/generated/reynolds-pen.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Stationery",
@@ -19925,7 +15097,6 @@ const PRODUCTS = [
     name: "HB Pencil Set",
     quantity: "10pc",
     price: 30,
-    emoji: "✏️",
     imageUrl: "/assets/generated/hb-pencil.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Stationery",
@@ -19936,7 +15107,6 @@ const PRODUCTS = [
     name: "Stapler Mini",
     quantity: "1pc",
     price: 45,
-    emoji: "📎",
     imageUrl: "/assets/generated/stapler.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Stationery",
@@ -19947,7 +15117,6 @@ const PRODUCTS = [
     name: "Highlighter Set",
     quantity: "4pc",
     price: 60,
-    emoji: "🖍️",
     imageUrl: "/assets/generated/highlighter.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Stationery",
@@ -19958,7 +15127,6 @@ const PRODUCTS = [
     name: "Sticky Notes",
     quantity: "100pc",
     price: 35,
-    emoji: "🗒️",
     imageUrl: "/assets/generated/sticky-notes.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Stationery",
@@ -19969,7 +15137,6 @@ const PRODUCTS = [
     name: "Scientific Calculator",
     quantity: "1pc",
     price: 250,
-    emoji: "🔢",
     imageUrl: "/assets/generated/calculator.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Stationery",
@@ -19981,7 +15148,6 @@ const PRODUCTS = [
     name: "Colgate Toothpaste",
     quantity: "150g",
     price: 65,
-    emoji: "🦷",
     imageUrl: "/assets/generated/colgate.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Personal Care",
@@ -19992,7 +15158,6 @@ const PRODUCTS = [
     name: "Pepsodent Toothbrush",
     quantity: "1pc",
     price: 35,
-    emoji: "🪥",
     imageUrl: "/assets/generated/toothbrush.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Personal Care",
@@ -20003,7 +15168,6 @@ const PRODUCTS = [
     name: "Dove Soap",
     quantity: "75g",
     price: 45,
-    emoji: "🧼",
     imageUrl: "/assets/generated/dove-soap.dim_300x300.jpg",
     vibe: "Earth Friendly",
     category: "Personal Care",
@@ -20014,7 +15178,6 @@ const PRODUCTS = [
     name: "Head & Shoulders",
     quantity: "180ml",
     price: 160,
-    emoji: "💆",
     imageUrl: "/assets/generated/head-shoulders.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Personal Care",
@@ -20025,7 +15188,6 @@ const PRODUCTS = [
     name: "Dettol Hand Wash",
     quantity: "200ml",
     price: 80,
-    emoji: "🤲",
     imageUrl: "/assets/generated/dettol-handwash.dim_300x300.jpg",
     vibe: "Earth Friendly",
     category: "Personal Care",
@@ -20036,7 +15198,6 @@ const PRODUCTS = [
     name: "Vaseline Lotion",
     quantity: "200ml",
     price: 110,
-    emoji: "💧",
     imageUrl: "/assets/generated/vaseline.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Personal Care",
@@ -20047,7 +15208,6 @@ const PRODUCTS = [
     name: "Gillette Razor",
     quantity: "2pc",
     price: 60,
-    emoji: "🪒",
     imageUrl: "/assets/generated/gillette-razor.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Personal Care",
@@ -20058,7 +15218,6 @@ const PRODUCTS = [
     name: "Whisper Ultra",
     quantity: "7pc",
     price: 55,
-    emoji: "🌸",
     imageUrl: "/assets/generated/whisper.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Personal Care",
@@ -20070,7 +15229,6 @@ const PRODUCTS = [
     name: "Ariel Detergent",
     quantity: "500g",
     price: 110,
-    emoji: "🫧",
     imageUrl: "/assets/generated/ariel.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Household",
@@ -20081,7 +15239,6 @@ const PRODUCTS = [
     name: "Vim Dishwash Bar",
     quantity: "200g",
     price: 30,
-    emoji: "🧽",
     imageUrl: "/assets/generated/vim.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Household",
@@ -20092,7 +15249,6 @@ const PRODUCTS = [
     name: "Colin Glass Cleaner",
     quantity: "500ml",
     price: 85,
-    emoji: "🪟",
     imageUrl: "/assets/generated/colin.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Household",
@@ -20103,7 +15259,6 @@ const PRODUCTS = [
     name: "Harpic Toilet Cleaner",
     quantity: "500ml",
     price: 90,
-    emoji: "🚽",
     imageUrl: "/assets/generated/harpic.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Household",
@@ -20114,7 +15269,6 @@ const PRODUCTS = [
     name: "Odomos Mosquito Coil",
     quantity: "10pc",
     price: 30,
-    emoji: "🌙",
     imageUrl: "/assets/generated/odomos.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Household",
@@ -20125,7 +15279,6 @@ const PRODUCTS = [
     name: "Scotch-Brite Scrubber",
     quantity: "2pc",
     price: 40,
-    emoji: "🧹",
     imageUrl: "/assets/generated/scotch-brite.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Household",
@@ -20136,7 +15289,6 @@ const PRODUCTS = [
     name: "Phenyl Floor Cleaner",
     quantity: "500ml",
     price: 60,
-    emoji: "🏠",
     imageUrl: "/assets/generated/phenyl.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Household",
@@ -20147,7 +15299,6 @@ const PRODUCTS = [
     name: "Candle Pack",
     quantity: "12pc",
     price: 30,
-    emoji: "🕯️",
     imageUrl: "/assets/generated/candle.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Household",
@@ -20159,7 +15310,6 @@ const PRODUCTS = [
     name: "Maggi 2min Noodles",
     quantity: "4pk",
     price: 56,
-    emoji: "🍜",
     imageUrl: "/assets/generated/maggi-noodles.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Instant Food",
@@ -20170,7 +15320,6 @@ const PRODUCTS = [
     name: "Yippee Noodles",
     quantity: "70g",
     price: 14,
-    emoji: "🍜",
     imageUrl: "/assets/generated/yippee.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Instant Food",
@@ -20181,7 +15330,6 @@ const PRODUCTS = [
     name: "Top Ramen",
     quantity: "70g",
     price: 14,
-    emoji: "🍜",
     imageUrl: "/assets/generated/top-ramen.dim_300x300.jpg",
     vibe: "Student Fave",
     category: "Instant Food",
@@ -20192,7 +15340,6 @@ const PRODUCTS = [
     name: "Knorr Soup Tomato",
     quantity: "55g",
     price: 35,
-    emoji: "🥣",
     imageUrl: "/assets/generated/knorr-soup.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Instant Food",
@@ -20203,7 +15350,6 @@ const PRODUCTS = [
     name: "MTR Dal Makhani",
     quantity: "300g",
     price: 85,
-    emoji: "🍛",
     imageUrl: "/assets/generated/mtr-dal.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Instant Food",
@@ -20214,7 +15360,6 @@ const PRODUCTS = [
     name: "Haldiram Ready Meal",
     quantity: "300g",
     price: 90,
-    emoji: "🍱",
     imageUrl: "/assets/generated/haldiram-meal.dim_300x300.jpg",
     vibe: "Chef's Choice",
     category: "Instant Food",
@@ -20225,7 +15370,6 @@ const PRODUCTS = [
     name: "Poha",
     quantity: "500g",
     price: 40,
-    emoji: "🍽️",
     imageUrl: "/assets/generated/poha.dim_300x300.jpg",
     vibe: "Daily Essential",
     category: "Instant Food",
@@ -20236,94 +15380,62 @@ const PRODUCTS = [
     name: "Quaker Oats",
     quantity: "500g",
     price: 120,
-    emoji: "🌾",
     imageUrl: "/assets/generated/quaker-oats.dim_300x300.jpg",
     vibe: "Earth Friendly",
     category: "Instant Food",
     available: true
   }
 ];
-const CATEGORY_IMAGES = {
-  "Fresh Produce": "/assets/generated/cat-fresh-produce.dim_300x300.jpg",
-  Beverages: "/assets/generated/cat-beverages.dim_300x300.jpg",
-  Snacks: "/assets/generated/cat-snacks.dim_300x300.jpg",
-  Chocolates: "/assets/generated/cat-chocolates.dim_300x300.jpg",
-  Dairy: "/assets/generated/cat-dairy.dim_300x300.jpg",
-  Bakery: "/assets/generated/cat-bakery.dim_300x300.jpg",
-  Stationery: "/assets/generated/cat-stationery.dim_300x300.jpg",
-  "Personal Care": "/assets/generated/cat-personal-care.dim_300x300.jpg",
-  Household: "/assets/generated/cat-household.dim_300x300.jpg",
-  "Instant Food": "/assets/generated/cat-instant-food.dim_300x300.jpg"
-};
 const CATEGORIES = [
+  { name: "Fresh Produce", emoji: "🥬" },
+  { name: "Beverages", emoji: "🥤" },
+  { name: "Snacks", emoji: "🍿" },
+  { name: "Chocolates", emoji: "🍫" },
+  { name: "Dairy", emoji: "🥛" },
+  { name: "Bakery", emoji: "🍞" },
+  { name: "Stationery", emoji: "📚" },
+  { name: "Personal Care", emoji: "🧴" },
+  { name: "Household", emoji: "🏠" },
+  { name: "Instant Food", emoji: "🍜" }
+];
+const DAILY_DEALS = [
   {
-    name: "Fresh Produce",
-    emoji: "🥬",
-    color: "from-emerald-900/60 to-emerald-700/30",
-    span: "col-span-2"
+    id: 1,
+    title: "Fresh Veggies Combo",
+    discount: "20% OFF",
+    img: "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&q=80"
   },
   {
-    name: "Beverages",
-    emoji: "🥤",
-    color: "from-blue-900/60 to-blue-700/30",
-    span: ""
+    id: 2,
+    title: "Cold Drinks Party Pack",
+    discount: "BUY 2 GET 1",
+    img: "https://images.unsplash.com/photo-1581636625402-29b2a704ef13?w=600&q=80"
   },
   {
-    name: "Snacks",
-    emoji: "🍿",
-    color: "from-yellow-900/60 to-yellow-700/30",
-    span: ""
+    id: 3,
+    title: "Snacks Bundle",
+    discount: "₹50 OFF",
+    img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&q=80"
   },
   {
-    name: "Chocolates",
-    emoji: "🍫",
-    color: "from-amber-900/60 to-amber-700/30",
-    span: ""
+    id: 4,
+    title: "Dairy Fresh Deals",
+    discount: "15% OFF",
+    img: "https://images.unsplash.com/photo-1628088062854-d1870b4553da?w=600&q=80"
   },
   {
-    name: "Dairy",
-    emoji: "🥛",
-    color: "from-slate-800/60 to-slate-600/30",
-    span: "col-span-2"
+    id: 5,
+    title: "Chocolate Lovers",
+    discount: "3 FOR ₹50",
+    img: "https://images.unsplash.com/photo-1548907040-4baa42d10919?w=600&q=80"
   },
   {
-    name: "Bakery",
-    emoji: "🍞",
-    color: "from-orange-900/60 to-orange-700/30",
-    span: ""
-  },
-  {
-    name: "Stationery",
-    emoji: "📚",
-    color: "from-indigo-900/60 to-indigo-700/30",
-    span: ""
-  },
-  {
-    name: "Personal Care",
-    emoji: "🧴",
-    color: "from-pink-900/60 to-pink-700/30",
-    span: ""
-  },
-  {
-    name: "Household",
-    emoji: "🏠",
-    color: "from-teal-900/60 to-teal-700/30",
-    span: ""
-  },
-  {
-    name: "Instant Food",
-    emoji: "🍜",
-    color: "from-red-900/60 to-red-700/30",
-    span: "col-span-2"
+    id: 6,
+    title: "Student Stationery",
+    discount: "10% OFF",
+    img: "https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?w=600&q=80"
   }
 ];
-const VIBE_STYLES = {
-  "Freshly Picked": "bg-gradient-to-r from-emerald-600 to-green-400 text-white",
-  "Chef's Choice": "bg-gradient-to-r from-amber-600 to-yellow-400 text-black",
-  "Earth Friendly": "bg-gradient-to-r from-teal-600 to-cyan-400 text-white",
-  "Student Fave": "bg-gradient-to-r from-purple-600 to-violet-400 text-white",
-  "Daily Essential": "bg-gradient-to-r from-blue-600 to-sky-400 text-white"
-};
 const WHEEL_PRIZES = [
   "10% OFF",
   "Free Item!",
@@ -20334,699 +15446,645 @@ const WHEEL_PRIZES = [
   "5% OFF",
   "Bumper Prize!"
 ];
-function VibeBadge({ vibe }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "span",
-    {
-      className: `text-[10px] font-bold px-2 py-0.5 rounded-full ${VIBE_STYLES[vibe]}`,
-      children: vibe
+function LuckyDraw() {
+  const [spinning, setSpinning] = reactExports.useState(false);
+  const [prize, setPrize] = reactExports.useState(null);
+  const [deg, setDeg] = reactExports.useState(0);
+  const lastSpun = reactExports.useRef(null);
+  const spin = reactExports.useCallback(() => {
+    if (spinning) return;
+    const today = (/* @__PURE__ */ new Date()).toDateString();
+    if (lastSpun.current === today) {
+      ue.info("You've already spun today! Come back tomorrow.");
+      return;
     }
-  );
+    setSpinning(true);
+    setPrize(null);
+    const idx = Math.floor(Math.random() * WHEEL_PRIZES.length);
+    const extraSpins = 5;
+    const targetDeg = deg + extraSpins * 360 + 360 / WHEEL_PRIZES.length * idx;
+    setDeg(targetDeg);
+    setTimeout(() => {
+      setSpinning(false);
+      setPrize(WHEEL_PRIZES[idx]);
+      lastSpun.current = today;
+    }, 3500);
+  }, [spinning, deg]);
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "py-16 bg-black", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4 text-center", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "font-archivo text-3xl md:text-4xl text-white mb-2", children: "LUCKY DRAW" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[#AAFF00] font-inter mb-8", children: "Spin once a day to win exclusive offers!" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center gap-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          className: "relative w-48 h-48 rounded-full border-4 border-[#AAFF00]",
+          style: {
+            transition: spinning ? "transform 3.5s cubic-bezier(0.17,0.67,0.12,0.99)" : "none",
+            transform: `rotate(${deg}deg)`
+          },
+          children: [
+            WHEEL_PRIZES.map((p, i) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "div",
+              {
+                className: "absolute w-full h-full flex items-start justify-center",
+                style: {
+                  transform: `rotate(${360 / WHEEL_PRIZES.length * i}deg)`
+                },
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] font-bold text-white mt-2 block max-w-[40px] text-center leading-tight", children: p })
+              },
+              p
+            )),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-2 rounded-full bg-black border-2 border-white/20 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { size: 24, className: "text-[#AAFF00]" }) })
+          ]
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          type: "button",
+          onClick: spin,
+          disabled: spinning,
+          className: "px-8 py-3 bg-[#AAFF00] text-black font-archivo font-bold uppercase border-4 border-black shadow-[4px_4px_0px_#fff] hover:shadow-[6px_6px_0px_#fff] transition-all disabled:opacity-50",
+          children: spinning ? "SPINNING..." : "SPIN NOW"
+        }
+      ),
+      prize && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-[#AAFF00] border-4 border-black shadow-[6px_6px_0px_#000] px-8 py-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-archivo text-2xl text-black", children: [
+        "🎉 YOU WON: ",
+        prize,
+        "!"
+      ] }) })
+    ] })
+  ] }) });
+}
+function PaymentModal({ items, onClose }) {
+  const [payMethod, setPayMethod] = reactExports.useState("upi");
+  const [name, setName] = reactExports.useState("");
+  const [phone, setPhone] = reactExports.useState("");
+  const [address, setAddress] = reactExports.useState("");
+  const [pincode, setPincode] = reactExports.useState("");
+  const [upiId, setUpiId] = reactExports.useState("");
+  const [cardNum, setCardNum] = reactExports.useState("");
+  const [expiry, setExpiry] = reactExports.useState("");
+  const [cvv, setCvv] = reactExports.useState("");
+  const [ordered, setOrdered] = reactExports.useState(false);
+  const subtotal = items.reduce((s, i) => s + i.price * i.cartQty, 0);
+  const deliveryFee = subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
+  const total = subtotal + deliveryFee;
+  const belowMin = subtotal < MIN_ORDER;
+  const handleOrder = () => {
+    if (belowMin) {
+      ue.error(`Minimum order is ₹${MIN_ORDER}`);
+      return;
+    }
+    if (!name || !phone || !address || !pincode) {
+      ue.error("Please fill all address fields");
+      return;
+    }
+    setOrdered(true);
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center bg-black/60", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-white border-4 border-black shadow-[8px_8px_0px_#000] w-full max-w-2xl max-h-[90vh] overflow-y-auto mx-4", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between p-4 border-b-4 border-black bg-black", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "font-archivo text-xl text-[#AAFF00]", children: "CHECKOUT" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          type: "button",
+          onClick: onClose,
+          className: "text-white hover:text-[#AAFF00]",
+          children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 24 })
+        }
+      )
+    ] }),
+    ordered ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-8 text-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-6xl mb-4", children: "🎉" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-archivo text-3xl text-black mb-2", children: "ORDER PLACED!" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-inter text-gray-600 mb-4", children: [
+        "Your order of ₹",
+        total,
+        " is confirmed. Expected delivery in 10 minutes!"
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-inter text-sm text-gray-500 mb-6", children: "Contact: 7895784954 | GBPIET, PAURI" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          type: "button",
+          onClick: onClose,
+          className: "px-8 py-3 bg-[#AAFF00] text-black font-archivo border-4 border-black shadow-[4px_4px_0px_#000] hover:shadow-[6px_6px_0px_#000] transition-all",
+          children: "CONTINUE SHOPPING"
+        }
+      )
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6 space-y-6", children: [
+      belowMin && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-red-100 border-2 border-red-500 p-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-inter text-red-700 text-sm font-bold", children: [
+        "Minimum order value is ₹",
+        MIN_ORDER,
+        ". Please add more items."
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-archivo text-lg text-black mb-3 border-b-2 border-black pb-2", children: "DELIVERY ADDRESS" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              className: "border-2 border-black p-2 font-inter text-sm focus:outline-none focus:border-[#AAFF00]",
+              placeholder: "Full Name",
+              value: name,
+              onChange: (e) => setName(e.target.value)
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              className: "border-2 border-black p-2 font-inter text-sm focus:outline-none focus:border-[#AAFF00]",
+              placeholder: "Phone Number",
+              value: phone,
+              onChange: (e) => setPhone(e.target.value)
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              className: "border-2 border-black p-2 font-inter text-sm col-span-1 sm:col-span-2 focus:outline-none focus:border-[#AAFF00]",
+              placeholder: "Full Address",
+              value: address,
+              onChange: (e) => setAddress(e.target.value)
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              className: "border-2 border-black p-2 font-inter text-sm focus:outline-none focus:border-[#AAFF00]",
+              placeholder: "Pincode",
+              value: pincode,
+              onChange: (e) => setPincode(e.target.value)
+            }
+          )
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-archivo text-lg text-black mb-3 border-b-2 border-black pb-2", children: "PAYMENT METHOD" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-3 mb-4", children: ["upi", "card", "cod"].map((m) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            type: "button",
+            onClick: () => setPayMethod(m),
+            className: `flex-1 py-2 font-archivo text-sm border-2 border-black transition-all ${payMethod === m ? "bg-black text-[#AAFF00]" : "bg-white text-black hover:bg-gray-100"}`,
+            children: m === "upi" ? "UPI" : m === "card" ? "CARD" : "CASH ON DELIVERY"
+          },
+          m
+        )) }),
+        payMethod === "upi" && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            className: "w-full border-2 border-black p-2 font-inter text-sm focus:outline-none focus:border-[#AAFF00]",
+            placeholder: "Enter UPI ID (e.g. name@upi)",
+            value: upiId,
+            onChange: (e) => setUpiId(e.target.value)
+          }
+        ),
+        payMethod === "card" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              className: "w-full border-2 border-black p-2 font-inter text-sm focus:outline-none focus:border-[#AAFF00]",
+              placeholder: "Card Number",
+              value: cardNum,
+              onChange: (e) => setCardNum(e.target.value)
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                className: "border-2 border-black p-2 font-inter text-sm focus:outline-none focus:border-[#AAFF00]",
+                placeholder: "MM/YY",
+                value: expiry,
+                onChange: (e) => setExpiry(e.target.value)
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                className: "border-2 border-black p-2 font-inter text-sm focus:outline-none focus:border-[#AAFF00]",
+                placeholder: "CVV",
+                value: cvv,
+                onChange: (e) => setCvv(e.target.value)
+              }
+            )
+          ] })
+        ] }),
+        payMethod === "cod" && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-inter text-sm text-gray-600 bg-gray-100 border-2 border-gray-300 p-3", children: "Pay cash when your order arrives. No additional charges." })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-archivo text-lg text-black mb-3 border-b-2 border-black pb-2", children: "ORDER SUMMARY" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-2 mb-3", children: items.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "flex justify-between font-inter text-sm",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+                item.name,
+                " × ",
+                item.cartQty
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-bold", children: [
+                "₹",
+                item.price * item.cartQty
+              ] })
+            ]
+          },
+          item.id
+        )) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t-2 border-black pt-2 space-y-1", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between font-inter text-sm", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Subtotal" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+              "₹",
+              subtotal
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between font-inter text-sm", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Delivery Fee" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "span",
+              {
+                className: deliveryFee === 0 ? "text-green-600 font-bold" : "",
+                children: deliveryFee === 0 ? "FREE" : `₹${deliveryFee}`
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between font-archivo text-lg border-t-2 border-black pt-2 mt-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "TOTAL" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+              "₹",
+              total
+            ] })
+          ] })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          type: "button",
+          onClick: handleOrder,
+          disabled: belowMin,
+          className: "w-full py-4 bg-[#AAFF00] text-black font-archivo text-lg border-4 border-black shadow-[4px_4px_0px_#000] hover:shadow-[6px_6px_0px_#000] disabled:opacity-40 disabled:cursor-not-allowed transition-all",
+          children: [
+            "PLACE ORDER — ₹",
+            total
+          ]
+        }
+      )
+    ] })
+  ] }) });
+}
+function SidebarCart({
+  open,
+  cart,
+  onClose,
+  onQtyChange,
+  onCheckout
+}) {
+  const subtotal = cart.reduce((s, i) => s + i.price * i.cartQty, 0);
+  const deliveryFee = subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
+  const total = subtotal + deliveryFee;
+  const belowMin = subtotal > 0 && subtotal < MIN_ORDER;
+  const progressPct = Math.min(subtotal / FREE_DELIVERY_THRESHOLD * 100, 100);
+  const needed = FREE_DELIVERY_THRESHOLD - subtotal;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: `fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 ${open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`,
+        onClick: onClose,
+        onKeyDown: (e) => e.key === "Escape" && onClose(),
+        role: "button",
+        tabIndex: -1
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "div",
+      {
+        className: `fixed top-0 right-0 z-50 h-full w-[380px] max-w-full bg-white border-l-4 border-black flex flex-col transition-transform duration-300 ease-in-out ${open ? "translate-x-0" : "translate-x-full"}`,
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between p-4 border-b-4 border-black bg-black", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "font-archivo text-xl text-[#AAFF00]", children: "YOUR CART" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                type: "button",
+                onClick: onClose,
+                className: "text-white hover:text-[#AAFF00] transition-colors",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 24 })
+              }
+            )
+          ] }),
+          cart.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center justify-center gap-4 p-8", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { size: 64, className: "text-gray-300" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-inter text-gray-500 text-center", children: [
+              "Your cart is empty.",
+              /* @__PURE__ */ jsxRuntimeExports.jsx("br", {}),
+              "Add some items to get started!"
+            ] })
+          ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 border-b-2 border-gray-200 bg-gray-50", children: subtotal < FREE_DELIVERY_THRESHOLD ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-inter text-sm text-gray-700 mb-2", children: [
+                "Add ",
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-bold text-black", children: [
+                  "₹",
+                  needed
+                ] }),
+                " ",
+                "more for",
+                " ",
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-bold text-[#AAFF00] bg-black px-1", children: "FREE DELIVERY!" })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full h-3 bg-gray-200 border-2 border-black", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "div",
+                {
+                  className: "h-full bg-[#AAFF00] transition-all duration-500",
+                  style: { width: `${progressPct}%` }
+                }
+              ) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-inter text-xs text-gray-500 mt-1", children: [
+                Math.round(progressPct),
+                "% to free delivery"
+              ] })
+            ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-inter text-sm font-bold text-green-700", children: "🎉 You've unlocked FREE delivery!" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-4 space-y-3", children: cart.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "div",
+              {
+                className: "flex gap-3 border-2 border-black p-2 shadow-[3px_3px_0px_#000]",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "img",
+                    {
+                      src: item.imageUrl || "/assets/generated/cat-snacks.dim_300x300.jpg",
+                      alt: item.name,
+                      className: "w-14 h-14 object-cover border-2 border-black flex-shrink-0"
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-inter font-bold text-sm text-black truncate", children: item.name }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-inter text-xs text-gray-500", children: item.quantity }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-inter font-bold text-sm text-black", children: [
+                      "₹",
+                      item.price * item.cartQty
+                    ] })
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center gap-1", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "button",
+                      {
+                        type: "button",
+                        onClick: () => onQtyChange(item.id, 1),
+                        className: "w-7 h-7 bg-black text-[#AAFF00] font-bold flex items-center justify-center hover:bg-gray-800 transition-colors",
+                        children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 14 })
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-inter font-bold text-sm w-7 text-center", children: item.cartQty }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "button",
+                      {
+                        type: "button",
+                        onClick: () => onQtyChange(item.id, -1),
+                        className: "w-7 h-7 bg-black text-white font-bold flex items-center justify-center hover:bg-gray-800 transition-colors",
+                        children: /* @__PURE__ */ jsxRuntimeExports.jsx(Minus, { size: 14 })
+                      }
+                    )
+                  ] })
+                ]
+              },
+              item.id
+            )) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 border-t-4 border-black", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1 mb-3", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between font-inter text-sm", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Subtotal" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+                    "₹",
+                    subtotal
+                  ] })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between font-inter text-sm", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Delivery Fee" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "span",
+                    {
+                      className: deliveryFee === 0 ? "text-green-600 font-bold" : "",
+                      children: deliveryFee === 0 ? "FREE 🎉" : `₹${deliveryFee}`
+                    }
+                  )
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between font-archivo text-lg border-t-2 border-black pt-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "TOTAL" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+                    "₹",
+                    total
+                  ] })
+                ] })
+              ] }),
+              belowMin && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-inter text-xs text-red-600 font-bold mb-2", children: [
+                "⚠ Minimum order is ₹",
+                MIN_ORDER,
+                ". Add more items."
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  onClick: onCheckout,
+                  disabled: cart.length === 0 || belowMin,
+                  className: "w-full py-3 bg-black text-white font-archivo border-4 border-black shadow-[4px_4px_0px_#AAFF00] hover:shadow-[6px_6px_0px_#AAFF00] disabled:opacity-40 disabled:cursor-not-allowed transition-all",
+                  children: "PROCEED TO CHECKOUT"
+                }
+              )
+            ] })
+          ] })
+        ]
+      }
+    )
+  ] });
+}
+function DailyDealsSlider() {
+  const trackRef = reactExports.useRef(null);
+  const isDragging = reactExports.useRef(false);
+  const startX = reactExports.useRef(0);
+  const scrollLeft = reactExports.useRef(0);
+  const onMouseDown = (e) => {
+    var _a2, _b2;
+    isDragging.current = true;
+    startX.current = e.pageX - (((_a2 = trackRef.current) == null ? void 0 : _a2.offsetLeft) ?? 0);
+    scrollLeft.current = ((_b2 = trackRef.current) == null ? void 0 : _b2.scrollLeft) ?? 0;
+    if (trackRef.current) trackRef.current.style.cursor = "grabbing";
+  };
+  const onMouseMove = (e) => {
+    var _a2;
+    if (!isDragging.current) return;
+    e.preventDefault();
+    const x2 = e.pageX - (((_a2 = trackRef.current) == null ? void 0 : _a2.offsetLeft) ?? 0);
+    const walk = (x2 - startX.current) * 1.5;
+    if (trackRef.current)
+      trackRef.current.scrollLeft = scrollLeft.current - walk;
+  };
+  const onMouseUp = () => {
+    isDragging.current = false;
+    if (trackRef.current) trackRef.current.style.cursor = "grab";
+  };
+  const scroll = (dir) => {
+    if (trackRef.current)
+      trackRef.current.scrollBy({
+        left: dir === "right" ? 320 : -320,
+        behavior: "smooth"
+      });
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "py-12 bg-white border-y-4 border-black", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "font-archivo text-3xl md:text-4xl text-black", children: "DAILY DEALS" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            type: "button",
+            onClick: () => scroll("left"),
+            className: "w-10 h-10 bg-black text-[#AAFF00] border-2 border-black flex items-center justify-center hover:bg-[#AAFF00] hover:text-black transition-colors",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronLeft, { size: 20 })
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            type: "button",
+            onClick: () => scroll("right"),
+            className: "w-10 h-10 bg-black text-[#AAFF00] border-2 border-black flex items-center justify-center hover:bg-[#AAFF00] hover:text-black transition-colors",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { size: 20 })
+          }
+        )
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        ref: trackRef,
+        className: "flex gap-4 overflow-x-auto pb-2 select-none",
+        style: {
+          cursor: "grab",
+          scrollbarWidth: "none",
+          msOverflowStyle: "none"
+        },
+        onMouseDown,
+        onMouseMove,
+        onMouseUp,
+        onMouseLeave: onMouseUp,
+        children: DAILY_DEALS.map((deal) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "flex-shrink-0 w-72 border-4 border-black shadow-[6px_6px_0px_#000] hover:shadow-[6px_6px_0px_#AAFF00] transition-all overflow-hidden group",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative h-44 overflow-hidden", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "img",
+                  {
+                    src: deal.img,
+                    alt: deal.title,
+                    className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300",
+                    draggable: false
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "absolute top-3 right-3 bg-[#AAFF00] text-black font-archivo text-sm px-3 py-1 border-2 border-black shadow-[2px_2px_0px_#000]", children: deal.discount })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-white", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-archivo text-black text-lg", children: deal.title.toUpperCase() }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-inter text-sm text-gray-500 mt-1", children: "Limited time offer" })
+              ] })
+            ]
+          },
+          deal.id
+        ))
+      }
+    )
+  ] }) });
 }
 function ProductCard({
   product,
-  onAddToCart
+  onAddToCart,
+  onBuyNow
 }) {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(
     "div",
     {
-      className: "product-card relative rounded-2xl p-4 glass flex flex-col gap-2 cursor-pointer",
-      style: { boxShadow: "0 8px 32px rgba(0,0,0,0.4)" },
-      "data-ocid": `product.item.${product.id}`,
+      className: "product-card bg-white flex flex-col border-4 border-black transition-all duration-200",
+      style: { boxShadow: "6px 6px 0px #000" },
+      onMouseEnter: (e) => {
+        e.currentTarget.style.boxShadow = "6px 6px 0px #AAFF00";
+      },
+      onMouseLeave: (e) => {
+        e.currentTarget.style.boxShadow = "6px 6px 0px #000";
+      },
       children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative overflow-hidden rounded-xl bg-white/5 flex items-center justify-center h-28", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "img",
-            {
-              src: product.imageUrl || CATEGORY_IMAGES[product.category] || "/assets/generated/cat-snacks.dim_300x300.jpg",
-              alt: product.name,
-              className: "product-image w-full h-full object-cover rounded-xl",
-              onError: (e) => {
-                e.target.style.display = "none";
-              }
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-hidden h-32 border-b-4 border-black", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "img",
+          {
+            src: product.imageUrl || "/assets/generated/cat-snacks.dim_300x300.jpg",
+            alt: product.name,
+            className: "w-full h-full object-cover transition-transform duration-300 hover:scale-110",
+            onError: (e) => {
+              e.target.src = "/assets/generated/cat-snacks.dim_300x300.jpg";
             }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              type: "button",
-              className: "quick-add-btn absolute bottom-2 right-2 w-9 h-9 rounded-full bg-[#b5ff2e] text-black flex items-center justify-center font-bold text-lg glow-lime-sm",
-              onClick: (e) => {
-                e.stopPropagation();
-                onAddToCart(product);
-                ue.success(`${product.name} added to cart!`);
-              },
-              "data-ocid": `product.add_button.${product.id}`,
-              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 16 })
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(VibeBadge, { vibe: product.vibe }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-semibold text-sm text-foreground leading-tight mt-1", children: product.name }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground text-xs", children: product.quantity }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mt-1", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[#b5ff2e] font-bold text-base", children: [
+          }
+        ) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 flex flex-col flex-1 gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-inter font-bold text-black text-sm leading-tight", children: product.name }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-inter text-xs text-gray-500", children: product.quantity }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mt-auto", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-archivo text-lg text-black", children: [
               "₹",
               product.price
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "span",
               {
-                className: `text-[10px] px-2 py-0.5 rounded-full font-medium ${product.available ? "bg-emerald-500/20 text-emerald-400" : "bg-red-500/20 text-red-400"}`,
-                children: product.available ? "In Stock" : "Sold Out"
-              }
-            )
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            type: "button",
-            className: "btn-bounce mt-1 w-full py-2 rounded-xl bg-white/8 hover:bg-[#b5ff2e]/20 border border-white/10 hover:border-[#b5ff2e]/50 text-sm font-semibold text-foreground transition-all",
-            onClick: () => {
-              onAddToCart(product);
-              ue.success(`${product.name} added to cart!`);
-            },
-            "data-ocid": `product.primary_button.${product.id}`,
-            children: "Add to Cart"
-          }
-        )
-      ]
-    }
-  );
-}
-function SectionHeader({
-  title,
-  emoji,
-  onViewAll
-}) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-6", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "font-display font-800 text-2xl md:text-3xl text-foreground flex items-center gap-3", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: emoji }),
-      " ",
-      title
-    ] }),
-    onViewAll && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "button",
-      {
-        type: "button",
-        className: "text-[#b5ff2e] text-sm font-semibold flex items-center gap-1 hover:gap-2 transition-all",
-        onClick: onViewAll,
-        "data-ocid": "nav.link",
-        children: [
-          "View All ",
-          /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { size: 14 })
-        ]
-      }
-    )
-  ] });
-}
-function ProductGrid({
-  category,
-  products,
-  onAddToCart
-}) {
-  const catProducts = products.filter((p) => p.category === category);
-  const catInfo = CATEGORIES.find((c) => c.name === category);
-  if (!catProducts.length) return null;
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "mb-16", id: category.toLowerCase().replace(/ /g, "-"), children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx(SectionHeader, { title: category, emoji: (catInfo == null ? void 0 : catInfo.emoji) ?? "🛒" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4", children: catProducts.map((p) => /* @__PURE__ */ jsxRuntimeExports.jsx(ProductCard, { product: p, onAddToCart }, p.id)) })
-  ] });
-}
-function LuckyDraw() {
-  const [spinning, setSpinning] = reactExports.useState(false);
-  const [prize, setPrize] = reactExports.useState(null);
-  const [deg, setDeg] = reactExports.useState(0);
-  const [showResult, setShowResult] = reactExports.useState(false);
-  const lastSpun = reactExports.useRef(null);
-  const spin = reactExports.useCallback(() => {
-    if (spinning) return;
-    const today = (/* @__PURE__ */ new Date()).toDateString();
-    if (lastSpun.current === today) {
-      ue.error("You've already spun today! Come back tomorrow.");
-      return;
-    }
-    setSpinning(true);
-    setPrize(null);
-    const extra = 1440 + Math.floor(Math.random() * 360);
-    const newDeg = deg + extra;
-    setDeg(newDeg);
-    setTimeout(() => {
-      const idx = Math.floor((360 - newDeg % 360) / 360 * WHEEL_PRIZES.length) % WHEEL_PRIZES.length;
-      const won = WHEEL_PRIZES[idx];
-      setPrize(won);
-      setSpinning(false);
-      setShowResult(true);
-      lastSpun.current = today;
-    }, 3200);
-  }, [spinning, deg]);
-  const sliceAngle = 360 / WHEEL_PRIZES.length;
-  const colors = [
-    "#b5ff2e",
-    "#ff6b2b",
-    "#7c3aed",
-    "#0ea5e9",
-    "#ec4899",
-    "#10b981",
-    "#f59e0b",
-    "#ef4444"
-  ];
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "py-20 flex flex-col items-center", id: "lucky-draw", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx(SectionHeader, { title: "Lucky Draw", emoji: "🎡" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground mb-8 text-center max-w-md", children: "Spin once daily for a chance to win discounts, cashback, or free items!" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative w-72 h-72", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "svg",
-        {
-          role: "img",
-          "aria-label": "Lucky draw wheel",
-          viewBox: "0 0 200 200",
-          className: "w-full h-full",
-          style: {
-            transform: `rotate(${deg}deg)`,
-            transition: spinning ? "transform 3.2s cubic-bezier(0.17,0.67,0.12,1)" : "none"
-          },
-          children: [
-            WHEEL_PRIZES.map((prize2, i) => {
-              const startAngle = i * sliceAngle * Math.PI / 180;
-              const endAngle = (i + 1) * sliceAngle * Math.PI / 180;
-              const x1 = 100 + 95 * Math.cos(startAngle);
-              const y1 = 100 + 95 * Math.sin(startAngle);
-              const x2 = 100 + 95 * Math.cos(endAngle);
-              const y2 = 100 + 95 * Math.sin(endAngle);
-              const midAngle = (i + 0.5) * sliceAngle * Math.PI / 180;
-              const tx = 100 + 65 * Math.cos(midAngle);
-              const ty = 100 + 65 * Math.sin(midAngle);
-              return /* @__PURE__ */ jsxRuntimeExports.jsxs("g", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "path",
-                  {
-                    d: `M 100 100 L ${x1} ${y1} A 95 95 0 0 1 ${x2} ${y2} Z`,
-                    fill: colors[i % colors.length],
-                    opacity: 0.85
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "text",
-                  {
-                    x: tx,
-                    y: ty,
-                    textAnchor: "middle",
-                    dominantBaseline: "middle",
-                    fontSize: "7",
-                    fontWeight: "bold",
-                    fill: "#111113",
-                    transform: `rotate(${(i + 0.5) * sliceAngle}, ${tx}, ${ty})`,
-                    children: prize2
-                  }
-                )
-              ] }, prize2);
-            }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "circle",
-              {
-                cx: "100",
-                cy: "100",
-                r: "12",
-                fill: "#111113",
-                stroke: "#b5ff2e",
-                strokeWidth: "3"
-              }
-            )
-          ]
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1 w-0 h-0 border-l-[10px] border-r-[10px] border-b-[24px] border-l-transparent border-r-transparent border-b-[#b5ff2e]" })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "button",
-      {
-        type: "button",
-        className: "btn-bounce mt-8 px-10 py-4 rounded-full bg-[#b5ff2e] text-black font-bold text-lg glow-lime",
-        onClick: spin,
-        disabled: spinning,
-        "data-ocid": "lucky_draw.primary_button",
-        children: spinning ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "inline animate-spin mr-2", size: 18 }),
-          "Spinning..."
-        ] }) : "🎰 Spin the Wheel"
-      }
-    ),
-    showResult && prize && /* @__PURE__ */ jsxRuntimeExports.jsx(Dialog, { open: showResult, onOpenChange: setShowResult, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      DialogContent,
-      {
-        className: "glass border-[#b5ff2e]/30 text-center",
-        "data-ocid": "lucky_draw.dialog",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(DialogHeader, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(DialogTitle, { className: "font-display text-3xl text-[#b5ff2e]", children: "🎉 You Won!" }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-5xl font-display font-black mt-4", children: prize }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground mt-2", children: "Congratulations! Show this to the shopkeeper at Annapurna Shop." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              type: "button",
-              className: "btn-bounce mt-4 px-8 py-3 rounded-full bg-[#b5ff2e] text-black font-bold",
-              onClick: () => setShowResult(false),
-              "data-ocid": "lucky_draw.close_button",
-              children: "Awesome! 🎊"
-            }
-          )
-        ]
-      }
-    ) })
-  ] });
-}
-function CartDrawer({
-  open,
-  onClose,
-  cart,
-  onUpdateQty,
-  onRemove,
-  onCheckout
-}) {
-  const subtotal = cart.reduce((s, i) => s + i.price * i.cartQty, 0);
-  const coupon = subtotal >= 1e3 ? "SAVE20" : subtotal >= 500 ? "SAVE15" : subtotal >= 200 ? "SAVE10" : null;
-  const discount = subtotal >= 1e3 ? 0.2 : subtotal >= 500 ? 0.15 : subtotal >= 200 ? 0.1 : 0;
-  const savings = Math.floor(subtotal * discount);
-  const total = subtotal - savings;
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(Sheet, { open, onOpenChange: onClose, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    SheetContent,
-    {
-      side: "right",
-      className: "w-full sm:w-[420px] p-0 border-l border-white/10",
-      style: {
-        background: "rgba(13,13,15,0.97)",
-        backdropFilter: "blur(30px)"
-      },
-      "data-ocid": "cart.sheet",
-      children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(SheetHeader, { className: "px-6 py-5 border-b border-white/10", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(SheetTitle, { className: "font-display text-xl flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { size: 20, className: "text-[#b5ff2e]" }),
-          "Your Cart (",
-          cart.reduce((s, i) => s + i.cartQty, 0),
-          " items)"
-        ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col h-[calc(100vh-80px)]", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto px-6 py-4 space-y-4", children: cart.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "div",
-            {
-              className: "flex flex-col items-center justify-center h-full text-muted-foreground",
-              "data-ocid": "cart.empty_state",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { size: 48, className: "mb-4 opacity-30" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-lg", children: "Your cart is empty" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm mt-1", children: "Add items to get started!" })
-              ]
-            }
-          ) : cart.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "div",
-            {
-              className: "glass rounded-xl p-3 flex items-center gap-3",
-              "data-ocid": `cart.item.${item.id}`,
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "img",
-                  {
-                    src: item.imageUrl || CATEGORY_IMAGES[item.category] || "/assets/generated/cat-snacks.dim_300x300.jpg",
-                    alt: item.name,
-                    className: "w-12 h-12 object-cover rounded-lg flex-shrink-0"
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-semibold text-sm truncate", children: item.name }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground text-xs", children: item.quantity }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-[#b5ff2e] font-bold text-sm", children: [
-                    "₹",
-                    item.price * item.cartQty
-                  ] })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "button",
-                    {
-                      type: "button",
-                      className: "w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors",
-                      onClick: () => onUpdateQty(item.id, -1),
-                      "data-ocid": `cart.secondary_button.${item.id}`,
-                      children: /* @__PURE__ */ jsxRuntimeExports.jsx(Minus, { size: 12 })
-                    }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-6 text-center text-sm font-bold", children: item.cartQty }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "button",
-                    {
-                      type: "button",
-                      className: "w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors",
-                      onClick: () => onUpdateQty(item.id, 1),
-                      "data-ocid": `cart.primary_button.${item.id}`,
-                      children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { size: 12 })
-                    }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "button",
-                    {
-                      type: "button",
-                      className: "w-7 h-7 rounded-full bg-red-500/20 hover:bg-red-500/40 flex items-center justify-center transition-colors",
-                      onClick: () => onRemove(item.id),
-                      "data-ocid": `cart.delete_button.${item.id}`,
-                      children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 12, className: "text-red-400" })
-                    }
-                  )
-                ] })
-              ]
-            },
-            item.id
-          )) }),
-          cart.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-6 py-5 border-t border-white/10 space-y-3", children: [
-            coupon && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "glass rounded-xl p-3 flex items-center justify-between", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground", children: "Coupon Applied" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-bold text-[#b5ff2e] text-sm", children: coupon })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-emerald-400 font-bold", children: [
-                "-₹",
-                savings
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-muted-foreground", children: "Subtotal" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-                "₹",
-                subtotal
-              ] })
-            ] }),
-            savings > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-muted-foreground", children: "Savings" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-emerald-400", children: [
-                "-₹",
-                savings
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between font-bold text-lg border-t border-white/10 pt-3", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Total" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[#b5ff2e]", children: [
-                "₹",
-                total
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                className: "btn-bounce w-full py-4 rounded-xl bg-[#b5ff2e] text-black font-bold text-lg glow-lime",
-                onClick: onCheckout,
-                "data-ocid": "cart.submit_button",
-                children: "Proceed to Checkout →"
-              }
-            )
-          ] })
-        ] })
-      ]
-    }
-  ) });
-}
-function CheckoutModal({
-  open,
-  onClose,
-  cart,
-  total
-}) {
-  const [step, setStep] = reactExports.useState(1);
-  const [address, setAddress] = reactExports.useState({
-    name: "",
-    hostel: "",
-    phone: "",
-    pincode: ""
-  });
-  const [payMethod, setPayMethod] = reactExports.useState("upi");
-  const [upiId, setUpiId] = reactExports.useState("");
-  const [processing, setProcessing] = reactExports.useState(false);
-  const handlePayment = () => {
-    setProcessing(true);
-    setTimeout(() => {
-      setProcessing(false);
-      setStep(4);
-    }, 2e3);
-  };
-  const reset = () => {
-    setStep(1);
-    setAddress({ name: "", hostel: "", phone: "", pincode: "" });
-    onClose();
-  };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(Dialog, { open, onOpenChange: reset, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    DialogContent,
-    {
-      className: "max-w-lg w-full border border-white/10 p-0 overflow-hidden",
-      style: {
-        background: "rgba(13,13,15,0.98)",
-        backdropFilter: "blur(30px)"
-      },
-      "data-ocid": "checkout.dialog",
-      children: [
-        step < 4 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex border-b border-white/10", children: [1, 2, 3].map((s) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "div",
-          {
-            className: `flex-1 py-3 text-center text-xs font-bold transition-colors ${step === s ? "text-[#b5ff2e] border-b-2 border-[#b5ff2e]" : step > s ? "text-muted-foreground" : "text-muted-foreground/50"}`,
-            children: s === 1 ? "Cart" : s === 2 ? "Address" : "Payment"
-          },
-          s
-        )) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6", children: [
-          step === 1 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display font-bold text-xl mb-4", children: "Order Summary" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-2 max-h-52 overflow-y-auto pr-1", children: cart.map((i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-2", children: [
-                i.emoji,
-                " ",
-                i.name,
-                " ×",
-                i.cartQty
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[#b5ff2e] font-bold", children: [
-                "₹",
-                i.price * i.cartQty
-              ] })
-            ] }, i.id)) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between font-bold text-lg mt-4 pt-4 border-t border-white/10", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Total" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[#b5ff2e]", children: [
-                "₹",
-                total
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                className: "btn-bounce w-full mt-4 py-3 rounded-xl bg-[#b5ff2e] text-black font-bold",
-                onClick: () => setStep(2),
-                "data-ocid": "checkout.primary_button",
-                children: "Continue to Address →"
+                className: `text-[10px] font-inter font-bold px-2 py-0.5 border-2 border-black ${product.available ? "bg-[#AAFF00] text-black" : "bg-gray-200 text-gray-500"}`,
+                children: product.available ? "IN STOCK" : "SOLD OUT"
               }
             )
           ] }),
-          step === 2 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display font-bold text-xl mb-4", children: "Delivery Address" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: [
-              {
-                key: "name",
-                label: "Full Name",
-                placeholder: "Your name"
-              },
-              {
-                key: "hostel",
-                label: "Hostel / Block",
-                placeholder: "e.g. A Block, Room 204"
-              },
-              {
-                key: "phone",
-                label: "Phone Number",
-                placeholder: "10-digit number"
-              },
-              { key: "pincode", label: "Pincode", placeholder: "246001" }
-            ].map(({ key, label, placeholder }) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "label",
-                {
-                  htmlFor: key,
-                  className: "text-xs text-muted-foreground mb-1 block",
-                  children: label
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                Input,
-                {
-                  id: key,
-                  className: "bg-white/5 border-white/10 focus:border-[#b5ff2e]/50 rounded-xl",
-                  placeholder,
-                  value: address[key],
-                  onChange: (e) => setAddress((prev) => ({
-                    ...prev,
-                    [key]: e.target.value
-                  })),
-                  "data-ocid": `checkout.${key}_input`
-                }
-              )
-            ] }, key)) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-1 mt-1", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
                 type: "button",
-                className: "btn-bounce w-full mt-4 py-3 rounded-xl bg-[#b5ff2e] text-black font-bold",
-                onClick: () => setStep(3),
-                disabled: !address.name || !address.hostel || !address.phone,
-                "data-ocid": "checkout.submit_button",
-                children: "Continue to Payment →"
-              }
-            )
-          ] }),
-          step === 3 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display font-bold text-xl mb-4", children: "Payment Method" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
-              ["upi", "card", "cod"].map((m) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "button",
-                {
-                  type: "button",
-                  className: `w-full p-4 rounded-xl border text-left transition-all ${payMethod === m ? "border-[#b5ff2e]/60 bg-[#b5ff2e]/10" : "border-white/10 bg-white/5"}`,
-                  onClick: () => setPayMethod(m),
-                  "data-ocid": `checkout.${m}_radio`,
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-bold", children: m === "upi" ? "📱 UPI Payment" : m === "card" ? "💳 Credit / Debit Card" : "💵 Cash on Delivery" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground mt-0.5", children: m === "upi" ? "Pay using any UPI app" : m === "card" ? "Visa, Mastercard, RuPay" : "Pay when you receive" })
-                  ]
+                onClick: () => {
+                  onAddToCart(product);
+                  ue.success(`${product.name} added to cart!`);
                 },
-                m
-              )),
-              payMethod === "upi" && /* @__PURE__ */ jsxRuntimeExports.jsx(
-                Input,
-                {
-                  className: "bg-white/5 border-white/10 focus:border-[#b5ff2e]/50 rounded-xl",
-                  placeholder: "Enter UPI ID (e.g. name@upi)",
-                  value: upiId,
-                  onChange: (e) => setUpiId(e.target.value),
-                  "data-ocid": "checkout.upi_input"
-                }
-              )
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                className: "btn-bounce w-full mt-4 py-3 rounded-xl bg-[#b5ff2e] text-black font-bold flex items-center justify-center gap-2",
-                onClick: handlePayment,
-                disabled: processing,
-                "data-ocid": "checkout.confirm_button",
-                children: processing ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { className: "animate-spin", size: 18 }),
-                  " Processing..."
-                ] }) : `Pay ₹${total}`
-              }
-            )
-          ] }),
-          step === 4 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center py-8", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-7xl mb-4 animate-bounce", children: "🎉" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-display font-black text-2xl text-[#b5ff2e] mb-2", children: "Order Confirmed!" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground mb-1", children: "Your order will be delivered to your hostel." }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-muted-foreground text-sm mb-6", children: [
-              "For queries, call:",
-              " ",
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#b5ff2e] font-bold", children: "7895784954" })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                className: "btn-bounce px-8 py-3 rounded-full bg-[#b5ff2e] text-black font-bold",
-                onClick: reset,
-                "data-ocid": "checkout.close_button",
-                children: "Back to Shopping"
-              }
-            )
-          ] })
-        ] })
-      ]
-    }
-  ) });
-}
-function WelcomePopup({ onClose }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "div",
-    {
-      className: "fixed inset-0 z-50 flex items-center justify-center p-4",
-      style: { background: "rgba(0,0,0,0.8)", backdropFilter: "blur(10px)" },
-      children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "glass-strong rounded-3xl p-8 max-w-sm w-full text-center relative shadow-deep",
-          "data-ocid": "welcome.dialog",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                className: "absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors",
-                onClick: onClose,
-                "data-ocid": "welcome.close_button",
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 16 })
+                disabled: !product.available,
+                className: "w-full py-2 bg-black text-white font-archivo text-xs border-2 border-black shadow-[2px_2px_0px_#000] hover:shadow-[3px_3px_0px_#AAFF00] hover:bg-gray-900 disabled:opacity-40 disabled:cursor-not-allowed transition-all",
+                children: "ADD TO CART"
               }
             ),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-24 h-24 rounded-full mx-auto mb-4 overflow-hidden border-2 border-[#b5ff2e]/50", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "img",
-                {
-                  src: "/assets/uploads/screenshot_20260327-092046_2-019d2d6c-fd52-72a2-a138-7440113cce5f-1.png",
-                  alt: "Shop Owner",
-                  className: "w-full h-full object-cover",
-                  onError: (e) => {
-                    e.target.style.display = "none";
-                  }
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full h-full bg-gradient-to-br from-[#b5ff2e]/30 to-[#ff6b2b]/30 flex items-center justify-center text-3xl", children: "👨‍🍳" })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "font-display font-black text-2xl mb-1", children: "Welcome to" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "font-display font-black text-3xl text-[#b5ff2e] mb-2", children: "Annapurna Shop" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground text-sm mb-4", children: "Your one-stop shop at GBPIET, PAURI" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2 text-sm mb-6", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 text-muted-foreground", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Phone, { size: 14, className: "text-[#b5ff2e]" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "7895784954" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 text-muted-foreground", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { size: 14, className: "text-[#b5ff2e]" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "GBPIET, PAURI" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 text-muted-foreground", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { size: 14, className: "text-[#b5ff2e]" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Open 8AM – 10PM" })
-              ] })
-            ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
                 type: "button",
-                className: "btn-bounce w-full py-3 rounded-full bg-[#b5ff2e] text-black font-bold text-lg glow-lime",
-                onClick: onClose,
-                "data-ocid": "welcome.primary_button",
-                children: "Start Shopping 🛒"
+                onClick: () => onBuyNow(product),
+                disabled: !product.available,
+                className: "w-full py-2 bg-[#AAFF00] text-black font-archivo text-xs border-2 border-black shadow-[2px_2px_0px_#000] hover:shadow-[3px_3px_0px_#000] disabled:opacity-40 disabled:cursor-not-allowed transition-all",
+                children: "BUY NOW"
               }
             )
-          ]
-        }
-      )
+          ] })
+        ] })
+      ]
     }
   );
 }
 function App() {
   const [cart, setCart] = reactExports.useState([]);
   const [cartOpen, setCartOpen] = reactExports.useState(false);
-  const [checkoutOpen, setCheckoutOpen] = reactExports.useState(false);
   const [search, setSearch] = reactExports.useState("");
-  const [showWelcome, setShowWelcome] = reactExports.useState(true);
-  const [activeFilter, setActiveFilter] = reactExports.useState("All");
-  const searchRef = reactExports.useRef(null);
+  const [activeCategory, setActiveCategory] = reactExports.useState(null);
+  const [paymentItems, setPaymentItems] = reactExports.useState(null);
+  const cartTotal = cart.reduce((s, i) => s + i.cartQty, 0);
   const addToCart = reactExports.useCallback((product) => {
     setCart((prev) => {
       const existing = prev.find((i) => i.id === product.id);
@@ -21036,663 +16094,313 @@ function App() {
         );
       return [...prev, { ...product, cartQty: 1 }];
     });
+    setCartOpen(true);
   }, []);
-  const updateQty = reactExports.useCallback((id, delta) => {
-    setCart(
-      (prev) => prev.flatMap((i) => {
-        if (i.id !== id) return [i];
-        const newQty = i.cartQty + delta;
-        return newQty <= 0 ? [] : [{ ...i, cartQty: newQty }];
-      })
-    );
+  const changeQty = reactExports.useCallback((id, delta) => {
+    setCart((prev) => {
+      const updated = prev.map((i) => i.id === id ? { ...i, cartQty: i.cartQty + delta } : i).filter((i) => i.cartQty > 0);
+      return updated;
+    });
   }, []);
-  const removeFromCart = reactExports.useCallback((id) => {
-    setCart((prev) => prev.filter((i) => i.id !== id));
+  const buyNow = reactExports.useCallback((product) => {
+    setPaymentItems([{ ...product, cartQty: 1 }]);
   }, []);
-  const cartCount = cart.reduce((s, i) => s + i.cartQty, 0);
-  const subtotal = cart.reduce((s, i) => s + i.price * i.cartQty, 0);
-  const discount = subtotal >= 1e3 ? 0.2 : subtotal >= 500 ? 0.15 : subtotal >= 200 ? 0.1 : 0;
-  const total = Math.floor(subtotal * (1 - discount));
-  const filteredProducts = search ? PRODUCTS.filter(
-    (p) => p.name.toLowerCase().includes(search.toLowerCase()) || p.category.toLowerCase().includes(search.toLowerCase())
-  ) : activeFilter === "All" ? PRODUCTS : PRODUCTS.filter((p) => p.category === activeFilter);
-  const categoryNames = ["All", ...CATEGORIES.map((c) => c.name)];
-  const scrollToCategory = (name) => {
-    const el = document.getElementById(name.toLowerCase().replace(/ /g, "-"));
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
+  const filteredProducts = PRODUCTS.filter((p) => {
+    const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
+    const matchCat = activeCategory ? p.category === activeCategory : true;
+    return matchSearch && matchCat;
+  });
+  const displayCategories = activeCategory ? CATEGORIES.filter((c) => c.name === activeCategory) : CATEGORIES;
+  reactExports.useEffect(() => {
+    document.body.style.overflow = cartOpen || !!paymentItems ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [cartOpen, paymentItems]);
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(
     "div",
     {
-      className: "grain-overlay min-h-screen",
-      style: { background: "#0d0d0f" },
+      className: "min-h-screen",
+      style: { background: "#F2F2F2", fontFamily: "'Inter', sans-serif" },
       children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Toaster, { position: "top-right", theme: "dark" }),
-        showWelcome && /* @__PURE__ */ jsxRuntimeExports.jsx(WelcomePopup, { onClose: () => setShowWelcome(false) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { className: "fixed top-0 left-0 right-0 z-40 glass border-b border-white/8", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: "🌿" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-display font-black text-xl tracking-tight", children: [
-              "Annapurna ",
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#b5ff2e]", children: "Shop" })
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hidden md:flex items-center gap-1", children: categoryNames.slice(0, 6).map((name) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              type: "button",
-              className: `px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${activeFilter === name ? "bg-[#b5ff2e] text-black" : "text-muted-foreground hover:text-foreground hover:bg-white/8"}`,
-              onClick: () => {
-                setActiveFilter(name);
-                if (name !== "All") scrollToCategory(name);
-              },
-              "data-ocid": "nav.tab",
-              children: name
-            },
-            name
-          )) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              className: "relative flex items-center gap-2 px-4 py-2 rounded-full bg-[#b5ff2e] text-black font-bold text-sm btn-bounce glow-lime-sm",
-              onClick: () => setCartOpen(true),
-              "data-ocid": "nav.cart_button",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { size: 16 }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "hidden sm:inline", children: "Cart" }),
-                cartCount > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#ff6b2b] text-white text-[10px] font-black flex items-center justify-center", children: cartCount })
-              ]
-            }
-          ) })
-        ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "relative min-h-screen flex flex-col items-center justify-center pt-16 overflow-hidden", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 flex items-center justify-center pointer-events-none", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "orb w-[800px] h-[800px] rounded-full opacity-60" }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-[#b5ff2e]/10 animate-spin-slow pointer-events-none" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full border border-[#b5ff2e]/20 pointer-events-none" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative z-10 flex flex-col items-center text-center px-4 max-w-4xl", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "div",
-              {
-                className: "text-[9rem] md:text-[13rem] animate-float select-none",
-                style: {
-                  filter: "drop-shadow(0 0 60px rgba(181,255,46,0.5)) drop-shadow(0 0 120px rgba(181,255,46,0.2))"
-                },
-                children: "🍋"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "h1",
-              {
-                className: "font-display font-black hero-text-gradient leading-none mt-4",
-                style: {
-                  fontSize: "clamp(3.5rem, 10vw, 7rem)",
-                  letterSpacing: "-0.03em"
-                },
-                children: "The Future of Fresh"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-lg md:text-xl text-muted-foreground mt-4 max-w-xl", children: "Premium groceries & daily essentials delivered to your doorstep at GBPIET, PAURI" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative mt-8 w-full max-w-xl", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                Search,
-                {
-                  className: "absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground",
-                  size: 18
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "input",
-                {
-                  ref: searchRef,
-                  type: "text",
-                  placeholder: "Search fresh items, snacks, stationery...",
-                  value: search,
-                  onChange: (e) => setSearch(e.target.value),
-                  className: "search-glow w-full pl-12 pr-5 py-4 rounded-full bg-white/8 border border-white/15 text-foreground placeholder:text-muted-foreground outline-none font-body text-base transition-all",
-                  "data-ocid": "hero.search_input"
-                }
-              ),
-              search && /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  type: "button",
-                  className: "absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground",
-                  onClick: () => setSearch(""),
-                  "data-ocid": "hero.cancel_button",
-                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 16 })
-                }
-              )
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center justify-center gap-4 mt-8", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  type: "button",
-                  className: "btn-bounce px-8 py-4 rounded-full bg-[#b5ff2e] text-black font-bold text-lg glow-lime",
-                  onClick: () => {
-                    var _a2;
-                    (_a2 = document.getElementById("products")) == null ? void 0 : _a2.scrollIntoView({ behavior: "smooth" });
-                  },
-                  "data-ocid": "hero.primary_button",
-                  children: "Shop Now 🛒"
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  type: "button",
-                  className: "btn-bounce px-8 py-4 rounded-full border border-white/20 text-foreground font-bold text-lg hover:border-[#b5ff2e]/40 hover:bg-[#b5ff2e]/8 transition-all",
-                  onClick: () => {
-                    var _a2;
-                    return (_a2 = document.getElementById("offers")) == null ? void 0 : _a2.scrollIntoView({ behavior: "smooth" });
-                  },
-                  "data-ocid": "hero.secondary_button",
-                  children: "Explore Deals ✨"
-                }
-              )
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground/50 animate-bounce", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs", children: "Scroll to explore" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-5 h-8 rounded-full border border-white/20 flex items-start justify-center pt-1", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-1 h-2 bg-[#b5ff2e] rounded-full" }) })
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "glass border-y border-white/8", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto px-4 py-5", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 md:grid-cols-4 gap-4 text-center", children: [
-          {
-            icon: "📦",
-            label: "90+ Products",
-            sub: "Across 10 categories"
-          },
-          {
-            icon: "⚡",
-            label: "Daily Fresh Delivery",
-            sub: "Every morning at 8AM"
-          },
-          {
-            icon: "🎓",
-            label: "Student Discounts",
-            sub: "With valid GBPIET ID"
-          },
-          {
-            icon: "⭐",
-            label: "4.8 Rating",
-            sub: "By 500+ happy students"
-          }
-        ].map((stat) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "marquee-bar bg-black overflow-hidden py-2 border-b-4 border-[#AAFF00]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
           "div",
           {
-            className: "flex flex-col items-center gap-1",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: stat.icon }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-bold text-foreground", children: stat.label }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground", children: stat.sub })
-            ]
-          },
-          stat.label
-        )) }) }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "div",
-          {
-            className: "overflow-hidden py-3 border-b border-white/8",
-            style: { background: "rgba(181,255,46,0.05)" },
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "animate-marquee flex items-center gap-12 whitespace-nowrap w-max", children: Array(2).fill([
-              "🔥 Buy 2 Get 1 Free on Snacks",
-              "⚡ Red Bull Now in Stock!",
-              "🎓 10% Student Discount with ID",
-              "🌿 Fresh Produce Daily at 8AM",
-              "🍫 Ferrero Rocher Available!",
-              "📚 Stationery Stock Refreshed",
-              "💚 Mountain Dew Back in Stock",
-              "🎁 Spin Daily for Lucky Draw Prizes"
-            ]).flat().map((item) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+            className: "marquee-track flex gap-16 whitespace-nowrap",
+            style: { animation: "marquee 20s linear infinite" },
+            children: [1, 2, 3].map((n) => /* @__PURE__ */ jsxRuntimeExports.jsx(
               "span",
               {
-                className: "text-sm font-semibold text-[#b5ff2e]/80",
-                children: item
+                className: "font-inter font-bold text-sm text-[#AAFF00] tracking-widest uppercase flex-shrink-0",
+                children: "FREE DELIVERY OVER ₹500   —   FRESH VEGGIES   —   10-MINUTE SHIPPING   —  "
               },
-              item
-            )) })
+              n
+            ))
           }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "max-w-7xl mx-auto px-4 sm:px-6 py-20", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(SectionHeader, { title: "Shop by Category", emoji: "🏪" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4", children: CATEGORIES.map((cat, i) => {
-            const count2 = PRODUCTS.filter(
+        ) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { className: "bg-white border-b-4 border-black sticky top-0 z-30", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4 py-3 flex items-center gap-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-shrink-0", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "font-archivo text-2xl md:text-3xl text-black leading-none", children: "ANNAPURNA SHOP" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-inter text-xs text-gray-500", children: "GBPIET, PAURI • 7895784954" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 max-w-md mx-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "text",
+              placeholder: "Search products...",
+              value: search,
+              onChange: (e) => setSearch(e.target.value),
+              className: "w-full border-2 border-black px-4 py-2 font-inter text-sm focus:outline-none focus:border-[#AAFF00] bg-[#F2F2F2]"
+            }
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              type: "button",
+              onClick: () => setCartOpen(true),
+              className: "relative flex-shrink-0 w-12 h-12 bg-black text-[#AAFF00] border-2 border-black shadow-[3px_3px_0px_#AAFF00] hover:shadow-[4px_4px_0px_#AAFF00] flex items-center justify-center transition-all",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { size: 20 }),
+                cartTotal > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "absolute -top-2 -right-2 w-5 h-5 bg-[#AAFF00] text-black text-xs font-bold font-inter flex items-center justify-center border-2 border-black rounded-full", children: cartTotal })
+              ]
+            }
+          )
+        ] }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "py-16 px-4 border-b-4 border-black bg-white", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-8", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inline-block bg-[#AAFF00] border-2 border-black px-4 py-1 mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-inter text-sm font-bold text-black", children: "10-MINUTE DELIVERY • GBPIET, PAURI" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("h1", { className: "font-archivo text-5xl md:text-7xl text-black leading-none mb-4", children: [
+              "FRESH.",
+              /* @__PURE__ */ jsxRuntimeExports.jsx("br", {}),
+              "FAST.",
+              /* @__PURE__ */ jsxRuntimeExports.jsx("br", {}),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "bg-black text-[#AAFF00] px-2", children: "LOCAL." })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-inter text-gray-600 text-lg mb-6 max-w-md", children: "Shop 88+ grocery & daily essentials. Free delivery over ₹500. Minimum order ₹200." }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-3 flex-wrap", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  onClick: () => {
+                    var _a2;
+                    return (_a2 = document.getElementById("products")) == null ? void 0 : _a2.scrollIntoView({ behavior: "smooth" });
+                  },
+                  className: "px-6 py-3 bg-black text-[#AAFF00] font-archivo border-4 border-black shadow-[4px_4px_0px_#AAFF00] hover:shadow-[6px_6px_0px_#AAFF00] transition-all",
+                  children: "SHOP NOW"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "a",
+                {
+                  href: "https://www.instagram.com/anna.purnastore?igsh=MWNvMmM0dXJyZG1kNg==",
+                  target: "_blank",
+                  rel: "noreferrer",
+                  className: "px-6 py-3 bg-white text-black font-archivo border-4 border-black shadow-[4px_4px_0px_#000] hover:shadow-[6px_6px_0px_#AAFF00] transition-all",
+                  children: "INSTAGRAM"
+                }
+              )
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 grid grid-cols-2 gap-3 max-w-sm", children: ["tomatoes", "coca-cola", "parle-g", "amul-milk"].map((item) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "div",
+            {
+              className: "border-4 border-black shadow-[4px_4px_0px_#000] overflow-hidden aspect-square",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "img",
+                {
+                  src: `/assets/generated/${item}.dim_300x300.jpg`,
+                  alt: item,
+                  className: "w-full h-full object-cover"
+                }
+              )
+            },
+            item
+          )) })
+        ] }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(DailyDealsSlider, {}),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "py-6 bg-[#F2F2F2] border-b-4 border-black", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto px-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "flex gap-2 overflow-x-auto pb-2",
+            style: { scrollbarWidth: "none" },
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  onClick: () => setActiveCategory(null),
+                  className: `flex-shrink-0 px-4 py-2 font-archivo text-sm border-2 border-black transition-all ${!activeCategory ? "bg-black text-[#AAFF00] shadow-[3px_3px_0px_#AAFF00]" : "bg-white text-black hover:bg-[#AAFF00] hover:text-black"}`,
+                  children: "ALL ITEMS"
+                }
+              ),
+              CATEGORIES.map((cat) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "button",
+                {
+                  type: "button",
+                  onClick: () => setActiveCategory(
+                    cat.name === activeCategory ? null : cat.name
+                  ),
+                  className: `flex-shrink-0 px-4 py-2 font-archivo text-sm border-2 border-black transition-all ${activeCategory === cat.name ? "bg-black text-[#AAFF00] shadow-[3px_3px_0px_#AAFF00]" : "bg-white text-black hover:bg-[#AAFF00] hover:text-black"}`,
+                  children: [
+                    cat.emoji,
+                    " ",
+                    cat.name.toUpperCase()
+                  ]
+                },
+                cat.name
+              ))
+            ]
+          }
+        ) }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { id: "products", className: "max-w-7xl mx-auto px-4 py-12", children: [
+          search && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-inter text-gray-600 mb-6", children: [
+            'Showing results for "',
+            /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: search }),
+            '" —',
+            " ",
+            filteredProducts.length,
+            " products"
+          ] }),
+          displayCategories.map((cat) => {
+            const catProducts = filteredProducts.filter(
               (p) => p.category === cat.name
-            ).length;
-            const isWide = cat.span === "col-span-2";
+            );
+            if (!catProducts.length) return null;
             return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
+              "section",
               {
-                type: "button",
-                className: `category-card glass rounded-2xl p-5 flex flex-col items-start gap-2 text-left cursor-pointer bg-gradient-to-br ${cat.color} ${isWide ? "md:col-span-2" : ""}`,
-                onClick: () => scrollToCategory(cat.name),
-                "data-ocid": `category.item.${i + 1}`,
+                className: "mb-14",
+                id: cat.name.toLowerCase().replace(/ /g, "-"),
                 children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-4xl", children: cat.emoji }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-bold text-sm text-foreground", children: cat.name }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-muted-foreground", children: [
-                      count2,
-                      " items"
-                    ] })
-                  ] })
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-6", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "font-archivo text-2xl md:text-3xl text-black", children: [
+                      cat.emoji,
+                      " ",
+                      cat.name.toUpperCase()
+                    ] }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 h-1 bg-black" })
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4", children: catProducts.map((p) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    ProductCard,
+                    {
+                      product: p,
+                      onAddToCart: addToCart,
+                      onBuyNow: buyNow
+                    },
+                    p.id
+                  )) })
                 ]
               },
               cat.name
             );
-          }) })
+          })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("main", { id: "products", className: "max-w-7xl mx-auto px-4 sm:px-6", children: search ? /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "mb-16", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(SectionHeader, { title: `Search: "${search}"`, emoji: "🔍" }),
-          filteredProducts.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "py-12 bg-black border-y-4 border-[#AAFF00]", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "font-archivo text-3xl md:text-4xl text-[#AAFF00] mb-8", children: "OFFERS & COUPONS" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-3 gap-4", children: [
+            {
+              code: "SAVE10",
+              desc: "10% off on orders above ₹200",
+              min: 200
+            },
+            {
+              code: "SAVE15",
+              desc: "15% off on orders above ₹350",
+              min: 350
+            },
+            {
+              code: "SAVE20",
+              desc: "20% off on orders above ₹500",
+              min: 500
+            }
+          ].map((offer) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "div",
             {
-              className: "text-center py-20 text-muted-foreground",
-              "data-ocid": "products.empty_state",
+              className: "border-4 border-[#AAFF00] p-6 shadow-[6px_6px_0px_#AAFF00] hover:shadow-[8px_8px_0px_#AAFF00] transition-all",
               children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-4xl mb-4", children: "🤷" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-lg", children: [
-                  'No products found for "',
-                  search,
-                  '"'
-                ] })
-              ]
-            }
-          ) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4", children: filteredProducts.map((p) => /* @__PURE__ */ jsxRuntimeExports.jsx(ProductCard, { product: p, onAddToCart: addToCart }, p.id)) })
-        ] }) : CATEGORIES.map((cat) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-          ProductGrid,
-          {
-            category: cat.name,
-            products: activeFilter === "All" ? PRODUCTS : filteredProducts,
-            onAddToCart: addToCart
-          },
-          cat.name
-        )) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { id: "offers", className: "max-w-7xl mx-auto px-4 sm:px-6 py-20", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(SectionHeader, { title: "Hot Deals & Offers", emoji: "🔥" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4", children: [
-            {
-              emoji: "🎁",
-              title: "Buy 2 Get 1 Free",
-              desc: "On all snack packs — limited time!",
-              accent: "#b5ff2e"
-            },
-            {
-              emoji: "🎓",
-              title: "Student Discount 10%",
-              desc: "Show your GBPIET ID card at billing",
-              accent: "#7c3aed"
-            },
-            {
-              emoji: "🌅",
-              title: "Morning Fresh Produce",
-              desc: "Fresh veggies arrive daily at 8AM",
-              accent: "#10b981"
-            },
-            {
-              emoji: "📦",
-              title: "Combo Pack Savings",
-              desc: "Bundle deals save up to ₹50 per order",
-              accent: "#ff6b2b"
-            }
-          ].map((offer, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "div",
-            {
-              className: "glass rounded-2xl p-6 relative overflow-hidden group hover:scale-[1.02] transition-transform cursor-pointer",
-              "data-ocid": `offers.item.${i + 1}`,
-              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-archivo text-2xl text-[#AAFF00] mb-1", children: offer.code }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-inter text-gray-300 text-sm mb-3", children: offer.desc }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "font-inter text-xs text-gray-500", children: [
+                  "Min order: ₹",
+                  offer.min
+                ] }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "div",
+                  "button",
                   {
-                    className: "absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity",
-                    style: {
-                      background: `radial-gradient(circle at top right, ${offer.accent}, transparent 70%)`
-                    }
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-4xl mb-3 block", children: offer.emoji }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "h3",
-                  {
-                    className: "font-display font-bold text-lg mb-1",
-                    style: { color: offer.accent },
-                    children: offer.title
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground text-sm", children: offer.desc }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  Badge,
-                  {
-                    className: "rounded-full text-xs font-bold",
-                    style: {
-                      background: `${offer.accent}22`,
-                      color: offer.accent,
-                      border: `1px solid ${offer.accent}44`
+                    type: "button",
+                    onClick: () => {
+                      navigator.clipboard.writeText(offer.code);
+                      ue.success(`Coupon ${offer.code} copied!`);
                     },
-                    children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { size: 10, className: "mr-1" }),
-                      " Limited Offer"
-                    ]
+                    className: "mt-3 px-4 py-2 bg-[#AAFF00] text-black font-archivo text-sm border-2 border-[#AAFF00] hover:bg-white transition-colors",
+                    children: "COPY CODE"
                   }
-                ) })
+                )
               ]
             },
-            offer.title
+            offer.code
           )) })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto px-4 sm:px-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LuckyDraw, {}) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "max-w-7xl mx-auto px-4 sm:px-6 py-20", id: "instagram", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-10", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "inline-flex items-center gap-3 mb-3", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 rounded-2xl bg-gradient-to-br from-[#f09433] via-[#e6683c] via-[#dc2743] via-[#cc2366] to-[#bc1888] flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "svg",
-                {
-                  viewBox: "0 0 24 24",
-                  fill: "white",
-                  width: "22",
-                  height: "22",
-                  role: "img",
-                  "aria-label": "Instagram",
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("title", { children: "Instagram" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" })
-                  ]
-                }
-              ) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "font-display font-black text-3xl text-foreground", children: "Follow Us on Instagram" })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-muted-foreground text-lg", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#b5ff2e] font-semibold", children: "@anna.purnastore" }),
-              " ",
-              "— See our latest offers, new arrivals & store moments"
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "glass rounded-3xl p-6 md:p-8 mb-8 flex flex-col sm:flex-row items-center gap-6", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative flex-shrink-0", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-24 h-24 rounded-full bg-gradient-to-br from-[#f09433] via-[#dc2743] to-[#bc1888] p-0.5", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "img",
-                {
-                  src: "/assets/uploads/screenshot_20260327-092046_2-019d2d6c-fd52-72a2-a138-7440113cce5f-1.png",
-                  alt: "Annapurna Store",
-                  className: "w-full h-full object-cover rounded-full"
-                }
-              ) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-gradient-to-br from-[#f09433] to-[#bc1888] flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "svg",
-                {
-                  viewBox: "0 0 24 24",
-                  fill: "white",
-                  width: "14",
-                  height: "14",
-                  role: "img",
-                  "aria-label": "Instagram",
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("title", { children: "Instagram" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" })
-                  ]
-                }
-              ) })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 text-center sm:text-left", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-display font-black text-xl text-foreground", children: "anna.purnastore" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground text-sm mt-1", children: "🏪 GBPIET, PAURI | Campus Grocery & Stationery" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground text-sm", children: "📦 Fresh stock daily | 🎁 Daily offers | 📞 7895784954" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-center sm:justify-start gap-6 mt-3", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-black text-lg text-foreground", children: "500+" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground", children: "Followers" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-black text-lg text-foreground", children: "120+" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground", children: "Posts" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-black text-lg text-foreground", children: "4.8★" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground", children: "Rating" })
-                ] })
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "a",
-              {
-                href: "https://www.instagram.com/anna.purnastore",
-                target: "_blank",
-                rel: "noopener noreferrer",
-                className: "flex-shrink-0 px-6 py-3 rounded-full font-bold text-white text-sm transition-all hover:scale-105 active:scale-95",
-                style: {
-                  background: "linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)"
-                },
-                children: "Follow on Instagram"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 sm:grid-cols-3 gap-3", children: [
-            {
-              src: "/assets/generated/insta-post1.dim_400x400.jpg",
-              caption: "Fresh arrivals today! 🥬🍅",
-              likes: "124"
-            },
-            {
-              src: "/assets/generated/insta-post2.dim_400x400.jpg",
-              caption: "Snacks & cold drinks stocked 🍟🥤",
-              likes: "98"
-            },
-            {
-              src: "/assets/generated/insta-post3.dim_400x400.jpg",
-              caption: "Stationery for all your needs 📓✏️",
-              likes: "76"
-            },
-            {
-              src: "/assets/generated/insta-post4.dim_400x400.jpg",
-              caption: "Special deals this week! 🎁",
-              likes: "210"
-            },
-            {
-              src: "/assets/generated/insta-post5.dim_400x400.jpg",
-              caption: "Chilled drinks just in ❄️🥤",
-              likes: "155"
-            },
-            {
-              src: "/assets/generated/insta-post6.dim_400x400.jpg",
-              caption: "Come visit us at GBPIET 🏪",
-              likes: "189"
-            }
-          ].map((post) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "a",
-            {
-              href: "https://www.instagram.com/anna.purnastore",
-              target: "_blank",
-              rel: "noopener noreferrer",
-              className: "group relative aspect-square overflow-hidden rounded-2xl",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "img",
-                  {
-                    src: post.src,
-                    alt: post.caption,
-                    className: "w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-2 p-4", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1 text-white font-bold text-lg", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                      "svg",
-                      {
-                        viewBox: "0 0 24 24",
-                        fill: "white",
-                        width: "20",
-                        height: "20",
-                        role: "img",
-                        "aria-label": "Like",
-                        children: [
-                          /* @__PURE__ */ jsxRuntimeExports.jsx("title", { children: "Like" }),
-                          /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" })
-                        ]
-                      }
-                    ),
-                    post.likes
-                  ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-xs text-center font-medium leading-tight", children: post.caption })
-                ] })
-              ]
-            },
-            post.caption
-          )) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center mt-8", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "a",
-            {
-              href: "https://www.instagram.com/anna.purnastore",
-              target: "_blank",
-              rel: "noopener noreferrer",
-              className: "inline-flex items-center gap-2 px-8 py-3 rounded-full font-bold text-white text-sm transition-all hover:scale-105 active:scale-95",
-              style: {
-                background: "linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)"
-              },
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  "svg",
-                  {
-                    viewBox: "0 0 24 24",
-                    fill: "white",
-                    width: "18",
-                    height: "18",
-                    role: "img",
-                    "aria-label": "Instagram",
-                    children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("title", { children: "Instagram" }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" })
-                    ]
-                  }
-                ),
-                "View All Posts @anna.purnastore"
-              ]
-            }
-          ) })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("footer", { className: "mt-20 border-t border-white/8 glass", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 py-12", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-8 mb-8", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-4", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: "🌿" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-display font-black text-xl", children: [
-                  "Annapurna ",
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#b5ff2e]", children: "Shop" })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-muted-foreground text-sm leading-relaxed", children: "Your favourite campus store with fresh produce, daily essentials, snacks, beverages, and stationery." }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2 mt-4", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm text-muted-foreground", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Phone, { size: 14, className: "text-[#b5ff2e]" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "7895784954" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm text-muted-foreground", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { size: 14, className: "text-[#b5ff2e]" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "GBPIET, PAURI, Uttarakhand" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-sm text-muted-foreground", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { size: 14, className: "text-[#b5ff2e]" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "8:00 AM – 10:00 PM (All Days)" })
-                ] })
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "font-display font-bold text-lg mb-4", children: "Categories" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 gap-1", children: CATEGORIES.map((cat) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "button",
-                {
-                  type: "button",
-                  className: "text-muted-foreground hover:text-[#b5ff2e] text-sm text-left transition-colors py-0.5",
-                  onClick: () => scrollToCategory(cat.name),
-                  "data-ocid": "footer.link",
-                  children: [
-                    cat.emoji,
-                    " ",
-                    cat.name
-                  ]
-                },
-                cat.name
-              )) })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "font-display font-bold text-lg mb-4", children: "Quick Links" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-col gap-2", children: [
-                { label: "🔥 Hot Deals", id: "offers" },
-                { label: "🎡 Lucky Draw", id: "lucky-draw" },
-                { label: "🛒 Shop Now", id: "products" }
-              ].map((link) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  type: "button",
-                  className: "text-muted-foreground hover:text-[#b5ff2e] text-sm text-left transition-colors",
-                  onClick: () => {
-                    var _a2;
-                    return (_a2 = document.getElementById(link.id)) == null ? void 0 : _a2.scrollIntoView({ behavior: "smooth" });
-                  },
-                  "data-ocid": "footer.link",
-                  children: link.label
-                },
-                link.id
-              )) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-6 glass rounded-xl p-4", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-2", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Star, { size: 14, className: "text-[#b5ff2e] fill-[#b5ff2e]" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-bold text-sm", children: "4.8 / 5.0" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-0.5", children: [0, 1, 2, 3, 4].map((starIdx) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  Star,
-                  {
-                    size: 16,
-                    className: starIdx < 4 ? "text-[#b5ff2e] fill-[#b5ff2e]" : "text-[#b5ff2e]"
-                  },
-                  starIdx
-                )) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-muted-foreground mt-1", children: "Rated by 500+ GBPIET students" })
-              ] })
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-t border-white/8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { children: [
-              "Made with ❤️ for GBPIET Students — Annapurna Shop ©",
-              " ",
-              (/* @__PURE__ */ new Date()).getFullYear()
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "a",
-              {
-                href: `https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(typeof window !== "undefined" ? window.location.hostname : "")}`,
-                target: "_blank",
-                rel: "noopener noreferrer",
-                className: "hover:text-[#b5ff2e] transition-colors",
-                children: "Built with ❤️ using caffeine.ai"
-              }
-            )
-          ] })
         ] }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(LuckyDraw, {}),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("section", { className: "py-12 bg-white border-y-4 border-black", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto px-4 text-center", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "font-archivo text-3xl md:text-4xl text-black mb-2", children: "FOLLOW US ON INSTAGRAM" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-inter text-gray-600 mb-6", children: "@anna.purnastore" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "a",
+            {
+              href: "https://www.instagram.com/anna.purnastore?igsh=MWNvMmM0dXJyZG1kNg==",
+              target: "_blank",
+              rel: "noreferrer",
+              className: "inline-flex items-center gap-2 px-8 py-3 bg-black text-[#AAFF00] font-archivo border-4 border-black shadow-[4px_4px_0px_#AAFF00] hover:shadow-[6px_6px_0px_#AAFF00] transition-all",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Gift, { size: 20 }),
+                " FOLLOW NOW"
+              ]
+            }
+          )
+        ] }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("footer", { className: "bg-black border-t-4 border-[#AAFF00] py-10 px-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-archivo text-2xl text-[#AAFF00] mb-3", children: "ANNAPURNA SHOP" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-inter text-gray-400 text-sm", children: "Your neighbourhood grocery store at GBPIET, PAURI." })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "font-archivo text-lg text-white mb-3", children: "CONTACT" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-inter text-gray-400 text-sm", children: "📞 7895784954" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-inter text-gray-400 text-sm", children: "📍 GBPIET, PAURI" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "font-archivo text-lg text-white mb-3", children: "DELIVERY POLICY" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-inter text-gray-400 text-sm", children: "• Min order: ₹200" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-inter text-gray-400 text-sm", children: "• Delivery fee: ₹40 (free above ₹500)" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-inter text-gray-400 text-sm", children: "• Estimated time: 10 minutes" })
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto mt-8 pt-6 border-t-2 border-gray-800 text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "font-inter text-gray-600 text-xs", children: "© 2026 Annapurna Shop. All rights reserved." }) })
+        ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
-          CartDrawer,
+          SidebarCart,
           {
             open: cartOpen,
-            onClose: () => setCartOpen(false),
             cart,
-            onUpdateQty: updateQty,
-            onRemove: removeFromCart,
+            onClose: () => setCartOpen(false),
+            onQtyChange: changeQty,
             onCheckout: () => {
               setCartOpen(false);
-              setCheckoutOpen(true);
+              setPaymentItems(cart);
             }
           }
         ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          CheckoutModal,
+        paymentItems && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          PaymentModal,
           {
-            open: checkoutOpen,
-            onClose: () => setCheckoutOpen(false),
-            cart,
-            total
+            items: paymentItems,
+            onClose: () => setPaymentItems(null)
           }
-        )
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Toaster, { position: "top-right" })
       ]
     }
   );
@@ -24860,9 +19568,9 @@ function invert(number, modulo) {
   let x2 = _0n$2, u = _1n$3;
   while (a !== _0n$2) {
     const q = b / a;
-    const r2 = b % a;
+    const r = b % a;
     const m = x2 - u * q;
-    b = a, a = r2, x2 = u, u = m;
+    b = a, a = r, x2 = u, u = m;
   }
   const gcd = b;
   if (gcd !== _1n$3)
@@ -25748,10 +20456,10 @@ function eddsa(Point, cHash, eddsaOpts = {}) {
     if (prehash)
       msg = prehash(msg);
     const { prefix: prefix2, scalar, pointBytes } = getExtendedPublicKey(secretKey);
-    const r2 = hashDomainToScalar(options.context, prefix2, msg);
-    const R = BASE.multiply(r2).toBytes();
+    const r = hashDomainToScalar(options.context, prefix2, msg);
+    const R = BASE.multiply(r).toBytes();
     const k = hashDomainToScalar(options.context, R, pointBytes, msg);
-    const s = Fn.create(r2 + k * scalar);
+    const s = Fn.create(r + k * scalar);
     if (!Fn.isValid(s))
       throw new Error("sign failed: invalid s");
     const rs = concatBytes(R, Fn.toBytes(s));
@@ -25769,12 +20477,12 @@ function eddsa(Point, cHash, eddsaOpts = {}) {
     if (prehash)
       msg = prehash(msg);
     const mid = len / 2;
-    const r2 = sig.subarray(0, mid);
+    const r = sig.subarray(0, mid);
     const s = bytesToNumberLE(sig.subarray(mid, len));
     let A, R, SB;
     try {
       A = Point.fromBytes(publicKey, zip215);
-      R = Point.fromBytes(r2, zip215);
+      R = Point.fromBytes(r, zip215);
       SB = BASE.multiplyUnsafe(s);
     } catch (error) {
       return false;
