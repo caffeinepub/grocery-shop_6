@@ -13,7 +13,7 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
-// ─── Types ────────────────────────────────────────────────────────────────────────────
+// ─── Types ────────────────────────────────────────────────────────────────────
 type VibeTag =
   | "Freshly Picked"
   | "Chef's Choice"
@@ -40,7 +40,7 @@ const FREE_DELIVERY_THRESHOLD = 500;
 const DELIVERY_FEE = 40;
 const MIN_ORDER = 200;
 
-// ─── Products ────────────────────────────────────────────────────────────────────────────
+// ─── Products ─────────────────────────────────────────────────────────────────
 const PRODUCTS: Product[] = [
   // Fresh Produce
   {
@@ -932,7 +932,6 @@ const PRODUCTS: Product[] = [
     category: "Instant Food",
     available: true,
   },
-
   // Grains & Pulses
   {
     id: 89,
@@ -1370,48 +1369,48 @@ const DAILY_DEALS = [
   {
     id: 1,
     title: "Fresh Veggies Combo",
-    discount: "20% OFF",
+    discount: "DROP",
     img: "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&q=80",
   },
   {
     id: 2,
     title: "Cold Drinks Party Pack",
-    discount: "BUY 2 GET 1",
+    discount: "LIMITED",
     img: "https://images.unsplash.com/photo-1581636625402-29b2a704ef13?w=600&q=80",
   },
   {
     id: 3,
     title: "Snacks Bundle",
-    discount: "₹50 OFF",
+    discount: "DROP",
     img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&q=80",
   },
   {
     id: 4,
     title: "Dairy Fresh Deals",
-    discount: "15% OFF",
+    discount: "LIMITED",
     img: "https://images.unsplash.com/photo-1628088062854-d1870b4553da?w=600&q=80",
   },
   {
     id: 5,
     title: "Chocolate Lovers",
-    discount: "3 FOR ₹50",
+    discount: "DROP",
     img: "https://images.unsplash.com/photo-1548907040-4baa42d10919?w=600&q=80",
   },
   {
     id: 6,
     title: "Student Stationery",
-    discount: "10% OFF",
+    discount: "LIMITED",
     img: "https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?w=600&q=80",
   },
 ];
-// ─── Carousel section data ───────────────────────────────────────────────────────────────
+
 const TRENDING_IDS = [13, 21, 33, 81, 41, 28, 55, 1, 40, 42];
 const VEGGIE_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const MIDNIGHT_IDS = [
   21, 22, 23, 24, 25, 26, 27, 30, 33, 34, 35, 36, 37, 81, 82, 83,
 ];
 
-// ─── Payment Modal ──────────────────────────────────────────────────────────────────────────
+// ─── Payment Modal ─────────────────────────────────────────────────────────────
 interface PaymentModalProps {
   items: CartItem[];
   onClose: () => void;
@@ -1434,6 +1433,11 @@ function PaymentModal({ items, onClose }: PaymentModalProps) {
   const total = subtotal + deliveryFee;
   const belowMin = subtotal < MIN_ORDER;
 
+  const inputCls =
+    "w-full px-3 py-2.5 rounded-lg font-body text-sm focus:outline-none transition-all" +
+    " bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.12)] text-white placeholder-[rgba(255,255,255,0.4)]" +
+    " focus:border-[rgba(57,255,20,0.5)] focus:shadow-[0_0_12px_rgba(57,255,20,0.15)]";
+
   const handleOrder = () => {
     if (belowMin) {
       toast.error(`Minimum order is ₹${MIN_ORDER}`);
@@ -1447,39 +1451,50 @@ function PaymentModal({ items, onClose }: PaymentModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <div className="bg-white border-2 border-black shadow-[8px_8px_0px_#000] w-full max-w-2xl max-h-[90vh] overflow-y-auto mx-4 rounded-md">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm">
+      <div
+        className="w-full max-w-2xl max-h-[90vh] overflow-y-auto mx-4 rounded-2xl"
+        style={{
+          background: "#141414",
+          border: "1px solid rgba(255,255,255,0.1)",
+          boxShadow: "0 32px 80px rgba(0,0,0,0.8)",
+        }}
+      >
+        {/* Header */}
         <div
-          className="flex items-center justify-between p-4 border-b-2 border-black"
-          style={{ background: "#2E5BFF" }}
+          className="flex items-center justify-between p-5 border-b"
+          style={{ borderColor: "rgba(255,255,255,0.08)" }}
         >
-          <h2 className="font-heading text-xl text-white">CHECKOUT</h2>
+          <h2 className="font-heading text-xl text-white tracking-tighter">
+            CHECKOUT
+          </h2>
           <button
             type="button"
             onClick={onClose}
-            className="text-white hover:opacity-70 transition-opacity"
+            className="text-white/60 hover:text-white transition-colors"
+            aria-label="Close checkout"
           >
-            <X size={24} />
+            <X size={22} />
           </button>
         </div>
+
         {ordered ? (
-          <div className="p-8 text-center">
+          <div className="p-10 text-center">
             <div className="text-6xl mb-4">🎉</div>
-            <h3 className="font-heading text-3xl text-black mb-2">
+            <h3 className="font-heading text-3xl text-[#39FF14] mb-3 neon-lime-glow">
               ORDER PLACED!
             </h3>
-            <p className="font-body text-gray-600 mb-4">
+            <p className="font-body text-white/70 mb-3">
               Your order of ₹{total} is confirmed. Expected delivery in 10
               minutes!
             </p>
-            <p className="font-body text-sm text-gray-500 mb-6">
+            <p className="font-body text-sm text-white/40 mb-8">
               Contact: 7895784954 | GBPIET, PAURI
             </p>
             <button
               type="button"
               onClick={onClose}
-              className="px-8 py-3 text-white font-heading border-2 border-transparent rounded transition-all"
-              style={{ background: "#2E5BFF" }}
+              className="btn-neon px-8 py-3 rounded-lg"
             >
               CONTINUE SHOPPING
             </button>
@@ -1487,48 +1502,49 @@ function PaymentModal({ items, onClose }: PaymentModalProps) {
         ) : (
           <div className="p-6 space-y-6">
             {belowMin && (
-              <div className="bg-red-100 border-2 border-red-500 p-3 rounded">
-                <p className="font-body text-red-700 text-sm font-bold">
+              <div className="bg-red-500/10 border border-red-500/30 p-3 rounded-lg">
+                <p className="font-body text-red-400 text-sm font-semibold">
                   Minimum order value is ₹{MIN_ORDER}. Please add more items.
                 </p>
               </div>
             )}
+
+            {/* Address */}
             <div>
-              <h3 className="font-heading text-lg text-black mb-3 border-b-2 border-black pb-2">
+              <h3 className="font-heading text-base text-white mb-4 pb-2 border-b border-[rgba(255,255,255,0.08)]">
                 DELIVERY ADDRESS
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <input
-                  className="border-2 border-black p-2 font-body text-sm focus:outline-none rounded"
-                  style={
-                    { "--tw-ring-color": "#2E5BFF" } as React.CSSProperties
-                  }
+                  className={inputCls}
                   placeholder="Full Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
                 <input
-                  className="border-2 border-black p-2 font-body text-sm focus:outline-none rounded"
+                  className={inputCls}
                   placeholder="Phone Number"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                 />
                 <input
-                  className="border-2 border-black p-2 font-body text-sm col-span-1 sm:col-span-2 focus:outline-none rounded"
+                  className={`${inputCls} sm:col-span-2`}
                   placeholder="Full Address"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                 />
                 <input
-                  className="border-2 border-black p-2 font-body text-sm focus:outline-none rounded"
+                  className={inputCls}
                   placeholder="Pincode"
                   value={pincode}
                   onChange={(e) => setPincode(e.target.value)}
                 />
               </div>
             </div>
+
+            {/* Payment */}
             <div>
-              <h3 className="font-heading text-lg text-black mb-3 border-b-2 border-black pb-2">
+              <h3 className="font-heading text-base text-white mb-4 pb-2 border-b border-[rgba(255,255,255,0.08)]">
                 PAYMENT METHOD
               </h3>
               <div className="flex gap-3 mb-4">
@@ -1537,11 +1553,19 @@ function PaymentModal({ items, onClose }: PaymentModalProps) {
                     key={m}
                     type="button"
                     onClick={() => setPayMethod(m)}
-                    className="flex-1 py-2 font-heading text-sm border-2 border-black transition-all rounded"
+                    className="flex-1 py-2.5 font-heading text-xs rounded-lg border transition-all"
                     style={
                       payMethod === m
-                        ? { background: "#2E5BFF", color: "#fff" }
-                        : {}
+                        ? {
+                            background: "#39FF14",
+                            color: "#0A0A0A",
+                            borderColor: "#39FF14",
+                          }
+                        : {
+                            background: "transparent",
+                            color: "rgba(255,255,255,0.6)",
+                            borderColor: "rgba(255,255,255,0.12)",
+                          }
                     }
                   >
                     {m === "upi"
@@ -1554,7 +1578,7 @@ function PaymentModal({ items, onClose }: PaymentModalProps) {
               </div>
               {payMethod === "upi" && (
                 <input
-                  className="w-full border-2 border-black p-2 font-body text-sm focus:outline-none rounded"
+                  className={inputCls}
                   placeholder="Enter UPI ID (e.g. name@upi)"
                   value={upiId}
                   onChange={(e) => setUpiId(e.target.value)}
@@ -1563,20 +1587,20 @@ function PaymentModal({ items, onClose }: PaymentModalProps) {
               {payMethod === "card" && (
                 <div className="space-y-3">
                   <input
-                    className="w-full border-2 border-black p-2 font-body text-sm focus:outline-none rounded"
+                    className={inputCls}
                     placeholder="Card Number"
                     value={cardNum}
                     onChange={(e) => setCardNum(e.target.value)}
                   />
                   <div className="grid grid-cols-2 gap-3">
                     <input
-                      className="border-2 border-black p-2 font-body text-sm focus:outline-none rounded"
+                      className={inputCls}
                       placeholder="MM/YY"
                       value={expiry}
                       onChange={(e) => setExpiry(e.target.value)}
                     />
                     <input
-                      className="border-2 border-black p-2 font-body text-sm focus:outline-none rounded"
+                      className={inputCls}
                       placeholder="CVV"
                       value={cvv}
                       onChange={(e) => setCvv(e.target.value)}
@@ -1585,59 +1609,61 @@ function PaymentModal({ items, onClose }: PaymentModalProps) {
                 </div>
               )}
               {payMethod === "cod" && (
-                <p className="font-body text-sm text-gray-600 bg-gray-100 border-2 border-gray-300 p-3 rounded">
+                <p className="font-body text-sm text-white/50 bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.08)] p-3 rounded-lg">
                   Pay cash when your order arrives. No additional charges.
                 </p>
               )}
             </div>
+
+            {/* Order Summary */}
             <div>
-              <h3 className="font-heading text-lg text-black mb-3 border-b-2 border-black pb-2">
+              <h3 className="font-heading text-base text-white mb-4 pb-2 border-b border-[rgba(255,255,255,0.08)]">
                 ORDER SUMMARY
               </h3>
-              <div className="space-y-2 mb-3">
+              <div className="space-y-2 mb-4">
                 {items.map((item) => (
                   <div
                     key={item.id}
-                    className="flex justify-between font-body text-sm"
+                    className="flex justify-between font-body text-sm text-white/70"
                   >
                     <span>
                       {item.name} × {item.cartQty}
                     </span>
-                    <span className="font-bold">
+                    <span className="font-semibold text-white">
                       ₹{item.price * item.cartQty}
                     </span>
                   </div>
                 ))}
               </div>
-              <div className="border-t-2 border-black pt-2 space-y-1">
-                <div className="flex justify-between font-body text-sm">
+              <div className="border-t border-[rgba(255,255,255,0.08)] pt-3 space-y-2">
+                <div className="flex justify-between font-body text-sm text-white/60">
                   <span>Subtotal</span>
                   <span>₹{subtotal}</span>
                 </div>
-                <div className="flex justify-between font-body text-sm">
+                <div className="flex justify-between font-body text-sm text-white/60">
                   <span>Delivery Fee</span>
                   <span
                     style={
                       deliveryFee === 0
-                        ? { color: "#2E5BFF", fontWeight: 700 }
+                        ? { color: "#39FF14", fontWeight: 700 }
                         : {}
                     }
                   >
                     {deliveryFee === 0 ? "FREE" : `₹${deliveryFee}`}
                   </span>
                 </div>
-                <div className="flex justify-between font-heading text-lg border-t-2 border-black pt-2">
-                  <span>TOTAL</span>
-                  <span style={{ color: "#FF5F1F" }}>₹{total}</span>
+                <div className="flex justify-between font-heading text-lg pt-2 border-t border-[rgba(255,255,255,0.08)]">
+                  <span className="text-white">TOTAL</span>
+                  <span style={{ color: "#39FF14" }}>₹{total}</span>
                 </div>
               </div>
             </div>
+
             <button
               type="button"
               onClick={handleOrder}
               disabled={belowMin}
-              className="w-full py-3 text-white font-heading text-lg border-2 border-transparent rounded transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-              style={{ background: "#2E5BFF" }}
+              className="btn-neon w-full py-3.5 rounded-lg text-base disabled:opacity-40 disabled:cursor-not-allowed"
               data-ocid="checkout.submit_button"
             >
               PLACE ORDER →
@@ -1649,21 +1675,20 @@ function PaymentModal({ items, onClose }: PaymentModalProps) {
   );
 }
 
-// ─── Daily Deals Slider ─────────────────────────────────────────────────────────────────────
+// ─── Daily Deals Slider ────────────────────────────────────────────────────────
 function DailyDealsSlider() {
   const trackRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
   const startX = useRef(0);
-  const scrollLeft = useRef(0);
+  const scrollLeftRef = useRef(0);
   const [_currentDeal, setCurrentDeal] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentDeal((prev) => {
         const next = (prev + 1) % DAILY_DEALS.length;
-        if (trackRef.current) {
+        if (trackRef.current)
           trackRef.current.scrollTo({ left: next * 300, behavior: "smooth" });
-        }
         return next;
       });
     }, 3000);
@@ -1673,7 +1698,7 @@ function DailyDealsSlider() {
   const onMouseDown = (e: React.MouseEvent) => {
     isDragging.current = true;
     startX.current = e.pageX - (trackRef.current?.offsetLeft ?? 0);
-    scrollLeft.current = trackRef.current?.scrollLeft ?? 0;
+    scrollLeftRef.current = trackRef.current?.scrollLeft ?? 0;
     if (trackRef.current) trackRef.current.style.cursor = "grabbing";
   };
   const onMouseMove = (e: React.MouseEvent) => {
@@ -1682,13 +1707,12 @@ function DailyDealsSlider() {
     const x = e.pageX - (trackRef.current?.offsetLeft ?? 0);
     const walk = (x - startX.current) * 1.5;
     if (trackRef.current)
-      trackRef.current.scrollLeft = scrollLeft.current - walk;
+      trackRef.current.scrollLeft = scrollLeftRef.current - walk;
   };
   const onMouseUp = () => {
     isDragging.current = false;
     if (trackRef.current) trackRef.current.style.cursor = "grab";
   };
-
   const scroll = (dir: "left" | "right") => {
     if (trackRef.current)
       trackRef.current.scrollBy({
@@ -1699,33 +1723,39 @@ function DailyDealsSlider() {
 
   return (
     <section
-      className="py-12 border-y border-black/10"
-      style={{ background: "var(--site-card-bg)" }}
+      className="py-12"
+      style={{
+        background: "#0D0D0D",
+        borderTop: "1px solid rgba(255,255,255,0.06)",
+        borderBottom: "1px solid rgba(255,255,255,0.06)",
+      }}
     >
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between mb-6">
-          <h2
-            className="font-heading text-3xl md:text-4xl"
-            style={{ color: "var(--site-text)" }}
-          >
-            DAILY DEALS
-          </h2>
+          <div>
+            <h2 className="font-heading text-3xl md:text-4xl text-white tracking-tighter">
+              THE EDIT
+            </h2>
+            <p className="font-body text-sm text-white/40 mt-1">
+              Curated drops — limited quantities
+            </p>
+          </div>
           <div className="flex gap-2">
             <button
               type="button"
               onClick={() => scroll("left")}
-              className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black/20 hover:opacity-80 transition-opacity"
-              style={{ background: "#2E5BFF", color: "#fff" }}
+              className="btn-blue w-10 h-10 flex items-center justify-center rounded-full"
+              aria-label="Previous deal"
             >
-              <ChevronLeft size={20} />
+              <ChevronLeft size={18} />
             </button>
             <button
               type="button"
               onClick={() => scroll("right")}
-              className="w-10 h-10 flex items-center justify-center rounded-full border-2 border-black/20 hover:opacity-80 transition-opacity"
-              style={{ background: "#2E5BFF", color: "#fff" }}
+              className="btn-blue w-10 h-10 flex items-center justify-center rounded-full"
+              aria-label="Next deal"
             >
-              <ChevronRight size={20} />
+              <ChevronRight size={18} />
             </button>
           </div>
         </div>
@@ -1745,36 +1775,32 @@ function DailyDealsSlider() {
           {DAILY_DEALS.map((deal) => (
             <div
               key={deal.id}
-              className="deal-card flex-shrink-0 w-72 overflow-hidden group rounded-md"
+              className="deal-card flex-shrink-0 w-72 overflow-hidden group"
             >
               <div className="relative h-44 overflow-hidden">
                 <img
                   src={deal.img}
                   alt={deal.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   draggable={false}
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <span
-                  className="absolute top-3 right-3 text-white font-heading text-sm px-3 py-1 rounded-full"
-                  style={{ background: "#FF5F1F" }}
+                  className="absolute top-3 right-3 font-heading text-xs px-3 py-1 rounded-full"
+                  style={{
+                    background: "#39FF14",
+                    color: "#0A0A0A",
+                    letterSpacing: "0.05em",
+                  }}
                 >
                   {deal.discount}
                 </span>
               </div>
-              <div
-                className="p-4"
-                style={{ background: "var(--site-card-bg)" }}
-              >
-                <p
-                  className="font-heading"
-                  style={{ color: "var(--site-text)" }}
-                >
+              <div className="p-4">
+                <p className="font-heading text-white text-sm tracking-tight">
                   {deal.title.toUpperCase()}
                 </p>
-                <p
-                  className="font-body text-sm mt-1"
-                  style={{ color: "var(--site-muted-text)" }}
-                >
+                <p className="font-body text-xs text-white/40 mt-1">
                   Limited time offer
                 </p>
               </div>
@@ -1786,28 +1812,62 @@ function DailyDealsSlider() {
   );
 }
 
-// ─── Category Carousel ─────────────────────────────────────────────────────────────────────
+// ─── Category Carousel ─────────────────────────────────────────────────────────
 function CategoryCarousel({
   title,
   emoji,
   products,
   onAddToCart,
-  accent,
+  hot,
 }: {
   title: string;
   emoji: string;
   products: Product[];
   onAddToCart: (p: Product) => void;
-  accent?: string;
+  hot?: boolean;
 }) {
+  // viewportRef is overflow-x: auto — scrollLeft works here
+  const viewportRef = useRef<HTMLDivElement>(null);
+  // trackRef is the inner animating div — we pause/resume its animation
   const trackRef = useRef<HTMLDivElement>(null);
+  const pauseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const scroll = (dir: "left" | "right") => {
-    if (trackRef.current)
-      trackRef.current.scrollBy({
-        left: dir === "right" ? 600 : -600,
-        behavior: "smooth",
-      });
+    const viewport = viewportRef.current;
+    const track = trackRef.current;
+    if (!viewport || !track) return;
+
+    // Pause the CSS animation and switch to manual scroll mode
+    track.style.animationPlayState = "paused";
+    // Also freeze the translateX so scrollLeft takes over visual position
+    // We "absorb" current animated offset into scrollLeft
+    const matrix = window.getComputedStyle(track).transform;
+    if (matrix && matrix !== "none") {
+      const vals = matrix.match(/matrix.*\((.+)\)/);
+      if (vals) {
+        const parts = vals[1].split(", ");
+        const translateX = Number.parseFloat(parts[4] ?? "0");
+        if (translateX < 0) {
+          viewport.scrollLeft += -translateX;
+          track.style.transform = "translateX(0)";
+        }
+      }
+    }
+
+    viewport.scrollBy({
+      left: dir === "right" ? 600 : -600,
+      behavior: "smooth",
+    });
+
+    // Resume animation after 4 seconds of inactivity
+    if (pauseTimerRef.current) clearTimeout(pauseTimerRef.current);
+    pauseTimerRef.current = setTimeout(() => {
+      if (track) {
+        viewport.scrollLeft = 0;
+        track.style.transform = "";
+        track.style.animationPlayState = "running";
+      }
+    }, 4000);
   };
 
   return (
@@ -1815,17 +1875,14 @@ function CategoryCarousel({
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <span className="text-2xl">{emoji}</span>
-            <h2
-              className="font-heading text-2xl md:text-3xl"
-              style={{ color: "var(--site-text)" }}
-            >
+            <span className="text-xl">{emoji}</span>
+            <h2 className="font-heading text-2xl md:text-3xl text-white tracking-tighter">
               {title}
             </h2>
-            {accent && (
+            {hot && (
               <span
-                className="text-xs font-heading px-2 py-0.5 rounded-full text-white ml-2"
-                style={{ background: accent }}
+                className="text-[10px] font-heading px-2 py-0.5 rounded-full ml-1"
+                style={{ background: "#39FF14", color: "#0A0A0A" }}
               >
                 HOT
               </span>
@@ -1835,39 +1892,38 @@ function CategoryCarousel({
             <button
               type="button"
               onClick={() => scroll("left")}
-              className="w-8 h-8 flex items-center justify-center rounded-full border transition-opacity hover:opacity-70"
-              style={{
-                background: "#2E5BFF",
-                color: "#fff",
-                borderColor: "transparent",
-              }}
+              className="btn-blue w-8 h-8 flex items-center justify-center rounded-full"
               aria-label="scroll left"
             >
-              <ChevronLeft size={16} />
+              <ChevronLeft size={15} />
             </button>
             <button
               type="button"
               onClick={() => scroll("right")}
-              className="w-8 h-8 flex items-center justify-center rounded-full border transition-opacity hover:opacity-70"
-              style={{
-                background: "#2E5BFF",
-                color: "#fff",
-                borderColor: "transparent",
-              }}
+              className="btn-blue w-8 h-8 flex items-center justify-center rounded-full"
               aria-label="scroll right"
             >
-              <ChevronRight size={16} />
+              <ChevronRight size={15} />
             </button>
           </div>
         </div>
-        <div className="overflow-hidden relative">
+        {/* Outer viewport: overflow-x auto enables scrollLeft-based manual navigation */}
+        <div
+          ref={viewportRef}
+          className="overflow-x-auto relative"
+          style={
+            {
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+            } as React.CSSProperties
+          }
+        >
+          {/* Inner track: CSS @keyframes auto-scroll animation */}
           <div
             ref={trackRef}
             className="auto-scroll-track gap-3 pb-3"
             style={
               {
-                scrollbarWidth: "none",
-                msOverflowStyle: "none",
                 WebkitOverflowScrolling: "touch",
               } as React.CSSProperties
             }
@@ -1890,21 +1946,15 @@ function CategoryCarousel({
                   <span className="preview-badge">&#9654; Preview</span>
                 </div>
                 <div className="p-2.5 flex flex-col gap-1.5">
-                  <p
-                    className="font-body font-semibold text-xs leading-tight"
-                    style={{ color: "var(--site-text)" }}
-                  >
+                  <p className="font-body font-semibold text-xs text-white leading-tight">
                     {product.name}
                   </p>
-                  <p
-                    className="font-body text-[10px]"
-                    style={{ color: "var(--site-muted-text)" }}
-                  >
+                  <p className="font-body text-[10px] text-white/40">
                     {product.quantity}
                   </p>
                   <p
-                    className="font-heading text-base font-bold"
-                    style={{ color: "#FF5F1F" }}
+                    className="font-heading text-sm font-bold"
+                    style={{ color: "#39FF14" }}
                   >
                     ₹{product.price}
                   </p>
@@ -1915,8 +1965,7 @@ function CategoryCarousel({
                       onAddToCart(product);
                       toast.success(`${product.name} added!`);
                     }}
-                    className="w-full py-1.5 text-white font-heading text-xs rounded transition-all disabled:opacity-40 hover:opacity-90"
-                    style={{ background: "#2E5BFF" }}
+                    className="btn-blue w-full py-1.5 text-xs rounded-lg disabled:opacity-40"
                   >
                     {product.available ? "ADD" : "SOLD OUT"}
                   </button>
@@ -1930,7 +1979,7 @@ function CategoryCarousel({
   );
 }
 
-// ─── Product Card (main grid) ────────────────────────────────────────────────────────────────────
+// ─── Product Card ──────────────────────────────────────────────────────────────
 function ProductCard({
   product,
   onAddToCart,
@@ -1954,47 +2003,44 @@ function ProductCard({
               "/assets/generated/cat-snacks.dim_300x300.jpg";
           }}
         />
-        {/* Shimmer overlay */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+        <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-black/40 to-transparent" />
+        <span
+          className="absolute bottom-2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-[10px] font-body px-2 py-0.5 rounded-full whitespace-nowrap"
           style={{
-            background:
-              "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%)",
-            animation: "none",
+            background: "rgba(0,0,0,0.75)",
+            color: "#39FF14",
+            border: "1px solid rgba(57,255,20,0.4)",
           }}
-        />
-        <span className="absolute bottom-2 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-[10px] text-white bg-black/70 px-2 py-0.5 rounded-full whitespace-nowrap">
+        >
           &#9654; Preview
         </span>
       </div>
       <div className="p-3 flex flex-col flex-1 gap-2">
-        <p
-          className="font-body font-bold text-sm leading-tight"
-          style={{ color: "var(--site-text)" }}
-        >
+        <p className="font-body font-bold text-sm text-white leading-tight">
           {product.name}
         </p>
-        <p
-          className="font-body text-xs"
-          style={{ color: "var(--site-muted-text)" }}
-        >
-          {product.quantity}
-        </p>
+        <p className="font-body text-xs text-white/40">{product.quantity}</p>
         <div className="flex items-center justify-between mt-auto">
           <span
             className="font-heading text-lg font-bold"
-            style={{ color: "#FF5F1F" }}
+            style={{ color: "#39FF14" }}
           >
             ₹{product.price}
           </span>
           <span
-            className="text-[10px] font-body font-bold px-2 py-0.5 rounded-full text-white"
-            style={{ background: product.available ? "#2E5BFF" : "#999" }}
+            className="text-[10px] font-body font-bold px-2 py-0.5 rounded-full"
+            style={{
+              background: product.available
+                ? "rgba(57,255,20,0.15)"
+                : "rgba(255,255,255,0.05)",
+              color: product.available ? "#39FF14" : "rgba(255,255,255,0.3)",
+              border: `1px solid ${product.available ? "rgba(57,255,20,0.3)" : "rgba(255,255,255,0.1)"}`,
+            }}
           >
             {product.available ? "IN STOCK" : "SOLD OUT"}
           </span>
         </div>
-        <div className="flex flex-col gap-1 mt-1">
+        <div className="flex flex-col gap-1.5 mt-1">
           <button
             type="button"
             onClick={() => {
@@ -2002,8 +2048,8 @@ function ProductCard({
               toast.success(`${product.name} added to cart!`);
             }}
             disabled={!product.available}
-            className="w-full py-2 text-white font-heading text-xs rounded transition-all hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
-            style={{ background: "#2E5BFF" }}
+            className="btn-neon w-full py-2 text-xs rounded-lg disabled:opacity-40 disabled:cursor-not-allowed"
+            data-ocid="product.add_to_cart_button"
           >
             ADD TO CART
           </button>
@@ -2011,8 +2057,8 @@ function ProductCard({
             type="button"
             onClick={() => onBuyNow(product)}
             disabled={!product.available}
-            className="w-full py-2 text-white font-heading text-xs rounded transition-all hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
-            style={{ background: "#FF5F1F" }}
+            className="btn-blue w-full py-2 text-xs rounded-lg disabled:opacity-40 disabled:cursor-not-allowed"
+            data-ocid="product.buy_now_button"
           >
             BUY NOW
           </button>
@@ -2022,7 +2068,7 @@ function ProductCard({
   );
 }
 
-// ─── Sidebar Cart ────────────────────────────────────────────────────────────────────────────
+// ─── Sidebar Cart ──────────────────────────────────────────────────────────────
 interface SidebarCartProps {
   open: boolean;
   cart: CartItem[];
@@ -2048,42 +2094,37 @@ function SidebarCart({
   return (
     <>
       <div
-        className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 ${
-          open
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        }`}
+        className={`fixed inset-0 z-40 transition-opacity duration-300 ${open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+        style={{ background: "rgba(0,0,0,0.65)", backdropFilter: "blur(4px)" }}
         onClick={onClose}
         onKeyDown={(e) => e.key === "Escape" && onClose()}
         role="button"
         tabIndex={-1}
       />
       <div
-        className={`fixed top-0 right-0 z-50 h-full w-[380px] max-w-full flex flex-col transition-transform duration-300 ease-in-out ${
-          open ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed top-0 right-0 z-50 h-full w-[380px] max-w-full flex flex-col transition-transform duration-300 ease-in-out ${open ? "translate-x-0" : "translate-x-full"}`}
         style={{
-          background: "var(--site-card-bg)",
-          borderLeft: "2px solid var(--site-card-border)",
+          background: "#141414",
+          borderLeft: "1px solid rgba(255,255,255,0.08)",
         }}
         data-ocid="cart.panel"
       >
         {/* Header */}
         <div
-          className="flex items-center justify-between p-4 border-b-2"
-          style={{
-            borderColor: "var(--site-card-border)",
-            background: "#2E5BFF",
-          }}
+          className="flex items-center justify-between p-4 border-b"
+          style={{ borderColor: "rgba(255,255,255,0.08)" }}
         >
-          <h2 className="font-heading text-xl text-white">YOUR CART</h2>
+          <h2 className="font-heading text-xl text-white tracking-tighter">
+            YOUR CART
+          </h2>
           <button
             type="button"
             onClick={onClose}
-            className="text-white hover:opacity-70 transition-opacity"
+            className="text-white/50 hover:text-white transition-colors"
             data-ocid="cart.close_button"
+            aria-label="Close cart"
           >
-            <X size={24} />
+            <X size={22} />
           </button>
         </div>
 
@@ -2092,12 +2133,11 @@ function SidebarCart({
             className="flex-1 flex flex-col items-center justify-center gap-4 p-8"
             data-ocid="cart.empty_state"
           >
-            <ShoppingCart size={64} className="text-gray-300" />
-            <p
-              className="font-body text-center"
-              style={{ color: "var(--site-muted-text)" }}
-            >
-              Your cart is empty.\nAdd some items to get started!
+            <ShoppingCart size={56} className="text-white/20" />
+            <p className="font-body text-white/40 text-center text-sm">
+              Your cart is empty.
+              <br />
+              Add some items to get started!
             </p>
           </div>
         ) : (
@@ -2106,48 +2146,41 @@ function SidebarCart({
             <div
               className="p-4 border-b"
               style={{
-                borderColor: "var(--site-card-border)",
-                background: "var(--site-section-bg)",
+                borderColor: "rgba(255,255,255,0.06)",
+                background: "#111",
               }}
             >
               {subtotal < FREE_DELIVERY_THRESHOLD ? (
                 <>
-                  <p
-                    className="font-body text-sm mb-2"
-                    style={{ color: "var(--site-text)" }}
-                  >
-                    You are only{" "}
-                    <span className="font-bold" style={{ color: "#FF5F1F" }}>
+                  <p className="font-body text-sm text-white/70 mb-2">
+                    Only{" "}
+                    <span className="font-bold" style={{ color: "#39FF14" }}>
                       ₹{needed}
                     </span>{" "}
                     away from{" "}
-                    <span className="font-bold" style={{ color: "#2E5BFF" }}>
-                      FREE DELIVERY!
-                    </span>
+                    <span className="font-bold text-white">FREE DELIVERY!</span>
                   </p>
                   <div
-                    className="w-full h-2 rounded-full"
-                    style={{ background: "#e0e0e0" }}
+                    className="w-full h-1.5 rounded-full"
+                    style={{ background: "rgba(255,255,255,0.08)" }}
                   >
                     <div
                       className="h-full rounded-full transition-all duration-500"
                       style={{
                         width: `${progressPct}%`,
-                        background: "#2E5BFF",
+                        background: "#39FF14",
+                        boxShadow: "0 0 8px rgba(57,255,20,0.5)",
                       }}
                     />
                   </div>
-                  <p
-                    className="font-body text-xs mt-1"
-                    style={{ color: "var(--site-muted-text)" }}
-                  >
+                  <p className="font-body text-[11px] text-white/30 mt-1">
                     {Math.round(progressPct)}% to free delivery
                   </p>
                 </>
               ) : (
                 <p
                   className="font-body text-sm font-bold"
-                  style={{ color: "#2E5BFF" }}
+                  style={{ color: "#39FF14" }}
                 >
                   🎉 You've unlocked FREE delivery!
                 </p>
@@ -2159,10 +2192,10 @@ function SidebarCart({
               {cart.map((item, idx) => (
                 <div
                   key={item.id}
-                  className="flex gap-3 p-2 rounded"
+                  className="flex gap-3 p-2.5 rounded-xl"
                   style={{
-                    border: "1px solid var(--site-card-border)",
-                    background: "var(--site-card-bg)",
+                    background: "rgba(255,255,255,0.04)",
+                    border: "1px solid rgba(255,255,255,0.08)",
                   }}
                   data-ocid={`cart.item.${idx + 1}`}
                 >
@@ -2172,56 +2205,48 @@ function SidebarCart({
                       "/assets/generated/cat-snacks.dim_300x300.jpg"
                     }
                     alt={item.name}
-                    className="w-14 h-14 object-cover rounded flex-shrink-0"
-                    style={{ border: "1px solid var(--site-card-border)" }}
+                    className="w-14 h-14 object-cover rounded-lg flex-shrink-0"
                   />
                   <div className="flex-1 min-w-0">
-                    <p
-                      className="font-body font-bold text-sm leading-tight"
-                      style={{ color: "var(--site-text)" }}
-                    >
+                    <p className="font-body font-semibold text-sm text-white leading-tight">
                       {item.name}
                     </p>
-                    <p
-                      className="font-body text-xs"
-                      style={{ color: "var(--site-muted-text)" }}
-                    >
+                    <p className="font-body text-xs text-white/40">
                       {item.quantity}
                     </p>
                     <p
                       className="font-heading font-bold text-sm"
-                      style={{ color: "#FF5F1F" }}
+                      style={{ color: "#39FF14" }}
                     >
                       ₹{item.price * item.cartQty}
                     </p>
                   </div>
-                  <div className="flex flex-col items-center justify-center gap-1">
+                  <div className="flex flex-col items-center justify-center gap-1.5">
                     <button
                       type="button"
                       onClick={() => onQtyChange(item.id, 1)}
-                      className="w-7 h-7 rounded-full text-white flex items-center justify-center"
-                      style={{ background: "#2E5BFF" }}
+                      className="w-7 h-7 rounded-full flex items-center justify-center transition-colors"
+                      style={{ background: "#39FF14", color: "#0A0A0A" }}
                       data-ocid={`cart.item.${idx + 1}`}
+                      aria-label="Increase quantity"
                     >
-                      <Plus size={14} />
+                      <Plus size={13} />
                     </button>
-                    <span
-                      className="font-heading font-bold text-sm"
-                      style={{ color: "var(--site-text)" }}
-                    >
+                    <span className="font-heading font-bold text-sm text-white">
                       {item.cartQty}
                     </span>
                     <button
                       type="button"
                       onClick={() => onQtyChange(item.id, -1)}
-                      className="w-7 h-7 rounded-full border flex items-center justify-center hover:bg-red-50 transition-colors"
+                      className="w-7 h-7 rounded-full border flex items-center justify-center hover:bg-red-500/20 transition-colors"
                       style={{
-                        borderColor: "var(--site-card-border)",
-                        color: "var(--site-text)",
+                        borderColor: "rgba(255,255,255,0.1)",
+                        color: "rgba(255,255,255,0.5)",
                       }}
                       data-ocid={`cart.item.${idx + 1}`}
+                      aria-label="Decrease quantity"
                     >
-                      <Minus size={14} />
+                      <Minus size={13} />
                     </button>
                   </div>
                 </div>
@@ -2230,31 +2255,25 @@ function SidebarCart({
 
             {/* Footer */}
             <div
-              className="p-4 border-t-2"
-              style={{ borderColor: "var(--site-card-border)" }}
+              className="p-4 border-t"
+              style={{ borderColor: "rgba(255,255,255,0.08)" }}
             >
               {belowMin && (
-                <p className="font-body text-sm text-red-600 mb-3 font-bold">
+                <p className="font-body text-sm text-red-400 mb-3 font-semibold">
                   Add ₹{MIN_ORDER - subtotal} more (min order ₹{MIN_ORDER})
                 </p>
               )}
-              <div className="space-y-1 mb-4">
-                <div
-                  className="flex justify-between font-body text-sm"
-                  style={{ color: "var(--site-text)" }}
-                >
+              <div className="space-y-1.5 mb-4">
+                <div className="flex justify-between font-body text-sm text-white/60">
                   <span>Subtotal</span>
                   <span>₹{subtotal}</span>
                 </div>
-                <div
-                  className="flex justify-between font-body text-sm"
-                  style={{ color: "var(--site-text)" }}
-                >
+                <div className="flex justify-between font-body text-sm text-white/60">
                   <span>Delivery</span>
                   <span
                     style={
                       deliveryFee === 0
-                        ? { color: "#2E5BFF", fontWeight: 700 }
+                        ? { color: "#39FF14", fontWeight: 700 }
                         : {}
                     }
                   >
@@ -2262,22 +2281,18 @@ function SidebarCart({
                   </span>
                 </div>
                 <div
-                  className="flex justify-between font-heading text-lg border-t pt-2"
-                  style={{
-                    borderColor: "var(--site-card-border)",
-                    color: "var(--site-text)",
-                  }}
+                  className="flex justify-between font-heading text-lg pt-2 border-t"
+                  style={{ borderColor: "rgba(255,255,255,0.06)" }}
                 >
-                  <span>TOTAL</span>
-                  <span style={{ color: "#FF5F1F" }}>₹{total}</span>
+                  <span className="text-white">TOTAL</span>
+                  <span style={{ color: "#39FF14" }}>₹{total}</span>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={onCheckout}
                 disabled={belowMin}
-                className="w-full py-3 text-white font-heading text-base rounded transition-all hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
-                style={{ background: "#2E5BFF" }}
+                className="btn-neon w-full py-3 text-base rounded-xl disabled:opacity-40 disabled:cursor-not-allowed"
                 data-ocid="cart.submit_button"
               >
                 CHECKOUT →
@@ -2290,7 +2305,7 @@ function SidebarCart({
   );
 }
 
-// ─── Main App ────────────────────────────────────────────────────────────────────────────
+// ─── Main App ──────────────────────────────────────────────────────────────────
 export default function App() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
@@ -2299,9 +2314,11 @@ export default function App() {
   const [paymentItems, setPaymentItems] = useState<CartItem[] | null>(null);
   const [isDark, setIsDark] = useState(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("theme") === "dark";
+      const saved = localStorage.getItem("theme");
+      // Default to dark if no preference saved
+      return saved !== "light";
     }
-    return false;
+    return true;
   });
   const [cartBounce, setCartBounce] = useState(false);
 
@@ -2315,15 +2332,6 @@ export default function App() {
       localStorage.setItem("theme", "light");
     }
   }, [isDark]);
-
-  // Init theme from localStorage on mount
-  useEffect(() => {
-    const saved = localStorage.getItem("theme");
-    if (saved === "dark") {
-      setIsDark(true);
-      document.documentElement.classList.add("dark");
-    }
-  }, []);
 
   const cartTotal = cart.reduce((s, i) => s + i.cartQty, 0);
 
@@ -2373,6 +2381,9 @@ export default function App() {
     PRODUCTS.find((p) => p.id === id),
   ).filter(Boolean) as Product[];
 
+  const cartSubtotal = cart.reduce((s, i) => s + i.price * i.cartQty, 0);
+  const needed = FREE_DELIVERY_THRESHOLD - cartSubtotal;
+
   useEffect(() => {
     document.body.style.overflow = cartOpen || !!paymentItems ? "hidden" : "";
     return () => {
@@ -2380,28 +2391,35 @@ export default function App() {
     };
   }, [cartOpen, paymentItems]);
 
-  const cartSubtotal = cart.reduce((s, i) => s + i.price * i.cartQty, 0);
-  const needed = FREE_DELIVERY_THRESHOLD - cartSubtotal;
+  const siteText = isDark ? "#FFFFFF" : "#0A0A0A";
+  const siteMutedText = isDark ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)";
+  const siteBg = isDark ? "#0A0A0A" : "#F5F5F5";
+  const siteSectionBg = isDark ? "#111111" : "#F0F0F0";
+  const siteCardBorder = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
 
   return (
     <div
       className="min-h-screen"
       style={{
-        background: "var(--site-bg)",
-        color: "var(--site-text)",
+        background: siteBg,
+        color: siteText,
         fontFamily: "'Inter', sans-serif",
       }}
     >
       {/* Marquee Ticker */}
-      <div className="overflow-hidden py-2" style={{ background: "#2E5BFF" }}>
-        <div
-          className="flex gap-16 whitespace-nowrap"
-          style={{ animation: "marquee 20s linear infinite" }}
-        >
-          {[1, 2, 3].map((n) => (
+      <div
+        className="overflow-hidden py-2"
+        style={{
+          background: "#050505",
+          borderBottom: "1px solid rgba(57,255,20,0.15)",
+        }}
+      >
+        <div className="flex gap-16 whitespace-nowrap animate-marquee">
+          {[1, 2, 3, 4].map((n) => (
             <span
               key={n}
-              className="font-body font-bold text-sm text-white tracking-widest uppercase flex-shrink-0"
+              className="font-body font-bold text-xs tracking-widest uppercase flex-shrink-0"
+              style={{ color: "#39FF14" }}
             >
               FREE DELIVERY OVER ₹500 &nbsp;&nbsp;—&nbsp;&nbsp; FRESH VEGGIES
               &nbsp;&nbsp;—&nbsp;&nbsp; 10-MINUTE SHIPPING
@@ -2414,10 +2432,15 @@ export default function App() {
       {/* Free delivery nudge bar */}
       {cart.length > 0 && cartSubtotal < FREE_DELIVERY_THRESHOLD && (
         <div
-          className="text-white text-center py-1.5 px-4 text-sm font-body"
-          style={{ background: "#FF5F1F" }}
+          className="text-center py-2 px-4 text-sm font-body"
+          style={{
+            background: "rgba(57,255,20,0.1)",
+            borderBottom: "1px solid rgba(57,255,20,0.2)",
+            color: "rgba(255,255,255,0.8)",
+          }}
         >
-          You are only <strong>₹{needed}</strong> away from FREE DELIVERY!
+          You are only <strong style={{ color: "#39FF14" }}>₹{needed}</strong>{" "}
+          away from <strong style={{ color: "#39FF14" }}>FREE DELIVERY!</strong>
         </div>
       )}
 
@@ -2426,14 +2449,14 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
           <div className="flex-shrink-0">
             <h1
-              className="font-heading text-2xl md:text-3xl leading-none"
-              style={{ color: "var(--site-text)" }}
+              className="font-heading text-xl md:text-2xl leading-none tracking-tighter"
+              style={{ color: siteText }}
             >
-              ANNAPURNA SHOP
+              ANNAPURNA <span style={{ color: "#39FF14" }}>SHOP</span>
             </h1>
             <p
-              className="font-body text-xs"
-              style={{ color: "var(--site-muted-text)" }}
+              className="font-body text-[11px]"
+              style={{ color: siteMutedText }}
             >
               GBPIET, PAURI • 7895784954
             </p>
@@ -2444,12 +2467,7 @@ export default function App() {
               placeholder="Search products..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full border px-4 py-2 font-body text-sm focus:outline-none rounded-full"
-              style={{
-                borderColor: "var(--site-card-border)",
-                background: "var(--site-section-bg)",
-                color: "var(--site-text)",
-              }}
+              className="search-input w-full px-4 py-2 font-body text-sm rounded-full"
               data-ocid="nav.search_input"
             />
           </div>
@@ -2459,26 +2477,37 @@ export default function App() {
             onClick={() => setIsDark((d) => !d)}
             className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center border transition-all hover:opacity-80"
             style={{
-              background: "var(--site-section-bg)",
-              borderColor: "var(--site-card-border)",
-              color: "var(--site-text)",
+              background: isDark
+                ? "rgba(255,255,255,0.06)"
+                : "rgba(0,0,0,0.05)",
+              borderColor: siteCardBorder,
+              color: siteText,
             }}
             title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
             data-ocid="nav.toggle"
+            aria-label="Toggle dark mode"
           >
-            {isDark ? <Sun size={18} /> : <Moon size={18} />}
+            {isDark ? <Sun size={17} /> : <Moon size={17} />}
           </button>
           {/* Cart button */}
           <button
             type="button"
             onClick={() => setCartOpen(true)}
-            className={`relative flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center text-white transition-all hover:opacity-90 ${cartBounce ? "quick-cart-bounce" : ""}`}
-            style={{ background: "#2E5BFF" }}
+            className={`relative flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center transition-all hover:opacity-90 ${cartBounce ? "quick-cart-bounce" : ""}`}
+            style={{
+              background: "#39FF14",
+              color: "#0A0A0A",
+              boxShadow: "0 0 16px rgba(57,255,20,0.3)",
+            }}
             data-ocid="nav.button"
+            aria-label="Open cart"
           >
-            <ShoppingCart size={20} />
+            <ShoppingCart size={19} />
             {cartTotal > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 text-white text-xs font-bold flex items-center justify-center rounded-full">
+              <span
+                className="absolute -top-1.5 -right-1.5 w-5 h-5 text-white text-[10px] font-bold flex items-center justify-center rounded-full"
+                style={{ background: "#2E5BFF" }}
+              >
                 {cartTotal}
               </span>
             )}
@@ -2486,91 +2515,112 @@ export default function App() {
         </div>
       </nav>
 
-      {/* Hero */}
+      {/* Hero — Cinematic Dark Mode */}
       <section
-        className="py-16 px-4"
+        className="relative py-20 px-4 overflow-hidden"
         style={{
-          background: "var(--site-card-bg)",
-          borderBottom: "1px solid rgba(0,0,0,0.08)",
+          background:
+            "radial-gradient(ellipse at 30% 60%, rgba(6,20,12,0.95) 0%, #0A0A0A 60%), #0A0A0A",
         }}
       >
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-8">
-          <div className="flex-1">
-            <div
-              className="inline-block px-4 py-1 mb-4 rounded-full text-white text-sm font-body font-bold"
-              style={{ background: "#FF5F1F" }}
-            >
-              10-MINUTE DELIVERY • GBPIET, PAURI
-            </div>
-            <h1
-              className="font-heading text-5xl md:text-7xl leading-none mb-4 font-bold"
-              style={{ color: "var(--site-text)" }}
-            >
-              FRESH.
-              <br />
-              FAST.
-              <br />
-              <span
-                className="px-2 rounded"
-                style={{ background: "#2E5BFF", color: "#fff" }}
-              >
-                LOCAL.
-              </span>
-            </h1>
-            <p
-              className="font-body text-lg mb-6 max-w-md"
-              style={{ color: "var(--site-muted-text)" }}
-            >
-              Shop 88+ grocery &amp; daily essentials. Free delivery over ₹500.
-              Minimum order ₹200.
-            </p>
-            <div className="flex gap-3 flex-wrap">
-              <button
-                type="button"
-                onClick={() =>
-                  document
-                    .getElementById("products")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
-                className="px-6 py-3 text-white font-heading rounded-lg transition-all hover:opacity-90"
-                style={{ background: "#2E5BFF" }}
-                data-ocid="hero.primary_button"
-              >
-                SHOP NOW
-              </button>
-              <a
-                href="https://www.instagram.com/anna.purnastore?igsh=MWNvMmM0dXJyZG1kNg=="
-                target="_blank"
-                rel="noreferrer"
-                className="px-6 py-3 font-heading rounded-lg border-2 transition-all hover:opacity-80"
-                style={{
-                  borderColor: "#FF5F1F",
-                  color: "#FF5F1F",
-                  background: "transparent",
-                }}
-                data-ocid="hero.link"
-              >
-                INSTAGRAM
-              </a>
-            </div>
-          </div>
-          <div className="flex-1 grid grid-cols-2 gap-3 max-w-sm">
-            {["tomatoes", "coca-cola", "parle-g", "amul-milk"].map((item) => (
+        {/* Background accent glow */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(ellipse 60% 50% at 15% 80%, rgba(57,255,20,0.06) 0%, transparent 70%), radial-gradient(ellipse 40% 40% at 80% 20%, rgba(46,91,255,0.08) 0%, transparent 70%)",
+          }}
+        />
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="flex flex-col md:flex-row items-center gap-10">
+            <div className="flex-1">
               <div
-                key={item}
-                className="rounded-xl overflow-hidden aspect-square"
+                className="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full text-xs font-body font-semibold"
                 style={{
-                  border: "2px solid var(--site-card-border)",
-                  boxShadow: "4px 4px 12px rgba(0,0,0,0.1)",
+                  background: "rgba(57,255,20,0.1)",
+                  color: "#39FF14",
+                  border: "1px solid rgba(57,255,20,0.25)",
                 }}
               >
-                <img
-                  src={`/assets/generated/${item}.dim_300x300.jpg`}
-                  alt={item}
-                  className="w-full h-full object-cover"
+                <span
+                  className="w-1.5 h-1.5 rounded-full animate-pulse"
+                  style={{ background: "#39FF14" }}
                 />
+                10-MINUTE DELIVERY • GBPIET, PAURI
               </div>
-            ))}
+              <h1
+                className="font-heading leading-none mb-5 text-white"
+                style={{
+                  fontSize: "clamp(3.5rem, 9vw, 7rem)",
+                  letterSpacing: "-0.04em",
+                }}
+              >
+                THE
+                <br />
+                FRESH
+                <br />
+                <span className="neon-lime neon-lime-glow">DROP.</span>
+              </h1>
+              <p
+                className="font-body text-lg mb-8 max-w-md"
+                style={{ color: "rgba(255,255,255,0.55)" }}
+              >
+                Shop 125+ grocery &amp; daily essentials. Premium quality. Free
+                delivery over ₹500. Minimum order ₹200.
+              </p>
+              <div className="flex gap-3 flex-wrap">
+                <button
+                  type="button"
+                  onClick={() =>
+                    document
+                      .getElementById("products")
+                      ?.scrollIntoView({ behavior: "smooth" })
+                  }
+                  className="btn-neon px-8 py-3.5 rounded-xl text-base"
+                  data-ocid="hero.primary_button"
+                >
+                  SHOP NOW →
+                </button>
+                <a
+                  href="https://www.instagram.com/anna.purnastore?igsh=MWNvMmM0dXJyZG1kNg=="
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-8 py-3.5 font-heading text-base rounded-xl border transition-all hover:border-[#2E5BFF] hover:text-[#2E5BFF]"
+                  style={{
+                    borderColor: "rgba(255,255,255,0.2)",
+                    color: "rgba(255,255,255,0.6)",
+                    background: "transparent",
+                  }}
+                  data-ocid="hero.link"
+                >
+                  INSTAGRAM
+                </a>
+              </div>
+            </div>
+            <div className="flex-1 grid grid-cols-2 gap-3 max-w-sm w-full">
+              {["tomatoes", "coca-cola", "parle-g", "amul-milk"].map(
+                (item, i) => (
+                  <div
+                    key={item}
+                    className="rounded-2xl overflow-hidden aspect-square"
+                    style={{
+                      border: "1px solid rgba(255,255,255,0.08)",
+                      boxShadow:
+                        i === 0
+                          ? "0 0 30px rgba(57,255,20,0.15)"
+                          : "0 8px 24px rgba(0,0,0,0.5)",
+                      background: "rgba(255,255,255,0.04)",
+                    }}
+                  >
+                    <img
+                      src={`/assets/generated/${item}.dim_300x300.jpg`}
+                      alt={item}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                ),
+              )}
+            </div>
           </div>
         </div>
       </section>
@@ -2579,21 +2629,16 @@ export default function App() {
       <DailyDealsSlider />
 
       {/* Horizontal Carousel Rows */}
-      <div style={{ background: "var(--site-bg)" }}>
+      <div style={{ background: siteBg }}>
         <CategoryCarousel
           title="Trending Now"
           emoji="🔥"
           products={trendingProducts}
           onAddToCart={addToCart}
-          accent="#FF5F1F"
+          hot
         />
         <div
-          style={{
-            height: 1,
-            background: "var(--site-card-border)",
-            opacity: 0.1,
-            margin: "0 2rem",
-          }}
+          style={{ height: 1, background: siteCardBorder, margin: "0 2rem" }}
         />
         <CategoryCarousel
           title="Fresh Veggies"
@@ -2602,19 +2647,13 @@ export default function App() {
           onAddToCart={addToCart}
         />
         <div
-          style={{
-            height: 1,
-            background: "var(--site-card-border)",
-            opacity: 0.1,
-            margin: "0 2rem",
-          }}
+          style={{ height: 1, background: siteCardBorder, margin: "0 2rem" }}
         />
         <CategoryCarousel
           title="Midnight Snacks"
           emoji="🌙"
           products={midnightProducts}
           onAddToCart={addToCart}
-          accent="#2E5BFF"
         />
       </div>
 
@@ -2622,9 +2661,9 @@ export default function App() {
       <section
         className="py-6"
         style={{
-          background: "var(--site-section-bg)",
-          borderTop: "1px solid rgba(0,0,0,0.08)",
-          borderBottom: "1px solid rgba(0,0,0,0.08)",
+          background: siteSectionBg,
+          borderTop: `1px solid ${siteCardBorder}`,
+          borderBottom: `1px solid ${siteCardBorder}`,
         }}
       >
         <div className="max-w-7xl mx-auto px-4">
@@ -2635,18 +2674,18 @@ export default function App() {
             <button
               type="button"
               onClick={() => setActiveCategory(null)}
-              className="flex-shrink-0 px-4 py-2 font-heading text-sm rounded-full border-2 transition-all"
+              className="flex-shrink-0 px-4 py-2 font-heading text-xs rounded-full border transition-all"
               style={
                 !activeCategory
                   ? {
-                      background: "#2E5BFF",
-                      color: "#fff",
-                      borderColor: "#2E5BFF",
+                      background: "#39FF14",
+                      color: "#0A0A0A",
+                      borderColor: "#39FF14",
                     }
                   : {
-                      background: "var(--site-card-bg)",
-                      color: "var(--site-text)",
-                      borderColor: "var(--site-card-border)",
+                      background: "transparent",
+                      color: siteMutedText,
+                      borderColor: siteCardBorder,
                     }
               }
               data-ocid="category.tab"
@@ -2662,18 +2701,18 @@ export default function App() {
                     cat.name === activeCategory ? null : cat.name,
                   )
                 }
-                className="flex-shrink-0 px-4 py-2 font-heading text-sm rounded-full border-2 transition-all"
+                className="flex-shrink-0 px-4 py-2 font-heading text-xs rounded-full border transition-all whitespace-nowrap"
                 style={
                   activeCategory === cat.name
                     ? {
-                        background: "#2E5BFF",
-                        color: "#fff",
-                        borderColor: "#2E5BFF",
+                        background: "#39FF14",
+                        color: "#0A0A0A",
+                        borderColor: "#39FF14",
                       }
                     : {
-                        background: "var(--site-card-bg)",
-                        color: "var(--site-text)",
-                        borderColor: "var(--site-card-border)",
+                        background: "transparent",
+                        color: siteMutedText,
+                        borderColor: siteCardBorder,
                       }
                 }
                 data-ocid="category.tab"
@@ -2688,13 +2727,9 @@ export default function App() {
       {/* Products */}
       <main id="products" className="max-w-7xl mx-auto px-4 py-12">
         {search && (
-          <p
-            className="font-body mb-6"
-            style={{ color: "var(--site-muted-text)" }}
-          >
-            Showing results for "
-            <strong style={{ color: "var(--site-text)" }}>{search}</strong>" —{" "}
-            {filteredProducts.length} products
+          <p className="font-body mb-6" style={{ color: siteMutedText }}>
+            Results for "<strong style={{ color: siteText }}>{search}</strong>"
+            — {filteredProducts.length} products
           </p>
         )}
         {displayCategories.map((cat) => {
@@ -2710,14 +2745,14 @@ export default function App() {
             >
               <div className="flex items-center gap-3 mb-6">
                 <h2
-                  className="font-heading text-2xl md:text-3xl"
-                  style={{ color: "var(--site-text)" }}
+                  className="font-heading text-2xl md:text-3xl tracking-tighter"
+                  style={{ color: siteText }}
                 >
                   {cat.emoji} {cat.name.toUpperCase()}
                 </h2>
                 <div
-                  className="flex-1 h-0.5"
-                  style={{ background: "#2E5BFF", opacity: 0.3 }}
+                  className="flex-1 h-px"
+                  style={{ background: "rgba(57,255,20,0.2)" }}
                 />
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
@@ -2737,22 +2772,22 @@ export default function App() {
 
       {/* Savings Milestones Section */}
       <section
+        className="py-14"
         style={{
-          background: "#111",
-          borderTop: "2px solid #2E5BFF",
-          borderBottom: "2px solid #2E5BFF",
+          background: "#0D0D0D",
+          borderTop: "1px solid rgba(57,255,20,0.15)",
+          borderBottom: "1px solid rgba(57,255,20,0.15)",
         }}
-        className="py-12"
       >
         <div className="max-w-7xl mx-auto px-4">
           <h2
-            className="font-heading text-3xl md:text-4xl mb-2"
-            style={{ color: "#2E5BFF" }}
+            className="font-heading text-3xl md:text-4xl mb-2 tracking-tighter"
+            style={{ color: "#39FF14" }}
           >
             UNLOCK YOUR SAVINGS
           </h2>
-          <p className="font-body text-gray-400 mb-8">
-            Spend more, save more — discounts applied automatically at checkout!
+          <p className="font-body text-white/40 mb-8 text-sm">
+            Spend more, save more — discounts applied automatically at checkout.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
@@ -2766,34 +2801,31 @@ export default function App() {
                 spend: 350,
                 save: "15% OFF",
                 label: "Smart Shopper",
-                color: "#FF5F1F",
+                color: "#39FF14",
               },
               {
                 spend: 500,
                 save: "20% OFF + FREE DELIVERY",
                 label: "Big Basket Boss",
-                color: "#22c55e",
+                color: "#39FF14",
               },
             ].map((tier) => (
               <div
                 key={tier.spend}
-                className="p-6 rounded-lg"
-                style={{
-                  border: `2px solid ${tier.color}`,
-                  boxShadow: `4px 4px 0px ${tier.color}`,
-                }}
+                className="glass-card p-6"
+                style={{ borderColor: `${tier.color}30` }}
               >
-                <div className="text-3xl mb-2">🎁</div>
+                <div className="text-2xl mb-3">🎁</div>
                 <p
-                  className="font-heading text-xl mb-1"
+                  className="font-heading text-xl mb-1 tracking-tighter"
                   style={{ color: tier.color }}
                 >
                   {tier.save}
                 </p>
-                <p className="font-body text-gray-300 text-sm mb-1">
+                <p className="font-body text-white/50 text-sm mb-1">
                   {tier.label}
                 </p>
-                <p className="font-body text-gray-500 text-xs">
+                <p className="font-body text-white/25 text-xs">
                   On orders above ₹{tier.spend}
                 </p>
               </div>
@@ -2804,88 +2836,90 @@ export default function App() {
 
       {/* Instagram Section */}
       <section
-        className="py-12"
+        className="py-14"
         style={{
-          background: "var(--site-card-bg)",
-          borderTop: "1px solid rgba(0,0,0,0.08)",
-          borderBottom: "1px solid rgba(0,0,0,0.08)",
+          background: siteBg,
+          borderTop: `1px solid ${siteCardBorder}`,
+          borderBottom: `1px solid ${siteCardBorder}`,
         }}
       >
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h2
-            className="font-heading text-3xl md:text-4xl mb-2"
-            style={{ color: "var(--site-text)" }}
+            className="font-heading text-3xl md:text-4xl mb-2 tracking-tighter"
+            style={{ color: siteText }}
           >
-            FOLLOW US ON INSTAGRAM
+            FOLLOW THE DROP
           </h2>
           <p
-            className="font-body mb-6"
-            style={{ color: "var(--site-muted-text)" }}
+            className="font-body mb-8 text-sm"
+            style={{ color: siteMutedText }}
           >
-            @anna.purnastore
+            @anna.purnastore — exclusive deals and sneak peeks
           </p>
           <a
             href="https://www.instagram.com/anna.purnastore?igsh=MWNvMmM0dXJyZG1kNg=="
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 px-8 py-3 text-white font-heading rounded-lg transition-all hover:opacity-90"
+            className="inline-flex items-center gap-2 px-8 py-3.5 text-white font-heading text-sm rounded-xl transition-all hover:opacity-90"
             style={{
               background: "linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)",
+              boxShadow: "0 4px 20px rgba(131,58,180,0.3)",
             }}
             data-ocid="instagram.link"
           >
-            <Gift size={20} /> FOLLOW NOW
+            <Gift size={18} /> FOLLOW NOW
           </a>
         </div>
       </section>
 
       {/* Footer */}
       <footer
-        style={{ background: "#111", borderTop: "2px solid #2E5BFF" }}
-        className="py-10 px-4"
+        style={{
+          background: "#080808",
+          borderTop: "1px solid rgba(57,255,20,0.12)",
+        }}
+        className="py-12 px-4"
       >
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3
-              className="font-heading text-2xl mb-3"
-              style={{ color: "#2E5BFF" }}
-            >
-              ANNAPURNA SHOP
+            <h3 className="font-heading text-2xl mb-3 tracking-tighter">
+              ANNAPURNA <span style={{ color: "#39FF14" }}>SHOP</span>
             </h3>
-            <p className="font-body text-gray-400 text-sm">
+            <p className="font-body text-white/40 text-sm">
               Your neighbourhood grocery store at GBPIET, PAURI.
             </p>
           </div>
           <div>
-            <h4 className="font-heading text-lg text-white mb-3">CONTACT</h4>
-            <p className="font-body text-gray-400 text-sm">
-              \uD83D\uDCDE 7895784954
-            </p>
-            <p className="font-body text-gray-400 text-sm">
-              \uD83D\uDCCD GBPIET, PAURI
-            </p>
+            <h4 className="font-heading text-base text-white mb-3 tracking-tight">
+              CONTACT
+            </h4>
+            <p className="font-body text-white/40 text-sm">📞 7895784954</p>
+            <p className="font-body text-white/40 text-sm">📍 GBPIET, PAURI</p>
           </div>
           <div>
-            <h4 className="font-heading text-lg text-white mb-3">
+            <h4 className="font-heading text-base text-white mb-3 tracking-tight">
               DELIVERY POLICY
             </h4>
-            <p className="font-body text-gray-400 text-sm">• Min order: ₹200</p>
-            <p className="font-body text-gray-400 text-sm">
+            <p className="font-body text-white/40 text-sm">• Min order: ₹200</p>
+            <p className="font-body text-white/40 text-sm">
               • Delivery fee: ₹40 (free above ₹500)
             </p>
-            <p className="font-body text-gray-400 text-sm">
+            <p className="font-body text-white/40 text-sm">
               • Estimated time: 10 minutes
             </p>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto mt-8 pt-6 border-t border-gray-800 text-center">
-          <p className="font-body text-gray-600 text-xs">
+        <div
+          className="max-w-7xl mx-auto mt-10 pt-6 border-t text-center"
+          style={{ borderColor: "rgba(255,255,255,0.06)" }}
+        >
+          <p className="font-body text-white/25 text-xs">
             © {new Date().getFullYear()} Annapurna Shop. Built with ❤️ using{" "}
             <a
               href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(typeof window !== "undefined" ? window.location.hostname : "")}`}
               target="_blank"
               rel="noreferrer"
-              className="underline hover:opacity-80"
+              className="underline hover:text-white/50 transition-colors"
             >
               caffeine.ai
             </a>
@@ -2897,24 +2931,26 @@ export default function App() {
       <button
         type="button"
         onClick={() => setCartOpen(true)}
-        className={`fixed flex items-center justify-center text-white shadow-lg transition-all hover:scale-110 z-[200] ${
-          cartBounce ? "quick-cart-bounce" : ""
-        }`}
+        className={`fixed flex items-center justify-center shadow-lg transition-all hover:scale-110 z-[200] ${cartBounce ? "quick-cart-bounce" : ""}`}
         style={{
           bottom: 24,
           right: 24,
           width: 56,
           height: 56,
           borderRadius: "50%",
-          background: "#2E5BFF",
-          boxShadow: "0 4px 20px rgba(46,91,255,0.4)",
+          background: "#39FF14",
+          color: "#0A0A0A",
+          boxShadow: "0 4px 24px rgba(57,255,20,0.5)",
         }}
         data-ocid="cart.open_modal_button"
         aria-label="Open cart"
       >
         <ShoppingCart size={22} />
         {cartTotal > 0 && (
-          <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full">
+          <span
+            className="absolute -top-1.5 -right-1.5 w-5 h-5 text-white text-[10px] font-bold flex items-center justify-center rounded-full"
+            style={{ background: "#2E5BFF" }}
+          >
             {cartTotal}
           </span>
         )}

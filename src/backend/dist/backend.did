@@ -1,0 +1,25 @@
+type ShopInfo = 
+ record {
+   contact: text;
+   location: text;
+   name: text;
+ };
+type Product = 
+ record {
+   category: text;
+   isAvailable: bool;
+   name: text;
+   price: nat;
+   quantity: nat;
+ };
+service : {
+  addOrUpdateProduct: (name: text, category: text, price: nat, quantity: 
+   nat, isAvailable: bool) -> ();
+  getAllProducts: () -> (vec Product) query;
+  getProduct: (name: text) -> (opt Product) query;
+  getProductsByCategory: (category: text) -> (vec Product) query;
+  getShopInfo: () -> (opt ShopInfo) query;
+  setShopInfo: (name: text, location: text, contact: text) -> ();
+  updateProductAvailability: (name: text, isAvailable: bool) -> ();
+  updateProductQuantity: (name: text, quantity: nat) -> ();
+}

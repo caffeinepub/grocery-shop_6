@@ -38,28 +38,34 @@ export default {
         border: 'oklch(var(--border) / <alpha-value>)',
         input: 'oklch(var(--input) / <alpha-value>)',
         ring: 'oklch(var(--ring) / <alpha-value>)',
-        cobalt: { DEFAULT: '#2E5BFF', dark: '#1a47f0' },
-        sunset: { DEFAULT: '#FF5F1F', dark: '#e8531a' },
+        /* Brand accent tokens */
+        'neon-lime': '#39FF14',
+        'electric-blue': '#2E5BFF',
+        charcoal: '#0A0A0A',
       },
       fontFamily: {
-        heading: ['Space Grotesk', 'sans-serif'],
+        heading: ['Montserrat', 'sans-serif'],
         body: ['Inter', 'system-ui', 'sans-serif'],
         sans: ['Inter', 'system-ui', 'sans-serif'],
-        // keep archivo alias for any remnant code
-        archivo: ['Space Grotesk', 'sans-serif'],
+        display: ['Montserrat', 'sans-serif'],
+      },
+      letterSpacing: {
+        tightest: '-0.04em',
+        tighter: '-0.03em',
+        tight: '-0.02em',
       },
       borderRadius: {
-        lg: '8px',
-        md: '6px',
-        sm: '4px',
-        DEFAULT: '6px',
+        lg: '12px',
+        md: '8px',
+        sm: '6px',
+        DEFAULT: '8px',
       },
       boxShadow: {
-        hard: '4px 4px 0px #000000',
-        'hard-cobalt': '4px 4px 0px #2E5BFF',
-        'hard-sm': '2px 2px 0px #000000',
-        soft: '2px 4px 8px rgba(0,0,0,0.1)',
-        'soft-hover': '4px 8px 20px rgba(0,0,0,0.25)',
+        glass: '0 8px 32px rgba(0, 0, 0, 0.5)',
+        'glass-glow': '0 0 24px rgba(57, 255, 20, 0.25), 0 8px 32px rgba(0, 0, 0, 0.4)',
+        'glass-blue': '0 8px 32px rgba(46, 91, 255, 0.3)',
+        'lime-glow': '0 0 20px rgba(57, 255, 20, 0.4)',
+        subtle: '0 1px 4px rgba(0,0,0,0.3)',
       },
       keyframes: {
         'accordion-down': {
